@@ -63,32 +63,23 @@ export const MentionList = (props: MentionListProps) => {
     },
   }));
 
-  let content;
-
-  if (props.loading) {
-    content = (
-      <div className="item loading">
-        <span className="loading-dot" />
-        Loading…
-      </div>
-    );
-  } else if (props.items.length) {
-    content = props.items.map((item: User, index: number) => (
-      <button key={index} onClick={() => selectItem(index)}>
-        <Typography variant="menu_title" group="navigation">
-          {item.displayName}
-        </Typography>
-      </button>
-    ));
-  } else {
-    content = (
-      <NoResult>
-        <Typography variant="menu_title" group="navigation">
-          No result
-        </Typography>
-      </NoResult>
-    );
-  }
-
-  return <DropDown>{content}</DropDown>;
+  return (
+    <DropDown>
+      {props.items.length ? (
+        props.items.map((item: User, index: number) => (
+          <button key={index} onClick={() => selectItem(index)}>
+            <Typography variant="menu_title" group="navigation">
+              {item.displayName}
+            </Typography>
+          </button>
+        ))
+      ) : (
+        <NoResult>
+          <Typography variant="menu_title" group="navigation">
+            No result
+          </Typography>
+        </NoResult>
+      )}
+    </DropDown>
+  );
 };

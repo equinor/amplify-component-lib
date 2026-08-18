@@ -97,7 +97,7 @@ const CommentsStory = () => {
           <IconButton variant="ghost" icon={delete_forever} />
         </div>
       }
-      onAddComment={(comment) => {
+      onAddComment={({ comment }) => {
         setComments((prev) => [
           ...prev,
           {
@@ -215,7 +215,7 @@ const InteractiveComments = () => {
       open
       type="modal"
       onClose={() => {}}
-      onAddComment={(comment) => {
+      onAddComment={({ comment }) => {
         setComments((prev) => [
           ...prev,
           {

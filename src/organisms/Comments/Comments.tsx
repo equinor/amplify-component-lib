@@ -22,8 +22,22 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 export type CommentsProps = {
   comments: CommentData[];
   readonly?: boolean;
-  onAddComment: (comment: string) => void;
-  onEditComment: ({ id, text }: { id: string; text: string }) => void;
+  onAddComment: ({
+    comment,
+    mentions,
+  }: {
+    comment: string;
+    mentions: User[];
+  }) => void;
+  onEditComment: ({
+    id,
+    text,
+    mentions,
+  }: {
+    id: string;
+    text: string;
+    mentions: User[];
+  }) => void;
   onDeleteComment: (commentId: string) => void;
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;

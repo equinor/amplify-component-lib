@@ -13,11 +13,18 @@ import {
 } from 'src/molecules';
 import { User } from 'src/organisms/Comments/Comments.tsx';
 import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
+import { extractMentions } from 'src/organisms/Comments/mentions/utils.ts';
 
 import styled from 'styled-components';
 
 interface AddCommentProps {
-  addComment: (text: string) => void;
+  addComment: ({
+    comment,
+    mentions,
+  }: {
+    comment: string;
+    mentions: User[];
+  }) => void;
   users?: User[];
 }
 
@@ -55,7 +62,10 @@ export const AddComment: FC<AddCommentProps> = ({ addComment, users }) => {
               variant="ghost"
               icon={send}
               onClick={() => {
-                addComment(comment);
+                addComment({
+                  comment,
+                  mentions: extractMentions(comment, users ?? []),
+                });
                 setComment('');
               }}
             />

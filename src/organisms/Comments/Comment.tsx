@@ -21,6 +21,7 @@ import { User } from 'src/organisms/Comments/Comments.tsx';
 import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation.tsx';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
 import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
+import { extractMentions } from 'src/organisms/Comments/mentions/utils.ts';
 
 import { styled } from 'styled-components';
 
@@ -67,7 +68,15 @@ interface CommentProps {
   comment: CommentData;
   readonly?: boolean;
   onDelete: (id: string) => void;
-  onEdit: ({ id, text }: { id: string; text: string }) => void;
+  onEdit: ({
+    id,
+    text,
+    mentions,
+  }: {
+    id: string;
+    text: string;
+    mentions: User[];
+  }) => void;
   users?: User[];
 }
 
@@ -121,7 +130,11 @@ export const Comment: FC<CommentProps> = ({
   const [editing, setEditing] = useState(false);
 
   const handleCommentEdit = () => {
-    onEdit({ id: comment.id, text });
+    onEdit({
+      id: comment.id,
+      text,
+      mentions: extractMentions(text, users ?? []),
+    });
     setEditing(false);
   };
 
