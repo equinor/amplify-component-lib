@@ -45,7 +45,6 @@ const CommentsStory = () => {
         disabledReason: 'You cannot delete this comment',
       },
       author: {
-        id: faker.internet.username(),
         name: faker.person.fullName({ sex: 'male' }),
         avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
       },
@@ -63,7 +62,6 @@ const CommentsStory = () => {
         disabledReason: 'You cannot delete this comment',
       },
       author: {
-        id: faker.internet.username(),
         name: faker.person.fullName({ sex: 'male' }),
         avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
       },
@@ -97,12 +95,12 @@ const CommentsStory = () => {
           <IconButton variant="ghost" icon={delete_forever} />
         </div>
       }
-      onAddComment={({ comment }) => {
+      onAddComment={({ text }) => {
         setComments((prev) => [
           ...prev,
           {
             id: faker.string.uuid(),
-            text: comment,
+            text: text,
             timestamp: faker.date.recent(),
             author: {
               id: faker.internet.username(),
@@ -124,12 +122,7 @@ const CommentsStory = () => {
       open
       type="modal"
       onClose={() => {}}
-      users={[
-        {
-          displayName: faker.person.fullName(),
-          shortName: faker.internet.username(),
-        },
-      ]}
+      users={[faker.person.fullName()]}
     />
   );
 };
@@ -186,7 +179,6 @@ const createInitialComments = (): CommentData[] => [
     text: FIRST_COMMENT_TEXT,
     timestamp: new Date('2024-01-01T10:00:00Z'),
     author: {
-      id: 'author-1',
       name: 'Ada Lovelace',
       avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
     },
@@ -196,7 +188,6 @@ const createInitialComments = (): CommentData[] => [
     text: SECOND_COMMENT_TEXT,
     timestamp: new Date('2024-01-01T11:00:00Z'),
     author: {
-      id: 'author-2',
       name: 'Alan Turing',
       avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
     },
@@ -215,12 +206,12 @@ const InteractiveComments = () => {
       open
       type="modal"
       onClose={() => {}}
-      onAddComment={({ comment }) => {
+      onAddComment={({ text }) => {
         setComments((prev) => [
           ...prev,
           {
             id: `comment-${prev.length + 1}`,
-            text: comment,
+            text: text,
             timestamp: new Date('2024-01-01T12:00:00Z'),
             author: {
               id: 'current-user',
@@ -238,7 +229,7 @@ const InteractiveComments = () => {
       onDeleteComment={(commentId) => {
         setComments((prev) => prev.filter((c) => c.id !== commentId));
       }}
-      users={[{ displayName: 'Ada Lovelace', shortName: 'ada' }]}
+      users={[faker.person.fullName()]}
     />
   );
 };

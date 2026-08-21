@@ -3,10 +3,9 @@ import React, { Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion';
 
-import { DropDown, NoResult } from './MentionList.styles.ts';
-import { User } from 'src/organisms/Comments/Comments.tsx';
+import { DropDown, NoResult } from './MentionList.styles';
 
-interface MentionListProps extends SuggestionProps<User> {
+interface MentionListProps extends SuggestionProps<string> {
   loading?: boolean;
   ref?: Ref<MentionListRef>;
 }
@@ -19,10 +18,10 @@ export const MentionList = (props: MentionListProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const selectItem = (index: number) => {
-    const item: User = props.items[index];
+    const item: string = props.items[index];
 
     if (item) {
-      props.command({ id: item.displayName });
+      props.command({ id: item });
     }
   };
 
@@ -66,10 +65,10 @@ export const MentionList = (props: MentionListProps) => {
   return (
     <DropDown>
       {props.items.length ? (
-        props.items.map((item: User, index: number) => (
+        props.items.map((item: string, index: number) => (
           <button key={index} onClick={() => selectItem(index)}>
             <Typography variant="menu_title" group="navigation">
-              {item.displayName}
+              {item}
             </Typography>
           </button>
         ))

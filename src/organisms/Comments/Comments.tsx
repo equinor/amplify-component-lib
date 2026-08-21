@@ -23,11 +23,11 @@ export type CommentsProps = {
   comments: CommentData[];
   readonly?: boolean;
   onAddComment: ({
-    comment,
+    text,
     mentions,
   }: {
-    comment: string;
-    mentions: User[];
+    text: string;
+    mentions: string[];
   }) => void;
   onEditComment: ({
     id,
@@ -36,13 +36,13 @@ export type CommentsProps = {
   }: {
     id: string;
     text: string;
-    mentions: User[];
+    mentions: string[];
   }) => void;
   onDeleteComment: (commentId: string) => void;
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;
   emptyContent?: ReactNode;
-  users?: User[];
+  users?: string[];
 } & DistributiveOmit<SideSheetProps, 'children'>;
 
 const StyledDivider = styled(Divider)`
@@ -79,6 +79,9 @@ export const Comments: FC<CommentsProps> = ({
 }) => {
   const commentsContainer = useRef<HTMLDivElement>(null);
 
+  const zIndex =
+    'zIndex' in sideSheetProps ? Number(sideSheetProps.zIndex) : undefined;
+
   const lastCommentId = comments.at(-1)?.id;
 
   useEffect(() => {
@@ -107,6 +110,7 @@ export const Comments: FC<CommentsProps> = ({
                 readonly={readonly}
                 onEdit={onEditComment}
                 users={users}
+                zIndex={zIndex}
               />
             ))
           : (emptyContent ?? (
@@ -121,7 +125,9 @@ export const Comments: FC<CommentsProps> = ({
               </NoCommentsContainer>
             ))}
       </CommentsContainer>
-      {!readonly && <AddComment addComment={onAddComment} users={users} />}
+      {!readonly && (
+        <AddComment addComment={onAddComment} users={users} zIndex={zIndex} />
+      )}
     </SideSheet>
   );
 };

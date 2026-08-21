@@ -17,11 +17,10 @@ import {
   RichTextEditor,
   RichTextEditorFeatures,
 } from 'src/molecules';
-import { User } from 'src/organisms/Comments/Comments.tsx';
-import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation.tsx';
+import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
-import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
-import { extractMentions } from 'src/organisms/Comments/mentions/utils.ts';
+import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions';
+import { extractMentions } from 'src/organisms/Comments/mentions/utils';
 
 import { styled } from 'styled-components';
 
@@ -58,9 +57,8 @@ export interface CommentData {
   deleteAction?: CommentAction;
   timestamp: Date | string;
   author: {
-    id: string;
     name: string;
-    avatar: string;
+    avatar?: string;
   };
 }
 
@@ -75,9 +73,10 @@ interface CommentProps {
   }: {
     id: string;
     text: string;
-    mentions: User[];
+    mentions: string[];
   }) => void;
-  users?: User[];
+  users?: string[];
+  zIndex?: number;
 }
 
 const LeftSide = styled.div`
@@ -119,6 +118,7 @@ export const Comment: FC<CommentProps> = ({
   onEdit,
   readonly,
   users,
+  zIndex,
 }) => {
   const defaultExtensions = useAmplifyKit({
     features: DEFAULT_FEATURES,
@@ -133,7 +133,7 @@ export const Comment: FC<CommentProps> = ({
     onEdit({
       id: comment.id,
       text,
-      mentions: extractMentions(text, users ?? []),
+      mentions: extractMentions(text),
     });
     setEditing(false);
   };
@@ -246,7 +246,7 @@ export const Comment: FC<CommentProps> = ({
                   HTMLAttributes: {
                     class: 'mention',
                   },
-                  suggestions: getSuggestions(users || []),
+                  suggestions: getSuggestions(users || [], zIndex),
                 }),
               ]}
             />
@@ -260,7 +260,7 @@ export const Comment: FC<CommentProps> = ({
                   HTMLAttributes: {
                     class: 'mention',
                   },
-                  suggestions: getSuggestions(users || []),
+                  suggestions: getSuggestions(users || [], zIndex),
                 }),
               ]}
             />

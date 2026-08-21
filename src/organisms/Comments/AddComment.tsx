@@ -19,13 +19,14 @@ import styled from 'styled-components';
 
 interface AddCommentProps {
   addComment: ({
-    comment,
+    text,
     mentions,
   }: {
-    comment: string;
-    mentions: User[];
+    text: string;
+    mentions: string[];
   }) => void;
-  users?: User[];
+  users?: string[];
+  zIndex?: number;
 }
 
 const Wrapper = styled.div`
@@ -40,13 +41,17 @@ const InfoWrapper = styled.div`
   padding: ${spacings.x_small} ${spacings.small};
 `;
 
-export const AddComment: FC<AddCommentProps> = ({ addComment, users }) => {
-  const [comment, setComment] = useState('');
+export const AddComment: FC<AddCommentProps> = ({
+  addComment,
+  users,
+  zIndex,
+}) => {
+  const [text, setText] = useState('');
   return (
     <Wrapper>
       <RichTextEditor
-        value={comment}
-        onChange={setComment}
+        value={text}
+        onChange={setText}
         lightBackground
         maxHeight="130px"
         minHeight="130px"
@@ -63,10 +68,10 @@ export const AddComment: FC<AddCommentProps> = ({ addComment, users }) => {
               icon={send}
               onClick={() => {
                 addComment({
-                  comment,
-                  mentions: extractMentions(comment, users ?? []),
+                  text: text,
+                  mentions: extractMentions(text),
                 });
-                setComment('');
+                setText('');
               }}
             />
           </div>
@@ -86,11 +91,11 @@ export const AddComment: FC<AddCommentProps> = ({ addComment, users }) => {
             HTMLAttributes: {
               class: 'mention',
             },
-            suggestions: getSuggestions(users || []),
+            suggestions: getSuggestions(users || [], zIndex),
           }),
         ]}
       />
-      {users?.length && (
+      {!!users?.length && (
         <InfoWrapper>
           <Icon
             color={colors.text.static_icons__tertiary.rgba}

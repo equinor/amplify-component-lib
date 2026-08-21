@@ -1,7 +1,6 @@
 import { Editor, posToDOMRect, ReactRenderer } from '@tiptap/react';
 import { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion';
 
-import { User } from 'src/organisms/Comments/Comments.tsx';
 import {
   MentionList,
   MentionListRef,
@@ -45,21 +44,19 @@ const updatePosition = (editor: Editor, element: HTMLElement) => {
   element.style.top = `${top + window.scrollY}px`;
 };
 
-export const getSuggestions = (users: User[]) => [
+export const getSuggestions = (users: string[], zIndex: number | undefined) => [
   {
     items: ({ query }: { query: string }) => {
       return users
-        .filter((user) =>
-          user.displayName.toLowerCase().startsWith(query.toLowerCase())
-        )
+        .filter((user) => user.toLowerCase().startsWith(query.toLowerCase()))
         .slice(0, 3);
     },
 
     render: () => {
-      let component: ReactRenderer<MentionListRef, SuggestionProps<User>>;
+      let component: ReactRenderer<MentionListRef, SuggestionProps<string>>;
 
       return {
-        onStart: (props: SuggestionProps<User>) => {
+        onStart: (props: SuggestionProps<string>) => {
           component = new ReactRenderer(MentionList, {
             props,
             editor: props.editor,
@@ -70,13 +67,16 @@ export const getSuggestions = (users: User[]) => [
           }
 
           component.element.style.position = 'absolute';
+          if (zIndex !== undefined) {
+            component.element.style.zIndex = String(zIndex + 1);
+          }
 
           document.body.appendChild(component.element);
 
           updatePosition(props.editor, component.element);
         },
 
-        onUpdate(props: SuggestionProps<User>) {
+        onUpdate(props: SuggestionProps<string>) {
           component.updateProps(props);
 
           if (!props.clientRect) {
