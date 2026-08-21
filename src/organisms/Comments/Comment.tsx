@@ -11,11 +11,11 @@ import {
   Button,
   DEFAULT_FEATURES,
   IconButton,
-  OptionalTooltip,
   ProfileAvatar,
   RichTextDisplay,
   RichTextEditor,
   RichTextEditorFeatures,
+  Tooltip,
 } from 'src/molecules';
 import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
@@ -174,7 +174,7 @@ export const Comment: FC<CommentProps> = ({
             {!readonly && (
               <Actions data-testid="comment-actions">
                 {!comment.editAction?.hidden && (
-                  <OptionalTooltip
+                  <Tooltip
                     title={
                       comment.editAction?.disabled &&
                       comment.editAction?.disabledReason
@@ -187,10 +187,10 @@ export const Comment: FC<CommentProps> = ({
                       disabled={comment.editAction?.disabled}
                       onClick={() => setEditing((prev) => !prev)}
                     />
-                  </OptionalTooltip>
+                  </Tooltip>
                 )}
                 {!comment.deleteAction?.hidden && (
-                  <OptionalTooltip
+                  <Tooltip
                     title={
                       comment.deleteAction?.disabled &&
                       comment.deleteAction?.disabledReason
@@ -203,7 +203,7 @@ export const Comment: FC<CommentProps> = ({
                       onClick={() => setDeleteDialogOpen(true)}
                       disabled={comment.deleteAction?.disabled}
                     />
-                  </OptionalTooltip>
+                  </Tooltip>
                 )}
               </Actions>
             )}

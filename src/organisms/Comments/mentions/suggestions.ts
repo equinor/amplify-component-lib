@@ -6,7 +6,7 @@ import {
   MentionListRef,
 } from 'src/organisms/Comments/mentions/MentionList';
 
-const updatePosition = (editor: Editor, element: HTMLElement) => {
+export const updatePosition = (editor: Editor, element: HTMLElement) => {
   const referenceRect = posToDOMRect(
     editor.view,
     editor.state.selection.from,

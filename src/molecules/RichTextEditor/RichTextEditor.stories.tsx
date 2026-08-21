@@ -40,6 +40,10 @@ export const Primary: StoryFn<RichTextEditorProps> = (args) => {
   return <RichTextEditor {...args} />;
 };
 
+export const DefaultBackground: StoryFn<RichTextEditorProps> = (args) => {
+  return <RichTextEditor {...args} lightBackground={false} />;
+};
+
 export const WithFooter: StoryFn<RichTextEditorProps> = (args) => {
   return (
     <RichTextEditor
