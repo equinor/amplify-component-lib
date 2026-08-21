@@ -311,6 +311,24 @@ describe(
       expect(screen.getByText(/no items found/i)).toBeInTheDocument();
     });
 
+    test('Search field is auto focused when impersonate menu opens', async () => {
+      renderWithProviders(<Account />);
+      const user = userEvent.setup();
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      await waitFor(() =>
+        expect(screen.getByText(/Impersonate/i)).toBeInTheDocument()
+      );
+
+      await user.click(screen.getByText(/Impersonate/i));
+
+      const searchInput = await screen.findByPlaceholderText('Search users');
+
+      await waitFor(() => expect(searchInput).toHaveFocus());
+    });
+
     test('ImpersonateMenu onClose works as expected', async () => {
       renderWithProviders(
         <>
