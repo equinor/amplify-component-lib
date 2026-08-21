@@ -1,6 +1,7 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Icon, Menu } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import {
   Link as TanstackLink,
@@ -11,7 +12,6 @@ import {
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { colors, spacings } from 'src/atoms/style';
 import { SideBarMenuItemWithItems } from 'src/atoms/types/SideBar';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import {
   IconContainer,
   ItemText,
@@ -124,7 +124,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
 
   const parentContent = useMemo(() => {
     return (
-      <OptionalTooltip title={name} placement="right">
+      <Tooltip title={name} placement="right">
         <MenuItemWrapper>
           <Parent
             ref={parentRef}
@@ -160,7 +160,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
             )}
           </Parent>
         </MenuItemWrapper>
-      </OptionalTooltip>
+      </Tooltip>
     );
   }, [expanded, icon, isActive, isOpen, name, rest]);
 

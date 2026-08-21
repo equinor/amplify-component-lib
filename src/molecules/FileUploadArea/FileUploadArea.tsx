@@ -2,6 +2,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
 
 import {
@@ -14,7 +15,6 @@ import { colors } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
 import { FILE_UPLOAD_SCRIM_ID } from 'src/molecules/FileUploadArea/FileUploadArea.constants';
 import { UploadIllustration } from 'src/molecules/FileUploadArea/UploadIllustration';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 export type FileUploadAreaProps = {
   /*
@@ -120,9 +120,9 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
         <UploadIllustration />
         <Typography variant="meta">Upload file</Typography>
         {options.accept && (
-          <OptionalTooltip title={`Supported filetypes: ${filetypes}`}>
+          <Tooltip title={`Supported filetypes: ${filetypes}`}>
             <Typography variant="meta">({filetypes})</Typography>
-          </OptionalTooltip>
+          </Tooltip>
         )}
       </SmallUploadWrapper>
     );
@@ -146,7 +146,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
             Drag files here
           </Typography>
           {options.accept && (
-            <OptionalTooltip title={`Supported filetypes: ${filetypes}`}>
+            <Tooltip title={`Supported filetypes: ${filetypes}`}>
               <Typography
                 group="paragraph"
                 variant="meta"
@@ -154,7 +154,7 @@ export const FileUploadArea: FC<FileUploadAreaProps> = ({
               >
                 {filetypes}
               </Typography>
-            </OptionalTooltip>
+            </Tooltip>
           )}
         </section>
         <DividerRow>

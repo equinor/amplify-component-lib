@@ -2,6 +2,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 
 import {
@@ -24,7 +25,6 @@ import {
   readUploadedFileAsText,
 } from './FileProgress.utils';
 import { colors } from 'src/atoms/style';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 const CompactFileProgress: FC<
   CompactFileProgressBaseProps & FileProgressPropsExtension
@@ -156,11 +156,11 @@ const CompactFileProgress: FC<
   return (
     <CompactFileProgressContainer $isError={isError}>
       <FileTooltip title={errorText}>{content}</FileTooltip>
-      <OptionalTooltip title={file.name}>
+      <Tooltip title={file.name}>
         <AdditionalText group="paragraph" variant="meta">
           {file.name}
         </AdditionalText>
-      </OptionalTooltip>
+      </Tooltip>
       {!isDeleting && rest.onDelete && (
         <CloseButton data-testid="delete-file" onClick={handleOnClick}>
           <Icon color={colors.text.static_icons__tertiary.rgba} data={clear} />

@@ -7,7 +7,6 @@ import {
   NotificationsTypes,
   RequestReviewOrcaTypes,
 } from '../Notifications.types';
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 
 import styled from 'styled-components';
 
@@ -36,11 +35,11 @@ export const RequestReviewOrca: FC<RequestReviewProps> = ({
         onClick={onClick}
         data-testid={NotificationsTypes.REQUESTED_REVIEW}
       >
-        <OptionalTooltip title={`Go to ${branchName}`}>
+        <Tooltip title={`Go to ${branchName}`}>
           <Typography group="table" variant="cell_text">
             {fromUser.displayName} has requested review for branch {branchName}
           </Typography>
-        </OptionalTooltip>
+        </Tooltip>
       </Container>
     </Tooltip>
   );

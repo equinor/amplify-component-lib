@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
+import { Tooltip } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 
-import { OptionalTooltip } from 'src/molecules/OptionalTooltip/OptionalTooltip';
 import {
   CreateButton,
   MenuItemContainer,
@@ -42,7 +42,7 @@ export const CreateItem: FC<CreateItemProps> = ({
   }
 
   return (
-    <OptionalTooltip title={createLabel} placement="right">
+    <Tooltip title={createLabel} placement="right">
       <MenuItemContainer
         $active={active}
         onClick={onClickHandler}
@@ -52,6 +52,6 @@ export const CreateItem: FC<CreateItemProps> = ({
           <Icon data={add} />
         </CreateButton>
       </MenuItemContainer>
-    </OptionalTooltip>
+    </Tooltip>
   );
 };
