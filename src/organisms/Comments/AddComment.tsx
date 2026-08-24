@@ -11,7 +11,6 @@ import {
   RichTextEditor,
   RichTextEditorFeatures,
 } from 'src/molecules';
-import { User } from 'src/organisms/Comments/Comments.tsx';
 import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
 import { extractMentions } from 'src/organisms/Comments/mentions/utils.ts';
 
