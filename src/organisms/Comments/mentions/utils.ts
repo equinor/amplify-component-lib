@@ -2,8 +2,7 @@
  * Extracts the mentioned users from a comment's HTML content.
  *
  * Mentions are stored as nodes carrying a `data-id` attribute whose value is
- * the user's `displayName` (see `MentionList`). This maps those ids back to the
- * provided `users`, returning each mentioned user once.
+ * the user's `displayName` (see `MentionList`).
  */
 export const extractMentions = (html: string): string[] => {
   if (typeof document === 'undefined' || !html) {
@@ -17,7 +16,9 @@ export const extractMentions = (html: string): string[] => {
     '[data-type="mention"], .mention'
   );
 
-  return Array.from(mentionNodes)
+  const ids = Array.from(mentionNodes)
     .map((node) => node.getAttribute('data-id'))
     .filter((id): id is string => !!id);
+
+  return [...new Set(ids)];
 };

@@ -40,6 +40,14 @@ const InfoWrapper = styled.div`
   padding: ${spacings.x_small} ${spacings.small};
 `;
 
+const FlexWrapper = styled.div`
+  display: flex;
+`;
+
+const RightAlignedIconButton = styled(IconButton)`
+  margin-left: auto;
+`;
+
 export const AddComment: FC<AddCommentProps> = ({
   addComment,
   users,
@@ -52,15 +60,11 @@ export const AddComment: FC<AddCommentProps> = ({
         value={text}
         onChange={setText}
         lightBackground
-        maxHeight="130px"
+        maxHeight="50vh"
         minHeight="130px"
         footer={
-          <div
-            style={{
-              display: 'flex',
-            }}
-          >
-            <IconButton
+          <FlexWrapper>
+            <RightAlignedIconButton
               data-testid="send-comment-button"
               style={{ marginLeft: 'auto' }}
               variant="ghost"
@@ -73,7 +77,7 @@ export const AddComment: FC<AddCommentProps> = ({
                 setText('');
               }}
             />
-          </div>
+          </FlexWrapper>
         }
         removeFeatures={[
           RichTextEditorFeatures.ALIGNMENT,

@@ -31,7 +31,7 @@ function makeProps(
     text: '',
     decorationNode: null,
     clientRect: null,
-  } as unknown as ComponentProps<typeof MentionList>;
+  } as ComponentProps<typeof MentionList>;
   return { props, command, ref };
 }
 

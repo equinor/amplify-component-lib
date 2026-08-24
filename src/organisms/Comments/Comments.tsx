@@ -80,7 +80,9 @@ export const Comments: FC<CommentsProps> = ({
   const commentsContainer = useRef<HTMLDivElement>(null);
 
   const zIndex =
-    'zIndex' in sideSheetProps ? Number(sideSheetProps.zIndex) : undefined;
+    'zIndex' in sideSheetProps && sideSheetProps.zIndex != null
+      ? Number(sideSheetProps.zIndex)
+      : undefined;
 
   const lastCommentId = comments.at(-1)?.id;
 

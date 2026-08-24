@@ -112,6 +112,12 @@ const Wrapper = styled.div`
   }
 `;
 
+const FooterWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${spacings.medium_small};
+`;
+
 export const Comment: FC<CommentProps> = ({
   comment,
   onDelete,
@@ -216,20 +222,14 @@ export const Comment: FC<CommentProps> = ({
               maxHeight="130px"
               minHeight="130px"
               footer={
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    gap: spacings.medium_small,
-                  }}
-                >
+                <FooterWrapper>
                   <Button variant="ghost" onClick={() => setEditing(false)}>
                     Cancel
                   </Button>
                   <Button variant="outlined" onClick={handleCommentEdit}>
                     Update
                   </Button>
-                </div>
+                </FooterWrapper>
               }
               removeFeatures={[
                 RichTextEditorFeatures.ALIGNMENT,

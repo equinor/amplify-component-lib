@@ -94,6 +94,7 @@
         "@tiptap/extensions": "^3.1.0",
         "@tiptap/pm": "^3.1.0",
         "@tiptap/react": "^3.1.0",
+        "@tiptap/suggestion": "^3.1.0",
         "html2canvas": "^1.4.1",
         "jwt-decode": "^4.0.0",
         "lodash": "^4.17.21",
