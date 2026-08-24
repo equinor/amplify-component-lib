@@ -21,6 +21,14 @@ import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 const meta: Meta<typeof Comments> = {
   title: 'Molecules/Comments',
   component: Comments,
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        height: '600px',
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <Stack>
@@ -245,6 +253,7 @@ const InteractiveComments = () => {
 };
 
 export const AddingComment: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <InteractiveComments />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -269,6 +278,7 @@ export const AddingComment: Story = {
 };
 
 export const EditingComment: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <InteractiveComments />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -356,6 +366,7 @@ const DisabledActionsComments = () => {
 };
 
 export const DisabledActions: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <DisabledActionsComments />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -388,6 +399,7 @@ export const DisabledActions: Story = {
 };
 
 export const DeletingComment: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <InteractiveComments />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -449,6 +461,7 @@ const MentionsComments = ({ users }: { users: string[] }) => {
 };
 
 export const MentionsWithoutUsers: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <MentionsComments users={[]} />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -460,6 +473,7 @@ export const MentionsWithoutUsers: Story = {
 };
 
 export const MentionsWithUsers: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <MentionsComments users={[MENTION_USER]} />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -479,14 +493,10 @@ export const MentionsWithUsers: Story = {
     });
 
     await step('Clicking the user inserts the mention', async () => {
-      await userEvent.click(
-        screen.getByRole('button', { name: MENTION_USER })
-      );
+      await userEvent.click(screen.getByRole('button', { name: MENTION_USER }));
 
       await waitFor(() =>
-        expect(
-          canvasElement.querySelector('.mention')
-        ).toBeInTheDocument()
+        expect(canvasElement.querySelector('.mention')).toBeInTheDocument()
       );
       await expect(canvasElement.querySelector('.mention')).toHaveAttribute(
         'data-id',
@@ -497,6 +507,7 @@ export const MentionsWithUsers: Story = {
 };
 
 export const MentionsKeyboardNavigation: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <MentionsComments users={[MENTION_USER, SECOND_MENTION_USER]} />
   ),
@@ -516,33 +527,40 @@ export const MentionsKeyboardNavigation: Story = {
       ).toBeVisible();
     });
 
-    await step('Navigate the list with arrow keys and select with Enter', async () => {
-      await userEvent.keyboard('{ArrowDown}');
-      await userEvent.keyboard('{ArrowUp}');
-      await userEvent.keyboard('{Enter}');
+    await step(
+      'Navigate the list with arrow keys and select with Enter',
+      async () => {
+        await userEvent.keyboard('{ArrowDown}');
+        await userEvent.keyboard('{ArrowUp}');
+        await userEvent.keyboard('{Enter}');
 
-      await waitFor(() =>
-        expect(canvasElement.querySelector('.mention')).toBeInTheDocument()
-      );
-      await expect(canvasElement.querySelector('.mention')).toHaveAttribute(
-        'data-id',
-        MENTION_USER
-      );
-    });
+        await waitFor(() =>
+          expect(canvasElement.querySelector('.mention')).toBeInTheDocument()
+        );
+        await expect(canvasElement.querySelector('.mention')).toHaveAttribute(
+          'data-id',
+          MENTION_USER
+        );
+      }
+    );
 
-    await step('Sending extracts the mention into the new comment', async () => {
-      await userEvent.click(canvas.getByTestId('send-comment-button'));
+    await step(
+      'Sending extracts the mention into the new comment',
+      async () => {
+        await userEvent.click(canvas.getByTestId('send-comment-button'));
 
-      await waitFor(() =>
-        expect(canvasElement.querySelectorAll('.mention').length).toBeGreaterThan(
-          0
-        )
-      );
-    });
+        await waitFor(() =>
+          expect(
+            canvasElement.querySelectorAll('.mention').length
+          ).toBeGreaterThan(0)
+        );
+      }
+    );
   },
 };
 
 export const MentionsNoResult: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <MentionsComments users={[MENTION_USER]} />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -552,9 +570,7 @@ export const MentionsNoResult: Story = {
       await userEvent.click(editor);
       await userEvent.type(editor, '@zzz');
 
-      await waitFor(() =>
-        expect(screen.getByText('No result')).toBeVisible()
-      );
+      await waitFor(() => expect(screen.getByText('No result')).toBeVisible());
     });
 
     await step('Pressing Escape closes the mention menu', async () => {
@@ -594,6 +610,7 @@ const PlainComments = () => {
 };
 
 export const CancelEditing: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <PlainComments />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
@@ -619,6 +636,7 @@ export const CancelEditing: Story = {
 };
 
 export const CancelDeleting: Story = {
+  tags: ['!dev', '!autodocs'],
   render: () => <PlainComments />,
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
