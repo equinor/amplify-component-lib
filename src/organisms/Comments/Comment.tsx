@@ -65,8 +65,8 @@ export interface CommentData {
 interface CommentProps {
   comment: CommentData;
   readonly?: boolean;
-  onDelete: (id: string) => void;
-  onEdit: ({
+  onDelete?: (id: string) => void;
+  onEdit?: ({
     id,
     text,
     mentions,
@@ -136,7 +136,7 @@ export const Comment: FC<CommentProps> = ({
   const [editing, setEditing] = useState(false);
 
   const handleCommentEdit = () => {
-    onEdit({
+    onEdit?.({
       id: comment.id,
       text,
       mentions: extractMentions(text),
@@ -272,7 +272,7 @@ export const Comment: FC<CommentProps> = ({
           onClose={() => setDeleteDialogOpen(false)}
           onConfirm={() => {
             setDeleteDialogOpen(false);
-            onDelete(comment.id);
+            onDelete?.(comment.id);
           }}
         />
       )}

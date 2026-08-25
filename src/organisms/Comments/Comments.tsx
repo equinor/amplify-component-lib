@@ -17,14 +17,14 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 export type CommentsProps = {
   comments: CommentData[];
   readonly?: boolean;
-  onAddComment: ({
+  onAddComment?: ({
     text,
     mentions,
   }: {
     text: string;
     mentions: string[];
   }) => void;
-  onEditComment: ({
+  onEditComment?: ({
     id,
     text,
     mentions,
@@ -33,7 +33,7 @@ export type CommentsProps = {
     text: string;
     mentions: string[];
   }) => void;
-  onDeleteComment: (commentId: string) => void;
+  onDeleteComment?: (commentId: string) => void;
   subHeaderElements?: ReactNode;
   commentActions?: ReactNode;
   emptyContent?: ReactNode;
@@ -123,7 +123,7 @@ export const Comments: FC<CommentsProps> = ({
             ))}
       </CommentsContainer>
       {!readonly && (
-        <AddComment addComment={onAddComment} users={users} zIndex={zIndex} />
+        <AddComment onAddComment={onAddComment} users={users} zIndex={zIndex} />
       )}
     </SideSheet>
   );

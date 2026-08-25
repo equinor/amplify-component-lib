@@ -26,7 +26,6 @@ const meta: Meta<typeof Comments> = {
   parameters: {
     docs: {
       story: {
-        inline: false,
         height: '600px',
       },
     },
@@ -39,7 +38,7 @@ const meta: Meta<typeof Comments> = {
     },
     users: {
       description: 'List of users that can be mentioned',
-      control: 'object',
+      control: false,
       table: { category: 'Data' },
     },
     title: {
@@ -131,7 +130,7 @@ const CommentsStory = (args: CommentsProps) => {
         {
           id: faker.string.uuid(),
           text: text,
-          timestamp: faker.date.recent(),
+          timestamp: new Date(),
           author: {
             id: faker.internet.username(),
             name: 'Current User',
@@ -285,9 +284,7 @@ export const EmptyComments: Story = {
   render: () => (
     <Comments
       comments={[]}
-      onAddComment={() => {}}
-      onEditComment={() => {}}
-      onDeleteComment={() => {}}
+      readonly
       title="Comments"
       open
       type="modal"
@@ -300,9 +297,7 @@ export const CustomEmptyContent: Story = {
   render: () => (
     <Comments
       comments={[]}
-      onAddComment={() => {}}
-      onEditComment={() => {}}
-      onDeleteComment={() => {}}
+      readonly
       title="Comments"
       open
       type="modal"
@@ -370,7 +365,7 @@ const InteractiveComments = () => {
           {
             id: `comment-${prev.length + 1}`,
             text: text,
-            timestamp: new Date('2024-01-01T12:00:00Z'),
+            timestamp: new Date(),
             author: {
               id: 'current-user',
               name: 'Current User',

@@ -17,7 +17,7 @@ import { extractMentions } from 'src/organisms/Comments/mentions/utils.ts';
 import styled from 'styled-components';
 
 interface AddCommentProps {
-  addComment: ({
+  onAddComment?: ({
     text,
     mentions,
   }: {
@@ -49,7 +49,7 @@ const RightAlignedIconButton = styled(IconButton)`
 `;
 
 export const AddComment: FC<AddCommentProps> = ({
-  addComment,
+  onAddComment,
   users,
   zIndex,
 }) => {
@@ -70,7 +70,7 @@ export const AddComment: FC<AddCommentProps> = ({
               variant="ghost"
               icon={send}
               onClick={() => {
-                addComment({
+                onAddComment?.({
                   text: text,
                   mentions: extractMentions(text),
                 });
