@@ -21,7 +21,7 @@ const EDIT_DISABLED_REASON = 'You cannot edit this comment';
 const DELETE_DISABLED_REASON = 'You can only delete your own comments.';
 
 const meta: Meta<typeof Comments> = {
-  title: 'Molecules/Comments',
+  title: 'Organisms/Comments',
   component: Comments,
   parameters: {
     docs: {
