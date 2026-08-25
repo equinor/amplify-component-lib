@@ -5,7 +5,6 @@ import {
   chevron_left,
   chevron_right,
   delete_forever,
-  filter_alt,
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
@@ -17,6 +16,10 @@ import { Comments } from 'src/organisms/Comments/Comments.tsx';
 import { Stack } from 'src/storybook';
 
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
+
+const DISABLED_COMMENT_TEXT = 'This comment cannot be edited or deleted';
+const EDIT_DISABLED_REASON = 'You cannot edit this comment';
+const DELETE_DISABLED_REASON = 'You can only delete your own comments.';
 
 const meta: Meta<typeof Comments> = {
   title: 'Molecules/Comments',
@@ -46,11 +49,11 @@ const CommentsStory = () => {
       timestamp: faker.date.recent(),
       editAction: {
         disabled: true,
-        disabledReason: 'You cannot edit this comment',
+        disabledReason: EDIT_DISABLED_REASON,
       },
       deleteAction: {
         disabled: true,
-        disabledReason: 'You cannot delete this comment',
+        disabledReason: DELETE_DISABLED_REASON,
       },
       author: {
         name: faker.person.fullName({ sex: 'male' }),
@@ -63,11 +66,11 @@ const CommentsStory = () => {
       timestamp: faker.date.recent(),
       editAction: {
         disabled: true,
-        disabledReason: 'You cannot edit this comment',
+        disabledReason: EDIT_DISABLED_REASON,
       },
       deleteAction: {
         disabled: true,
-        disabledReason: 'You cannot delete this comment',
+        disabledReason: DELETE_DISABLED_REASON,
       },
       author: {
         name: faker.person.fullName({ sex: 'male' }),
@@ -79,30 +82,6 @@ const CommentsStory = () => {
   return (
     <Comments
       comments={comments}
-      subHeaderElements={
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.medium}`,
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginRight: 'auto',
-            }}
-          >
-            <IconButton variant="ghost" icon={chevron_left} />
-            {1} / {3} comment threads
-            <IconButton variant="ghost" icon={chevron_right} />
-          </div>
-          <IconButton variant="ghost" icon={check_circle_outlined} />
-          <IconButton variant="ghost" icon={filter_alt} />
-          <IconButton variant="ghost" icon={delete_forever} />
-        </div>
-      }
       onAddComment={({ text }) => {
         setComments((prev) => [
           ...prev,
@@ -139,6 +118,105 @@ export default meta;
 type Story = StoryObj<typeof Comments>;
 export const Introduction: Story = {
   render: () => <CommentsStory />,
+};
+
+const CustomHeaderExample = () => {
+  const [comments, setComments] = useState<CommentData[]>([
+    {
+      id: faker.string.uuid(),
+      text: faker.lorem.paragraph(),
+      timestamp: faker.date.recent(),
+      editAction: {
+        disabled: true,
+        disabledReason: EDIT_DISABLED_REASON,
+      },
+      deleteAction: {
+        disabled: true,
+        disabledReason: DELETE_DISABLED_REASON,
+      },
+      author: {
+        name: faker.person.fullName({ sex: 'male' }),
+        avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
+      },
+    },
+    {
+      id: faker.string.uuid(),
+      text: faker.lorem.paragraph(),
+      timestamp: faker.date.recent(),
+      editAction: {
+        disabled: true,
+        disabledReason: EDIT_DISABLED_REASON,
+      },
+      deleteAction: {
+        disabled: true,
+        disabledReason: DELETE_DISABLED_REASON,
+      },
+      author: {
+        name: faker.person.fullName({ sex: 'male' }),
+        avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
+      },
+    },
+  ]);
+
+  return (
+    <Comments
+      comments={comments}
+      subHeaderElements={
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.medium}`,
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginRight: 'auto',
+            }}
+          >
+            <IconButton variant="ghost" icon={chevron_left} />
+            {1} / {3} comment threads
+            <IconButton variant="ghost" icon={chevron_right} />
+          </div>
+          <IconButton variant="ghost" icon={check_circle_outlined} />
+          <IconButton variant="ghost" icon={delete_forever} />
+        </div>
+      }
+      onAddComment={({ text }) => {
+        setComments((prev) => [
+          ...prev,
+          {
+            id: faker.string.uuid(),
+            text: text,
+            timestamp: new Date(),
+            author: {
+              id: faker.internet.username(),
+              name: 'Current User',
+              avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
+            },
+          },
+        ]);
+      }}
+      onEditComment={({ id, text }) => {
+        setComments((prev) =>
+          prev.map((c) => (c.id === id ? { ...c, text } : c))
+        );
+      }}
+      onDeleteComment={(commentId) => {
+        setComments((prev) => prev.filter((c) => c.id !== commentId));
+      }}
+      title="Comments"
+      open
+      type="modal"
+      onClose={() => {}}
+      users={[faker.person.fullName()]}
+    />
+  );
+};
+export const CustomHeader: Story = {
+  render: CustomHeaderExample,
 };
 
 export const EmptyComments: Story = {
@@ -318,10 +396,6 @@ export const EditingComment: Story = {
     });
   },
 };
-
-const DISABLED_COMMENT_TEXT = 'This comment cannot be edited or deleted';
-const EDIT_DISABLED_REASON = 'You cannot edit this comment';
-const DELETE_DISABLED_REASON = 'You cannot delete this comment';
 
 const DisabledActionsComments = () => {
   const [comments, setComments] = useState<CommentData[]>([
