@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  check_circle_outlined,
   chevron_left,
   chevron_right,
   delete_forever,
@@ -11,8 +10,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
 import { IconButton } from 'src/molecules';
-import { CommentData } from 'src/organisms/Comments/Comment.tsx';
-import { Comments } from 'src/organisms/Comments/Comments.tsx';
+import { CommentData } from 'src/organisms/Comments/Comment';
+import { Comments, CommentsProps } from 'src/organisms/Comments/Comments';
 import { Stack } from 'src/storybook';
 
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
@@ -32,6 +31,62 @@ const meta: Meta<typeof Comments> = {
       },
     },
   },
+  argTypes: {
+    comments: {
+      description: 'Array of comments to display',
+      control: false,
+      table: { category: 'Data' },
+    },
+    users: {
+      description: 'List of users that can be mentioned',
+      control: 'object',
+      table: { category: 'Data' },
+    },
+    title: {
+      description: 'Title shown in the header',
+      control: 'text',
+      table: { category: 'Appearance' },
+    },
+    type: {
+      description: 'How the side sheet is rendered',
+      control: 'radio',
+      options: ['standard', 'modal', 'floating'],
+      table: { category: 'Appearance' },
+    },
+    open: {
+      description: 'Opens/closes the comments panel',
+      control: 'boolean',
+      table: { category: 'Appearance' },
+    },
+    readonly: {
+      description: 'Disables adding, editing and deleting comments',
+      control: 'boolean',
+      table: { category: 'Appearance' },
+    },
+    withScrim: {
+      description: 'Show a scrim behind the panel',
+      control: 'boolean',
+      table: { category: 'Appearance' },
+    },
+    width: {
+      description: 'Width of the panel in pixels',
+      control: 'number',
+      table: { category: 'Appearance' },
+    },
+    zIndex: {
+      description: 'z-index of the panel',
+      control: 'number',
+      table: { category: 'Appearance' },
+    },
+    onAddComment: { control: false, table: { category: 'Events' } },
+    onEditComment: { control: false, table: { category: 'Events' } },
+    onDeleteComment: { control: false, table: { category: 'Events' } },
+    onClose: { control: false, table: { category: 'Events' } },
+    headerElements: { control: false, table: { category: 'Slots' } },
+    subHeaderElements: { control: false, table: { category: 'Slots' } },
+    commentActions: { control: false, table: { category: 'Slots' } },
+    emptyContent: { control: false, table: { category: 'Slots' } },
+  },
   decorators: [
     (Story) => (
       <Stack>
@@ -41,153 +96,140 @@ const meta: Meta<typeof Comments> = {
   ],
 };
 
-const CommentsStory = () => {
+const generateCommentThread = () => {
+  return {
+    id: faker.string.uuid(),
+    text: faker.lorem.paragraph(),
+    timestamp: faker.date.recent(),
+    editAction: {
+      disabled: true,
+      disabledReason: EDIT_DISABLED_REASON,
+    },
+    deleteAction: {
+      disabled: true,
+      disabledReason: DELETE_DISABLED_REASON,
+    },
+    author: {
+      name: faker.person.fullName({ sex: 'male' }),
+      avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
+    },
+  };
+};
+
+const CommentsStory = (args: CommentsProps) => {
   const [comments, setComments] = useState<CommentData[]>([
-    {
-      id: faker.string.uuid(),
-      text: faker.lorem.paragraph(),
-      timestamp: faker.date.recent(),
-      editAction: {
-        disabled: true,
-        disabledReason: EDIT_DISABLED_REASON,
-      },
-      deleteAction: {
-        disabled: true,
-        disabledReason: DELETE_DISABLED_REASON,
-      },
-      author: {
-        name: faker.person.fullName({ sex: 'male' }),
-        avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
-      },
-    },
-    {
-      id: faker.string.uuid(),
-      text: faker.lorem.paragraph(),
-      timestamp: faker.date.recent(),
-      editAction: {
-        disabled: true,
-        disabledReason: EDIT_DISABLED_REASON,
-      },
-      deleteAction: {
-        disabled: true,
-        disabledReason: DELETE_DISABLED_REASON,
-      },
-      author: {
-        name: faker.person.fullName({ sex: 'male' }),
-        avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
-      },
-    },
+    generateCommentThread(),
+    generateCommentThread(),
   ]);
 
-  return (
-    <Comments
-      comments={comments}
-      onAddComment={({ text }) => {
-        setComments((prev) => [
-          ...prev,
-          {
-            id: faker.string.uuid(),
-            text: text,
-            timestamp: faker.date.recent(),
-            author: {
-              id: faker.internet.username(),
-              name: 'Current User',
-              avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
-            },
+  const componentProps: CommentsProps = {
+    ...args,
+    comments,
+    onAddComment: ({ text }) => {
+      setComments((prev) => [
+        ...prev,
+        {
+          id: faker.string.uuid(),
+          text: text,
+          timestamp: faker.date.recent(),
+          author: {
+            id: faker.internet.username(),
+            name: 'Current User',
+            avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
           },
-        ]);
-      }}
-      onEditComment={({ id, text }) => {
-        setComments((prev) =>
-          prev.map((c) => (c.id === id ? { ...c, text } : c))
-        );
-      }}
-      onDeleteComment={(commentId) => {
-        setComments((prev) => prev.filter((c) => c.id !== commentId));
-      }}
-      title="Comments"
-      open
-      type="modal"
-      onClose={() => {}}
-      users={[faker.person.fullName()]}
-    />
-  );
+        },
+      ]);
+    },
+    onEditComment: ({ id, text }) => {
+      setComments((prev) =>
+        prev.map((c) => (c.id === id ? { ...c, text } : c))
+      );
+    },
+    onDeleteComment: (commentId) => {
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
+    },
+    onClose: () => {},
+  };
+
+  return <Comments {...componentProps} />;
 };
 
 export default meta;
 type Story = StoryObj<typeof Comments>;
 export const Introduction: Story = {
-  render: () => <CommentsStory />,
+  args: {
+    title: 'Comments',
+    open: true,
+    type: 'modal',
+    readonly: false,
+    withScrim: false,
+    users: [faker.person.fullName()],
+  },
+  render: (args) => <CommentsStory {...args} />,
 };
 
 const CustomHeaderExample = () => {
-  const [comments, setComments] = useState<CommentData[]>([
-    {
-      id: faker.string.uuid(),
-      text: faker.lorem.paragraph(),
-      timestamp: faker.date.recent(),
-      editAction: {
-        disabled: true,
-        disabledReason: EDIT_DISABLED_REASON,
-      },
-      deleteAction: {
-        disabled: true,
-        disabledReason: DELETE_DISABLED_REASON,
-      },
-      author: {
-        name: faker.person.fullName({ sex: 'male' }),
-        avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
-      },
-    },
-    {
-      id: faker.string.uuid(),
-      text: faker.lorem.paragraph(),
-      timestamp: faker.date.recent(),
-      editAction: {
-        disabled: true,
-        disabledReason: EDIT_DISABLED_REASON,
-      },
-      deleteAction: {
-        disabled: true,
-        disabledReason: DELETE_DISABLED_REASON,
-      },
-      author: {
-        name: faker.person.fullName({ sex: 'male' }),
-        avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
-      },
-    },
+  const [commentsByThread, setCommentsByThread] = useState<CommentData[][]>([
+    [generateCommentThread(), generateCommentThread()],
+    [generateCommentThread(), generateCommentThread()],
+    [generateCommentThread(), generateCommentThread()],
   ]);
+  const [threadIndex, setThreadIndex] = useState<number | undefined>(0);
 
   return (
     <Comments
-      comments={comments}
+      comments={threadIndex !== undefined ? commentsByThread[threadIndex] : []}
       subHeaderElements={
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.medium}`,
-          }}
-        >
+        threadIndex !== undefined ? (
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              marginRight: 'auto',
+              padding: `${spacings.small} ${spacings.large} ${spacings.small} ${spacings.medium}`,
             }}
           >
-            <IconButton variant="ghost" icon={chevron_left} />
-            {1} / {3} comment threads
-            <IconButton variant="ghost" icon={chevron_right} />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: 'auto',
+              }}
+            >
+              <IconButton
+                variant="ghost"
+                icon={chevron_left}
+                onClick={() => setThreadIndex((prev) => Math.max(prev! - 1, 0))}
+              />
+              {threadIndex + 1} / {commentsByThread.length} comment threads
+              <IconButton
+                variant="ghost"
+                icon={chevron_right}
+                onClick={() =>
+                  setThreadIndex((prev) =>
+                    Math.min(prev! + 1, commentsByThread.length - 1)
+                  )
+                }
+              />
+            </div>
+            <IconButton
+              variant="ghost"
+              icon={delete_forever}
+              onClick={() => {
+                const allThreadWillBeDeleted = commentsByThread.length === 1;
+                setCommentsByThread((old) =>
+                  old.filter((_, index) => index !== threadIndex)
+                );
+                setThreadIndex((prev) =>
+                  allThreadWillBeDeleted ? undefined : Math.max(0, prev! - 1)
+                );
+              }}
+            />
           </div>
-          <IconButton variant="ghost" icon={check_circle_outlined} />
-          <IconButton variant="ghost" icon={delete_forever} />
-        </div>
+        ) : null
       }
       onAddComment={({ text }) => {
-        setComments((prev) => [
-          ...prev,
-          {
+        setCommentsByThread((prev) => {
+          const newComment = {
             id: faker.string.uuid(),
             text: text,
             timestamp: new Date(),
@@ -196,16 +238,36 @@ const CustomHeaderExample = () => {
               name: 'Current User',
               avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
             },
-          },
-        ]);
+          };
+
+          if (threadIndex === undefined) {
+            return [[newComment]];
+          }
+
+          return prev.map((thread, index) =>
+            index === threadIndex ? [...thread, newComment] : thread
+          );
+        });
+
+        if (threadIndex === undefined) setThreadIndex(0);
       }}
       onEditComment={({ id, text }) => {
-        setComments((prev) =>
-          prev.map((c) => (c.id === id ? { ...c, text } : c))
+        setCommentsByThread((prev) =>
+          prev.map((thread, index) =>
+            index === threadIndex
+              ? thread.map((c) => (c.id === id ? { ...c, text } : c))
+              : thread
+          )
         );
       }}
       onDeleteComment={(commentId) => {
-        setComments((prev) => prev.filter((c) => c.id !== commentId));
+        setCommentsByThread((prev) =>
+          prev.map((thread, index) =>
+            index === threadIndex
+              ? thread.filter((c) => c.id !== commentId)
+              : thread
+          )
+        );
       }}
       title="Comments"
       open

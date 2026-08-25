@@ -10,11 +10,6 @@ import { Divider } from 'src/organisms/TopBar/Notifications/NotificationsTemplat
 
 import { styled } from 'styled-components';
 
-export interface User {
-  displayName: string;
-  shortName?: string;
-}
-
 type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
   ? Omit<T, K>
   : never;
