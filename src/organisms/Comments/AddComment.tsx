@@ -11,8 +11,9 @@ import {
   RichTextEditor,
   RichTextEditorFeatures,
 } from 'src/molecules';
-import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions.ts';
-import { extractMentions } from 'src/organisms/Comments/mentions/utils.ts';
+import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions';
+import { extractMentions } from 'src/organisms/Comments/mentions/utils';
+import { isRichTextEmpty } from 'src/organisms/Comments/utils';
 
 import styled from 'styled-components';
 
@@ -69,6 +70,7 @@ export const AddComment: FC<AddCommentProps> = ({
               style={{ marginLeft: 'auto' }}
               variant="ghost"
               icon={send}
+              disabled={isRichTextEmpty(text)}
               onClick={() => {
                 onAddComment?.({
                   text: text,

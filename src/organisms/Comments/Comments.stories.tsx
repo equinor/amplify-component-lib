@@ -110,7 +110,6 @@ const generateCommentThread = () => {
     },
     author: {
       name: faker.person.fullName({ sex: 'male' }),
-      avatar: `https://randomuser.me/api/portraits/men/${faker.number.int({ min: 1, max: 98 })}.jpg`,
     },
   };
 };
@@ -134,7 +133,6 @@ const CommentsStory = (args: CommentsProps) => {
           author: {
             id: faker.internet.username(),
             name: 'Current User',
-            avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
           },
         },
       ]);
@@ -235,7 +233,6 @@ const CustomHeaderExample = () => {
             author: {
               id: faker.internet.username(),
               name: 'Current User',
-              avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
             },
           };
 
@@ -333,7 +330,6 @@ const createInitialComments = (): CommentData[] => [
     timestamp: new Date('2024-01-01T10:00:00Z'),
     author: {
       name: 'Ada Lovelace',
-      avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
     },
   },
   {
@@ -342,7 +338,6 @@ const createInitialComments = (): CommentData[] => [
     timestamp: new Date('2024-01-01T11:00:00Z'),
     author: {
       name: 'Alan Turing',
-      avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
     },
   },
 ];
@@ -369,7 +364,6 @@ const InteractiveComments = () => {
             author: {
               id: 'current-user',
               name: 'Current User',
-              avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
             },
           },
         ]);
@@ -470,7 +464,6 @@ const DisabledActionsComments = () => {
       },
       author: {
         name: 'Ada Lovelace',
-        avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
       },
     },
   ]);
@@ -579,7 +572,6 @@ const MentionsComments = ({ users }: { users: string[] }) => {
             author: {
               id: 'current-user',
               name: 'Current User',
-              avatar: 'https://randomuser.me/api/portraits/men/99.jpg',
             },
           },
         ]);

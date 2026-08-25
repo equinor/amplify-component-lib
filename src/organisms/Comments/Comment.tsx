@@ -21,6 +21,7 @@ import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation';
 import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
 import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions';
 import { extractMentions } from 'src/organisms/Comments/mentions/utils';
+import { isRichTextEmpty } from 'src/organisms/Comments/utils';
 
 import { styled } from 'styled-components';
 
@@ -83,6 +84,10 @@ const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  > div {
+    flex-shrink: 0;
+  }
 `;
 const RightSide = styled.div`
   display: flex;
@@ -226,7 +231,11 @@ export const Comment: FC<CommentProps> = ({
                   <Button variant="ghost" onClick={() => setEditing(false)}>
                     Cancel
                   </Button>
-                  <Button variant="outlined" onClick={handleCommentEdit}>
+                  <Button
+                    disabled={isRichTextEmpty(text)}
+                    variant="outlined"
+                    onClick={handleCommentEdit}
+                  >
                     Update
                   </Button>
                 </FooterWrapper>
