@@ -21,12 +21,11 @@ export const DropDown = styled.div`
     padding: ${spacings.small} ${spacings.medium};
     width: 100%;
 
-    &:hover{
+    &:hover {
       background-color: ${colors.interactive.primary__hover_alt.rgba};
     }
-    
   }
-}`;
+`;
 
 export const NoResult = styled.div`
   padding: ${spacings.small} ${spacings.medium};
