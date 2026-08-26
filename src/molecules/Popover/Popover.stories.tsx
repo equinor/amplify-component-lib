@@ -2,18 +2,14 @@ import { ComponentType, useRef, useState } from 'react';
 
 import {
   Button,
-  Icon,
   Popover,
   PopoverProps,
   Typography,
 } from '@equinor/eds-core-react';
-import { close } from '@equinor/eds-icons';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
 import page from './Popover.docs.mdx';
 import { Stack } from 'src/storybook';
-
-Icon.add({ close });
 
 const meta: Meta<typeof Popover> = {
   title: 'Molecules/Popover',
