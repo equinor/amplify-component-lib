@@ -130,7 +130,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
   });
 
   describe('Default', () => {
-    test('Should show tooltip when hovering', async () => {
+    test(`Should ${state === 'expanded' ? 'not show' : 'show'} tooltip when hovering`, async () => {
       const props = fakeProps();
       await renderWithSidebarWrapper(<MenuItem {...props} />);
       const user = userEvent.setup();
@@ -138,8 +138,11 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
 
       await user.hover(item);
 
-      const text = await screen.findByText(props.name);
-      expect(text).toBeInTheDocument();
+      if (state === 'expanded') {
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+      } else {
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(props.name);
+      }
     });
 
     test('Should be able to Click', async () => {

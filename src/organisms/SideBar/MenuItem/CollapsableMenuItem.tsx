@@ -124,7 +124,7 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
 
   const parentContent = useMemo(() => {
     return (
-      <Tooltip title={name} placement="right">
+      <Tooltip title={isOpen ? undefined : name} placement="right">
         <MenuItemWrapper>
           <Parent
             ref={parentRef}
