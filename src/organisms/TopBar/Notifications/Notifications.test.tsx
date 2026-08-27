@@ -252,9 +252,9 @@ test('Calls setAllAsRead when triggering handler outside the component', async (
 
   expect(screen.getByTestId('top-bar-menu')).toBeVisible();
 
-  const butttonInsidePanel = screen.getByText(randomText);
+  const buttonInsidePanel = screen.getByText(randomText);
 
-  await user.click(butttonInsidePanel);
+  await user.click(buttonInsidePanel);
 
   expect(screen.queryByTestId('top-bar-menu')).not.toBeInTheDocument();
 });

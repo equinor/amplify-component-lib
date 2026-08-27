@@ -217,7 +217,7 @@ test(`Shows variant icon as expected`, async () => {
 });
 
 describe('Editor defaults can be merged', () => {
-  const uniqe: Partial<AmplifyKitOptions> = {
+  const unique: Partial<AmplifyKitOptions> = {
     bold: { HTMLAttributes: { class: 'bolder' } },
     bulletList: { HTMLAttributes: { class: 'ammo-list' } },
   };
@@ -232,7 +232,7 @@ describe('Editor defaults can be merged', () => {
   };
 
   it('should return defaults when options is undefined', () => {
-    const defaults = uniqe;
+    const defaults = unique;
     const result = mergeDefaults({ options: undefined, defaults });
     expect(result).toEqual(defaults);
     const resultEmpty = mergeDefaults({ options: {}, defaults });
@@ -240,7 +240,7 @@ describe('Editor defaults can be merged', () => {
   });
 
   it('should merge options and defaults correctly', () => {
-    const defaults = uniqe;
+    const defaults = unique;
     const options = removedExtensions;
     const result = mergeDefaults({ options, defaults });
     expect(result).toEqual({
@@ -257,7 +257,7 @@ describe('Editor defaults can be merged', () => {
   });
 
   it('should not overwrite defaults when property is undefined', () => {
-    const defaults = uniqe;
+    const defaults = unique;
     const options = unconfigured;
     const result = mergeDefaults({ options, defaults });
     expect(result).toEqual(defaults);
@@ -265,7 +265,7 @@ describe('Editor defaults can be merged', () => {
 
   it('should merge defaults and options when both are objects', () => {
     const defaults = unconfigured;
-    const options = uniqe;
+    const options = unique;
     const result = mergeDefaults({ options, defaults });
     expect(result).toEqual(options);
   });
