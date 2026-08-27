@@ -8,7 +8,7 @@ test('Shows readonly chip with leading icon', () => {
   const someText = faker.animal.crocodilia();
   render(<Chip leadingIconData={save}>{someText}</Chip>);
 
-  //Accesses the span element, finds it parent and finds the first element, which in this case should alwasys be leading
+  //Accesses the span element, finds it parent and finds the first element, which in this case should always be leading
   expect(
     page.getByText(someText).element().parentElement?.firstElementChild
       ?.className

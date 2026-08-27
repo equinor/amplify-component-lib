@@ -8,7 +8,7 @@ export default {
 
 export const FormatDate: StoryFn = () => {
   const codeText = `
-  formateDate(
+  formatDate(
     date: Date | string | null | undefined,
     options?: {
       format: 'DD.MM.YYYY' | 'DD. month YYYY' | 'YYYY-MM-DD' | 'DD.MM.YY' | 'DD. month',
@@ -26,7 +26,7 @@ export const FormatDate: StoryFn = () => {
 
 export const FormatDateTime: StoryFn = () => {
   const codeText = `
-  formateDateTime(
+  formatDateTime(
     date: Date | string | null | undefined,
     options?: {
       month?: 'short' | 'long',

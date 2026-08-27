@@ -29,7 +29,7 @@ export const SystemUserDefault: FC<SystemUserDefaultProps> = ({ onClick }) => {
   return (
     <Container data-testid={NotificationsTypes.SYSTEM_USER}>
       <Typography group="table" variant="cell_text">
-        New Release available! Explore the latest features and improvemnts
+        New Release available! Explore the latest features and improvements
       </Typography>
       <StyledButton variant="outlined" onClick={onClick}>
         Go to Location <Icon data={external_link} />
