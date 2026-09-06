@@ -85,7 +85,7 @@ const LeftSide = styled.div`
   flex-direction: column;
   gap: 6px;
 
-  > div {
+  > div:first-child {
     flex-shrink: 0;
   }
 `;
