@@ -20,7 +20,7 @@ const meta: Meta<typeof Chip> = {
   parameters: {
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=2382-84328&m=dev',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=25212-3947&m=dev',
     },
     docs: {
       page,
@@ -53,7 +53,18 @@ const meta: Meta<typeof Chip> = {
     variant: {
       control: {
         type: 'radio',
-        options: ['default', 'white', 'warning', 'error'],
+        options: [
+          'default',
+          'white',
+          'warning',
+          'error',
+          'blue',
+          'yellow',
+          'purple',
+          'pink',
+          'green',
+          'highContrast',
+        ],
       },
       name: 'Variant',
       defaultValue: 'active',
@@ -111,7 +122,7 @@ export default meta;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 1fr repeat(4, auto);
   gap: 16px;
   align-items: center;
@@ -191,9 +202,15 @@ export const ReadOnlyChip: Story = {
 
 const CHIP_VARIANTS: BaseChipProps['variant'][] = [
   'default',
+  'white',
   'warning',
   'error',
-  'white',
+  'blue',
+  'yellow',
+  'purple',
+  'pink',
+  'green',
+  'highContrast',
 ];
 
 const Template: StoryFn<InteractiveChipProps> = (args) => (
@@ -212,14 +229,6 @@ const Template: StoryFn<InteractiveChipProps> = (args) => (
     </section>
     <section className="header">
       <Typography variant="ingress">Selected</Typography>
-      <ColumnHeader />
-    </section>
-    <section className="header">
-      <Typography variant="ingress">
-        Selected+
-        <br />
-        Disabled
-      </Typography>
       <ColumnHeader />
     </section>
     <section className="header">
@@ -260,14 +269,6 @@ const Template: StoryFn<InteractiveChipProps> = (args) => (
         {...args}
         leadingIconData={undefined}
         selected
-        variant={variant}
-      />,
-      <Chip
-        key={`${variant}-selected-disabled`}
-        {...args}
-        leadingIconData={undefined}
-        selected
-        disabled
         variant={variant}
       />,
       <Chip

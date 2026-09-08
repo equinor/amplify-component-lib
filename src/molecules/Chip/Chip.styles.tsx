@@ -41,7 +41,7 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
       color: `${colors.interactive.primary__resting.rgba}`,
@@ -49,13 +49,13 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
       borderColor: `${colors.interactive.primary__selected_hover.rgba}`,
       hover: {
         color: `${colors.interactive.primary__hover.rgba}`,
-        background: `${colors.interactive.primary__selected_hover.rgba}`,
-        borderColor: `${colors.interactive.primary__hover.rgba}`,
+        background: `${colors.interactive.primary__selected_highlight.rgba}`,
+        borderColor: `${colors.text.static_icons__default.rgba}`,
       },
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.disabled__border.rgba}`,
+        borderColor: `${colors.interactive.primary__resting.rgba}`,
       },
     },
   },
@@ -71,66 +71,254 @@ export const colorSchemes: Record<Variant, ColorScheme> = {
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
   },
+  // Per new ACL Figma design, Warning is built on the Data Viz/Orange
+  // family rather than the EDS interactive warning tokens.
   warning: {
-    color: `${colors.interactive.warning__text.rgba}`,
-    background: `${colors.ui.background__light.rgba}`,
-    borderColor: `${colors.interactive.warning__resting.rgba}`,
+    color: `${colors.dataviz.orange.darker}`,
+    background: `${colors.dataviz.orange.lighter}`,
+    borderColor: `${colors.dataviz.orange.lighter}`,
     hover: {
-      color: `${colors.interactive.warning__hover.rgba}`,
-      background: `${colors.ui.background__warning.rgba}`,
-      borderColor: `${colors.interactive.warning__hover.rgba}`,
+      color: `${colors.dataviz.orange.darker}`,
+      background: `${colors.dataviz.orange.lighter}`,
+      borderColor: `${colors.dataviz.orange.darker}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
-      color: `${colors.interactive.warning__text.rgba}`,
-      background: `${colors.interactive.primary__selected_highlight.rgba}`,
-      borderColor: `${colors.interactive.warning__resting.rgba}`,
+      color: `${colors.dataviz.orange.darker}`,
+      background: `${colors.dataviz.orange.muted}`,
+      borderColor: `${colors.dataviz.orange.muted}`,
       hover: {
-        color: `${colors.interactive.warning__hover.rgba}`,
-        background: `${colors.interactive.primary__selected_hover.rgba}`,
-        borderColor: `${colors.interactive.warning__hover.rgba}`,
+        color: `${colors.dataviz.orange.darker}`,
+        background: `${colors.dataviz.orange.muted}`,
+        borderColor: `${colors.dataviz.orange.darker}`,
       },
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
-        borderColor: `${colors.interactive.warning__highlight.rgba}`,
+        borderColor: `${colors.dataviz.orange.darker}`,
       },
     },
   },
+  // "Danger" in the new ACL Figma design.
   error: {
     color: `${colors.interactive.danger__text.rgba}`,
-    background: `${colors.ui.background__light.rgba}`,
-    borderColor: `${colors.interactive.danger__resting.rgba}`,
+    background: `${colors.interactive.danger__highlight.rgba}`,
+    borderColor: 'transparent',
     hover: {
       color: `${colors.interactive.danger__hover.rgba}`,
       background: `${colors.ui.background__danger.rgba}`,
-      borderColor: `${colors.interactive.danger__hover.rgba}`,
+      borderColor: `${colors.interactive.danger__text.rgba}`,
     },
     disabled: {
       color: `${colors.interactive.disabled__text.rgba}`,
       background: `${colors.interactive.disabled__fill.rgba}`,
-      borderColor: `${colors.interactive.disabled__border.rgba}`,
+      borderColor: 'transparent',
     },
     selected: {
-      color: `${colors.interactive.danger__text.rgba}`,
-      background: `${colors.interactive.primary__selected_highlight.rgba}`,
-      borderColor: `${colors.interactive.danger__resting.rgba}`,
+      color: `${colors.interactive.danger__highlight.rgba}`,
+      background: `${colors.interactive.danger__hover.rgba}`,
+      borderColor: `${colors.interactive.danger__hover.rgba}`,
       hover: {
-        color: `${colors.interactive.danger__hover.rgba}`,
-        background: `${colors.interactive.primary__selected_hover.rgba}`,
-        borderColor: `${colors.interactive.danger__hover.rgba}`,
+        color: `${colors.interactive.danger__highlight.rgba}`,
+        background: `${colors.dataviz.lightpink.darker}`,
+        borderColor: `${colors.interactive.danger__text_hover.rgba}`,
       },
       disabled: {
         color: `${colors.interactive.disabled__text.rgba}`,
         background: `${colors.interactive.disabled__fill.rgba}`,
         borderColor: `${colors.interactive.danger__highlight.rgba}`,
+      },
+    },
+  },
+  blue: {
+    color: `${colors.dataviz.darkblue.darker}`,
+    background: `${colors.dataviz.lightblue.lighter}`,
+    borderColor: `${colors.dataviz.lightblue.lighter}`,
+    hover: {
+      color: `${colors.dataviz.darkblue.darker}`,
+      background: `${colors.dataviz.lightblue.lighter}`,
+      borderColor: `${colors.dataviz.darkblue.darker}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: 'transparent',
+    },
+    selected: {
+      color: `${colors.dataviz.darkblue.darker}`,
+      background: `${colors.dataviz.lightblue.darker}`,
+      borderColor: `${colors.dataviz.lightblue.darker}`,
+      hover: {
+        color: `${colors.dataviz.darkblue.darker}`,
+        background: `${colors.dataviz.lightblue.darker}`,
+        borderColor: `${colors.dataviz.darkblue.default}`,
+      },
+      disabled: {
+        color: `${colors.interactive.disabled__text.rgba}`,
+        background: `${colors.interactive.disabled__fill.rgba}`,
+        borderColor: `${colors.dataviz.darkblue.darker}`,
+      },
+    },
+  },
+  yellow: {
+    color: `${colors.dataviz.darkyellow.darker}`,
+    background: `${colors.dataviz.lightyellow.lighter}`,
+    borderColor: `${colors.dataviz.lightyellow.lighter}`,
+    hover: {
+      color: `${colors.dataviz.darkyellow.darker}`,
+      background: `${colors.dataviz.lightyellow.lighter}`,
+      borderColor: `${colors.dataviz.darkyellow.darker}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: 'transparent',
+    },
+    selected: {
+      color: `${colors.dataviz.darkyellow.darker}`,
+      background: `${colors.dataviz.lightyellow.darker}`,
+      borderColor: `${colors.dataviz.lightyellow.darker}`,
+      hover: {
+        color: `${colors.dataviz.darkyellow.darker}`,
+        background: `${colors.dataviz.lightyellow.darker}`,
+        borderColor: `${colors.dataviz.darkyellow.default}`,
+      },
+      disabled: {
+        color: `${colors.interactive.disabled__text.rgba}`,
+        background: `${colors.interactive.disabled__fill.rgba}`,
+        borderColor: `${colors.dataviz.darkyellow.darker}`,
+      },
+    },
+  },
+  // Purple's own dataviz family covers both the text and background ends of
+  // the scale (per Figma), so unlike blue/yellow/green there's no separate
+  // "light" family to pull the background from.
+  purple: {
+    color: `${colors.dataviz.darkpurple.darker}`,
+    background: `${colors.dataviz.darkpurple.lighter}`,
+    borderColor: `${colors.dataviz.darkpurple.lighter}`,
+    hover: {
+      color: `${colors.dataviz.darkpurple.darker}`,
+      background: `${colors.dataviz.darkpurple.lighter}`,
+      borderColor: `${colors.dataviz.darkpurple.darker}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: 'transparent',
+    },
+    selected: {
+      color: `${colors.dataviz.darkpurple.darker}`,
+      background: `${colors.dataviz.lightpurple.default}`,
+      borderColor: `${colors.dataviz.lightpurple.default}`,
+      hover: {
+        color: `${colors.dataviz.darkpurple.darker}`,
+        background: `${colors.dataviz.lightpurple.default}`,
+        borderColor: `${colors.dataviz.darkpurple.darker}`,
+      },
+      disabled: {
+        color: `${colors.interactive.disabled__text.rgba}`,
+        background: `${colors.interactive.disabled__fill.rgba}`,
+        borderColor: `${colors.dataviz.darkpurple.darker}`,
+      },
+    },
+  },
+  // Pink's own dataviz family (lighter/muted/default/darker) covers the
+  // full scale, same reasoning as purple above.
+  pink: {
+    color: `${colors.dataviz.darkpink.darker}`,
+    background: `${colors.dataviz.darkpink.lighter}`,
+    borderColor: `${colors.dataviz.darkpink.lighter}`,
+    hover: {
+      color: `${colors.dataviz.darkpink.darker}`,
+      background: `${colors.dataviz.darkpink.lighter}`,
+      borderColor: `${colors.dataviz.darkpink.darker}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: 'transparent',
+    },
+    selected: {
+      color: `${colors.dataviz.darkpink.darker}`,
+      background: `${colors.dataviz.darkpink.muted}`,
+      borderColor: `${colors.dataviz.darkpink.muted}`,
+      hover: {
+        color: `${colors.dataviz.darkpink.darker}`,
+        background: `${colors.dataviz.darkpink.muted}`,
+        borderColor: `${colors.dataviz.darkpink.darker}`,
+      },
+      disabled: {
+        color: `${colors.interactive.disabled__text.rgba}`,
+        background: `${colors.interactive.disabled__fill.rgba}`,
+        borderColor: `${colors.dataviz.darkpink.darker}`,
+      },
+    },
+  },
+  green: {
+    color: `${colors.dataviz.darkgreen.darker}`,
+    background: `${colors.dataviz.lightgreen.lighter}`,
+    borderColor: `${colors.dataviz.lightgreen.lighter}`,
+    hover: {
+      color: `${colors.dataviz.darkgreen.darker}`,
+      background: `${colors.dataviz.lightgreen.lighter}`,
+      borderColor: `${colors.dataviz.darkgreen.darker}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: 'transparent',
+    },
+    selected: {
+      color: `${colors.dataviz.darkgreen.darker}`,
+      background: `${colors.dataviz.lightgreen.default}`,
+      borderColor: 'transparent',
+      hover: {
+        color: `${colors.dataviz.darkgreen.darker}`,
+        background: `${colors.dataviz.lightgreen.default}`,
+        borderColor: `${colors.dataviz.darkgreen.darker}`,
+      },
+      disabled: {
+        color: `${colors.interactive.disabled__text.rgba}`,
+        background: `${colors.interactive.disabled__fill.rgba}`,
+        borderColor: `${colors.dataviz.darkgreen.darker}`,
+      },
+    },
+  },
+  highContrast: {
+    color: `${colors.text.static_icons__default.rgba}`,
+    background: `${colors.ui.background__default.rgba}`,
+    borderColor: `${colors.text.static_icons__default.rgba}`,
+    hover: {
+      color: `${colors.text.static_icons__default.rgba}`,
+      background: `${colors.ui.background__light_medium.rgba}`,
+      borderColor: `${colors.text.static_icons__default.rgba}`,
+    },
+    disabled: {
+      color: `${colors.interactive.disabled__text.rgba}`,
+      background: `${colors.interactive.disabled__fill.rgba}`,
+      borderColor: 'transparent',
+    },
+    selected: {
+      color: `${colors.text.static_icons__default.rgba}`,
+      background: `${colors.ui.background__medium.rgba}`,
+      borderColor: `${colors.ui.background__medium.rgba}`,
+      hover: {
+        color: `${colors.text.static_icons__default.rgba}`,
+        background: `${colors.ui.background__medium.rgba}`,
+        borderColor: `${colors.text.static_icons__default.rgba}`,
+      },
+      disabled: {
+        color: `${colors.interactive.disabled__text.rgba}`,
+        background: `${colors.interactive.disabled__fill.rgba}`,
+        borderColor: `${colors.text.static_icons__default.rgba}`,
       },
     },
   },
@@ -216,10 +404,11 @@ export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
 
     return css`
       color: ${colors.text.static_icons__default.rgba};
-      background-color: ${props.variant === 'white'
+      background-color: ${props.variant === 'white' ||
+      props.variant === 'highContrast'
         ? colorSchemes.white.background
         : colors.ui.background__light.rgba};
-      outline: 1px solid ${colorScheme.disabled.borderColor};
+      outline: 1px solid ${colorScheme.color};
     `;
   }}
 `;

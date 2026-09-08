@@ -20,7 +20,17 @@ import { ReadOnlyChip } from 'src/molecules/Chip/ReadOnlyChip';
 // Base type for common properties
 export interface BaseChipProps {
   children: ReactNode;
-  variant?: 'default' | 'white' | 'warning' | 'error';
+  variant?:
+    | 'default'
+    | 'white'
+    | 'warning'
+    | 'error'
+    | 'blue'
+    | 'yellow'
+    | 'purple'
+    | 'pink'
+    | 'green'
+    | 'highContrast';
   leadingIconData?: IconData;
 }
 
