@@ -122,7 +122,7 @@ export default meta;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 1fr repeat(4, auto);
   gap: 16px;
   align-items: center;
@@ -232,14 +232,6 @@ const Template: StoryFn<InteractiveChipProps> = (args) => (
       <ColumnHeader />
     </section>
     <section className="header">
-      <Typography variant="ingress">
-        Selected+
-        <br />
-        Disabled
-      </Typography>
-      <ColumnHeader />
-    </section>
-    <section className="header">
       <Typography variant="ingress">Disabled</Typography>
       <ColumnHeader />
     </section>
@@ -277,14 +269,6 @@ const Template: StoryFn<InteractiveChipProps> = (args) => (
         {...args}
         leadingIconData={undefined}
         selected
-        variant={variant}
-      />,
-      <Chip
-        key={`${variant}-selected-disabled`}
-        {...args}
-        leadingIconData={undefined}
-        selected
-        disabled
         variant={variant}
       />,
       <Chip
