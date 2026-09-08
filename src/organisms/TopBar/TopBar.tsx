@@ -26,9 +26,9 @@ export type TopBarBaseProps = {
   capitalize?: boolean;
   children: ReactNode;
   availableFields?: Field[];
-  onSelectField?: (selectedField: Field | undefined) => void;
+  onSelectField?: (selectedField: Field) => void;
+  onClearField?: () => void;
   currentField?: Field;
-  clearableField?: boolean;
   showAccessITLink?: boolean;
   itemNameSingular?: string; // Defaults to 'field'
 } & React.HTMLAttributes<HTMLElement>;
@@ -47,7 +47,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
       availableFields,
       onSelectField,
       currentField,
-      clearableField,
+      onClearField,
       showAccessITLink,
       itemNameSingular,
     },
@@ -72,7 +72,7 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
               onSelect={onSelectField}
               showAccessITLink={showAccessITLink}
               itemNameSingular={itemNameSingular}
-              clearable={clearableField}
+              onClear={onClearField}
             />
           )}
           {isFetching && <CircularProgress size={16} />}

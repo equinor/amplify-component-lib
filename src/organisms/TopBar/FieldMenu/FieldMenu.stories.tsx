@@ -13,10 +13,10 @@ const fields = new Array(5).fill(0).map(() => FakeField());
 
 function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
   const [selectedField, setSelectedField] = useState<Field | undefined>(
-    args.clearable ? undefined : args.availableFields[0]
+    args.onClear ? undefined : args.availableFields[0]
   );
 
-  const handleOnSelectField = (field: Field | undefined) => {
+  const handleOnSelectField = (field: Field) => {
     setSelectedField(field);
     args?.onSelect?.(field);
   };
@@ -29,7 +29,9 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
           ? selectedField
           : undefined
       }
-      clearableField={args.clearable}
+      onClearField={
+        args.onClear ? () => setSelectedField(undefined) : undefined
+      }
       showAccessITLink={args.showAccessITLink}
       onSelectField={handleOnSelectField}
       applicationIcon="acquire"
@@ -110,7 +112,7 @@ export const Searching: Story = {
 
 export const Clearable: Story = {
   args: {
-    clearable: true,
+    onClear: fn(),
     availableFields: fields,
     onSelect: fn(),
   },

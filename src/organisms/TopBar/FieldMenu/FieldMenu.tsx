@@ -30,10 +30,10 @@ const { colors } = tokens;
 
 export interface FieldMenuProps {
   availableFields: Field[];
-  onSelect: (selectedField: Field | undefined) => void;
+  onSelect: (selectedField: Field) => void;
+  onClear?: () => void;
   itemNameSingular?: string; // Defaults to 'field'
   showAccessITLink?: boolean;
-  clearable?: boolean;
 }
 
 export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
@@ -43,7 +43,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       onSelect,
       itemNameSingular = 'field',
       showAccessITLink = true,
-      clearable = false,
+      onClear,
     },
     ref
   ) => {
@@ -85,7 +85,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     const showSearchInput = availableFields.length >= 4;
     const noSearchResult = filteredFields.length === 0 && showSearchInput;
 
-    if (!selectedField && !clearable) return null;
+    if (!selectedField && !onClear) return null;
 
     return (
       <div ref={ref}>
@@ -126,11 +126,11 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                 {!noSearchResult && searchValue === '' && selectedField && (
                   <MenuFixedItem
                     $active
-                    $clearable={clearable}
+                    $clearable={onClear !== undefined}
                     data-testid="selected-field-item"
                     onClick={() => {
-                      if (!clearable) return;
-                      onSelect(undefined);
+                      if (!onClear) return;
+                      onClear();
                       closeMenu();
                     }}
                   >
