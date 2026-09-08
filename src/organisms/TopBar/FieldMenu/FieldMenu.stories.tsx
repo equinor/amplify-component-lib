@@ -12,12 +12,11 @@ import { expect, fn, userEvent } from 'storybook/test';
 const fields = new Array(5).fill(0).map(() => FakeField());
 
 function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
-  const [selectedField, setSelectedField] = useState<Field>(
-    args.availableFields[0]
+  const [selectedField, setSelectedField] = useState<Field | undefined>(
+    args.clearable ? undefined : args.availableFields[0]
   );
 
   const handleOnSelectField = (field: Field | undefined) => {
-    if (!field) return;
     setSelectedField(field);
     args?.onSelect?.(field);
   };
@@ -30,6 +29,7 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
           ? selectedField
           : undefined
       }
+      clearableField={args.clearable}
       showAccessITLink={args.showAccessITLink}
       onSelectField={handleOnSelectField}
       applicationIcon="acquire"
@@ -108,40 +108,32 @@ export const Searching: Story = {
   },
 };
 
-function ClearableFieldMenu(args: FieldMenuProps & { withField?: boolean }) {
-  const [selectedField, setSelectedField] = useState<Field | undefined>(
-    undefined
-  );
-
-  const handleOnSelectField = (field: Field | undefined) => {
-    setSelectedField(field);
-    args?.onSelect?.(field);
-  };
-
-  return (
-    <TopBar
-      availableFields={args.availableFields}
-      currentField={
-        args.withField === undefined || args.withField
-          ? selectedField
-          : undefined
-      }
-      clearableField
-      showAccessITLink={args.showAccessITLink}
-      onSelectField={handleOnSelectField}
-      applicationIcon="acquire"
-      applicationName="Acquire"
-    >
-      <TopBar.Account />
-    </TopBar>
-  );
-}
-
 export const Clearable: Story = {
-  render: ClearableFieldMenu,
   args: {
+    clearable: true,
     availableFields: fields,
     onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const button = canvas.getByTestId('field-selector-top-bar-button');
+    await userEvent.click(button);
+
+    const firstItem = canvas.getByText(
+      new RegExp(args.availableFields[0].name ?? '', 'i')
+    );
+    await userEvent.click(firstItem);
+
+    await expect(args.onSelect).toHaveBeenCalledWith(args.availableFields[0]);
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+
+    await userEvent.click(button);
+
+    const selectedItem = canvas.getByTestId('selected-field-item');
+    await userEvent.click(selectedItem);
+
+    await expect(args.onSelect).toHaveBeenCalledWith(undefined);
+    await expect(args.onSelect).toHaveBeenCalledTimes(2);
+    await expect(canvas.getByText(/no field selected/i)).toBeInTheDocument();
   },
 };
 

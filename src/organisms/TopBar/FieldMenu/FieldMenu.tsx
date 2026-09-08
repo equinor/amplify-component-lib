@@ -85,6 +85,8 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     const showSearchInput = availableFields.length >= 4;
     const noSearchResult = filteredFields.length === 0 && showSearchInput;
 
+    if (!selectedField && !clearable) return null;
+
     return (
       <div ref={ref}>
         <TopBarButton
@@ -123,14 +125,12 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                   <MenuFixedItem
                     $active
                     $clearable={clearable}
-                    onClick={
-                      clearable
-                        ? () => {
-                            onSelect(undefined);
-                            closeMenu();
-                          }
-                        : undefined
-                    }
+                    data-testid="selected-field-item"
+                    onClick={() => {
+                      if (!clearable) return;
+                      onSelect(undefined);
+                      closeMenu();
+                    }}
                   >
                     <div>
                       <TextContainer>
