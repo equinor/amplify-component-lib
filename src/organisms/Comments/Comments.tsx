@@ -35,7 +35,6 @@ export type CommentsProps = {
   }) => void;
   onDeleteComment?: (commentId: string) => void;
   subHeaderElements?: ReactNode;
-  commentActions?: ReactNode;
   emptyContent?: ReactNode;
   users?: string[];
 } & DistributiveOmit<SideSheetProps, 'children'>;
