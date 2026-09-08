@@ -21,6 +21,11 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
     args?.onSelect?.(field);
   };
 
+  const handleOnClear = () => {
+    setSelectedField(undefined);
+    args?.onClear?.();
+  };
+
   return (
     <TopBar
       availableFields={args.availableFields}
@@ -29,9 +34,7 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
           ? selectedField
           : undefined
       }
-      onClearField={
-        args.onClear ? () => setSelectedField(undefined) : undefined
-      }
+      onClearField={args.onClear ? handleOnClear : undefined}
       showAccessITLink={args.showAccessITLink}
       onSelectField={handleOnSelectField}
       applicationIcon="acquire"
@@ -133,8 +136,7 @@ export const Clearable: Story = {
     const selectedItem = canvas.getByTestId('selected-field-item');
     await userEvent.click(selectedItem);
 
-    await expect(args.onSelect).toHaveBeenCalledWith(undefined);
-    await expect(args.onSelect).toHaveBeenCalledTimes(2);
+    await expect(args.onClear).toHaveBeenCalledTimes(1);
     await expect(canvas.getByText(/no field selected/i)).toBeInTheDocument();
   },
 };
