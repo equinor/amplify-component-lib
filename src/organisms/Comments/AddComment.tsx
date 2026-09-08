@@ -67,7 +67,6 @@ export const AddComment: FC<AddCommentProps> = ({
           <FlexWrapper>
             <RightAlignedIconButton
               data-testid="send-comment-button"
-              style={{ marginLeft: 'auto' }}
               variant="ghost"
               icon={send}
               disabled={isRichTextEmpty(text)}

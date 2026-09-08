@@ -1,12 +1,12 @@
 import { FC, ReactNode, useEffect, useRef } from 'react';
 
-import { Typography } from '@equinor/eds-core-react';
+import { Divider, Typography } from '@equinor/eds-core-react';
 
 import { Comment, CommentData } from './Comment';
 import { colors, spacings } from 'src/atoms/style';
-import { SideSheet, SideSheetProps } from 'src/organisms';
 import { AddComment } from 'src/organisms/Comments/AddComment';
-import { Divider } from 'src/organisms/TopBar/Notifications/NotificationsTemplate/NotificationTemplate.style';
+import { SideSheet } from 'src/organisms/SideSheet/SideSheet';
+import type { SideSheetProps } from 'src/organisms/SideSheet/SideSheet.types.ts';
 
 import { styled } from 'styled-components';
 
@@ -40,8 +40,7 @@ export type CommentsProps = {
 } & DistributiveOmit<SideSheetProps, 'children'>;
 
 const StyledDivider = styled(Divider)`
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0;
 `;
 
 const CommentsContainer = styled.div`

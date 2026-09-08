@@ -18,10 +18,10 @@ import {
   Tooltip,
 } from 'src/molecules';
 import { DeleteConfirmation } from 'src/organisms/Comments/DeleteConfirmation';
-import { VerticalDivider } from 'src/organisms/Comments/HorizontalDivider';
 import { getSuggestions } from 'src/organisms/Comments/mentions/suggestions';
 import { extractMentions } from 'src/organisms/Comments/mentions/utils';
 import { isRichTextEmpty } from 'src/organisms/Comments/utils';
+import { VerticalDivider } from 'src/organisms/Comments/VerticalDivider.tsx';
 
 import { styled } from 'styled-components';
 
