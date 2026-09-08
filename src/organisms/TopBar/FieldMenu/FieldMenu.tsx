@@ -1,10 +1,11 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import { Icon, Search, Typography } from '@equinor/eds-core-react';
+import { Divider, Icon, Search, Typography } from '@equinor/eds-core-react';
 import {
   arrow_drop_down,
   arrow_drop_up,
   check,
+  clear,
   exit_to_app,
   platform,
 } from '@equinor/eds-icons';
@@ -29,9 +30,10 @@ const { colors } = tokens;
 
 export interface FieldMenuProps {
   availableFields: Field[];
-  onSelect: (selectedField: Field) => void;
+  onSelect: (selectedField: Field | undefined) => void;
   itemNameSingular?: string; // Defaults to 'field'
   showAccessITLink?: boolean;
+  clearable?: boolean;
 }
 
 export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
@@ -41,6 +43,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       onSelect,
       itemNameSingular = 'field',
       showAccessITLink = true,
+      clearable = false,
     },
     ref
   ) => {
@@ -82,8 +85,6 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     const showSearchInput = availableFields.length >= 4;
     const noSearchResult = filteredFields.length === 0 && showSearchInput;
 
-    if (!selectedField) return null;
-
     return (
       <div ref={ref}>
         <TopBarButton
@@ -94,7 +95,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
           $fieldSelector
         >
           <Icon data={platform} size={24} />
-          {transformedFieldName}
+          {selectedField ? transformedFieldName : 'No field selected'}
           <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
         </TopBarButton>
         <TopBarMenu
@@ -118,18 +119,33 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
               )}
 
               <ListContainer>
-                {!noSearchResult && searchValue === '' && (
-                  <MenuFixedItem $active>
+                {!noSearchResult && searchValue === '' && selectedField && (
+                  <MenuFixedItem
+                    $active
+                    $clearable={clearable}
+                    onClick={() => {
+                      if (!clearable) return;
+                      onSelect(undefined);
+                      closeMenu();
+                    }}
+                  >
                     <div>
                       <TextContainer>
                         <Typography variant="h6">
-                          {selectedField.name?.toLowerCase()}
+                          {selectedField?.name?.toLowerCase()}
                         </Typography>
                       </TextContainer>
                       <Icon
+                        className="check-icon"
                         data={check}
                         color={colors.interactive.primary__resting.rgba}
                         size={24}
+                      />
+                      <Icon
+                        className="clear-icon"
+                        data={clear}
+                        size={24}
+                        color={colors.interactive.primary__resting.rgba}
                       />
                     </div>
                   </MenuFixedItem>

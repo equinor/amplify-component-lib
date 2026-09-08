@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 
 import { colors, spacings } from 'src/atoms/style';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const SearchContainer = styled.div`
   display: flex;
@@ -36,6 +36,7 @@ export const ListContainer = styled.div`
 
 interface MenuItemProps {
   $active?: boolean;
+  $clearable?: boolean;
 }
 
 export const MenuItem = styled.div<MenuItemProps>`
@@ -61,9 +62,25 @@ export const MenuFixedItem = styled.div<MenuItemProps>`
     width: 100%;
   }
 
+  .clear-icon {
+    display: none;
+  }
+
   &:hover {
     background: ${colors.interactive.primary__selected_hover.rgba};
     cursor: pointer;
+
+    ${(props) =>
+      props.$clearable &&
+      css`
+        .check-icon {
+          display: none;
+        }
+
+        .clear-icon {
+          display: block;
+        }
+      `}
   }
 
   border-top: 1px solid ${colors.ui.background__light.rgba};
@@ -97,3 +114,5 @@ export const TextContainer = styled.div`
     text-transform: capitalize;
   }
 `;
+
+export const Divider = styled.div``;

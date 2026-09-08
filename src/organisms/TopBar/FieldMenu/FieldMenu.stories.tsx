@@ -16,7 +16,8 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
     args.availableFields[0]
   );
 
-  const handleOnSelectField = (field: Field) => {
+  const handleOnSelectField = (field: Field | undefined) => {
+    if (!field) return;
     setSelectedField(field);
     args?.onSelect?.(field);
   };
@@ -104,6 +105,43 @@ export const Searching: Story = {
     await userEvent.type(searchInput, faker.animal.cat());
 
     await expect(canvas.getByText(/no field/i)).toBeInTheDocument();
+  },
+};
+
+function ClearableFieldMenu(args: FieldMenuProps & { withField?: boolean }) {
+  const [selectedField, setSelectedField] = useState<Field | undefined>(
+    undefined
+  );
+
+  const handleOnSelectField = (field: Field | undefined) => {
+    setSelectedField(field);
+    args?.onSelect?.(field);
+  };
+
+  return (
+    <TopBar
+      availableFields={args.availableFields}
+      currentField={
+        args.withField === undefined || args.withField
+          ? selectedField
+          : undefined
+      }
+      clearableField
+      showAccessITLink={args.showAccessITLink}
+      onSelectField={handleOnSelectField}
+      applicationIcon="acquire"
+      applicationName="Acquire"
+    >
+      <TopBar.Account />
+    </TopBar>
+  );
+}
+
+export const Clearable: Story = {
+  render: ClearableFieldMenu,
+  args: {
+    availableFields: fields,
+    onSelect: fn(),
   },
 };
 
