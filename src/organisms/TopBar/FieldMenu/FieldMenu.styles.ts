@@ -114,5 +114,3 @@ export const TextContainer = styled.div`
     text-transform: capitalize;
   }
 `;
-
-export const Divider = styled.div``;

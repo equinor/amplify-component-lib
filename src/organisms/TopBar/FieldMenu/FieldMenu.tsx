@@ -1,6 +1,6 @@
 import { ChangeEvent, forwardRef, useMemo, useRef, useState } from 'react';
 
-import { Divider, Icon, Search, Typography } from '@equinor/eds-core-react';
+import { Icon, Search, Typography } from '@equinor/eds-core-react';
 import {
   arrow_drop_down,
   arrow_drop_up,
@@ -123,11 +123,14 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                   <MenuFixedItem
                     $active
                     $clearable={clearable}
-                    onClick={() => {
-                      if (!clearable) return;
-                      onSelect(undefined);
-                      closeMenu();
-                    }}
+                    onClick={
+                      clearable
+                        ? () => {
+                            onSelect(undefined);
+                            closeMenu();
+                          }
+                        : undefined
+                    }
                   >
                     <div>
                       <TextContainer>
