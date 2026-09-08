@@ -16,7 +16,7 @@ export const MissingAccessToApp: FC = () => {
   return (
     <Status>
       <Status.Title title={`You don't have access to ${appName}`} />
-      <Status.Description text="You can apply for acces to the app in AccessIT" />
+      <Status.Description text="You can apply for access to the app in AccessIT" />
       <Status.Action onClick={handleOnClick} buttonText="Apply for access" />
     </Status>
   );

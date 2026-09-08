@@ -9,7 +9,7 @@ test('Renders the title and description', async () => {
   await renderWithRouter(<MissingAccessToApp />);
   expect(screen.getByText(/you don't have access to/i)).toBeInTheDocument();
   expect(
-    screen.getByText(/You can apply for acces to the app in AccessIT/i)
+    screen.getByText(/You can apply for access to the app in AccessIT/i)
   ).toBeInTheDocument();
 });
 

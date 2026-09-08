@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 import { Menu, Typography } from '@equinor/eds-core-react';
 import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
@@ -36,6 +36,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
   >(undefined);
   const [selectedUniqueName, setSelectedUniqueName] = useState('');
   const [search, setSearch] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { data: availableUsers } = useGetAllImpersonationUsersForApp();
   const { data: activeImpersonationUser } = useActiveImpersonationUser();
 
@@ -56,6 +57,12 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
       setSelectedUniqueName('');
     }
   }, [activeImpersonationUser, open, selectedUniqueName]);
+
+  useEffect(() => {
+    if (open && !creatingOrEditingUser && !deletingUser) {
+      searchInputRef.current?.focus();
+    }
+  }, [open, creatingOrEditingUser, deletingUser]);
 
   const handleOnClose = () => {
     onClose();
@@ -138,6 +145,7 @@ export const ImpersonateMenu: FC<ImpersonateProps> = ({
         <Typography variant="h6">Impersonate</Typography>
         <Typography variant="caption">Select a user to impersonate</Typography>
         <Search
+          ref={searchInputRef}
           placeholder="Search users"
           value={search}
           onChange={handleOnSearch}

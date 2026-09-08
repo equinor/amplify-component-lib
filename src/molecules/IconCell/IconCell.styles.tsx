@@ -84,7 +84,7 @@ export const Button = styled.button<ButtonProps>`
   transition: background ${animation.transitionMS};
   border: none;
   border-bottom: ${getBorderBottom};
-  cursor: ${({ $clickable }) => ($clickable ? 'pinter' : 'default')};
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
 
   // Scribbled-out hides content
   ${({ $variant }) =>
