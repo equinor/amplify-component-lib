@@ -97,7 +97,9 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
           $fieldSelector
         >
           <Icon data={platform} size={24} />
-          {selectedField ? transformedFieldName : 'No field selected'}
+          {selectedField
+            ? transformedFieldName
+            : `No ${itemNameSingular} selected`}
           <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
         </TopBarButton>
         <TopBarMenu
