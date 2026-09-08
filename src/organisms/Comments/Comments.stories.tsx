@@ -83,7 +83,6 @@ const meta: Meta<typeof Comments> = {
     onClose: { control: false, table: { category: 'Events' } },
     headerElements: { control: false, table: { category: 'Slots' } },
     subHeaderElements: { control: false, table: { category: 'Slots' } },
-    commentActions: { control: false, table: { category: 'Slots' } },
     emptyContent: { control: false, table: { category: 'Slots' } },
   },
   decorators: [
