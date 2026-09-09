@@ -15,7 +15,7 @@ import {
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { RenderOptions } from '@testing-library/react';
 
-import { SideBarMenuItemWithItems } from 'src/atoms';
+import type { SideBarMenuItemWithItems } from 'src/atoms';
 import {
   MenuItem,
   MenuItemProps,
@@ -157,8 +157,9 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
       await user.hover(item);
 
       if (state === 'expanded') {
-        await new Promise((resolve) => setTimeout(resolve, 150));
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+        await expect(
+          screen.findByRole('tooltip', {}, { timeout: 150 })
+        ).rejects.toThrow();
       } else {
         expect(await screen.findByRole('tooltip')).toHaveTextContent(
           props.name
@@ -258,8 +259,9 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
       await user.hover(screen.getByRole('button'));
 
       if (state === 'expanded') {
-        await new Promise((resolve) => setTimeout(resolve, 150));
-        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+        await expect(
+          screen.findByRole('tooltip', {}, { timeout: 150 })
+        ).rejects.toThrow();
       } else {
         expect(await screen.findByRole('tooltip')).toHaveTextContent(
           props.name
