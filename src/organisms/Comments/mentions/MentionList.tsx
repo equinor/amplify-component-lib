@@ -3,7 +3,7 @@ import React, { Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { Typography } from '@equinor/eds-core-react';
 import { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion';
 
-import { DropDown, NoResult } from './MentionList.styles';
+import { DropDown, DropDownButton, NoResult } from './MentionList.styles';
 
 interface MentionListProps extends SuggestionProps<string> {
   loading?: boolean;
@@ -66,11 +66,16 @@ export const MentionList = (props: MentionListProps) => {
     <DropDown>
       {props.items.length ? (
         props.items.map((item: string, index: number) => (
-          <button key={index} onClick={() => selectItem(index)}>
+          <DropDownButton
+            key={index}
+            $isSelected={index === selectedIndex}
+            onMouseEnter={() => setSelectedIndex(index)}
+            onClick={() => selectItem(index)}
+          >
             <Typography variant="menu_title" group="navigation">
               {item}
             </Typography>
-          </button>
+          </DropDownButton>
         ))
       ) : (
         <NoResult>
