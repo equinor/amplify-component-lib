@@ -15,7 +15,7 @@ import {
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { RenderOptions } from '@testing-library/react';
 
-import { SideBarMenuItem } from 'src/atoms';
+import type { SideBarMenuItemWithItems } from 'src/atoms';
 import {
   MenuItem,
   MenuItemProps,
@@ -35,6 +35,24 @@ function fakeProps(selected = false): MenuItemProps {
     onClick: vi.fn() as MenuClickHandler,
   };
 }
+
+function fakeCollapsibleProps(): SideBarMenuItemWithItems {
+  return {
+    name: faker.commerce.productName(),
+    icon: shopping_basket,
+    items: [
+      {
+        to: '/dog',
+        name: faker.animal.dog(),
+      },
+      {
+        to: '/cat',
+        name: faker.animal.cat(),
+      },
+    ],
+  };
+}
+
 const renderWithSidebarWrapper = (
   children: ReactNode,
   options?: RenderOptions
@@ -130,7 +148,7 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
   });
 
   describe('Default', () => {
-    test('Should show tooltip when hovering', async () => {
+    test(`Should ${state === 'expanded' ? 'not show' : 'show'} tooltip when hovering`, async () => {
       const props = fakeProps();
       await renderWithSidebarWrapper(<MenuItem {...props} />);
       const user = userEvent.setup();
@@ -138,8 +156,15 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
 
       await user.hover(item);
 
-      const text = await screen.findByText(props.name);
-      expect(text).toBeInTheDocument();
+      if (state === 'expanded') {
+        await expect(
+          screen.findByRole('tooltip', {}, { timeout: 150 })
+        ).rejects.toThrow();
+      } else {
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(
+          props.name
+        );
+      }
     });
 
     test('Should be able to Click', async () => {
@@ -225,22 +250,27 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
     });
   });
 
-  describe('Collapsable', () => {
+  describe('Collapsible', () => {
+    test(`Should ${state === 'expanded' ? 'not show' : 'show'} tooltip when hovering`, async () => {
+      const props = fakeCollapsibleProps();
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
+      const user = userEvent.setup();
+
+      await user.hover(screen.getByRole('button'));
+
+      if (state === 'expanded') {
+        await expect(
+          screen.findByRole('tooltip', {}, { timeout: 150 })
+        ).rejects.toThrow();
+      } else {
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(
+          props.name
+        );
+      }
+    });
+
     test('Able open and select sub page', async () => {
-      const props: SideBarMenuItem = {
-        name: faker.commerce.productName(),
-        icon: shopping_basket,
-        items: [
-          {
-            to: '/dog',
-            name: faker.animal.dog(),
-          },
-          {
-            to: '/cat',
-            name: faker.animal.cat(),
-          },
-        ],
-      };
+      const props = fakeCollapsibleProps();
 
       await renderWithSidebarWrapper(<MenuItem {...props} />);
 
