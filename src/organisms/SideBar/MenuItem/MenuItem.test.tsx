@@ -15,7 +15,7 @@ import {
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { RenderOptions } from '@testing-library/react';
 
-import { SideBarMenuItem } from 'src/atoms';
+import { SideBarMenuItemWithItems } from 'src/atoms';
 import {
   MenuItem,
   MenuItemProps,
@@ -35,6 +35,24 @@ function fakeProps(selected = false): MenuItemProps {
     onClick: vi.fn() as MenuClickHandler,
   };
 }
+
+function fakeCollapsibleProps(): SideBarMenuItemWithItems {
+  return {
+    name: faker.commerce.productName(),
+    icon: shopping_basket,
+    items: [
+      {
+        to: '/dog',
+        name: faker.animal.dog(),
+      },
+      {
+        to: '/cat',
+        name: faker.animal.cat(),
+      },
+    ],
+  };
+}
+
 const renderWithSidebarWrapper = (
   children: ReactNode,
   options?: RenderOptions
@@ -139,9 +157,12 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
       await user.hover(item);
 
       if (state === 'expanded') {
+        await new Promise((resolve) => setTimeout(resolve, 150));
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
       } else {
-        expect(await screen.findByRole('tooltip')).toHaveTextContent(props.name);
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(
+          props.name
+        );
       }
     });
 
@@ -228,22 +249,26 @@ describe.each(['expanded', 'collapsed'])('MenuItem - sidebar %s', (state) => {
     });
   });
 
-  describe('Collapsable', () => {
+  describe('Collapsible', () => {
+    test(`Should ${state === 'expanded' ? 'not show' : 'show'} tooltip when hovering`, async () => {
+      const props = fakeCollapsibleProps();
+      await renderWithSidebarWrapper(<MenuItem {...props} />);
+      const user = userEvent.setup();
+
+      await user.hover(screen.getByRole('button'));
+
+      if (state === 'expanded') {
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+      } else {
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(
+          props.name
+        );
+      }
+    });
+
     test('Able open and select sub page', async () => {
-      const props: SideBarMenuItem = {
-        name: faker.commerce.productName(),
-        icon: shopping_basket,
-        items: [
-          {
-            to: '/dog',
-            name: faker.animal.dog(),
-          },
-          {
-            to: '/cat',
-            name: faker.animal.cat(),
-          },
-        ],
-      };
+      const props = fakeCollapsibleProps();
 
       await renderWithSidebarWrapper(<MenuItem {...props} />);
 
