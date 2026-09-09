@@ -149,6 +149,11 @@ export const Comment: FC<CommentProps> = ({
     setEditing(false);
   };
 
+  const handleCancel = () => {
+    setText(comment.text);
+    setEditing(false);
+  };
+
   useEffect(() => {
     if (editing) {
       commentContainer.current?.scrollIntoView({
@@ -228,7 +233,7 @@ export const Comment: FC<CommentProps> = ({
               minHeight="130px"
               footer={
                 <FooterWrapper>
-                  <Button variant="ghost" onClick={() => setEditing(false)}>
+                  <Button variant="ghost" onClick={handleCancel}>
                     Cancel
                   </Button>
                   <Button
