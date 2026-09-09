@@ -1,12 +1,15 @@
-import { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
+import { Extensions } from '@tiptap/react';
 
 import { AmplifyBar } from './MenuBar/MenuBar';
 import { EditorProvider } from './EditorProvider';
 import {
   EditorContent,
   EditorStyling,
+  FieldWrapper,
+  FooterContent,
   HelperWrapper,
   LabelWrapper,
   Wrapper,
@@ -44,6 +47,8 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
   label?: string;
   meta?: string;
   helperText?: string;
+  footer?: ReactNode;
+  extensions?: Extensions;
 }
 
 /**
@@ -68,6 +73,8 @@ export interface RichTextEditorProps extends ImageExtensionFnProps {
  * @param label - Label text at top left
  * @param meta - Meta text at top right
  * @param helperText - Helper text bottom left
+ * @param footer - Custom footer content to display on bottom of editor
+ * @param extensions - Extensions for the editor
  */
 export const RichTextEditor: FC<RichTextEditorProps> = ({
   value,
@@ -90,6 +97,8 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
   label,
   meta,
   helperText,
+  footer,
+  extensions,
 }) => {
   if (onImageRemove && onRemovedImagesChange) {
     throw new Error(
@@ -116,6 +125,7 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
       onImageRead={onImageRead}
       onImageRemove={onImageRemove}
       onRemovedImagesChange={onRemovedImagesChange}
+      extensions={extensions}
     >
       {(editor) => (
         <Wrapper
@@ -140,17 +150,28 @@ export const RichTextEditor: FC<RichTextEditorProps> = ({
             $lightBackground={lightBackground}
             $highlighted={highlighted}
             $variant={variant}
+            $hasFooter={!!footer}
           >
             <AmplifyBar
               editor={editor}
               features={usedFeatured}
               onImageUpload={onImageUpload}
             />
-            <EditorContent
-              editor={editor}
-              $maxHeight={maxHeight}
-              $minHeight={minHeight}
-            />
+            <FieldWrapper
+              $hasFooter={!!footer}
+              $lightBackground={lightBackground}
+              $highlighted={highlighted}
+              $variant={variant}
+            >
+              <EditorContent
+                editor={editor}
+                $maxHeight={maxHeight}
+                $minHeight={minHeight}
+              />
+              {footer && (
+                <FooterContent $padding={padding}>{footer}</FooterContent>
+              )}
+            </FieldWrapper>
           </EditorStyling>
           {helperText && (
             <HelperWrapper>

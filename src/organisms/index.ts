@@ -23,6 +23,8 @@ export type { ReleaseNoteProps } from './ReleaseNote/ReleaseNote';
 export { ToggleGroup } from './ToggleGroup';
 export { Faq } from './Faq/Faq';
 export { ReleaseNotesPage } from './ReleaseNotesPage/ReleaseNotesPage';
+export { Comments } from './Comments/Comments';
+export type { CommentsProps } from './Comments/Comments';
 
 export {
   // EDS Re-export

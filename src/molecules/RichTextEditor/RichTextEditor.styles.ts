@@ -1,10 +1,12 @@
+import { tokens } from '@equinor/eds-tokens';
+import { typographyTemplate } from '@equinor/eds-utils';
 import { EditorContent as TiptapContent } from '@tiptap/react';
 
 import { colors, shape, spacings, typography } from 'src/atoms/style';
 import { VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export interface RichTextContentProps {
   $minHeight?: string;
@@ -12,17 +14,47 @@ export interface RichTextContentProps {
   className?: string;
 }
 
+const getPadding = (padding?: 'sm' | 'md' | 'lg' | 'none') => {
+  switch (padding) {
+    case 'sm':
+      return spacings.small;
+    case 'md':
+      return spacings.medium;
+    case 'lg':
+      return spacings.large;
+    case 'none':
+    default:
+      return '0';
+  }
+};
+
+const getRestingUnderline = ({
+  $highlighted,
+  $variant,
+}: Pick<EditorStylingProps, '$highlighted' | '$variant'>) =>
+  $highlighted
+    ? `inset 0 -2px ${colors.dataviz.darkblue.darker}`
+    : $variant
+      ? `inset 0 -2px ${VARIANT_COLORS[$variant]}`
+      : `inset 0 -1px ${colors.ui.background__medium.rgba}`;
+
 export const EditorContent = styled(TiptapContent)<RichTextContentProps>`
   display: grid;
   grid-template-rows: 1fr;
   overflow-y: auto;
   min-height: ${(props) => props.$minHeight || 'auto'};
   max-height: ${(props) => props.$maxHeight || 'auto'};
+
+  span.mention[data-type='mention'] {
+    ${typographyTemplate(tokens.typography.paragraph.body_short_bold)};
+    color: ${colors.interactive.primary__resting.rgba};
+  }
 `;
 
 export interface EditorStylingProps {
   $lightBackground?: boolean;
   $highlighted?: boolean;
+  $hasFooter?: boolean;
   $padding?: 'sm' | 'md' | 'lg' | 'none';
   $border?: boolean;
   $variant?: Variants;
@@ -54,27 +86,11 @@ export const EditorStyling = styled.div<EditorStylingProps>`
         : `${colors.ui.background__light.rgba}`};
 
     &[contenteditable='true'] {
-      box-shadow: ${({ $highlighted, $variant }) =>
-        $highlighted
-          ? `inset 0 -2px ${colors.dataviz.darkblue.darker}`
-          : $variant
-            ? `inset 0 -2px ${VARIANT_COLORS[$variant]}`
-            : `inset 0 -1px ${colors.ui.background__medium.rgba}`};
+      box-shadow: ${(props) =>
+        props.$hasFooter ? 'none' : getRestingUnderline(props)};
     }
 
-    padding: ${(props) => {
-      switch (props.$padding) {
-        case 'sm':
-          return spacings.small;
-        case 'md':
-          return spacings.medium;
-        case 'lg':
-          return spacings.large;
-        case 'none':
-        default:
-          return 0;
-      }
-    }};
+    padding: ${(props) => getPadding(props.$padding)};
 
     a {
       color: ${colors.interactive.primary__resting.rgba};
@@ -171,7 +187,10 @@ export const EditorStyling = styled.div<EditorStylingProps>`
 
     &:focus-visible {
       outline: none;
-      box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
+      box-shadow: ${(props) =>
+        props.$hasFooter
+          ? 'none'
+          : `inset 0 -2px ${colors.interactive.primary__resting.rgba}`};
     }
   }
 
@@ -187,6 +206,31 @@ export const EditorStyling = styled.div<EditorStylingProps>`
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const FieldWrapper = styled.div<EditorStylingProps>`
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 0;
+  background: ${(props) =>
+    props.$lightBackground
+      ? colors.ui.background__default.rgba
+      : colors.ui.background__light.rgba};
+
+  ${(props) =>
+    props.$hasFooter &&
+    css`
+      box-shadow: ${getRestingUnderline(props)};
+
+      &:focus-within {
+        box-shadow: inset 0 -2px ${colors.interactive.primary__resting.rgba};
+      }
+    `}
+`;
+
+export const FooterContent = styled.div<EditorStylingProps>`
+  padding: ${(props) =>
+    `${spacings.small} ${getPadding(props.$padding)} ${spacings.small} ${getPadding(props.$padding)}`};
 `;
 
 export const LabelWrapper = styled.div`
