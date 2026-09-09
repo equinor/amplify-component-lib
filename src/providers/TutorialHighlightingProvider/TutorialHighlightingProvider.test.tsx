@@ -62,10 +62,16 @@ const TestComponent = ({
   renderTutorials = FAKE_TUTORIALS,
   withCustomContent = false,
   setTutorialIds = true,
+  onCellClick,
+  interactiveElementSelectors,
+  allowScrolling,
 }: {
   renderTutorials?: typeof FAKE_TUTORIALS;
   withCustomContent?: boolean;
   setTutorialIds?: boolean;
+  onCellClick?: () => void;
+  interactiveElementSelectors?: string[];
+  allowScrolling?: boolean;
 }) => {
   const queryClient = new QueryClient();
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -84,6 +90,8 @@ const TestComponent = ({
         <TutorialHighlightingProvider
           contentRef={contentRef}
           customStepContent={withCustomContent ? CUSTOM_CONTENT : undefined}
+          interactiveElementSelectors={interactiveElementSelectors}
+          allowScrolling={allowScrolling}
         >
           {renderTutorials.map((tutorial) => (
             <Fragment key={tutorial.id}>
@@ -97,6 +105,7 @@ const TestComponent = ({
                         : undefined
                     }
                     variant="outlined"
+                    onClick={onCellClick}
                   >
                     {cell}
                   </Button>
@@ -143,6 +152,235 @@ test('Able to skip tutorial as expected', async () => {
   await user.click(screen.getByRole('button', { name: /skip/i }));
 
   expect(screen.queryByText(highlightTutorial.name)).not.toBeInTheDocument();
+});
+
+test('Blocks clicks on other interactive elements while tutorial is showing', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+  const handleCellClick = vi.fn();
+
+  await renderWithRouter(
+    <TestComponent
+      renderTutorials={[highlightTutorial]}
+      onCellClick={handleCellClick}
+    />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+  const user = userEvent.setup();
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  await expect(
+    user.click(screen.getByRole('button', { name: 'left center' }))
+  ).rejects.toThrowError(/pointer-events: none/);
+
+  expect(handleCellClick).not.toHaveBeenCalled();
+
+  await user.click(screen.getByRole('button', { name: /skip/i }));
+
+  await user.click(screen.getByRole('button', { name: 'left center' }));
+
+  expect(handleCellClick).toHaveBeenCalledTimes(1);
+});
+
+test('Disables hover and other pointer effects while tutorial is showing', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await renderWithRouter(
+    <TestComponent
+      renderTutorials={[highlightTutorial]}
+      interactiveElementSelectors={[
+        `#${highlightTutorialElementID(highlightTutorial.id, 4)}`,
+      ]}
+    />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  const blocked = screen.getByRole('button', { name: 'left center' });
+  const allowed = screen.getByRole('button', { name: 'center center' });
+
+  expect(getComputedStyle(blocked).pointerEvents).toBe('none');
+  expect(getComputedStyle(allowed).pointerEvents).toBe('auto');
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('button', { name: /skip/i }));
+
+  expect(
+    getComputedStyle(screen.getByRole('button', { name: 'left center' }))
+      .pointerEvents
+  ).toBe('auto');
+});
+
+test('Blocks key presses but allows tabbing while tutorial is showing', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await renderWithRouter(
+    <TestComponent renderTutorials={[highlightTutorial]} />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  const cell = screen.getByRole('button', { name: 'left center' });
+
+  const tabEvent = new KeyboardEvent('keydown', {
+    key: 'Tab',
+    cancelable: true,
+    bubbles: true,
+  });
+  cell.dispatchEvent(tabEvent);
+
+  expect(tabEvent.defaultPrevented).toBe(false);
+
+  const enterEvent = new KeyboardEvent('keydown', {
+    key: 'Enter',
+    cancelable: true,
+    bubbles: true,
+  });
+  cell.dispatchEvent(enterEvent);
+
+  expect(enterEvent.defaultPrevented).toBe(true);
+});
+
+test('Keeps elements matching interactiveElementSelectors clickable', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+  const handleCellClick = vi.fn();
+
+  await renderWithRouter(
+    <TestComponent
+      renderTutorials={[highlightTutorial]}
+      onCellClick={handleCellClick}
+      interactiveElementSelectors={[
+        `#${highlightTutorialElementID(highlightTutorial.id, 4)}`,
+      ]}
+    />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+  const user = userEvent.setup();
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'center center' }));
+
+  expect(handleCellClick).toHaveBeenCalledTimes(1);
+
+  await expect(
+    user.click(screen.getByRole('button', { name: 'left center' }))
+  ).rejects.toThrowError(/pointer-events: none/);
+
+  expect(handleCellClick).toHaveBeenCalledTimes(1);
+});
+
+test('Keeps highlighted element clickable in an interactive tutorial', async ({
+  worker,
+}) => {
+  const interactiveTutorial = {
+    ...fakeTutorial({
+      id: FAKE_TUTORIALS[0].id,
+      willPopUp: true,
+      highlightElement: true,
+    }),
+    isInteractive: true,
+  };
+  worker.use(
+    http.get(`*/api/v1/Tutorial/*`, async () => {
+      return HttpResponse.json([interactiveTutorial]);
+    })
+  );
+  const handleCellClick = vi.fn();
+
+  await renderWithRouter(
+    <TestComponent
+      renderTutorials={[FAKE_TUTORIALS[0]]}
+      onCellClick={handleCellClick}
+    />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+  const user = userEvent.setup();
+
+  expect(
+    await screen.findByText(interactiveTutorial.name, undefined, {
+      timeout: 2000,
+    })
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /start tour/i }));
+
+  await user.click(screen.getByRole('button', { name: 'left top' }));
+
+  expect(handleCellClick).toHaveBeenCalledTimes(1);
+
+  await expect(
+    user.click(screen.getByRole('button', { name: 'left center' }))
+  ).rejects.toThrowError(/pointer-events: none/);
+
+  expect(handleCellClick).toHaveBeenCalledTimes(1);
+});
+
+test('Blocks scrolling on content while tutorial is showing', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await renderWithRouter(
+    <TestComponent renderTutorials={[highlightTutorial]} />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  const content = document.getElementById('content')!;
+  const blockedWheelEvent = new WheelEvent('wheel', { cancelable: true });
+  content.dispatchEvent(blockedWheelEvent);
+
+  expect(blockedWheelEvent.defaultPrevented).toBe(true);
+
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('button', { name: /skip/i }));
+
+  const allowedWheelEvent = new WheelEvent('wheel', { cancelable: true });
+  content.dispatchEvent(allowedWheelEvent);
+
+  expect(allowedWheelEvent.defaultPrevented).toBe(false);
+});
+
+test('Keeps scrolling enabled when allowScrolling is set', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await renderWithRouter(
+    <TestComponent renderTutorials={[highlightTutorial]} allowScrolling />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  const wheelEvent = new WheelEvent('wheel', { cancelable: true });
+  document.getElementById('content')!.dispatchEvent(wheelEvent);
+
+  expect(wheelEvent.defaultPrevented).toBe(false);
 });
 
 test('Able to click through tutorial as expected', async () => {
