@@ -5,6 +5,7 @@ import {
   arrow_drop_down,
   arrow_drop_up,
   check,
+  clear,
   exit_to_app,
   platform,
 } from '@equinor/eds-icons';
@@ -30,6 +31,7 @@ const { colors } = tokens;
 export interface FieldMenuProps {
   availableFields: Field[];
   onSelect: (selectedField: Field) => void;
+  onClear?: () => void;
   itemNameSingular?: string; // Defaults to 'field'
   showAccessITLink?: boolean;
 }
@@ -41,6 +43,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       onSelect,
       itemNameSingular = 'field',
       showAccessITLink = true,
+      onClear,
     },
     ref
   ) => {
@@ -82,7 +85,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     const showSearchInput = availableFields.length >= 4;
     const noSearchResult = filteredFields.length === 0 && showSearchInput;
 
-    if (!selectedField) return null;
+    if (!selectedField && !onClear) return null;
 
     return (
       <div ref={ref}>
@@ -94,7 +97,9 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
           $fieldSelector
         >
           <Icon data={platform} size={24} />
-          {transformedFieldName}
+          {selectedField
+            ? transformedFieldName
+            : `No ${itemNameSingular} selected`}
           <Icon data={isOpen ? arrow_drop_up : arrow_drop_down} />
         </TopBarButton>
         <TopBarMenu
@@ -118,18 +123,34 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
               )}
 
               <ListContainer>
-                {!noSearchResult && searchValue === '' && (
-                  <MenuFixedItem $active>
+                {!noSearchResult && searchValue === '' && selectedField && (
+                  <MenuFixedItem
+                    $active
+                    $clearable={onClear !== undefined}
+                    data-testid="selected-field-item"
+                    onClick={() => {
+                      if (!onClear) return;
+                      onClear();
+                      closeMenu();
+                    }}
+                  >
                     <div>
                       <TextContainer>
                         <Typography variant="h6">
-                          {selectedField.name?.toLowerCase()}
+                          {selectedField?.name?.toLowerCase()}
                         </Typography>
                       </TextContainer>
                       <Icon
+                        className="check-icon"
                         data={check}
                         color={colors.interactive.primary__resting.rgba}
                         size={24}
+                      />
+                      <Icon
+                        className="clear-icon"
+                        data={clear}
+                        size={24}
+                        color={colors.interactive.primary__resting.rgba}
                       />
                     </div>
                   </MenuFixedItem>
