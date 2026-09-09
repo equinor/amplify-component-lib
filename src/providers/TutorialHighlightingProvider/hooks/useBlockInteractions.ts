@@ -17,7 +17,7 @@ const SCROLL_EVENTS = ['wheel', 'touchmove'];
 const EVENT_OPTIONS = { capture: true, passive: false };
 
 /**
- * Disables pointer events on the content, which also takes care of hover, focus,
+ * Disables pointer events on the content, which also takes care of hover,
  * text selection and cursor styling. Only direct children are disabled so the content
  * itself stays scrollable, and the tutorial popover re-enables pointer events on itself
  */
@@ -77,9 +77,11 @@ export function useBlockInteractions({
     const blockEvent = (event: Event) => {
       if ((event as KeyboardEvent).key === 'Tab') return;
 
-      const target = event.target as Element;
-      if (allowedRef.current?.contains(target)) return;
-      if (selector && target.closest(selector)) return;
+      const target = event.target;
+      if (target instanceof Element) {
+        if (allowedRef.current?.contains(target)) return;
+        if (selector && target.closest(selector)) return;
+      }
 
       event.preventDefault();
       event.stopPropagation();

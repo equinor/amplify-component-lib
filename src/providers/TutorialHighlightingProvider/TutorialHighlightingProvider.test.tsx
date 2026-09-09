@@ -220,6 +220,27 @@ test('Disables hover and other pointer effects while tutorial is showing', async
   ).toBe('auto');
 });
 
+test('Blocks events that are not targeting an element', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+
+  await renderWithRouter(
+    <TestComponent renderTutorials={[highlightTutorial]} />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  const wheelEvent = new WheelEvent('wheel', { cancelable: true });
+  document.dispatchEvent(wheelEvent);
+
+  expect(wheelEvent.target).not.toBeInstanceOf(Element);
+  expect(wheelEvent.defaultPrevented).toBe(true);
+});
+
 test('Blocks key presses but allows tabbing while tutorial is showing', async () => {
   const highlightTutorial = FAKE_TUTORIALS[0];
 

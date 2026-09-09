@@ -37,9 +37,10 @@ export const TutorialHighlightingProviderInner: FC<
     ? [activeTutorial]
     : unseenTutorialsOnThisPage.filter(
         (tutorial) =>
-          (tutorial.steps[0].highlightElement &&
-            highlightedTutorials.some((tutorial) => tutorial.id)) ||
-          !tutorial.steps[0].highlightElement
+          !tutorial.steps[0].highlightElement ||
+          highlightedTutorials.some(
+            (highlighted) => highlighted.id === tutorial.id
+          )
       );
   const isShowingTutorial = activeTutorials.length > 0;
 
