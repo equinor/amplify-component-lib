@@ -6,7 +6,7 @@ import { Comment, CommentData } from './Comment';
 import { colors, spacings } from 'src/atoms/style';
 import { AddComment } from 'src/organisms/Comments/AddComment';
 import { SideSheet } from 'src/organisms/SideSheet/SideSheet';
-import type { SideSheetProps } from 'src/organisms/SideSheet/SideSheet.types.ts';
+import type { SideSheetProps } from 'src/organisms/SideSheet/SideSheet.types';
 
 import { styled } from 'styled-components';
 
