@@ -50,7 +50,7 @@ export const BasicMenuItem: FC<BasicMenuItemProps> = ({
 
   const content = useMemo(() => {
     return (
-      <Tooltip title={isOpen ? undefined : name} placement="right">
+      <Tooltip title={isOpen ? '' : name} placement="right">
         <MenuItemWrapper>
           <Link
             aria-disabled={disabled}
