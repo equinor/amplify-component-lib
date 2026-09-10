@@ -39,6 +39,7 @@ function blockingStyles(selector: string) {
 /**
  * Selectors come from props, so an invalid one would make closest() throw and leave
  * the page interactive. Checking them up front keeps the event handler simple
+ * @param selector - A single CSS selector to check
  */
 function isValidSelector(selector: string) {
   try {
@@ -76,12 +77,18 @@ export function useBlockInteractions({
   allowedSelectors,
   allowScrolling,
 }: UseBlockInteractionsProps) {
-  const selector = allowedSelectors.filter(isValidSelector).join(', ');
+  // Serialized to keep the effect from re-running on every render, consumers
+  // usually pass the selectors as an inline array
+  const serializedSelectors = JSON.stringify(allowedSelectors);
 
   useEffect(() => {
     const content = contentRef.current;
     /* v8 ignore next */
     if (!enabled || !content) return;
+
+    const selector = (JSON.parse(serializedSelectors) as string[])
+      .filter(isValidSelector)
+      .join(', ');
 
     const style = document.createElement('style');
     style.textContent = blockingStyles(selector);
@@ -118,5 +125,5 @@ export function useBlockInteractions({
         document.removeEventListener(type, blockEvent, EVENT_OPTIONS);
       }
     };
-  }, [allowScrolling, allowedRef, contentRef, enabled, selector]);
+  }, [allowScrolling, allowedRef, contentRef, enabled, serializedSelectors]);
 }

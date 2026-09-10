@@ -264,7 +264,10 @@ test('Ignores invalid interactiveElementSelectors', async () => {
     <TestComponent
       renderTutorials={[highlightTutorial]}
       onCellClick={handleCellClick}
-      interactiveElementSelectors={['not a [valid selector', validSelector]}
+      interactiveElementSelectors={[
+        'not a [valid selector',
+        `:is(${validSelector}, #does-not-exist)`,
+      ]}
     />,
     { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
   );
