@@ -21,11 +21,18 @@ export function useHighlightedTutorials(
 
   useEffect(() => {
     if (isFetching) return;
+    let cancelled = false;
+
+    const setHighlights = (highlights: TutorialHighlight[]) => {
+      // Looking up the elements is async, a newer run could have started since
+      if (cancelled) return;
+      setHighlightedTutorials(highlights);
+    };
 
     const findHighlightedTutorials = async () => {
       if (activeTutorial && activeStep !== undefined) {
         if (!activeTutorial.steps[activeStep].highlightElement)
-          return setHighlightedTutorials([]);
+          return setHighlights([]);
 
         const highlight = await getHighlightElementBoundingBox(
           activeTutorial.id,
@@ -33,7 +40,7 @@ export function useHighlightedTutorials(
           windowSize
         );
 
-        return setHighlightedTutorials(highlight ? [highlight] : []);
+        return setHighlights(highlight ? [highlight] : []);
       }
 
       const unseen = await Promise.all(
@@ -43,12 +50,14 @@ export function useHighlightedTutorials(
           return getHighlightElementBoundingBox(tutorial.id, 0, windowSize);
         })
       );
-      return setHighlightedTutorials(
-        unseen.filter((value) => value !== undefined)
-      );
+      return setHighlights(unseen.filter((value) => value !== undefined));
     };
 
     findHighlightedTutorials();
+
+    return () => {
+      cancelled = true;
+    };
   }, [
     activeStep,
     activeTutorial,

@@ -36,6 +36,22 @@ function blockingStyles(selector: string) {
   `;
 }
 
+/**
+ * Selectors come from props, so an invalid one would make closest() throw and leave
+ * the page interactive. Checking them up front keeps the event handler simple
+ */
+function isValidSelector(selector: string) {
+  try {
+    document.createDocumentFragment().querySelector(selector);
+    return true;
+  } catch {
+    console.warn(
+      `[TutorialHighlightingProvider]: Ignoring invalid selector "${selector}"`
+    );
+    return false;
+  }
+}
+
 interface UseBlockInteractionsProps {
   enabled: boolean;
   /** Element wrapping the app content, interactions inside it are blocked */
@@ -60,7 +76,7 @@ export function useBlockInteractions({
   allowedSelectors,
   allowScrolling,
 }: UseBlockInteractionsProps) {
-  const selector = allowedSelectors.join(', ');
+  const selector = allowedSelectors.filter(isValidSelector).join(', ');
 
   useEffect(() => {
     const content = contentRef.current;

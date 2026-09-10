@@ -220,6 +220,71 @@ test('Disables hover and other pointer effects while tutorial is showing', async
   ).toBe('auto');
 });
 
+test('Ignores highlights from an outdated lookup', async ({ worker }) => {
+  const highlightTutorial = fakeTutorial({
+    id: FAKE_TUTORIALS[0].id,
+    willPopUp: true,
+    highlightElement: true,
+  });
+  worker.use(
+    http.get(`*/api/v1/Tutorial/*`, async () => {
+      return HttpResponse.json([highlightTutorial]);
+    })
+  );
+
+  const { unmount } = await renderWithRouter(
+    <TestComponent setTutorialIds={false} />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+  const user = userEvent.setup();
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 4000,
+    })
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /start tour/i }));
+  // Only the first step has an element, so looking up the next one stays in
+  // flight long enough for the lookup to be outdated by the time it resolves
+  await user.click(screen.getByRole('button', { name: /next/i }));
+  unmount();
+
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  expect(screen.queryByText(highlightTutorial.name)).not.toBeInTheDocument();
+});
+
+test('Ignores invalid interactiveElementSelectors', async () => {
+  const highlightTutorial = FAKE_TUTORIALS[0];
+  const handleCellClick = vi.fn();
+  const validSelector = `#${highlightTutorialElementID(highlightTutorial.id, 4)}`;
+
+  await renderWithRouter(
+    <TestComponent
+      renderTutorials={[highlightTutorial]}
+      onCellClick={handleCellClick}
+      interactiveElementSelectors={['not a [valid selector', validSelector]}
+    />,
+    { initialEntries: ['/tutorial'], routes: ['/tutorial'] }
+  );
+  const user = userEvent.setup();
+
+  expect(
+    await screen.findByText(highlightTutorial.name, undefined, {
+      timeout: 1000,
+    })
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'center center' }));
+
+  expect(handleCellClick).toHaveBeenCalledTimes(1);
+
+  await expect(
+    user.click(screen.getByRole('button', { name: 'left center' }))
+  ).rejects.toThrowError(/pointer-events: none/);
+});
+
 test('Blocks events that are not targeting an element', async () => {
   const highlightTutorial = FAKE_TUTORIALS[0];
 
