@@ -20,6 +20,8 @@ export function useAuth() {
     photo: undefined,
     logout: fn(),
     authState: 'authorized',
+    rolesOutdated: false,
+    applyNewRoles: fn(),
   };
 }
 

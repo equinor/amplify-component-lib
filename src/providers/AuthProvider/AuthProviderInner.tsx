@@ -38,12 +38,21 @@ const {
 
 const { getApiScope } = environment;
 
+// How often (ms) to silently re-acquire a token and check whether the
+// roles/groups claim has drifted from what's currently applied. AAD
+// recomputes app role/group claims on every token issuance, so a plain
+// silent (forceRefresh) reacquire is enough to detect access changes made
+// by AccessIT without waiting for full token expiry or a re-login.
+const ROLE_SYNC_CHECK_INTERVAL_MS = 5 * 60 * 1000;
+
 export interface AuthProviderInnerProps {
   children: ReactNode;
   account: AccountInfo | undefined;
   setAccount: (val: AccountInfo | undefined) => void;
   setPhoto: (val: string | undefined) => void;
+  roles: string[] | undefined;
   setRoles: (val: string[] | undefined) => void;
+  setPendingRoles: (val: string[] | undefined) => void;
   authState: AuthState;
   setAuthState: (val: AuthState) => void;
   withoutLoader: boolean;
@@ -52,12 +61,17 @@ export interface AuthProviderInnerProps {
   withoutBackend: boolean;
 }
 
+const areRolesEqual = (a: string[], b: string[]) =>
+  a.length === b.length && [...a].sort().every((role, i) => role === [...b].sort()[i]);
+
 export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   children,
   account,
   setAccount,
   setPhoto,
+  roles,
   setRoles,
+  setPendingRoles,
   authState,
   setAuthState,
   withoutLoader,
@@ -225,6 +239,47 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setRoles,
     withoutBackend,
   ]);
+
+  // Periodically (and on tab focus) silently re-acquire the backend token and
+  // compare its roles claim against what's currently applied. AAD recomputes
+  // this claim from current group/app-role assignments every time a token is
+  // issued, so this surfaces AccessIT changes without waiting for the token
+  // to fully expire or the user to log out/in again.
+  useEffect(() => {
+    if (withoutBackend || !account || authState !== 'authorized') return;
+
+    const checkForRoleChanges = async () => {
+      try {
+        const tokenResponse = await acquireToken(InteractionType.Silent, {
+          ...GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE)),
+          forceRefresh: true,
+        });
+        if (!tokenResponse?.accessToken) return;
+
+        const { roles: newRoles }: ExtendedJwtPayload = jwtDecode(
+          tokenResponse.accessToken
+        );
+        if (newRoles && roles && !areRolesEqual(newRoles, roles)) {
+          console.log('[AuthProvider] Detected roles change', newRoles);
+          setPendingRoles(newRoles);
+        }
+      } catch (error) {
+        // Non-fatal: just skip this check, the interval will retry later.
+        console.error('[AuthProvider] Error checking for role changes', error);
+      }
+    };
+
+    const intervalId = setInterval(
+      checkForRoleChanges,
+      ROLE_SYNC_CHECK_INTERVAL_MS
+    );
+    window.addEventListener('focus', checkForRoleChanges);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('focus', checkForRoleChanges);
+    };
+  }, [account, acquireToken, authState, roles, setPendingRoles, withoutBackend]);
 
   if (authState === 'unauthorized')
     return unauthorizedComponent ?? <MissingAccessToApp />;

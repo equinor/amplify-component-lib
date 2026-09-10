@@ -10,5 +10,6 @@ export { StepperProvider } from './StepperProvider';
 export { ToastProvider } from './ToastProvider/ToastProvider';
 export { ConfettiProvider } from './ConfettiProvider/ConfettiProvider';
 export { SurveyProvider } from './SurveyProvider/SurveyProvider';
+export { RoleSyncNotifier } from './RoleSyncNotifier/RoleSyncNotifier';
 
 export type { TableOfContentsItemType } from './TableOfContentsProvider';
