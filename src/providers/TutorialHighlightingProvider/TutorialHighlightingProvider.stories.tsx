@@ -1,4 +1,4 @@
-import { Fragment, useRef } from 'react';
+import { Fragment, useRef, useState } from 'react';
 
 import { Button, Card, Divider, Typography } from '@equinor/eds-core-react';
 import { MyTutorialDto } from '@equinor/subsurface-app-management';
@@ -19,9 +19,20 @@ import { http, HttpResponse } from 'msw';
 import { expect, userEvent } from 'storybook/test';
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
+const INTERACTIVE_BUTTON_ID = 'interactive-button';
 
-function RouteComponent() {
+function RouteComponent({
+  interactiveElementSelectors,
+  allowScrolling,
+}: {
+  interactiveElementSelectors?: string[];
+  allowScrolling?: boolean;
+}) {
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const [clickCount, setClickCount] = useState(0);
+  const isInteractive = interactiveElementSelectors?.includes(
+    `#${INTERACTIVE_BUTTON_ID}`
+  );
 
   return (
     <div
@@ -33,7 +44,11 @@ function RouteComponent() {
       }}
       id="content"
     >
-      <TutorialHighlightingProvider contentRef={contentRef}>
+      <TutorialHighlightingProvider
+        contentRef={contentRef}
+        interactiveElementSelectors={interactiveElementSelectors}
+        allowScrolling={allowScrolling}
+      >
         <div
           style={{
             display: 'flex',
@@ -81,6 +96,14 @@ function RouteComponent() {
               <Divider />
             </Fragment>
           ))}
+          <Button
+            id={INTERACTIVE_BUTTON_ID}
+            onClick={() => setClickCount((count) => count + 1)}
+          >
+            {isInteractive
+              ? `Only this button is clickable, clicked ${clickCount} times`
+              : `Clicked ${clickCount} times`}
+          </Button>
           <Typography
             id={highlightTutorialElementID(TUTORIAL_IDS[0], 3)}
             style={{ marginTop: '80vh' }}
@@ -374,5 +397,74 @@ export const TutorialWithImage: StoryObj = {
         }),
       ],
     },
+  },
+};
+
+/**
+ * Clicks outside the tutorial popover are blocked while a tutorial is showing
+ */
+export const BlockedInteractions: StoryObj<typeof RouteComponent> = {
+  tags: ['test-only', '!dev', '!autodocs'],
+  parameters: {
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get(`*/api/v1/Tutorial/*`, async () => {
+          return HttpResponse.json(highlightElementTutorials);
+        }),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      await canvas.findByText(highlightElementTutorials[0].name)
+    ).toBeInTheDocument();
+
+    const button = canvas.getByText('Clicked 0 times');
+
+    await expect(getComputedStyle(button).pointerEvents).toBe('none');
+    await expect(userEvent.click(button)).rejects.toThrowError(
+      /pointer-events: none/
+    );
+    await expect(canvas.getByText('Clicked 0 times')).toBeInTheDocument();
+  },
+};
+
+/**
+ * Everything is blocked while a tutorial is showing, except the single button matching
+ * `interactiveElementSelectors`. `allowScrolling` keeps the page scrollable as well
+ */
+export const AllowedInteractions: StoryObj<typeof RouteComponent> = {
+  args: {
+    interactiveElementSelectors: [`#${INTERACTIVE_BUTTON_ID}`],
+    allowScrolling: true,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get(`*/api/v1/Tutorial/*`, async () => {
+          return HttpResponse.json(highlightElementTutorials);
+        }),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      await canvas.findByText(highlightElementTutorials[0].name)
+    ).toBeInTheDocument();
+
+    const button = canvas.getByText(/Only this button is clickable/);
+
+    await expect(getComputedStyle(button).pointerEvents).toBe('auto');
+    await expect(
+      getComputedStyle(canvas.getAllByText('Stop')[0]).pointerEvents
+    ).toBe('none');
+
+    await userEvent.click(button);
+
+    await expect(
+      canvas.getByText(/Only this button is clickable, clicked 1 times/)
+    ).toBeInTheDocument();
   },
 };
