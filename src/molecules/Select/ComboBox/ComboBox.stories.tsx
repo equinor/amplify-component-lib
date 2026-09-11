@@ -53,6 +53,7 @@ type Story = StoryObj<typeof ComboBox>;
 interface Item {
   label: string;
   value: string;
+  disabled?: boolean;
 }
 
 const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
@@ -316,6 +317,12 @@ const TEST_ITEMS = [
   { label: 'Cherry', value: 'cherry' },
   { label: 'Date', value: 'date' },
   { label: 'Elderberry', value: 'elderberry' },
+];
+
+const TEST_ITEMS_WITH_DISABLED_ITEM: Item[] = [
+  { label: 'Apple', value: 'apple' },
+  { label: 'Banana', value: 'banana', disabled: true },
+  { label: 'Cherry', value: 'cherry' },
 ];
 
 const TEST_ITEMS_WITH_CHILDREN = [
@@ -934,6 +941,61 @@ export const TestOnClear: Story = {
     await userEvent.click(canvas.getByTestId('clearBtn'));
 
     await expect(args.onSelect).toHaveBeenNthCalledWith(1, []);
+  },
+};
+
+export const TestDisabledComboBox: Story = {
+  tags: ['test-only'],
+  args: {
+    disabled: true,
+    helperText: 'You cannot change this selection',
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Disabled ComboBox',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    await expect(canvas.getByTestId('clearBtn')).toBeDisabled();
+
+    await userEvent.click(canvas.getByTestId('combobox-container'));
+    await expect(
+      canvas.queryByText(TEST_ITEMS[1].label)
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByTestId('clearBtn'));
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const TestDisabledMenuItems: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS_WITH_DISABLED_ITEM,
+    values: [],
+    label: 'Disabled Menu Items',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+
+    const disabledItem = canvas.getByRole('menuitem', {
+      name: TEST_ITEMS_WITH_DISABLED_ITEM[1].label,
+    });
+    await expect(disabledItem).toBeDisabled();
+
+    await userEvent.click(disabledItem);
+    await expect(args.onSelect).not.toHaveBeenCalled();
+
+    await userEvent.click(
+      canvas.getByRole('menuitem', {
+        name: TEST_ITEMS_WITH_DISABLED_ITEM[0].label,
+      })
+    );
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS_WITH_DISABLED_ITEM[0]],
+      TEST_ITEMS_WITH_DISABLED_ITEM[0]
+    );
   },
 };
 
