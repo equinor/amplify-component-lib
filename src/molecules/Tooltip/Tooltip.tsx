@@ -1,5 +1,12 @@
 import type { ComponentPropsWithRef, FC } from 'react';
-import { ReactNode, useId, useRef, useState } from 'react';
+import {
+  ReactNode,
+  useEffect,
+  useEffectEvent,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 
 import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
 import { assignRef, getResolvedPlacement } from 'src/molecules/Tooltip/utils';
@@ -34,6 +41,7 @@ export const Tooltip: FC<TooltipProps> = ({
   const anchorRef = useRef<HTMLSpanElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const [arrow, setArrow] = useState<Arrow>({
     placement,
@@ -81,15 +89,7 @@ export const Tooltip: FC<TooltipProps> = ({
     assignRef(ref, node);
   };
 
-  const show = () => {
-    if (hideTimer.current) {
-      clearTimeout(hideTimer.current);
-      hideTimer.current = null;
-    }
-
-    if (showTimer.current || tooltipRef.current?.matches(':popover-open'))
-      return;
-
+  const startShowTimer = useEffectEvent(() => {
     showTimer.current = setTimeout(() => {
       showTimer.current = null;
       //ignoring failsafe check
@@ -98,8 +98,41 @@ export const Tooltip: FC<TooltipProps> = ({
       tooltipRef.current?.showPopover();
       requestAnimationFrame(updateResolvedPlacement);
     }, enterDelay);
-  };
-  const hide = () => {
+  });
+
+  useEffect(() => {
+    if (mounted) startShowTimer();
+  }, [mounted]);
+
+  // Guards against orphaned popovers/timers if this instance unmounts
+  // while a tooltip is showing or a timer is still pending.
+  useEffect(() => {
+    return () => {
+      if (showTimer.current) clearTimeout(showTimer.current);
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+      /* v8 ignore next */
+      if (tooltipRef.current?.matches(':popover-open')) {
+        tooltipRef.current.hidePopover();
+      }
+    };
+  }, []);
+
+  const show = useEffectEvent(() => {
+    if (hideTimer.current) {
+      clearTimeout(hideTimer.current);
+      hideTimer.current = null;
+    }
+
+    if (showTimer.current || tooltipRef.current?.matches(':popover-open'))
+      return;
+
+    if (mounted) {
+      startShowTimer();
+    } else {
+      setMounted(true);
+    }
+  });
+  const hide = useEffectEvent(() => {
     if (showTimer.current) {
       clearTimeout(showTimer.current);
       showTimer.current = null;
@@ -111,36 +144,44 @@ export const Tooltip: FC<TooltipProps> = ({
       /* v8 ignore next */
       if (!tooltipRef.current?.matches(':popover-open')) return;
       tooltipRef.current.hidePopover();
+      setMounted(false);
     }, exitDelay);
-  };
+  });
+
+  useEffect(() => {
+    const anchorElement = anchorRef.current;
+    if (!anchorElement || !title || disabled) return;
+
+    anchorElement.addEventListener('mouseenter', show);
+    anchorElement.addEventListener('mouseleave', hide);
+
+    return () => {
+      anchorElement.removeEventListener('mouseenter', show);
+      anchorElement.removeEventListener('mouseleave', hide);
+    };
+  }, [disabled, title]);
 
   if (!title || disabled) return children;
 
   return (
-    <Wrapper
-      onMouseEnter={show}
-      onMouseLeave={hide}
-      onFocus={show}
-      onBlur={hide}
-      $anchor={`--tooltip-${uid}`}
-      ref={anchorRef}
-      {...rest}
-    >
+    <Wrapper $anchor={`--tooltip-${uid}`} ref={anchorRef} {...rest}>
       {children}
-      <TooltipWrapper
-        ref={setRef}
-        role="tooltip"
-        popover="hint"
-        $anchor={`--tooltip-${uid}`}
-        $placement={placement}
-        $arrow={arrow}
-      >
-        {typeof title === 'string' ? (
-          <LeftAlignedText>{title}</LeftAlignedText>
-        ) : (
-          title
-        )}
-      </TooltipWrapper>
+      {mounted && (
+        <TooltipWrapper
+          ref={setRef}
+          role="tooltip"
+          popover="hint"
+          $anchor={`--tooltip-${uid}`}
+          $placement={placement}
+          $arrow={arrow}
+        >
+          {typeof title === 'string' ? (
+            <LeftAlignedText>{title}</LeftAlignedText>
+          ) : (
+            title
+          )}
+        </TooltipWrapper>
+      )}
     </Wrapper>
   );
 };
