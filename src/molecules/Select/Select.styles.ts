@@ -1,4 +1,6 @@
 import { Button, Menu as EDSMenu, Typography } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { typographyTemplate } from '@equinor/eds-utils';
 
 import { animation, colors, shape, spacings } from 'src/atoms/style';
 import {
@@ -7,6 +9,11 @@ import {
 } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { Chip } from 'src/molecules/Chip/Chip';
+import {
+  cellInputSelector,
+  cellInputSurface,
+  excludeCellPopoverContent,
+} from 'src/molecules/InputCell/InputCell.styles';
 
 import styled, { css } from 'styled-components';
 
@@ -159,6 +166,41 @@ const Container = styled.div<ContainerProps>`
     > section {
       width: calc(100% - 24px);
     }
+  }
+
+  [data-input-cell] &&&&${excludeCellPopoverContent} {
+    ${cellInputSurface}
+    box-shadow: none !important;
+  }
+
+  ${cellInputSelector} input,
+  ${cellInputSelector} section > p {
+    ${typographyTemplate(tokens.typography.input.text)}
+    color: ${colors.text.static_icons__default.rgba};
+  }
+
+  ${cellInputSelector} input:disabled,
+  ${cellInputSelector}:has(input:disabled) section > p {
+    color: ${colors.interactive.disabled__text.rgba};
+  }
+
+  ${cellInputSelector}:not(:has(input:disabled))
+    [data-input-cell-placeholder] {
+    color: ${colors.text.static_icons__tertiary.rgba};
+  }
+
+  [data-input-cell]
+    &${excludeCellPopoverContent}
+    > section
+    > .amplify-combo-box-chip
+    .content {
+    padding: 0 ${spacings.xx_small};
+  }
+
+  [data-input-cell]
+    &${excludeCellPopoverContent}
+    > svg:not([role='progressbar']) {
+    fill: ${colors.text.static_icons__tertiary.rgba};
   }
 `;
 

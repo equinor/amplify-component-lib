@@ -1,6 +1,14 @@
+import { tokens } from '@equinor/eds-tokens';
+import { typographyTemplate } from '@equinor/eds-utils';
+
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { spacings } from 'src/atoms/style/spacings';
 import { DatePickerProps } from 'src/molecules/DatePicker/DatePicker';
+import {
+  cellInputHeight,
+  cellInputSelector,
+  cellInputSurface,
+} from 'src/molecules/InputCell/InputCell.styles';
 
 import styled, { css } from 'styled-components';
 
@@ -85,5 +93,31 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
     position: absolute;
     right: ${spacings.small};
     transform: translateY(calc(${spacings.x_small} + ${spacings.xx_small}));
+  }
+
+  ${cellInputSelector} > div > div[id*='react-aria'] {
+    ${cellInputSurface}
+    box-sizing: border-box;
+    min-height: ${cellInputHeight};
+    padding: calc(${spacings.x_small} + ${spacings.xx_small}) ${spacings.small};
+  }
+
+  ${cellInputSelector} [role='spinbutton'] {
+    ${typographyTemplate(tokens.typography.input.text)}
+    color: ${colors.text.static_icons__default.rgba};
+  }
+
+  ${cellInputSelector} [role='spinbutton'][aria-disabled='true'] {
+    color: ${colors.interactive.disabled__text.rgba};
+  }
+
+  ${cellInputSelector} [role='spinbutton'].placeholder:not([aria-disabled='true']) {
+    color: ${colors.text.static_icons__tertiary.rgba};
+  }
+
+  ${cellInputSelector} button[aria-label='Reset'] svg {
+    fill: ${colors.text.static_icons__tertiary.rgba};
+    width: calc(${spacings.medium} + ${spacings.xx_small});
+    height: calc(${spacings.medium} + ${spacings.xx_small});
   }
 `;

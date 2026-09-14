@@ -142,6 +142,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
   return (
     <Wrapper $showBackgroundColor={mode === 'persistent'}>
       <Container
+        data-input-cell-variant={!loading ? variant : undefined}
         data-testid={dataTestId ? dataTestId : 'combobox-container'}
         ref={anchorRef}
         onClick={handleOnOpen}
@@ -152,7 +153,9 @@ export const SearchBar = <T extends SelectOptionRequired>({
       >
         <Section>
           {!loading && search === '' && selectedValues.length === 0 && (
-            <PlaceholderText>{placeholder}</PlaceholderText>
+            <PlaceholderText data-input-cell-placeholder>
+              {placeholder}
+            </PlaceholderText>
           )}
           {((search === '' && 'value' in props) ||
             ('values' in props &&
@@ -172,6 +175,9 @@ export const SearchBar = <T extends SelectOptionRequired>({
             onChange={handleOnSearchChange}
             onKeyDownCapture={handleOnSearchKeyDown}
             aria-invalid={variant === 'error' ? true : undefined}
+            aria-label={props['aria-label']}
+            aria-labelledby={props['aria-labelledby']}
+            aria-describedby={props['aria-describedby']}
           />
           {loading && (
             <SkeletonField

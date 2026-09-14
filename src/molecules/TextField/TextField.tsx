@@ -21,6 +21,12 @@ import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
+import {
+  cellInputHeight,
+  cellInputSelector,
+  cellInputSurface,
+  excludeCellPopoverContent,
+} from 'src/molecules/InputCell/InputCell.styles';
 import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
@@ -138,6 +144,28 @@ const Wrapper = styled.div<WrapperProps>`
       }
     `;
   }}
+
+  ${cellInputSelector} > div > div {
+    ${cellInputSurface}
+  }
+
+  ${cellInputSelector} input,
+  ${cellInputSelector} textarea {
+    ${cellInputSurface}
+    box-sizing: border-box;
+    min-height: ${cellInputHeight};
+    padding: calc(${spacings.x_small} + ${spacings.xx_small}) ${spacings.small};
+  }
+
+  ${cellInputSelector} input {
+    height: ${cellInputHeight};
+  }
+  [data-input-cell] &[data-loading='true']${excludeCellPopoverContent} {
+    input,
+    textarea {
+      visibility: hidden;
+    }
+  }
 `;
 
 const Loader = styled(SkeletonBase)`
@@ -175,12 +203,13 @@ export const TextField: FC<TextFieldProps> = (props) => {
     );
   }
 
+  const { loading, ...inputProps } = props;
   const baseProps: BaseProps = {
-    ...props,
+    ...inputProps,
     variant: props.variant !== 'dirty' ? props.variant : undefined,
   };
 
-  const usingVariant = props.loading ? undefined : props.variant;
+  const usingVariant = loading ? undefined : props.variant;
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
@@ -232,9 +261,11 @@ export const TextField: FC<TextFieldProps> = (props) => {
 
   return (
     <Wrapper
+      data-loading={loading || undefined}
+      data-input-cell-variant={usingVariant}
       ref={handleOnRender}
       $variant={usingVariant}
-      $disabled={props.loading ? false : props.disabled}
+      $disabled={loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
       style={{
         marginBottom:
@@ -257,10 +288,10 @@ export const TextField: FC<TextFieldProps> = (props) => {
             </LabelWrapper>
           ) : undefined
         }
-        disabled={props.loading || props.disabled}
+        disabled={loading || props.disabled}
         onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
       />
-      {props.loading && (
+      {loading && (
         <Loader
           className="skeleton"
           role="progressbar"

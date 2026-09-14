@@ -31,7 +31,7 @@ import { expect, fn, userEvent } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof IconCell> = {
-  title: 'Molecules/IconCell',
+  title: 'Molecules/Cell/IconCell',
   component: IconCell,
   parameters: {
     layout: 'centered',
