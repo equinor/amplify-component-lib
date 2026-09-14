@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { EmptyCell } from 'src/molecules/EmptyCell/EmptyCell';
 import { InputCell } from 'src/molecules/InputCell/InputCell';
+import { CellFeedback as CellFeedbackExample } from 'src/molecules/InputCell/stories/CellFeedback';
+import cellFeedbackSource from 'src/molecules/InputCell/stories/CellFeedback.tsx?raw';
 import { CustomInputCell } from 'src/molecules/InputCell/stories/CustomInputCell';
 import customInputCellSource from 'src/molecules/InputCell/stories/CustomInputCell.tsx?raw';
 import { DivCell } from 'src/molecules/InputCell/stories/DivCell';
@@ -126,6 +128,19 @@ export const DeveloperValidation: Story = {
       description: {
         story:
           'Try entering letters. The consumer accepts the edit and decides when to show an error; InputCell neither parses nor rejects values.',
+      },
+    },
+  },
+};
+
+export const CellFeedback: Story = {
+  render: () => <CellFeedbackExample />,
+  parameters: {
+    docs: {
+      source: { code: cellFeedbackSource },
+      description: {
+        story:
+          'Use active to keep the focus border visible for a custom editor, or variant for cell-level feedback. Neither prop changes the input’s focus or validation state.',
       },
     },
   },
