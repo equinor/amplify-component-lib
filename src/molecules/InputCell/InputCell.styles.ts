@@ -42,6 +42,7 @@ export const Container = styled.td<ContainerProps>`
   height: calc(${cellInputHeight} + ${spacings.small} * 2);
 
   &:is(div) {
+    height: auto;
     min-height: calc(${cellInputHeight} + ${spacings.small} * 2);
   }
 
@@ -57,7 +58,7 @@ export const Container = styled.td<ContainerProps>`
     box-shadow: inset 0 -2px 0 ${colors.interactive.primary__resting.rgba};
   }
 
-  &&:focus-within,
+  &&:focus-within:not(:where(:has([popover]:focus-within))),
   &&:has([aria-expanded='true']${excludeCellPopoverContent}) {
     ${cellOutline(colors.interactive.primary__resting.rgba)}
   }

@@ -40,6 +40,8 @@ function SelectInputExample({ multiple = false }: { multiple?: boolean }) {
 export const inputExamples = {
   'Text field': <TextField aria-label="Text" defaultValue="Editable text" />,
   'Single select': <SelectInputExample />,
-  'Date picker': <DatePicker defaultValue={new Date(2026, 8, 3)} />,
+  'Date picker': (
+    <DatePicker label="Date" defaultValue={new Date(2026, 8, 3)} />
+  ),
   Combobox: <SelectInputExample multiple />,
 };

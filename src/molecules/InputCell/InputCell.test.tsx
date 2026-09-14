@@ -135,6 +135,35 @@ test('hover underlines the cell and keyboard focus outlines it without an inner 
   expect(getComputedStyle(input).boxShadow).toBe('none');
 });
 
+test('ignores focus in native popovers unless the input is expanded', () => {
+  render(
+    <InputCell as="div" data-testid="cell" tabIndex={0}>
+      <button aria-expanded="false">Open editor</button>
+      <div popover="manual" tabIndex={-1} data-testid="popover">
+        <input aria-label="Popover editor" />
+      </div>
+    </InputCell>
+  );
+  const cell = screen.getByTestId('cell');
+  const trigger = screen.getByRole('button');
+  const popover = screen.getByTestId('popover');
+  const focused = 'rgb(0, 112, 121) solid 2px';
+
+  cell.focus();
+  expect(getComputedStyle(cell).outline).toBe(focused);
+  trigger.focus();
+  expect(getComputedStyle(cell).outline).toBe(focused);
+  popover.showPopover();
+  screen.getByRole('textbox').focus();
+  expect(getComputedStyle(cell).outlineStyle).toBe('none');
+  popover.focus();
+  expect(getComputedStyle(cell).outlineStyle).toBe('none');
+  trigger.setAttribute('aria-expanded', 'true');
+  expect(getComputedStyle(cell).outline).toBe(focused);
+  trigger.setAttribute('aria-expanded', 'false');
+  expect(getComputedStyle(cell).outlineStyle).toBe('none');
+});
+
 test('consumer validation keeps the danger border through hover and focus', async () => {
   render(<TextCell variant="error" helperText="Enter an integer" />);
   const cell = screen.getByTestId('cell');
