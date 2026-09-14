@@ -23,6 +23,8 @@ export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
 export { Dialog } from './Dialog/Dialog';
 export type { DialogProps, DialogAction } from './Dialog/Dialog';
+export { EmptyCell } from './EmptyCell/EmptyCell';
+export type { EmptyCellProps } from './EmptyCell/EmptyCell';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
 export type { EquinorLogoProps } from './EquinorLogo/EquinorLogo';
 export { FileProgress } from './FileProgress/FileProgress';
