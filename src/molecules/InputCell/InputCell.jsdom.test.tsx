@@ -80,39 +80,26 @@ describe('InputCell', () => {
     expect(cell).toBeEmptyDOMElement();
   });
 
-  test('composes text, fragments, and custom children without adding an input', () => {
-    render(
-      <InputCell as="div" role="gridcell">
-        Prefix
-        <>
-          <span>Nested content</span>
-          <CustomInput aria-label="Custom editor" defaultValue="Original" />
-        </>
-        Suffix
-      </InputCell>
-    );
-
-    const cell = screen.getByRole('gridcell');
-    expect(cell).toHaveTextContent('PrefixNested contentSuffix');
-    expect(screen.getAllByRole('textbox')).toHaveLength(1);
-    expect(screen.getByRole('textbox', { name: 'Custom editor' })).toHaveValue(
-      'Original'
-    );
-  });
-
-  test('exposes a DOM styling scope to nested custom components only inside the cell', () => {
+  test('composes arbitrary children within an isolated styling scope', () => {
     render(
       <>
         <CustomInput aria-label="Before" />
-        <InputCell as="div">
-          <div>
-            <CustomInput aria-label="Inside" />
-          </div>
+        <InputCell as="div" role="gridcell">
+          Prefix
+          <>
+            <span>Nested content</span>
+            <CustomInput aria-label="Inside" defaultValue="Original" />
+          </>
+          Suffix
         </InputCell>
         <CustomInput aria-label="After" />
       </>
     );
 
+    const cell = screen.getByRole('gridcell');
+    expect(cell).toHaveTextContent('PrefixNested contentSuffix');
+    expect(screen.getAllByRole('textbox')).toHaveLength(3);
+    expect(screen.getByLabelText('Inside')).toHaveValue('Original');
     expect(
       screen.getByLabelText('Before').closest('[data-input-cell]')
     ).toBeNull();
@@ -179,87 +166,66 @@ describe('InputCell', () => {
     expect(ref.current).toBe(input);
   });
 
-  test('preserves focus, blur, change, and keyboard callbacks and event bubbling', () => {
-    const onFocus = vi.fn();
-    const onBlur = vi.fn();
-    const onChange = vi.fn();
-    const onKeyDown = vi.fn();
-    const onKeyUp = vi.fn();
-    const onCellKeyDown = vi.fn();
-    render(
-      <InputCell as="div" onKeyDown={onCellKeyDown}>
-        <input
-          aria-label="Editor"
-          onFocus={onFocus}
-          onBlur={onBlur}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
-        />
-      </InputCell>
-    );
-    const input = screen.getByRole('textbox');
+  test.each([false, true])(
+    'preserves input callbacks and bubbling with preventDefault=%s',
+    (preventDefault) => {
+      const onCellKeyDown = vi.fn();
+      const callbacks = {
+        onFocus: vi.fn(),
+        onBlur: vi.fn(),
+        onChange: vi.fn(),
+        onKeyUp: vi.fn(),
+        onKeyDown: vi.fn((event: KeyboardEvent<HTMLInputElement>) => {
+          if (preventDefault) event.preventDefault();
+        }),
+      };
+      render(
+        <InputCell as="div" onKeyDown={onCellKeyDown}>
+          <input aria-label="Editor" {...callbacks} />
+        </InputCell>
+      );
+      const input = screen.getByRole('textbox');
+      fireEvent.focus(input);
+      fireEvent.change(input, { target: { value: 'Updated' } });
+      expect(fireEvent.keyDown(input, { key: 'Enter' })).toBe(!preventDefault);
+      fireEvent.keyUp(input, { key: 'Enter' });
+      fireEvent.blur(input);
 
-    fireEvent.focus(input);
-    fireEvent.change(input, { target: { value: 'Updated' } });
-    expect(fireEvent.keyDown(input, { key: 'Enter' })).toBe(true);
-    fireEvent.keyUp(input, { key: 'Enter' });
-    fireEvent.blur(input);
-
-    for (const callback of [
-      onFocus,
-      onBlur,
-      onChange,
-      onKeyDown,
-      onKeyUp,
-      onCellKeyDown,
-    ]) {
-      expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({ target: input, defaultPrevented: false })
+      for (const [name, callback] of Object.entries(callbacks)) {
+        expect(callback).toHaveBeenCalledExactlyOnceWith(
+          expect.objectContaining({
+            target: input,
+            defaultPrevented: name === 'onKeyDown' && preventDefault,
+          })
+        );
+      }
+      expect(input).toHaveValue('Updated');
+      expect(onCellKeyDown).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({
+          target: input,
+          key: 'Enter',
+          defaultPrevented: preventDefault,
+        })
       );
     }
-    expect(input).toHaveValue('Updated');
-    expect(onKeyDown).toHaveBeenCalledWith(
-      expect.objectContaining({ key: 'Enter' })
-    );
-  });
-
-  test('preserves consumer preventDefault without stopping keyboard propagation', () => {
-    const onCellKeyDown = vi.fn();
-    const onKeyDown = vi.fn((event: KeyboardEvent<HTMLInputElement>) => {
-      event.preventDefault();
-    });
-    render(
-      <InputCell as="div" onKeyDown={onCellKeyDown}>
-        <input aria-label="Editor" onKeyDown={onKeyDown} />
-      </InputCell>
-    );
-
-    expect(
-      fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Enter' })
-    ).toBe(false);
-    expect(onKeyDown).toHaveBeenCalledTimes(1);
-    expect(onCellKeyDown).toHaveBeenCalledExactlyOnceWith(
-      expect.objectContaining({ key: 'Enter', defaultPrevented: true })
-    );
-  });
+  );
 
   test.each(['disabled', 'readOnly'] as const)(
     'leaves %s under consumer control',
     async (attribute) => {
       const user = userEvent.setup();
       const onChange = vi.fn();
-      const { rerender } = render(
+      const example = (restricted: boolean) => (
         <InputCell as="div" active variant="error">
           <input
             aria-label="Editor"
             defaultValue="Original"
             onChange={onChange}
-            {...{ [attribute]: true }}
+            {...{ [attribute]: restricted }}
           />
         </InputCell>
       );
+      const { rerender } = render(example(true));
       const input = screen.getByRole('textbox');
 
       await user.type(input, 'x');
@@ -267,16 +233,7 @@ describe('InputCell', () => {
       expect(onChange).not.toHaveBeenCalled();
       expect(input).toHaveAttribute(attribute.toLowerCase());
 
-      rerender(
-        <InputCell as="div" active variant="error">
-          <input
-            aria-label="Editor"
-            defaultValue="Original"
-            onChange={onChange}
-            {...{ [attribute]: false }}
-          />
-        </InputCell>
-      );
+      rerender(example(false));
       await user.type(input, 'x');
 
       expect(input).toHaveValue('Originalx');

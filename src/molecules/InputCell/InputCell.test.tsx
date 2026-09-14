@@ -7,7 +7,7 @@ import { ExampleTable } from 'src/molecules/InputCell/stories/ExampleTable';
 import { ComboBox } from 'src/molecules/Select/ComboBox/ComboBox';
 import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
-import { TextField } from 'src/molecules/TextField/TextField';
+import { TextField, TextFieldProps } from 'src/molecules/TextField/TextField';
 import {
   renderWithProviders as render,
   screen,
@@ -24,18 +24,21 @@ const items = [
   { value: '3', label: 'Item 3' },
 ];
 
+function TextCell(props: TextFieldProps) {
+  return (
+    <InputCell as="div" data-testid="cell" style={{ width: 200 }}>
+      <div>
+        <TextField aria-label="Text" {...props} />
+      </div>
+    </InputCell>
+  );
+}
+
 test.each([false, true])(
   'text loading hides content with the original inset skeleton (multiline=%s)',
   (multiline) => {
     const { rerender } = render(
-      <InputCell as="div" data-testid="cell" style={{ width: 200 }}>
-        <TextField
-          aria-label="Text"
-          defaultValue="Some Text"
-          loading
-          multiline={multiline}
-        />
-      </InputCell>
+      <TextCell defaultValue="Some Text" loading multiline={multiline} />
     );
     const input = screen.getByDisplayValue('Some Text');
     const cellBounds = screen.getByTestId('cell').getBoundingClientRect();
@@ -48,15 +51,7 @@ test.each([false, true])(
     expect(skeletonBounds.height).toBeLessThan(cellBounds.height);
     expect(skeletonBounds.x).toBeGreaterThan(cellBounds.x);
 
-    rerender(
-      <InputCell as="div" data-testid="cell" style={{ width: 200 }}>
-        <TextField
-          aria-label="Text"
-          defaultValue="Some Text"
-          multiline={multiline}
-        />
-      </InputCell>
-    );
+    rerender(<TextCell defaultValue="Some Text" multiline={multiline} />);
     expect(screen.getByRole('textbox')).toBe(input);
     expect(input).toBeVisible();
     expect(input).toBeEnabled();
@@ -68,11 +63,7 @@ test.each([false, true])(
 test('text uses a transparent 36px field in a 52px cell without changing standalone fields', async () => {
   render(
     <>
-      <InputCell as="div" data-testid="cell">
-        <div>
-          <TextField aria-label="Cell text" defaultValue="Some Text" />
-        </div>
-      </InputCell>
+      <TextCell aria-label="Cell text" defaultValue="Some Text" />
       <TextField aria-label="Standalone" defaultValue="Some Text" />
     </>
   );
@@ -130,43 +121,8 @@ test('select popover inputs keep standalone styling and do not affect cell valid
   );
 });
 
-test('standalone select surfaces remain distinct from cell surfaces', () => {
-  render(
-    <>
-      <InputCell as="div">
-        <SingleSelect
-          data-testid="cell-select"
-          aria-label="Cell item"
-          items={items}
-          value={undefined}
-          onSelect={vi.fn()}
-        />
-      </InputCell>
-      <SingleSelect
-        data-testid="standalone-select"
-        aria-label="Standalone item"
-        items={items}
-        value={undefined}
-        onSelect={vi.fn()}
-      />
-    </>
-  );
-  const cellStyle = getComputedStyle(screen.getByTestId('cell-select'));
-  const standaloneStyle = getComputedStyle(
-    screen.getByTestId('standalone-select')
-  );
-  expect(cellStyle.backgroundColor).toBe('rgba(0, 0, 0, 0)');
-  expect(cellStyle.boxShadow).toBe('none');
-  expect(standaloneStyle.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
-  expect(standaloneStyle.boxShadow).not.toBe('none');
-});
-
 test('hover underlines the cell and keyboard focus outlines it without an inner border', async () => {
-  render(
-    <InputCell as="div" data-testid="cell">
-      <TextField aria-label="Text" />
-    </InputCell>
-  );
+  render(<TextCell />);
   const cell = screen.getByTestId('cell');
   const input = screen.getByRole('textbox');
   await vitestBrowserUserEvent.hover(cell);
@@ -180,15 +136,7 @@ test('hover underlines the cell and keyboard focus outlines it without an inner 
 });
 
 test('consumer validation keeps the danger border through hover and focus', async () => {
-  render(
-    <InputCell as="div" data-testid="cell">
-      <TextField
-        aria-label="Invalid text"
-        variant="error"
-        helperText="Enter an integer"
-      />
-    </InputCell>
-  );
+  render(<TextCell variant="error" helperText="Enter an integer" />);
   const cell = screen.getByTestId('cell');
   await vitestBrowserUserEvent.hover(cell);
   await userEvent.setup().click(screen.getByRole('textbox'));
@@ -200,11 +148,7 @@ test('consumer validation keeps the danger border through hover and focus', asyn
 test.each(['disabled', 'readOnly'] as const)(
   '%s inputs do not gain hover decoration',
   async (state) => {
-    render(
-      <InputCell as="div" data-testid="cell">
-        <TextField aria-label="Text" {...{ [state]: true }} />
-      </InputCell>
-    );
+    render(<TextCell {...{ [state]: true }} />);
     const cell = screen.getByTestId('cell');
     await vitestBrowserUserEvent.hover(cell);
     expect(getComputedStyle(cell).boxShadow).toBe(
@@ -214,19 +158,11 @@ test.each(['disabled', 'readOnly'] as const)(
 );
 
 test('multiline content expands a div cell instead of overflowing a fixed height', () => {
-  render(
-    <InputCell as="div" data-testid="cell">
-      <TextField aria-label="Notes" multiline rows={4} />
-    </InputCell>
-  );
-  expect(
-    screen.getByTestId('cell').getBoundingClientRect().height
-  ).toBeGreaterThan(52);
-  expect(
-    screen.getByRole('textbox').getBoundingClientRect().bottom
-  ).toBeLessThanOrEqual(
-    screen.getByTestId('cell').getBoundingClientRect().bottom
-  );
+  render(<TextCell multiline rows={4} />);
+  const cell = screen.getByTestId('cell').getBoundingClientRect();
+  const input = screen.getByRole('textbox').getBoundingClientRect();
+  expect(cell.height).toBeGreaterThan(52);
+  expect(input.bottom).toBeLessThanOrEqual(cell.bottom);
 });
 
 function SelectCell({ multiple = false }: { multiple?: boolean }) {
@@ -257,8 +193,27 @@ function SelectCell({ multiple = false }: { multiple?: boolean }) {
   );
 }
 
-test('single select preserves selection and keeps the focus border while its menu is open', async () => {
-  render(<SelectCell />);
+test('single select preserves selection, menu styling, and standalone surfaces', async () => {
+  render(
+    <>
+      <SelectCell />
+      <SingleSelect
+        data-testid="standalone-select"
+        aria-label="Standalone item"
+        items={items}
+        value={undefined}
+        onSelect={vi.fn()}
+      />
+    </>
+  );
+  const cellStyle = getComputedStyle(screen.getByTestId('combobox-container'));
+  const standaloneStyle = getComputedStyle(
+    screen.getByTestId('standalone-select')
+  );
+  expect(cellStyle.backgroundColor).toBe('rgba(0, 0, 0, 0)');
+  expect(cellStyle.boxShadow).toBe('none');
+  expect(standaloneStyle.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  expect(standaloneStyle.boxShadow).not.toBe('none');
   const user = userEvent.setup();
   await user.click(screen.getByRole('combobox', { name: 'Item' }));
   const menu = await screen.findByRole('menu');
