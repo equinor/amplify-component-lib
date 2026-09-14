@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { colors } from 'src/atoms/style';
 import { Variants } from 'src/atoms/types/variants';
@@ -24,6 +24,7 @@ interface RowProps {
   loading?: boolean;
   empty?: boolean;
   selected?: boolean;
+  active?: boolean;
 }
 
 function ExampleRow({
@@ -33,18 +34,14 @@ function ExampleRow({
   loading,
   empty,
   selected,
+  active,
 }: RowProps) {
-  const [text, setText] = useState(
-    empty ? '' : disabled ? 'Disabled' : 'Editable text'
-  );
   const [single, setSingle] = useState<SelectOptionRequired | undefined>(
     empty ? undefined : items[0]
   );
   const [multiple, setMultiple] = useState(empty ? [] : items);
-  const [date, setDate] = useState<Date | undefined>(
-    empty ? undefined : new Date(2026, 8, 3)
-  );
   const inputProps = { variant, disabled, loading };
+  const cellProps = { active, variant };
 
   return (
     <tr
@@ -55,18 +52,15 @@ function ExampleRow({
       }
     >
       <EmptyCell>{name}</EmptyCell>
-      <InputCell>
+      <InputCell {...cellProps}>
         <TextField
           {...inputProps}
           aria-label={`${name} text`}
           placeholder="Edit text…"
-          value={text}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setText(event.target.value)
-          }
+          defaultValue={empty ? '' : disabled ? 'Disabled' : 'Editable text'}
         />
       </InputCell>
-      <InputCell>
+      <InputCell {...cellProps}>
         <SingleSelect
           {...inputProps}
           id={`${name}-single`}
@@ -77,15 +71,14 @@ function ExampleRow({
           clearable={false}
         />
       </InputCell>
-      <InputCell>
+      <InputCell {...cellProps}>
         <DatePicker
           {...inputProps}
           aria-label={`${name} date`}
-          value={date}
-          onChange={(value) => setDate(value ?? undefined)}
+          defaultValue={empty ? undefined : new Date(2026, 8, 3)}
         />
       </InputCell>
-      <InputCell>
+      <InputCell {...cellProps}>
         <ComboBox
           {...inputProps}
           id={`${name}-multiple`}
@@ -121,6 +114,7 @@ export function InputCellExamples() {
       <tbody>
         <ExampleRow name="Default" />
         <ExampleRow name="Empty" empty />
+        <ExampleRow name="Active" active />
         <ExampleRow name="Danger" variant="error" />
         <ExampleRow name="Selected row" selected />
         <ExampleRow name="Disabled" disabled />
