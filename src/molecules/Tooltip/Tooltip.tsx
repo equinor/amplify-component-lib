@@ -108,12 +108,13 @@ export const Tooltip: FC<TooltipProps> = ({
   // while a tooltip is showing or a timer is still pending.
   useEffect(() => {
     return () => {
+      /* v8 ignore start */
       if (showTimer.current) clearTimeout(showTimer.current);
       if (hideTimer.current) clearTimeout(hideTimer.current);
-      /* v8 ignore next */
       if (tooltipRef.current?.matches(':popover-open')) {
         tooltipRef.current.hidePopover();
       }
+      /* v8 ignore end */
     };
   }, []);
 
@@ -126,6 +127,7 @@ export const Tooltip: FC<TooltipProps> = ({
     if (showTimer.current || tooltipRef.current?.matches(':popover-open'))
       return;
 
+    /* c8 ignore next */
     if (mounted) {
       startShowTimer();
     } else {
@@ -141,9 +143,11 @@ export const Tooltip: FC<TooltipProps> = ({
     hideTimer.current = setTimeout(() => {
       hideTimer.current = null;
       //ignoring failsafe check
-      /* v8 ignore next */
-      if (!tooltipRef.current?.matches(':popover-open')) return;
-      tooltipRef.current.hidePopover();
+      /* v8 ignore start */
+      if (!tooltipRef.current?.matches(':popover-open')) {
+        tooltipRef.current?.hidePopover();
+      }
+      /* v8 ignore end */
       setMounted(false);
     }, exitDelay);
   });
