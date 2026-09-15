@@ -163,24 +163,36 @@ const LabelWrapper = styled.div`
  * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
  */
 export const TextField: FC<TextFieldProps> = (props) => {
-  if (props.maxCharacters && 'type' in props && props.type !== 'text') {
+  // Destructure any new custom props here so they are not forwarded to EDS.
+  const {
+    loading,
+    maxCharacters,
+    explanation,
+    explanationPosition,
+    ...propsWithoutCustomProps
+  } = props;
+
+  if (maxCharacters && 'type' in props && props.type !== 'text') {
     throw new Error(
       '`maxCharacters` prop is not supported for input types other than "text".'
     );
   }
 
-  if (!!props.explanation && !props.label) {
+  if (!!explanation && !props.label) {
     throw new Error(
       '`explanation` prop requires a `label` to be set on the TextField.'
     );
   }
 
   const baseProps: BaseProps = {
-    ...props,
-    variant: props.variant !== 'dirty' ? props.variant : undefined,
+    ...propsWithoutCustomProps,
+    variant:
+      propsWithoutCustomProps.variant !== 'dirty'
+        ? propsWithoutCustomProps.variant
+        : undefined,
   };
 
-  const usingVariant = props.loading ? undefined : props.variant;
+  const usingVariant = loading ? undefined : props.variant;
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
@@ -202,7 +214,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
       (props.onChange as ChangeEventHandler<HTMLInputElement>)(event);
     }
 
-    if (props.maxCharacters) {
+    if (maxCharacters) {
       setCharacterCount(event.target.value.length);
     }
   };
@@ -210,7 +222,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
   // Not able to test the case where the input element isn't found
   /* v8 ignore start */
   const handleOnRender = (element: HTMLDivElement | null) => {
-    if (!element || !props.maxCharacters) return;
+    if (!element || !maxCharacters) return;
     // Get input or textarea element inside the wrapper
     const inputElement: HTMLInputElement | HTMLTextAreaElement | null =
       element.querySelector('input, textarea');
@@ -223,22 +235,22 @@ export const TextField: FC<TextFieldProps> = (props) => {
   useEffect(() => {
     if (
       typeof props.value === 'string' &&
-      props.maxCharacters &&
+      maxCharacters &&
       props.value.length !== characterCount
     ) {
       setCharacterCount(props.value.length);
     }
-  }, [characterCount, props.maxCharacters, props.value]);
+  }, [characterCount, maxCharacters, props.value]);
 
   return (
     <Wrapper
       ref={handleOnRender}
       $variant={usingVariant}
-      $disabled={props.loading ? false : props.disabled}
+      $disabled={loading ? false : props.disabled}
       $helperRightWidth={helperRightWidth}
       style={{
         marginBottom:
-          !props.helperText && props.maxCharacters
+          !props.helperText && maxCharacters
             ? `calc(${spacings.small} + 1rem)`
             : 0,
       }}
@@ -249,18 +261,18 @@ export const TextField: FC<TextFieldProps> = (props) => {
           baseProps.label ? (
             <LabelWrapper>
               {baseProps.label}
-              {props.explanation && (
-                <InputExplanation position={props.explanationPosition}>
-                  {props.explanation}
+              {explanation && (
+                <InputExplanation position={explanationPosition}>
+                  {explanation}
                 </InputExplanation>
               )}
             </LabelWrapper>
           ) : undefined
         }
-        disabled={props.loading || props.disabled}
+        disabled={loading || props.disabled}
         onChange={handleOnChange as never} // Bypass TS error caused by union of input and textarea attributes
       />
-      {props.loading && (
+      {loading && (
         <Loader
           className="skeleton"
           role="progressbar"
@@ -271,7 +283,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
           }}
         />
       )}
-      {props.maxCharacters && (
+      {maxCharacters && (
         <MaxCharactersText
           ref={handleRenderHelperTextRight}
           variant="helper"
@@ -287,7 +299,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
               : `calc((${spacings.small} + 1rem) * -1)`,
           }}
         >
-          {characterCount} / {props.maxCharacters}
+          {characterCount} / {maxCharacters}
         </MaxCharactersText>
       )}
     </Wrapper>

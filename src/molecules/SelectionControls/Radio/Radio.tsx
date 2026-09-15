@@ -18,11 +18,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>((props, ref) => {
 
   return (
     <Wrapper $outlined={outlined || false} $error={error}>
-      <Base
-        ref={ref}
-        {...otherProps}
-        checked={otherProps.checked ? true : undefined}
-      />
+      <Base ref={ref} {...otherProps} />
     </Wrapper>
   );
 });
