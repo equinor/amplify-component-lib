@@ -16,7 +16,7 @@ import {
 } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
-import { expect, userEvent } from 'storybook/test';
+import { expect, fireEvent, fn, userEvent } from 'storybook/test';
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 const INTERACTIVE_BUTTON_ID = 'interactive-button';
@@ -24,9 +24,13 @@ const INTERACTIVE_BUTTON_ID = 'interactive-button';
 function RouteComponent({
   interactiveElementSelectors,
   allowScrolling,
+  missingStepElement = false,
+  onHighlightedClick,
 }: {
   interactiveElementSelectors?: string[];
   allowScrolling?: boolean;
+  missingStepElement?: boolean;
+  onHighlightedClick?: () => void;
 }) {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [clickCount, setClickCount] = useState(0);
@@ -43,6 +47,7 @@ function RouteComponent({
         overflow: 'auto',
       }}
       id="content"
+      data-testid="tutorial-content"
     >
       <TutorialHighlightingProvider
         contentRef={contentRef}
@@ -74,7 +79,16 @@ function RouteComponent({
                 </Card.HeaderTitle>
                 <Card.Actions>
                   <Button variant="outlined">Stop</Button>
-                  <Button id={highlightTutorialElementID(id, 1)}>Start</Button>
+                  <Button
+                    id={
+                      missingStepElement
+                        ? undefined
+                        : highlightTutorialElementID(id, 1)
+                    }
+                    onClick={onHighlightedClick}
+                  >
+                    Start
+                  </Button>
                 </Card.Actions>
               </Card>
               <Card style={{ padding: '1rem' }}>
@@ -400,9 +414,7 @@ export const TutorialWithImage: StoryObj = {
   },
 };
 
-/**
- * Clicks outside the tutorial popover are blocked while a tutorial is showing
- */
+/** Blocks interactions until the tutorial is dismissed. */
 export const BlockedInteractions: StoryObj<typeof RouteComponent> = {
   tags: ['test-only', '!dev', '!autodocs'],
   parameters: {
@@ -415,25 +427,41 @@ export const BlockedInteractions: StoryObj<typeof RouteComponent> = {
       ],
     },
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, canvasElement, step }) => {
     await expect(
       await canvas.findByText(highlightElementTutorials[0].name)
     ).toBeInTheDocument();
 
     const button = canvas.getByText('Clicked 0 times');
+    const content = canvas.getByTestId('tutorial-content');
 
-    await expect(getComputedStyle(button).pointerEvents).toBe('none');
-    await expect(userEvent.click(button)).rejects.toThrowError(
-      /pointer-events: none/
+    await step(
+      'Blocks pointer, keyboard, and scroll events except Tab',
+      async () => {
+        await expect(getComputedStyle(button).pointerEvents).toBe('none');
+        await expect(userEvent.click(button)).rejects.toThrowError(
+          /pointer-events: none/
+        );
+        await expect(canvas.getByText('Clicked 0 times')).toBeInTheDocument();
+        // fireEvent returns false when the event's default action is prevented.
+        await expect(fireEvent.keyDown(button, { key: 'Tab' })).toBe(true);
+        await expect(fireEvent.keyDown(button, { key: 'Enter' })).toBe(false);
+        await expect(fireEvent.wheel(content)).toBe(false);
+        await expect(fireEvent.wheel(canvasElement.ownerDocument)).toBe(false);
+      }
     );
-    await expect(canvas.getByText('Clicked 0 times')).toBeInTheDocument();
+
+    await step('Restores interactions after dismissal', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /skip/i }));
+      await expect(getComputedStyle(button).pointerEvents).toBe('auto');
+      await expect(fireEvent.wheel(content)).toBe(true);
+      await userEvent.click(button);
+      await expect(canvas.getByText('Clicked 1 times')).toBeInTheDocument();
+    });
   },
 };
 
-/**
- * Everything is blocked while a tutorial is showing, except the single button matching
- * `interactiveElementSelectors`. `allowScrolling` keeps the page scrollable as well
- */
+/** Allows only the selected button and scrolling. */
 export const AllowedInteractions: StoryObj<typeof RouteComponent> = {
   args: {
     interactiveElementSelectors: [`#${INTERACTIVE_BUTTON_ID}`],
@@ -454,17 +482,79 @@ export const AllowedInteractions: StoryObj<typeof RouteComponent> = {
       await canvas.findByText(highlightElementTutorials[0].name)
     ).toBeInTheDocument();
 
-    const button = canvas.getByText(/Only this button is clickable/);
+    const button = canvas.getByRole('button', { name: /clicked 0 times/i });
+    const blocked = canvas.getAllByRole('button', { name: 'Stop' })[0];
 
     await expect(getComputedStyle(button).pointerEvents).toBe('auto');
-    await expect(
-      getComputedStyle(canvas.getAllByText('Stop')[0]).pointerEvents
-    ).toBe('none');
+    await expect(getComputedStyle(blocked).pointerEvents).toBe('none');
+    await expect(userEvent.click(blocked)).rejects.toThrowError(
+      /pointer-events: none/
+    );
+    await expect(fireEvent.wheel(canvas.getByTestId('tutorial-content'))).toBe(
+      true
+    );
 
     await userEvent.click(button);
 
     await expect(
-      canvas.getByText(/Only this button is clickable, clicked 1 times/)
+      canvas.getByRole('button', { name: /clicked 1 times/i })
     ).toBeInTheDocument();
+  },
+};
+
+export const InvalidSelectors: StoryObj<typeof RouteComponent> = {
+  ...AllowedInteractions,
+  tags: ['test-only', '!dev', '!autodocs'],
+  args: {
+    ...AllowedInteractions.args,
+    interactiveElementSelectors: [
+      'not a [valid selector',
+      `:is(#${INTERACTIVE_BUTTON_ID}, #does-not-exist)`,
+    ],
+  },
+};
+
+export const InteractiveTutorial: StoryObj<typeof RouteComponent> = {
+  args: { onHighlightedClick: fn() },
+  parameters: {
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get('*/api/v1/Tutorial/*', () =>
+          HttpResponse.json([
+            { ...highlightElementTutorials[0], isInteractive: true },
+          ])
+        ),
+      ],
+    },
+  },
+  play: async ({ canvas, args }) => {
+    await canvas.findByText(highlightElementTutorials[0].name);
+    await userEvent.click(canvas.getByRole('button', { name: /start tour/i }));
+    await userEvent.click(canvas.getAllByRole('button', { name: 'Start' })[0]);
+    await expect(args.onHighlightedClick).toHaveBeenCalledOnce();
+    await expect(
+      userEvent.click(canvas.getByRole('button', { name: 'Clicked 0 times' }))
+    ).rejects.toThrowError(/pointer-events: none/);
+    await expect(args.onHighlightedClick).toHaveBeenCalledOnce();
+  },
+};
+
+export const CancelledLookup: StoryObj<typeof RouteComponent> = {
+  tags: ['test-only', '!dev', '!autodocs'],
+  parameters: Default.parameters,
+  args: { missingStepElement: true },
+  play: async ({ mount }) => {
+    const canvas = await mount();
+    await canvas.findByText(highlightElementTutorials[0].name);
+    await userEvent.click(canvas.getByRole('button', { name: /start tour/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /next/i }));
+    await mount(<p>Tutorial unmounted</p>);
+
+    // Let the pending missing-element lookup resolve after unmounting.
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await expect(
+      canvas.queryByText(highlightElementTutorials[0].name)
+    ).not.toBeInTheDocument();
   },
 };
