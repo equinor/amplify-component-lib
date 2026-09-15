@@ -5,6 +5,7 @@ import { InputCell } from 'src/molecules/InputCell/InputCell';
 import {
   focusOutline,
   hover,
+  tertiaryText,
   transparent,
 } from 'src/molecules/InputCell/stories/testUtils';
 import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
@@ -31,7 +32,10 @@ export const SelectSurfaces: Story = {
             value={undefined}
             onSelect={fn()}
             CustomMenuItemComponent={() => (
-              <TextField aria-label="Menu editor" variant="error" />
+              <>
+                <TextField aria-label="Menu editor" variant="error" />
+                <input aria-label="Menu disabled" disabled />
+              </>
             )}
           />
         </InputCell>
@@ -75,6 +79,18 @@ export const SelectSurfaces: Story = {
     await expect(input.getBoundingClientRect().height).toBe(
       standalone.getBoundingClientRect().height
     );
+    // The menu popover is a sibling of the combobox container, so cell-scoped
+    // typography and disabled rules never reach editors rendered inside it
+    await expect(getComputedStyle(input).color).toBe(
+      getComputedStyle(standalone).color
+    );
+    await expect(getComputedStyle(input).fontSize).toBe(
+      getComputedStyle(standalone).fontSize
+    );
+    const placeholder = container.querySelector(
+      '[data-input-cell-placeholder]'
+    );
+    await expect(getComputedStyle(placeholder!).color).toBe(tertiaryText);
     await hover(input);
     await waitFor(async () => {
       await expect(getComputedStyle(input).boxShadow).not.toBe('none');

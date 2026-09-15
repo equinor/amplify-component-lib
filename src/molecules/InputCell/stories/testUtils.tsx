@@ -8,6 +8,7 @@ import { expect, waitFor } from 'storybook/test';
 export const transparent = 'rgba(0, 0, 0, 0)';
 export const focusOutline = 'rgb(0, 112, 121) solid 2px';
 export const dangerOutline = 'rgb(235, 0, 0) solid 2px';
+export const tertiaryText = 'rgb(111, 111, 111)';
 
 export function ControlledEditor({
   onValueChange,
