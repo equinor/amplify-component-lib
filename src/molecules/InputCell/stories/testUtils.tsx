@@ -9,10 +9,6 @@ export const transparent = 'rgba(0, 0, 0, 0)';
 export const focusOutline = 'rgb(0, 112, 121) solid 2px';
 export const dangerOutline = 'rgb(235, 0, 0) solid 2px';
 
-export function CustomInput(props: ComponentPropsWithRef<'input'>) {
-  return <input {...props} />;
-}
-
 export function ControlledEditor({
   onValueChange,
   ...props
@@ -22,7 +18,7 @@ export function ControlledEditor({
   const [value, setValue] = useState('A');
   return (
     <InputCell as="div">
-      <CustomInput
+      <input
         {...props}
         value={value}
         onChange={(event) => {

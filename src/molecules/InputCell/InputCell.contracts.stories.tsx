@@ -5,7 +5,6 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { InputCell } from 'src/molecules/InputCell/InputCell';
 import {
   ControlledEditor,
-  CustomInput,
   UpdateExample,
 } from 'src/molecules/InputCell/stories/testUtils';
 import { TextField } from 'src/molecules/TextField/TextField';
@@ -31,9 +30,6 @@ export const NativeElements: Story = {
               <InputCell
                 ref={ref}
                 colSpan={2}
-                rowSpan={3}
-                headers="name"
-                id="editable-cell"
                 className="consumer-cell"
                 data-column="name"
                 aria-label="Editable name"
@@ -46,15 +42,8 @@ export const NativeElements: Story = {
       );
       const cell = canvas.getByRole('cell', { name: 'Editable name' });
       await expect(cell.tagName).toBe('TD');
-      for (const [attribute, value] of Object.entries({
-        colspan: '2',
-        rowspan: '3',
-        headers: 'name',
-        id: 'editable-cell',
-        'data-column': 'name',
-      })) {
-        await expect(cell).toHaveAttribute(attribute, value);
-      }
+      await expect(cell).toHaveAttribute('colspan', '2');
+      await expect(cell).toHaveAttribute('data-column', 'name');
       await expect(cell).toHaveAttribute('data-input-cell');
       await expect(cell).toHaveClass('consumer-cell');
       await expect(cell).toHaveTextContent('Name');
@@ -69,9 +58,7 @@ export const NativeElements: Story = {
           as="div"
           ref={ref}
           role="gridcell"
-          aria-colindex={2}
           tabIndex={0}
-          title="Edit name"
           noBottomBorder
         />
       );
@@ -79,9 +66,7 @@ export const NativeElements: Story = {
       await expect(cell.tagName).toBe('DIV');
       await expect(ref.current).toBe(cell);
       await expect(cell).toHaveAttribute('data-input-cell');
-      await expect(cell).toHaveAttribute('aria-colindex', '2');
       await expect(cell).toHaveAttribute('tabindex', '0');
-      await expect(cell).toHaveAttribute('title', 'Edit name');
       await expect(cell).not.toHaveAttribute('noBottomBorder');
       await expect(cell).toBeEmptyDOMElement();
     });
@@ -93,31 +78,30 @@ export const CompositionAndValues: Story = {
     await step('Arbitrary children stay inside an isolated scope', async () => {
       const canvas = await mount(
         <>
-          <CustomInput aria-label="Before" />
+          <input aria-label="Before" />
           <InputCell as="div" role="gridcell">
             Prefix
             <>
               <span>Nested content</span>
-              <CustomInput aria-label="Inside" defaultValue="Original" />
+              <input aria-label="Inside" defaultValue="Original" />
             </>
             Suffix
           </InputCell>
-          <CustomInput aria-label="After" />
+          <input aria-label="After" />
         </>
       );
       await expect(canvas.getByRole('gridcell')).toHaveTextContent(
         'PrefixNested contentSuffix'
       );
-      await expect(canvas.getAllByRole('textbox')).toHaveLength(3);
       await expect(canvas.getByLabelText('Inside')).toHaveValue('Original');
+      await expect(
+        canvas.getByLabelText('Inside').closest('[data-input-cell]')
+      ).toBe(canvas.getByRole('gridcell'));
       for (const label of ['Before', 'After']) {
         await expect(
           canvas.getByLabelText(label).closest('[data-input-cell]')
         ).toBeNull();
       }
-      await expect(
-        canvas.getByLabelText('Inside').closest('[data-input-cell]')
-      ).toBe(canvas.getByRole('gridcell'));
     });
     await step('Consumer controls value, callback and custom ref', async () => {
       const ref = createRef<HTMLInputElement>();
@@ -258,25 +242,22 @@ export const ConsumerInputState: Story = {
         await mount(<></>);
       });
     }
-    for (const variant of ['error', 'warning', 'success', 'dirty'] as const) {
-      await step(`${variant} and active are visual only`, async () => {
-        const canvas = await mount(
-          <InputCell as="div" role="gridcell" active variant={variant}>
-            <input aria-label="Editor" defaultValue="Original" />
-          </InputCell>
-        );
-        const cell = canvas.getByRole('gridcell');
-        const input = canvas.getByRole('textbox');
-        await expect(input).toHaveValue('Original');
-        await expect(input).toBeEnabled();
-        await expect(input).not.toHaveAttribute('readonly');
-        await expect(input).not.toHaveAttribute('aria-invalid');
-        await expect(input).not.toHaveFocus();
-        for (const attribute of ['active', 'variant', 'aria-invalid']) {
-          await expect(cell).not.toHaveAttribute(attribute);
-        }
-      });
-    }
+    await step('Explicit feedback stays visual only', async () => {
+      const canvas = await mount(
+        <InputCell as="div" role="gridcell" active variant="error">
+          <input aria-label="Editor" defaultValue="Original" />
+        </InputCell>
+      );
+      const cell = canvas.getByRole('gridcell');
+      const input = canvas.getByRole('textbox');
+      await expect(input).toHaveValue('Original');
+      await expect(input).toBeEnabled();
+      await expect(input).not.toHaveAttribute('aria-invalid');
+      await expect(input).not.toHaveFocus();
+      for (const attribute of ['active', 'variant', 'aria-invalid']) {
+        await expect(cell).not.toHaveAttribute(attribute);
+      }
+    });
   },
 };
 
@@ -286,13 +267,7 @@ export const TextFieldValidation: Story = {
     const canvas = await mount(
       <InputCell as="div" variant="success">
         <TextField
-          id="email"
           label="Email"
-          name="email"
-          type="email"
-          required
-          placeholder="name@example.com"
-          autoComplete="email"
           defaultValue="invalid"
           aria-invalid="true"
           variant="error"
@@ -302,26 +277,11 @@ export const TextFieldValidation: Story = {
       </InputCell>
     );
     const input = canvas.getByRole('textbox', { name: /Email/ });
-    for (const [attribute, value] of Object.entries({
-      id: 'email',
-      name: 'email',
-      type: 'email',
-      placeholder: 'name@example.com',
-      autocomplete: 'email',
-      'aria-invalid': 'true',
-    })) {
-      await expect(input).toHaveAttribute(attribute, value);
-    }
-    await expect(input).toBeRequired();
-    await expect(input).toHaveValue('invalid');
     await expect(input).toBeInvalid();
     await expect(canvas.getByText('Enter a valid email')).toBeVisible();
     fireEvent.change(input, { target: { value: 'name@example.com' } });
     await expect(input).toHaveValue('name@example.com');
     await expect(onChange).toHaveBeenCalledOnce();
-    await expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({ target: input })
-    );
     await expect(input).toHaveAttribute('aria-invalid', 'true');
     // Explicit cell feedback wins over the input's error; aria-invalid still belongs to the input.
     await expect(

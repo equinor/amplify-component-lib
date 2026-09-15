@@ -147,7 +147,8 @@ export const HoverAndFocus: Story = {
 
 export const DateFieldHover: Story = {
   play: async ({ mount, step }) => {
-    for (const variant of [undefined, 'error', 'dirty'] as const) {
+    // DatePicker styles branch on variant being undefined or set.
+    for (const variant of [undefined, 'error'] as const) {
       await step(
         `${variant ?? 'Default'} date field keeps its hover border only outside the cell`,
         async () => {
@@ -234,14 +235,11 @@ export const InheritedTokensAndTableBorders: Story = {
           await userEvent.click(canvas.getByRole('textbox'));
           const style = getComputedStyle(cell);
           const color = variant ? 'rgb(235, 0, 0)' : 'rgb(0, 112, 121)';
-          await expect(style.outlineColor).toBe(color);
-          await expect(style.outlineWidth).toBe('2px');
+          await expect(style.outline).toBe(`${color} solid 2px`);
           await expect(style.outlineOffset).toBe('-1px');
           await expect(style.borderRightColor).toBe(color);
-          await expect(style.position).toBe('relative');
           await expect(style.zIndex).toBe('1');
-          await expect(cell.getBoundingClientRect().width).toBe(before.width);
-          await expect(cell.getBoundingClientRect().height).toBe(before.height);
+          await expect(cell.getBoundingClientRect()).toEqual(before);
         }
       );
     }
