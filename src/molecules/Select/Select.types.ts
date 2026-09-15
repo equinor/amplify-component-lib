@@ -186,4 +186,5 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   'aria-label'?: string;
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
+  leadingContent?: ReactNode;
 } & CustomMenuItemComponentProps<T>;

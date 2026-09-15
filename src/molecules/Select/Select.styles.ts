@@ -205,11 +205,20 @@ const Container = styled.div<ContainerProps>`
 `;
 
 const Section = styled.section`
-  position: relative;
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: ${spacings.x_small};
   min-height: 24px;
+`;
+
+const SearchArea = styled.section`
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+  gap: ${spacings.x_small};
   input[type='search'] {
     background: transparent;
     width: 0;
@@ -491,6 +500,7 @@ export {
   PersistentComboBoxWrapper,
   ComboBoxChip,
   Section,
+  SearchArea,
   MenuItemWrapper,
   SmallButton,
   ChevronPlaceholder,

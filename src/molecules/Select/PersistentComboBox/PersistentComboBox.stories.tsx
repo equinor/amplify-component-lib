@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { checkbox, checkbox_outline } from '@equinor/eds-icons';
+import { checkbox, checkbox_outline, search } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -205,6 +205,13 @@ export const Explanation: Story = {
   args: {
     label: 'This is the label',
     explanation: 'This is an explanation text',
+  },
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+};
+
+export const LeadingContentPersistentCombobox: Story = {
+  args: {
+    leadingContent: <Icon data={search} />,
   },
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
