@@ -183,4 +183,5 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   explanation?: string;
   explanationPosition?: TooltipProps['placement'];
   'data-testid'?: string;
+  leadingContent?: ReactNode;
 } & CustomMenuItemComponentProps<T>;

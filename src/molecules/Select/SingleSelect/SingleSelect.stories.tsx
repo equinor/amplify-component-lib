@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { boat, car, error_outlined, flight } from '@equinor/eds-icons';
+import { boat, car, error_outlined, flight, search } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
@@ -89,6 +89,14 @@ export const BasicSingleSelect: Story = {
   render: SingleSelectStateful,
   args: {
     items: FAKE_ITEMS,
+  },
+};
+
+export const LeadingContentSingleSelect: Story = {
+  render: SingleSelectStateful,
+  args: {
+    items: FAKE_ITEMS,
+    leadingContent: <Icon data={search} />,
   },
 };
 
