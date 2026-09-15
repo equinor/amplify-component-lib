@@ -14,6 +14,8 @@ import { inputExamples } from 'src/molecules/InputCell/stories/inputExamples';
 import { ValidatedCell } from 'src/molecules/InputCell/stories/ValidatedCell';
 import validatedCellSource from 'src/molecules/InputCell/stories/ValidatedCell.tsx?raw';
 
+import { expect, userEvent, within } from 'storybook/test';
+
 const meta = {
   title: 'Molecules/Cell/InputCell',
   component: InputCell,
@@ -82,6 +84,49 @@ export const Default: Story = {
 
 export const AllInputs: Story = {
   render: () => <InputCellExamples />,
+  play: async ({ canvas, step }) => {
+    await step('Single select preserves consumer selection', async () => {
+      const select = canvas.getByRole('combobox', {
+        name: 'Default single select',
+      });
+      await userEvent.click(select);
+      const menu = await canvas.findByRole('menu');
+      await userEvent.click(within(menu).getByText('Item 2'));
+      await expect(
+        within(select.closest('[data-input-cell]') as HTMLElement).getByText(
+          'Item 2'
+        )
+      ).toBeVisible();
+    });
+    await step(
+      'Combobox chips fit one row and preserve removal and selection',
+      async () => {
+        const select = canvas.getByRole('combobox', {
+          name: 'Default combobox',
+        });
+        const cell = select.closest('[data-input-cell]') as HTMLElement;
+        const scope = within(cell);
+        await expect(cell.getBoundingClientRect().height).toBe(52);
+        const chips = scope.getAllByTestId('amplify-combobox-chip');
+        await expect(chips).toHaveLength(3);
+        for (const chip of chips) {
+          await expect(chip.getBoundingClientRect().height).toBe(24);
+          await expect(chip.getBoundingClientRect().width).toBeLessThan(67);
+        }
+        await userEvent.click(chips[0]);
+        await expect(
+          scope.getAllByTestId('amplify-combobox-chip')
+        ).toHaveLength(2);
+        await userEvent.click(select);
+        const menu = await canvas.findByRole('menu');
+        await userEvent.click(within(menu).getByText('Item 1'));
+        await expect(
+          scope.getAllByTestId('amplify-combobox-chip')
+        ).toHaveLength(3);
+        await userEvent.keyboard('{Escape}');
+      }
+    );
+  },
   parameters: {
     docs: {
       source: {
@@ -97,6 +142,12 @@ export const AsDiv: Story = {
   args: {
     as: 'div',
   },
+  play: async ({ canvas }) => {
+    const input = canvas.getByRole('textbox', { name: 'Name' });
+    await expect(input.closest('[data-input-cell]')?.tagName).toBe('DIV');
+    await userEvent.type(input, ' updated');
+    await expect(input).toHaveValue('Editable text updated');
+  },
   parameters: {
     docs: {
       source: { code: divCellSource },
@@ -110,6 +161,21 @@ export const AsDiv: Story = {
 
 export const DeveloperValidation: Story = {
   render: () => <ValidatedCell />,
+  play: async ({ canvas }) => {
+    const input = canvas.getByRole('textbox', { name: 'Integer' });
+    await expect(input).toHaveValue('42');
+    await userEvent.type(input, 'x');
+    await expect(input).toHaveValue('42x');
+    await expect(input).toHaveAttribute('aria-invalid', 'true');
+    await expect(canvas.getByText('Enter a whole number.')).toBeVisible();
+    await userEvent.clear(input);
+    await userEvent.type(input, '12');
+    await expect(input).toHaveValue('12');
+    await expect(input).toHaveAttribute('aria-invalid', 'false');
+    await expect(
+      canvas.queryByText('Enter a whole number.')
+    ).not.toBeInTheDocument();
+  },
   parameters: {
     docs: {
       source: {
