@@ -163,6 +163,7 @@ const LabelWrapper = styled.div`
  * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
  */
 export const TextField: FC<TextFieldProps> = (props) => {
+  // Destructure any new custom props here so they are not forwarded to EDS.
   const {
     loading,
     maxCharacters,
