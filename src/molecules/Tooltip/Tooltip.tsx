@@ -144,7 +144,7 @@ export const Tooltip: FC<TooltipProps> = ({
       hideTimer.current = null;
       //ignoring failsafe check
       /* v8 ignore start */
-      if (!tooltipRef.current?.matches(':popover-open')) {
+      if (tooltipRef.current?.matches(':popover-open')) {
         tooltipRef.current?.hidePopover();
       }
       /* v8 ignore end */
