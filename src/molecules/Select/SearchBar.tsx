@@ -15,7 +15,9 @@ import {
   ClearButton,
   Container,
   HelperWrapper,
+  LeadingContentWrapper,
   PlaceholderText,
+  SearchArea,
   Section,
   ValueText,
   Wrapper,
@@ -151,40 +153,47 @@ export const SearchBar = <T extends SelectOptionRequired>({
         $lightBackground={lightBackground}
       >
         <Section>
-          {!loading && search === '' && selectedValues.length === 0 && (
-            <PlaceholderText>{placeholder}</PlaceholderText>
+          {props.leadingContent && (
+            <LeadingContentWrapper $disabled={disabled || loading}>
+              {props.leadingContent}
+            </LeadingContentWrapper>
           )}
-          {((search === '' && 'value' in props) ||
-            ('values' in props &&
-              selectedValues.length > 0 &&
-              (!props.showSelectedAsText ||
-                (props.showSelectedAsText && search === '')))) &&
-            !loading &&
-            valueElements}
-          <input
-            id={id}
-            disabled={disabled || loading}
-            ref={searchRef}
-            type="search"
-            role="combobox"
-            value={search}
-            autoComplete="off"
-            onChange={handleOnSearchChange}
-            onKeyDownCapture={handleOnSearchKeyDown}
-            aria-invalid={variant === 'error' ? true : undefined}
-          />
-          {loading && (
-            <SkeletonField
-              role="progressbar"
-              style={{
-                width: skeletonWidth.current,
-                left: 0,
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }}
-              data-testid="select-loading-skeleton"
+          <SearchArea>
+            {!loading && search === '' && selectedValues.length === 0 && (
+              <PlaceholderText>{placeholder}</PlaceholderText>
+            )}
+            {((search === '' && 'value' in props) ||
+              ('values' in props &&
+                selectedValues.length > 0 &&
+                (!props.showSelectedAsText ||
+                  (props.showSelectedAsText && search === '')))) &&
+              !loading &&
+              valueElements}
+            <input
+              id={id}
+              disabled={disabled || loading}
+              ref={searchRef}
+              type="search"
+              role="combobox"
+              value={search}
+              autoComplete="off"
+              onChange={handleOnSearchChange}
+              onKeyDownCapture={handleOnSearchKeyDown}
+              aria-invalid={variant === 'error' ? true : undefined}
             />
-          )}
+            {loading && (
+              <SkeletonField
+                role="progressbar"
+                style={{
+                  width: skeletonWidth.current,
+                  left: 0,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+                data-testid="select-loading-skeleton"
+              />
+            )}
+          </SearchArea>
         </Section>
         {mode === 'menu' && (
           <Icon

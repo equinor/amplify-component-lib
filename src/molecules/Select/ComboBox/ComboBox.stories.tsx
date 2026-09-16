@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { Button, Dialog, Icon } from '@equinor/eds-core-react';
-import { checkbox, checkbox_outline } from '@equinor/eds-icons';
+import { checkbox, checkbox_outline, search } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
@@ -118,6 +118,14 @@ export const BasicComboBox: Story = {
   render: ComboBoxStateful,
   args: {
     items: FAKE_ITEMS,
+  },
+};
+
+export const LeadingContent: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: FAKE_ITEMS,
+    leadingContent: <Icon data={search} />,
   },
 };
 
