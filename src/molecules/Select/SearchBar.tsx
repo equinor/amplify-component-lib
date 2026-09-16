@@ -15,6 +15,7 @@ import {
   ClearButton,
   Container,
   HelperWrapper,
+  LeadingContentWrapper,
   PlaceholderText,
   SearchArea,
   Section,
@@ -155,7 +156,11 @@ export const SearchBar = <T extends SelectOptionRequired>({
         $lightBackground={lightBackground}
       >
         <Section>
-          {!loading && props.leadingContent}
+          {props.leadingContent && (
+            <LeadingContentWrapper $disabled={disabled || loading}>
+              {props.leadingContent}
+            </LeadingContentWrapper>
+          )}
           <SearchArea>
             {!loading && search === '' && selectedValues.length === 0 && (
               <PlaceholderText>{placeholder}</PlaceholderText>

@@ -212,6 +212,22 @@ const Section = styled.section`
   min-height: 24px;
 `;
 
+interface LeadingContentWrapperProps {
+  $disabled?: boolean;
+}
+
+const LeadingContentWrapper = styled.span<LeadingContentWrapperProps>`
+  display: inline-flex;
+  align-items: center;
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      fill: ${colors.interactive.disabled__text.rgba};
+      color: ${colors.interactive.disabled__text.rgba};
+    `}
+`;
+
 const SearchArea = styled.section`
   position: relative;
   display: flex;
@@ -499,6 +515,7 @@ export {
   PersistentListItem,
   PersistentComboBoxWrapper,
   ComboBoxChip,
+  LeadingContentWrapper,
   Section,
   SearchArea,
   MenuItemWrapper,
