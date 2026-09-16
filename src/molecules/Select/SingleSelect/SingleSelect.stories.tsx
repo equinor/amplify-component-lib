@@ -92,7 +92,7 @@ export const BasicSingleSelect: Story = {
   },
 };
 
-export const LeadingContentSingleSelect: Story = {
+export const LeadingContent: Story = {
   render: SingleSelectStateful,
   args: {
     items: FAKE_ITEMS,
@@ -266,6 +266,7 @@ export const DisabledSingleSelect: Story = {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
     onSelect: () => {},
+    leadingContent: <Icon data={search} />,
   },
   play: async ({ canvas, step }) => {
     await step('Verify that the select is disabled', () => {

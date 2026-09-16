@@ -121,7 +121,7 @@ export const BasicComboBox: Story = {
   },
 };
 
-export const LeadingContentCombobox: Story = {
+export const LeadingContent: Story = {
   render: ComboBoxStateful,
   args: {
     items: FAKE_ITEMS,
