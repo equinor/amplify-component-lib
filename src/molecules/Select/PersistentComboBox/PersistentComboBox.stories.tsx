@@ -209,7 +209,7 @@ export const Explanation: Story = {
   render: (args) => <PersistentComboBoxWithState {...args} />,
 };
 
-export const LeadingContentPersistentCombobox: Story = {
+export const LeadingContent: Story = {
   args: {
     leadingContent: <Icon data={search} />,
   },
