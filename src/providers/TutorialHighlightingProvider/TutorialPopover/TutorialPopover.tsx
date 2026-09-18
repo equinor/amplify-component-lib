@@ -81,7 +81,7 @@ interface ContainerProps extends MotionProps {
   $hasImage: boolean;
 }
 
-const Container = styled(motion(Card))<ContainerProps>`
+const Container = styled(motion.create(Card))<ContainerProps>`
   width: ${({ $hasImage }) => ($hasImage ? 'fit-content' : '360px')};
   max-width: 90vw;
   max-height: 90vh;
