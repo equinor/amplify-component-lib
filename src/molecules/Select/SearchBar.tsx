@@ -123,6 +123,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             data-testid="amplify-combobox-chip"
             className="amplify-combo-box-chip"
             onDelete={() => handleOnRemoveItem(value)}
+            disabled={disabled}
             $tryingToRemove={tryingToRemoveItem?.value === value.value}
             $lightBackground={lightBackground}
           >
@@ -135,6 +136,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
     selectedValues,
     tryingToRemoveItem,
     lightBackground,
+    disabled,
     props,
     handleOnRemoveItem,
   ]);

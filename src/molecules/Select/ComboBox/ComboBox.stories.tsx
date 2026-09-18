@@ -679,6 +679,26 @@ export const TestRemoveWithBackspace: Story = {
   },
 };
 
+export const TestDisabledPreventsChipRemoval: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Disabled Test',
+    disabled: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const deleteButton = canvas.getByRole('button', {
+      name: TEST_ITEMS[0].label,
+    });
+    await expect(deleteButton).toBeDisabled();
+
+    await userEvent.click(deleteButton, { pointerEventsCheck: 0 });
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
 const TestCustomValueElement: FC<{
   item: SelectOptionRequired;
   onDelete: () => void;
