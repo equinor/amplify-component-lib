@@ -18,6 +18,8 @@ export type {
   ConfettiShowerProps,
 } from './Confetti/Confetti.types';
 export { DatePicker } from './DatePicker/DatePicker';
+export { InputCell } from './InputCell/InputCell';
+export type { InputCellProps } from './InputCell/InputCell';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
