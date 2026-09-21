@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   width: 48px;
 `;
 
-const StyledIconButton = motion(styled.button`
+const StyledIconButton = motion.create(styled.button`
   position: absolute;
   display: flex;
   border-radius: ${shape.icon_button.borderRadius};
