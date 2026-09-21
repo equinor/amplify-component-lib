@@ -183,4 +183,7 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   explanation?: string;
   explanationPosition?: TooltipProps['placement'];
   'data-testid'?: string;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
 } & CustomMenuItemComponentProps<T>;

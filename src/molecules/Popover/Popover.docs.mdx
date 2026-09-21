@@ -1,0 +1,65 @@
+import { Links } from 'src/storybook';
+import { Primary, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ComponentStories from './Popover.stories';
+
+# Popover
+
+Displays rich content or actions in a popover layer attached to an anchor element.
+
+<Links
+  ariaUrl="https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+  figmaUrl="https://www.figma.com/file/0bGXR2sCwMVSDNyyzu5BXrO5/UI%E2%80%94User-Interface?node-id=17837%3A128"
+  sourceUrl="https://github.com/equinor/design-system/blob/develop/packages/eds-core-react/src/components/Popover/Popover.tsx"
+  edsSBUrl="https://storybook.eds.equinor.com/?path=/docs/data-display-popover--docs"
+/>
+
+<Primary />
+
+<Controls />
+
+## Usage
+
+Popovers are used to display non-critical, extra information or actions floating near a target element.
+
+```tsx
+import { Popover, Button, Typography } from '@equinor/amplify-component-lib';
+import { useRef, useState } from 'react';
+
+const MyComponent = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <>
+      <Button ref={anchorRef} onClick={() => setIsOpen(!isOpen)}>
+        Toggle Popover
+      </Button>
+      <Popover
+        open={isOpen}
+        anchorEl={anchorRef.current}
+        onClose={() => setIsOpen(false)}
+      >
+        <Popover.Header>
+          <Popover.Title>Popover Title</Popover.Title>
+        </Popover.Header>
+        <Popover.Content>
+          <Typography variant="body_short">
+            Popover content goes here.
+          </Typography>
+        </Popover.Content>
+        <Popover.Actions>
+          <Button onClick={() => setIsOpen(false)}>Close</Button>
+        </Popover.Actions>
+      </Popover>
+    </>
+  );
+};
+```
+
+## Examples
+
+### Placement
+
+The `placement` prop controls where the popover is rendered relative to its anchor element.
+
+<Canvas of={ComponentStories.Placement} />

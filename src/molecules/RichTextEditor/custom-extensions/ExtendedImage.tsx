@@ -127,7 +127,7 @@ export default Image.extend({
                     if (!item) return;
                     const node = schema.nodes.image.create({
                       src: item.src,
-                      alt: item.src,
+                      alt: item.alt,
                     });
                     const transaction =
                       view.state.tr.replaceSelectionWith(node);

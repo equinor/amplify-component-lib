@@ -12,13 +12,18 @@ import { expect, fn, userEvent } from 'storybook/test';
 const fields = new Array(5).fill(0).map(() => FakeField());
 
 function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
-  const [selectedField, setSelectedField] = useState<Field>(
-    args.availableFields[0]
+  const [selectedField, setSelectedField] = useState<Field | undefined>(
+    args.onClear ? undefined : args.availableFields[0]
   );
 
   const handleOnSelectField = (field: Field) => {
     setSelectedField(field);
     args?.onSelect?.(field);
+  };
+
+  const handleOnClear = () => {
+    setSelectedField(undefined);
+    args?.onClear?.();
   };
 
   return (
@@ -29,6 +34,7 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
           ? selectedField
           : undefined
       }
+      onClearField={args.onClear ? handleOnClear : undefined}
       showAccessITLink={args.showAccessITLink}
       onSelectField={handleOnSelectField}
       applicationIcon="acquire"
@@ -104,6 +110,34 @@ export const Searching: Story = {
     await userEvent.type(searchInput, faker.animal.cat());
 
     await expect(canvas.getByText(/no field/i)).toBeInTheDocument();
+  },
+};
+
+export const Clearable: Story = {
+  args: {
+    onClear: fn(),
+    availableFields: fields,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const button = canvas.getByTestId('field-selector-top-bar-button');
+    await userEvent.click(button);
+
+    const firstItem = canvas.getByText(
+      new RegExp(args.availableFields[0].name ?? '', 'i')
+    );
+    await userEvent.click(firstItem);
+
+    await expect(args.onSelect).toHaveBeenCalledWith(args.availableFields[0]);
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+
+    await userEvent.click(button);
+
+    const selectedItem = canvas.getByTestId('selected-field-item');
+    await userEvent.click(selectedItem);
+
+    await expect(args.onClear).toHaveBeenCalledTimes(1);
+    await expect(canvas.getByText(/no field selected/i)).toBeInTheDocument();
   },
 };
 

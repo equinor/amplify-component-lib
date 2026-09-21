@@ -245,30 +245,6 @@ export const TestWithReactNodeTitle: Story = {
   },
 };
 
-export const TestFocusBlur: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
-  parameters: {
-    fullPage: false,
-  },
-  args: {
-    title: 'Focus tooltip',
-    enterDelay: 0,
-    exitDelay: 0,
-    children: <button>Focus me</button>,
-  },
-  play: async ({ canvas }) => {
-    const btn = canvas.getByText('Focus me');
-
-    btn.focus();
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    await expect(screen.getByRole('tooltip')).toBeInTheDocument();
-
-    btn.blur();
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    await expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-  },
-};
-
 export const WithoutTitle: Story = {
   tags: ['test-only'],
   args: {

@@ -21,6 +21,12 @@ import { animation } from 'src/atoms/style/animation';
 import { colors, VARIANT_COLORS } from 'src/atoms/style/colors';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
+import {
+  cellInputHeight,
+  cellInputSelector,
+  cellInputSurface,
+  excludeCellPopoverContent,
+} from 'src/molecules/InputCell/InputCell.styles';
 import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
@@ -138,6 +144,28 @@ const Wrapper = styled.div<WrapperProps>`
       }
     `;
   }}
+
+  ${cellInputSelector} > div > div {
+    ${cellInputSurface}
+  }
+
+  ${cellInputSelector} input,
+  ${cellInputSelector} textarea {
+    ${cellInputSurface}
+    box-sizing: border-box;
+    min-height: ${cellInputHeight};
+    padding: calc(${spacings.x_small} + ${spacings.xx_small}) ${spacings.small};
+  }
+
+  ${cellInputSelector} input {
+    height: ${cellInputHeight};
+  }
+  [data-input-cell] &[data-loading='true']${excludeCellPopoverContent} {
+    input,
+    textarea {
+      visibility: hidden;
+    }
+  }
 `;
 
 const Loader = styled(SkeletonBase)`
@@ -244,6 +272,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
 
   return (
     <Wrapper
+      data-loading={loading || undefined}
+      data-input-cell-variant={usingVariant}
       ref={handleOnRender}
       $variant={usingVariant}
       $disabled={loading ? false : props.disabled}

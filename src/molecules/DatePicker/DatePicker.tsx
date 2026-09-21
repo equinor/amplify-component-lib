@@ -53,7 +53,11 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     const usingDisabled = props.loading || props.disabled;
 
     return (
-      <DatePickerWrapper $variant={props.variant} $loading={props.loading}>
+      <DatePickerWrapper
+        $variant={props.variant}
+        $loading={props.loading}
+        data-input-cell-variant={!props.loading ? props.variant : undefined}
+      >
         <EDSDatePicker
           {...baseProps}
           ref={ref}

@@ -18,11 +18,15 @@ export type {
   ConfettiShowerProps,
 } from './Confetti/Confetti.types';
 export { DatePicker } from './DatePicker/DatePicker';
+export { InputCell } from './InputCell/InputCell';
+export type { InputCellProps } from './InputCell/InputCell';
 export type { DatePickerProps } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export type { DateRangePickerProps } from './DateRangePicker/DateRangePicker';
 export { Dialog } from './Dialog/Dialog';
 export type { DialogProps, DialogAction } from './Dialog/Dialog';
+export { EmptyCell } from './EmptyCell/EmptyCell';
+export type { EmptyCellProps } from './EmptyCell/EmptyCell';
 export { EquinorLogo } from './EquinorLogo/EquinorLogo';
 export type { EquinorLogoProps } from './EquinorLogo/EquinorLogo';
 export { FileProgress } from './FileProgress/FileProgress';
@@ -121,6 +125,11 @@ export {
   Divider,
   Dialog as EDSDialog,
   Menu,
+  Popover,
+  PopoverTitle,
+  PopoverContent,
+  PopoverHeader,
+  PopoverActions,
   Typography,
   Icon,
   CircularProgress,
@@ -139,6 +148,11 @@ export type {
   DialogProps as EDSDialogProps,
   DividerProps,
   MenuProps,
+  PopoverProps,
+  PopoverTitleProps,
+  PopoverContentProps,
+  PopoverHeaderProps,
+  PopoverActionsProps,
   SearchProps,
   TypographyProps,
   IconProps,

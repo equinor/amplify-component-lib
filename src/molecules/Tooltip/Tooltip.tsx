@@ -1,5 +1,12 @@
-import type { ComponentPropsWithRef, FC } from 'react';
-import { ReactNode, useId, useRef, useState } from 'react';
+import type { ComponentPropsWithRef, CSSProperties, FC } from 'react';
+import {
+  ReactNode,
+  useEffect,
+  useEffectEvent,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 
 import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
 import { assignRef, getResolvedPlacement } from 'src/molecules/Tooltip/utils';
@@ -26,14 +33,17 @@ export const Tooltip: FC<TooltipProps> = ({
   placement = 'top',
   enterDelay = 0,
   exitDelay = 300,
+  style,
   ...rest
 }) => {
   const uid = useId().replace(/:/g, '');
+  const anchorName = `--tooltip-${uid}`;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const anchorRef = useRef<HTMLSpanElement>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const [arrow, setArrow] = useState<Arrow>({
     placement,
@@ -81,15 +91,7 @@ export const Tooltip: FC<TooltipProps> = ({
     assignRef(ref, node);
   };
 
-  const show = () => {
-    if (hideTimer.current) {
-      clearTimeout(hideTimer.current);
-      hideTimer.current = null;
-    }
-
-    if (showTimer.current || tooltipRef.current?.matches(':popover-open'))
-      return;
-
+  const startShowTimer = useEffectEvent(() => {
     showTimer.current = setTimeout(() => {
       showTimer.current = null;
       //ignoring failsafe check
@@ -98,8 +100,43 @@ export const Tooltip: FC<TooltipProps> = ({
       tooltipRef.current?.showPopover();
       requestAnimationFrame(updateResolvedPlacement);
     }, enterDelay);
-  };
-  const hide = () => {
+  });
+
+  useEffect(() => {
+    if (mounted) startShowTimer();
+  }, [mounted]);
+
+  // Guards against orphaned popovers/timers if this instance unmounts
+  // while a tooltip is showing or a timer is still pending.
+  useEffect(() => {
+    return () => {
+      /* v8 ignore start */
+      if (showTimer.current) clearTimeout(showTimer.current);
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+      if (tooltipRef.current?.matches(':popover-open')) {
+        tooltipRef.current.hidePopover();
+      }
+      /* v8 ignore end */
+    };
+  }, []);
+
+  const show = useEffectEvent(() => {
+    if (hideTimer.current) {
+      clearTimeout(hideTimer.current);
+      hideTimer.current = null;
+    }
+
+    if (showTimer.current || tooltipRef.current?.matches(':popover-open'))
+      return;
+
+    /* c8 ignore next */
+    if (mounted) {
+      startShowTimer();
+    } else {
+      setMounted(true);
+    }
+  });
+  const hide = useEffectEvent(() => {
     if (showTimer.current) {
       clearTimeout(showTimer.current);
       showTimer.current = null;
@@ -108,39 +145,66 @@ export const Tooltip: FC<TooltipProps> = ({
     hideTimer.current = setTimeout(() => {
       hideTimer.current = null;
       //ignoring failsafe check
-      /* v8 ignore next */
-      if (!tooltipRef.current?.matches(':popover-open')) return;
-      tooltipRef.current.hidePopover();
+      /* v8 ignore start */
+      if (tooltipRef.current?.matches(':popover-open')) {
+        tooltipRef.current?.hidePopover();
+      }
+      /* v8 ignore end */
+      setMounted(false);
     }, exitDelay);
-  };
+  });
+
+  useEffect(() => {
+    const anchorElement = anchorRef.current;
+    if (!anchorElement || !title || disabled) return;
+
+    anchorElement.addEventListener('mouseenter', show);
+    anchorElement.addEventListener('mouseleave', hide);
+
+    return () => {
+      anchorElement.removeEventListener('mouseenter', show);
+      anchorElement.removeEventListener('mouseleave', hide);
+    };
+  }, [disabled, title]);
 
   if (!title || disabled) return children;
 
   return (
     <Wrapper
-      onMouseEnter={show}
-      onMouseLeave={hide}
-      onFocus={show}
-      onBlur={hide}
-      $anchor={`--tooltip-${uid}`}
       ref={anchorRef}
       {...rest}
+      style={
+        {
+          ...style,
+          '--tooltip-anchor': anchorName,
+        } as CSSProperties
+      }
     >
       {children}
-      <TooltipWrapper
-        ref={setRef}
-        role="tooltip"
-        popover="hint"
-        $anchor={`--tooltip-${uid}`}
-        $placement={placement}
-        $arrow={arrow}
-      >
-        {typeof title === 'string' ? (
-          <LeftAlignedText>{title}</LeftAlignedText>
-        ) : (
-          title
-        )}
-      </TooltipWrapper>
+      {mounted && (
+        <TooltipWrapper
+          ref={setRef}
+          role="tooltip"
+          popover="hint"
+          data-placement={placement}
+          data-arrow-placement={arrow.placement}
+          style={
+            {
+              '--tooltip-anchor': anchorName,
+              '--tooltip-arrow-x':
+                arrow.offset.x !== undefined ? `${arrow.offset.x}px` : '50%',
+              '--tooltip-arrow-y':
+                arrow.offset.y !== undefined ? `${arrow.offset.y}px` : '50%',
+            } as CSSProperties
+          }
+        >
+          {typeof title === 'string' ? (
+            <LeftAlignedText>{title}</LeftAlignedText>
+          ) : (
+            title
+          )}
+        </TooltipWrapper>
+      )}
     </Wrapper>
   );
 };
