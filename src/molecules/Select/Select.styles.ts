@@ -174,13 +174,13 @@ const Container = styled.div<ContainerProps>`
   }
 
   ${cellInputSelector} input,
-  ${cellInputSelector} section > p {
+  ${cellInputSelector} section p {
     ${typographyTemplate(tokens.typography.input.text)}
     color: ${colors.text.static_icons__default.rgba};
   }
 
   ${cellInputSelector} input:disabled,
-  ${cellInputSelector}:has(input:disabled) section > p {
+  ${cellInputSelector}:has(input:disabled) section p {
     color: ${colors.interactive.disabled__text.rgba};
   }
 
@@ -192,7 +192,7 @@ const Container = styled.div<ContainerProps>`
   [data-input-cell]
     &${excludeCellPopoverContent}
     > section
-    > .amplify-combo-box-chip
+    .amplify-combo-box-chip
     .content {
     padding: 0 ${spacings.xx_small};
   }

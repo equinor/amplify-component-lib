@@ -163,7 +163,9 @@ export const SearchBar = <T extends SelectOptionRequired>({
           )}
           <SearchArea>
             {!loading && search === '' && selectedValues.length === 0 && (
-              <PlaceholderText>{placeholder}</PlaceholderText>
+              <PlaceholderText data-input-cell-placeholder>
+                {placeholder}
+              </PlaceholderText>
             )}
             {((search === '' && 'value' in props) ||
               ('values' in props &&
