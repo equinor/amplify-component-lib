@@ -94,6 +94,10 @@ const meta: Meta<typeof Comments> = {
   ],
 };
 
+const sortByTime = <T extends { timestamp: Date }>(list: T[]) => {
+  return list.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+};
+
 const generateCommentThread = () => {
   return {
     id: faker.string.uuid(),
@@ -114,10 +118,9 @@ const generateCommentThread = () => {
 };
 
 const CommentsStory = (args: CommentsProps) => {
-  const [comments, setComments] = useState<CommentData[]>([
-    generateCommentThread(),
-    generateCommentThread(),
-  ]);
+  const [comments, setComments] = useState<CommentData[]>(
+    sortByTime([generateCommentThread(), generateCommentThread()])
+  );
 
   const componentProps: CommentsProps = {
     ...args,
@@ -166,9 +169,9 @@ export const Introduction: Story = {
 
 const CustomHeaderExample = () => {
   const [commentsByThread, setCommentsByThread] = useState<CommentData[][]>([
-    [generateCommentThread(), generateCommentThread()],
-    [generateCommentThread(), generateCommentThread()],
-    [generateCommentThread(), generateCommentThread()],
+    sortByTime([generateCommentThread(), generateCommentThread()]),
+    sortByTime([generateCommentThread(), generateCommentThread()]),
+    sortByTime([generateCommentThread(), generateCommentThread()]),
   ]);
   const [threadIndex, setThreadIndex] = useState<number | undefined>(0);
 
