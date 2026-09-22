@@ -19,5 +19,5 @@ test('Has checked attribute', () => {
 
   expect(screen.getByRole('radio')).toBeChecked();
   rerender(<Radio label={label} checked={false} onChange={onChange} />);
-  expect(screen.getByText(label)).not.toHaveAttribute('checked');
+  expect(screen.getByRole('radio')).not.toBeChecked();
 });
