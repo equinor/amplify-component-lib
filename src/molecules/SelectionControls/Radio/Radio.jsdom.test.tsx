@@ -4,6 +4,14 @@ import { Radio } from './Radio';
 import { colors } from 'src/atoms/style';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
+test('Renders ReactNode label content', () => {
+  render(
+    <Radio label={<strong data-testid="formatted-label">Toyota</strong>} />
+  );
+
+  expect(screen.getByTestId('formatted-label')).toBeInTheDocument();
+});
+
 test('Renders as expected with outlined=true', () => {
   const label = faker.animal.dog();
   render(<Radio label={label} outlined />);
