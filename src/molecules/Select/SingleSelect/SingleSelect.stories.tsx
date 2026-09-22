@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { boat, car, error_outlined, flight } from '@equinor/eds-icons';
+import { boat, car, error_outlined, flight, search } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
@@ -89,6 +89,14 @@ export const BasicSingleSelect: Story = {
   render: SingleSelectStateful,
   args: {
     items: FAKE_ITEMS,
+  },
+};
+
+export const LeadingContent: Story = {
+  render: SingleSelectStateful,
+  args: {
+    items: FAKE_ITEMS,
+    leadingContent: <Icon data={search} />,
   },
 };
 
@@ -258,6 +266,7 @@ export const DisabledSingleSelect: Story = {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
     onSelect: () => {},
+    leadingContent: <Icon data={search} />,
   },
   play: async ({ canvas, step }) => {
     await step('Verify that the select is disabled', () => {

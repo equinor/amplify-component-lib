@@ -174,13 +174,13 @@ const Container = styled.div<ContainerProps>`
   }
 
   ${cellInputSelector} input,
-  ${cellInputSelector} section > p {
+  ${cellInputSelector} section p {
     ${typographyTemplate(tokens.typography.input.text)}
     color: ${colors.text.static_icons__default.rgba};
   }
 
   ${cellInputSelector} input:disabled,
-  ${cellInputSelector}:has(input:disabled) section > p {
+  ${cellInputSelector}:has(input:disabled) section p {
     color: ${colors.interactive.disabled__text.rgba};
   }
 
@@ -192,7 +192,7 @@ const Container = styled.div<ContainerProps>`
   [data-input-cell]
     &${excludeCellPopoverContent}
     > section
-    > .amplify-combo-box-chip
+    .amplify-combo-box-chip
     .content {
     padding: 0 ${spacings.xx_small};
   }
@@ -205,11 +205,36 @@ const Container = styled.div<ContainerProps>`
 `;
 
 const Section = styled.section`
-  position: relative;
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: ${spacings.x_small};
   min-height: 24px;
+`;
+
+interface LeadingContentWrapperProps {
+  $disabled?: boolean;
+}
+
+const LeadingContentWrapper = styled.span<LeadingContentWrapperProps>`
+  display: inline-flex;
+  align-items: center;
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      fill: ${colors.interactive.disabled__text.rgba};
+      color: ${colors.interactive.disabled__text.rgba};
+    `}
+`;
+
+const SearchArea = styled.section`
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+  gap: ${spacings.x_small};
   input[type='search'] {
     background: transparent;
     width: 0;
@@ -490,7 +515,9 @@ export {
   PersistentListItem,
   PersistentComboBoxWrapper,
   ComboBoxChip,
+  LeadingContentWrapper,
   Section,
+  SearchArea,
   MenuItemWrapper,
   SmallButton,
   ChevronPlaceholder,
