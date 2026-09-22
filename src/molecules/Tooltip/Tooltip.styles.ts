@@ -1,21 +1,31 @@
 import { typographyTemplate } from '@equinor/eds-utils';
 
+import type { Arrow, TooltipPlacement } from './Tooltip';
 import { elevation, shape, typography } from 'src/atoms/style';
 import { colors } from 'src/atoms/style/colors';
 import { spacings } from 'src/atoms/style/spacings';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const ARROW_SIZE = '4px';
 const TOOLTIP_DISTANCE = '5px';
 
-export const Wrapper = styled.span`
-  anchor-name: var(--tooltip-anchor);
+interface TooltipProps {
+  $anchor: string;
+}
+export const Wrapper = styled.span<TooltipProps>`
+  anchor-name: ${(props) => props.$anchor};
   display: inline-block;
 `;
 
-export const TooltipWrapper = styled.div`
-  position-anchor: var(--tooltip-anchor);
+interface TooltipWrapperProps {
+  $anchor: string;
+  $placement: TooltipPlacement;
+  $arrow: Arrow;
+}
+
+export const TooltipWrapper = styled.div<TooltipWrapperProps>`
+  position-anchor: ${(props) => props.$anchor};
 
   /* UA popover reset */
   position: fixed;
@@ -43,67 +53,88 @@ export const TooltipWrapper = styled.div`
     z-index: -1;
     background: inherit;
     margin: inherit;
-    clip-path: polygon(
-      /* top */ calc(var(--tooltip-arrow-x) - ${ARROW_SIZE}) ${ARROW_SIZE},
-      var(--tooltip-arrow-x) 0,
-      var(--tooltip-arrow-x) 0,
-      calc(var(--tooltip-arrow-x) + ${ARROW_SIZE}) ${ARROW_SIZE},
-      /* right */ calc(100% - ${ARROW_SIZE})
-        calc(var(--tooltip-arrow-y) - ${ARROW_SIZE}),
-      100% var(--tooltip-arrow-y),
-      100% var(--tooltip-arrow-y),
-      calc(100% - ${ARROW_SIZE}) calc(var(--tooltip-arrow-y) + ${ARROW_SIZE}),
-      /* bottom */ calc(var(--tooltip-arrow-x) + ${ARROW_SIZE})
-        calc(100% - ${ARROW_SIZE}),
-      var(--tooltip-arrow-x) 100%,
-      var(--tooltip-arrow-x) 100%,
-      calc(var(--tooltip-arrow-x) - ${ARROW_SIZE}) calc(100% - ${ARROW_SIZE}),
-      /* left */ ${ARROW_SIZE} calc(var(--tooltip-arrow-y) + ${ARROW_SIZE}),
-      0 var(--tooltip-arrow-y),
-      0 var(--tooltip-arrow-y),
-      ${ARROW_SIZE} calc(var(--tooltip-arrow-y) - ${ARROW_SIZE})
-    );
+    ${({ $arrow }) => {
+      switch ($arrow.placement) {
+        case 'top':
+          return css`
+            inset: 0 0 -${ARROW_SIZE} 0;
+          `;
+        case 'bottom':
+          return css`
+            inset: -${ARROW_SIZE} 0 0 0;
+          `;
+        case 'left':
+          return css`
+            inset: 0 -${ARROW_SIZE} 0 0;
+          `;
+        case 'right':
+          return css`
+            inset: 0 0 0 -${ARROW_SIZE};
+          `;
+      }
+    }}
+
+    ${({ $arrow: { offset } }) => {
+      const x = offset.x ? `${offset.x}px` : '50%';
+      const y = offset.y ? `${offset.y}px` : '50%';
+      /* prettier-ignore */
+      return css`
+        clip-path: polygon(
+          /* top */ 
+          calc(${x} - ${ARROW_SIZE}) ${ARROW_SIZE},
+          ${x} 0,
+          ${x} 0,
+          calc(${x} + ${ARROW_SIZE}) ${ARROW_SIZE},
+          /* right */ 
+          calc(100% - ${ARROW_SIZE})
+          calc(${y} - ${ARROW_SIZE}),
+          100% ${y},
+          100% ${y},
+          calc(100% - ${ARROW_SIZE}) calc(${y} + ${ARROW_SIZE}),
+          /* bottom */ 
+          calc(${x} + ${ARROW_SIZE})
+          calc(100% - ${ARROW_SIZE}),
+          ${x} 100%,
+          ${x} 100%,
+          calc(${x} - ${ARROW_SIZE}) calc(100% - ${ARROW_SIZE}),
+          /* left */ 
+          ${ARROW_SIZE} calc(${y} + ${ARROW_SIZE}),
+          0 ${y},
+          0 ${y},
+          ${ARROW_SIZE} calc(${y} - ${ARROW_SIZE})
+        );
+      `;
+    }};
   }
 
-  &[data-arrow-placement='top']::before {
-    inset: 0 0 -${ARROW_SIZE} 0;
-  }
-
-  &[data-arrow-placement='bottom']::before {
-    inset: -${ARROW_SIZE} 0 0 0;
-  }
-
-  &[data-arrow-placement='left']::before {
-    inset: 0 -${ARROW_SIZE} 0 0;
-  }
-
-  &[data-arrow-placement='right']::before {
-    inset: 0 0 0 -${ARROW_SIZE};
-  }
-
-  &[data-placement='top'] {
-    position-area: top;
-    bottom: ${TOOLTIP_DISTANCE};
-    position-try-fallbacks: flip-block;
-  }
-
-  &[data-placement='bottom'] {
-    position-area: bottom;
-    top: ${TOOLTIP_DISTANCE};
-    position-try-fallbacks: flip-block;
-  }
-
-  &[data-placement='left'] {
-    position-area: left;
-    right: ${TOOLTIP_DISTANCE};
-    position-try-fallbacks: flip-inline;
-  }
-
-  &[data-placement='right'] {
-    position-area: right;
-    left: ${TOOLTIP_DISTANCE};
-    position-try-fallbacks: flip-inline;
-  }
+  ${(props) => {
+    switch (props.$placement) {
+      case 'top':
+        return css`
+          position-area: top;
+          bottom: ${TOOLTIP_DISTANCE};
+          position-try-fallbacks: flip-block;
+        `;
+      case 'bottom':
+        return css`
+          position-area: bottom;
+          top: ${TOOLTIP_DISTANCE};
+          position-try-fallbacks: flip-block;
+        `;
+      case 'left':
+        return css`
+          position-area: left;
+          right: ${TOOLTIP_DISTANCE};
+          position-try-fallbacks: flip-inline;
+        `;
+      case 'right':
+        return css`
+          position-area: right;
+          left: ${TOOLTIP_DISTANCE};
+          position-try-fallbacks: flip-inline;
+        `;
+    }
+  }})
 `;
 
 export const LeftAlignedText = styled.span`

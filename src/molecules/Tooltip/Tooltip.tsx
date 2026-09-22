@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, CSSProperties, FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import {
   ReactNode,
   useEffect,
@@ -33,11 +33,9 @@ export const Tooltip: FC<TooltipProps> = ({
   placement = 'top',
   enterDelay = 0,
   exitDelay = 300,
-  style,
   ...rest
 }) => {
   const uid = useId().replace(/:/g, '');
-  const anchorName = `--tooltip-${uid}`;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const anchorRef = useRef<HTMLSpanElement>(null);
@@ -170,33 +168,16 @@ export const Tooltip: FC<TooltipProps> = ({
   if (!title || disabled) return children;
 
   return (
-    <Wrapper
-      ref={anchorRef}
-      {...rest}
-      style={
-        {
-          ...style,
-          '--tooltip-anchor': anchorName,
-        } as CSSProperties
-      }
-    >
+    <Wrapper $anchor={`--tooltip-${uid}`} ref={anchorRef} {...rest}>
       {children}
       {mounted && (
         <TooltipWrapper
           ref={setRef}
           role="tooltip"
           popover="hint"
-          data-placement={placement}
-          data-arrow-placement={arrow.placement}
-          style={
-            {
-              '--tooltip-anchor': anchorName,
-              '--tooltip-arrow-x':
-                arrow.offset.x !== undefined ? `${arrow.offset.x}px` : '50%',
-              '--tooltip-arrow-y':
-                arrow.offset.y !== undefined ? `${arrow.offset.y}px` : '50%',
-            } as CSSProperties
-          }
+          $anchor={`--tooltip-${uid}`}
+          $placement={placement}
+          $arrow={arrow}
         >
           {typeof title === 'string' ? (
             <LeftAlignedText>{title}</LeftAlignedText>
