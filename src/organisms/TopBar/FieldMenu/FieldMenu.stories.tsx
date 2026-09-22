@@ -88,7 +88,8 @@ export const Selecting: Story = {
     await userEvent.click(button);
 
     const secondItem = canvas.getByText(
-      new RegExp(args.availableFields[1].name ?? '', 'i')
+      args.availableFields[1].name?.toLowerCase() ?? '',
+      { exact: true }
     );
     await userEvent.click(secondItem);
 
@@ -124,7 +125,8 @@ export const Clearable: Story = {
     await userEvent.click(button);
 
     const firstItem = canvas.getByText(
-      new RegExp(args.availableFields[0].name ?? '', 'i')
+      args.availableFields[0].name?.toLowerCase() ?? '',
+      { exact: true }
     );
     await userEvent.click(firstItem);
 
