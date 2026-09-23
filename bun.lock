@@ -12,7 +12,7 @@
         "@equinor/eds-icons": "^0.22.0",
         "@equinor/subsurface-app-management": "5.4.7",
         "@eslint/js": "^9.22.0",
-        "@faker-js/faker": "^9.6.0",
+        "@faker-js/faker": "10.6.0",
         "@storybook/addon-coverage": "^3.0.1",
         "@storybook/addon-designs": "^11.1.3",
         "@storybook/addon-docs": "^10.4.6",
@@ -260,7 +260,7 @@
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.4.1", "", { "dependencies": { "@eslint/core": "^0.17.0", "levn": "^0.4.1" } }, "sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA=="],
 
-    "@faker-js/faker": ["@faker-js/faker@9.9.0", "", {}, "sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA=="],
+    "@faker-js/faker": ["@faker-js/faker@10.6.0", "", {}, "sha512-3RQHgEtvL1Frl/d1cSreo7qhJ3Gk1OdNUai/CtZ8G+wYeRQnJih3s9xJ9/kgYekPQRdwgh0HXRPqMlzWGwivIQ=="],
 
     "@figspec/components": ["@figspec/components@2.1.0", "", {}, "sha512-PFKBX2oFz+vhThKTNsu7Mh4ZT3X7YCiM694UkAMT36j/p0tdmXs9Je0Sf88stTEcMgwYvNv9TZtvniYmgaE+bw=="],
 
