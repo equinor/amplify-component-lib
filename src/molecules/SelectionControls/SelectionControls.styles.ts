@@ -113,6 +113,13 @@ export const Wrapper = styled.span<WrapperProps>`
   }
 
   &:has(input:disabled) {
+    input:disabled {
+      background: transparent !important;
+      opacity: 1;
+    }
+    > label > span::before {
+      background: transparent !important;
+    }
     span:last-child {
       color: ${colors.interactive.disabled__text.rgba};
     }
