@@ -7,6 +7,7 @@ import { Variants } from 'src/atoms/types/variants';
 export interface SelectOptionRequired {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export type SelectOption<T extends SelectOptionRequired> = T & {
@@ -128,6 +129,7 @@ interface SelectMenuItemProps<T extends SelectOptionRequired> {
   isParentSelected?: boolean;
   mode: 'persistent' | 'menu' | undefined;
   parentHasNestedItems?: boolean;
+  disabled?: boolean;
   customMenuItemComponent?: FC<{
     item: SelectOption<T>;
     selected: boolean;
