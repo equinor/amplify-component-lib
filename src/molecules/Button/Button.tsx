@@ -14,6 +14,10 @@ import {
   PaddedContent,
 } from 'src/molecules/Button/Button.styles';
 import { getLoadingColor } from 'src/molecules/Button/Button.utils';
+import {
+  getInheritedLoadingColors,
+  INHERITED_BUTTON_TOKENS,
+} from 'src/molecules/Button/tokens/inherited';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
@@ -25,7 +29,7 @@ type BaseButtonProps = {
 
 const BaseButton: FC<BaseButtonProps> = ({
   variant = 'filled',
-  color = 'primary',
+  color,
   leadingContent,
   trailingContent,
   fullWidth = false,
@@ -34,7 +38,11 @@ const BaseButton: FC<BaseButtonProps> = ({
   children,
   ...rest
 }) => {
-  const tokens = TOKEN_MAPPINGS[color][variant];
+  // Inherit ancestor CSS variables (e.g. Banner), falling back to primary; an explicit color opts out.
+  const tokens =
+    color === undefined
+      ? INHERITED_BUTTON_TOKENS[variant]
+      : TOKEN_MAPPINGS[color][variant];
   const contentCount = [leadingContent, trailingContent].filter(Boolean).length;
 
   return (
@@ -57,7 +65,14 @@ const BaseButton: FC<BaseButtonProps> = ({
             </HiddenContent>
           )}
           <CenteredContent>
-            <DotProgress color={getLoadingColor({ color, variant })} />
+            <DotProgress
+              color={getLoadingColor({ color: color ?? 'primary', variant })}
+              style={
+                color === undefined
+                  ? { fill: getInheritedLoadingColors(variant).color }
+                  : undefined
+              }
+            />
           </CenteredContent>
         </>
       ) : (
