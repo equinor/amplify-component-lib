@@ -15,6 +15,7 @@ import {
   StyledCircularProgress,
 } from 'src/molecules/Button/IconButton/IconButton.styles';
 import { isIconData } from 'src/molecules/Button/IconButton/IconButton.utils';
+import { INHERITED_BUTTON_TOKENS } from 'src/molecules/Button/tokens/inherited';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
@@ -38,14 +39,17 @@ type BaseIconButtonProps = (IconDataProps | IconReactNodeProps) & {
 const BaseIconButton: FC<BaseIconButtonProps> = ({
   icon,
   variant = 'filled',
-  color = 'primary',
+  color,
   loading = false,
   shape = 'circular',
   onClick,
   iconProps,
   ...rest
 }) => {
-  const tokens = TOKEN_MAPPINGS[color][variant];
+  const tokens =
+    color === undefined
+      ? INHERITED_BUTTON_TOKENS[variant]
+      : TOKEN_MAPPINGS[color][variant];
 
   return (
     <IconButtonWrapper
@@ -60,13 +64,13 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
             size={16}
             $isTertiary={
               getLoadingColor({
-                color,
+                color: color ?? 'primary',
                 variant,
               }) === 'tertiary'
             }
             color={
               getLoadingColor({
-                color,
+                color: color ?? 'primary',
                 variant,
               }) as CircularProgressProps['color']
             }

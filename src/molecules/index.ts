@@ -4,7 +4,7 @@ export type { ApplicationIconProps } from './ApplicationIcon/ApplicationIcon';
 export { Badge } from './Badge/Badge';
 export type { BadgeProps } from './Badge/Badge';
 export { Banner } from './Banner/Banner';
-export type { BannerProps } from './Banner/Banner';
+export type { BannerActionConfig, BannerProps } from './Banner/Banner';
 export { Button } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { IconButton } from './Button/IconButton/IconButton';
