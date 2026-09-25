@@ -14,7 +14,10 @@ import {
   PaddedContent,
 } from 'src/molecules/Button/Button.styles';
 import { getLoadingColor } from 'src/molecules/Button/Button.utils';
-import { INHERITED_BUTTON_TOKENS } from 'src/molecules/Button/tokens/inherited';
+import {
+  getInheritedLoadingColors,
+  INHERITED_BUTTON_TOKENS,
+} from 'src/molecules/Button/tokens/inherited';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
@@ -64,6 +67,11 @@ const BaseButton: FC<BaseButtonProps> = ({
           <CenteredContent>
             <DotProgress
               color={getLoadingColor({ color: color ?? 'primary', variant })}
+              style={
+                color === undefined
+                  ? { fill: getInheritedLoadingColors(variant).color }
+                  : undefined
+              }
             />
           </CenteredContent>
         </>

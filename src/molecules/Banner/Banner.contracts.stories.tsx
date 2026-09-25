@@ -1,14 +1,17 @@
 import { createRef, useState } from 'react';
 
+import { DotProgress } from '@equinor/eds-core-react';
 import { close } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Banner, BannerProps } from './Banner';
 import { BANNER_COLORS } from './Banner.tokens';
 import { Button } from 'src/molecules/Button/Button';
+import { getLoadingColor } from 'src/molecules/Button/Button.utils';
 import { IconButton } from 'src/molecules/Button/IconButton/IconButton';
+import { StyledCircularProgress } from 'src/molecules/Button/IconButton/IconButton.styles';
 
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta = {
@@ -25,6 +28,131 @@ const variants = ['ghost', 'outlined', 'filled'] as const;
 const buttonStyle = (element: HTMLElement) => {
   const { backgroundColor, color, borderColor } = getComputedStyle(element);
   return { backgroundColor, color, borderColor };
+};
+
+export const LoadingColors: Story = {
+  play: async ({ mount, step }) => {
+    for (const theme of ['light', 'dark']) {
+      for (const variant of variants) {
+        await step(`${theme} ${variant} loading indicators`, async () => {
+          const buttons = (
+            <>
+              {([undefined, 'primary', 'danger'] as const).map((color) => (
+                <span key={color ?? 'inherited'}>
+                  <Button
+                    variant={variant}
+                    color={color}
+                    loading
+                    aria-label={`${color ?? 'inherited'} dots`}
+                  />
+                  <IconButton
+                    variant={variant}
+                    color={color}
+                    icon={close}
+                    loading
+                    aria-label={`${color ?? 'inherited'} circle`}
+                  />
+                </span>
+              ))}
+            </>
+          );
+          const canvas = await mount(
+            <div data-theme={theme}>
+              <div role="group" aria-label="outside">
+                {buttons}
+              </div>
+              {(['info', 'warning', 'danger'] as const).map((bannerVariant) => (
+                <Banner
+                  key={bannerVariant}
+                  variant={bannerVariant}
+                  role="group"
+                  aria-label={bannerVariant}
+                  actions={buttons}
+                >
+                  <Button
+                    variant={variant}
+                    aria-label="Expected color"
+                    style={{
+                      outlineColor:
+                        'color-mix(in srgb, currentColor 20%, transparent)',
+                    }}
+                  >
+                    Reference
+                  </Button>
+                </Banner>
+              ))}
+              {(['primary', 'danger'] as const).map((color) => {
+                const loadingColor = getLoadingColor({ color, variant });
+                return (
+                  <span key={color}>
+                    <DotProgress
+                      color={loadingColor}
+                      aria-label={`${color} reference dots`}
+                    />
+                    <StyledCircularProgress
+                      $isTertiary={loadingColor === 'tertiary'}
+                      color={loadingColor === 'neutral' ? 'neutral' : 'primary'}
+                      aria-label={`${color} reference circle`}
+                    />
+                  </span>
+                );
+              })}
+            </div>
+          );
+          for (const group of canvas.getAllByRole('group')) {
+            const scope = within(group);
+            for (const color of ['inherited', 'primary', 'danger']) {
+              const dots = within(
+                scope.getByRole('button', { name: `${color} dots` })
+              ).getByRole('progressbar');
+              const circle = within(
+                scope.getByRole('button', { name: `${color} circle` })
+              ).getByRole('progressbar');
+              if (
+                color === 'inherited' &&
+                group.getAttribute('aria-label') !== 'outside'
+              ) {
+                const expected = getComputedStyle(
+                  scope.getByRole('button', { name: 'Expected color' })
+                );
+                await expect(getComputedStyle(dots).fill).toBe(expected.color);
+                await expect(
+                  getComputedStyle(circle.querySelector('circle:last-child')!)
+                    .stroke
+                ).toBe(expected.color);
+                await expect(
+                  getComputedStyle(circle.querySelector('circle:first-child')!)
+                    .stroke
+                ).toBe(expected.outlineColor);
+              } else {
+                const reference = color === 'inherited' ? 'primary' : color;
+                const referenceDots = canvas.getByRole('progressbar', {
+                  name: `${reference} reference dots`,
+                });
+                const referenceCircle = canvas.getByRole('progressbar', {
+                  name: `${reference} reference circle`,
+                });
+                await expect(getComputedStyle(dots).fill).toBe(
+                  getComputedStyle(referenceDots).fill
+                );
+                for (const selector of [
+                  'circle:first-child',
+                  'circle:last-child',
+                ]) {
+                  await expect(
+                    getComputedStyle(circle.querySelector(selector)!).stroke
+                  ).toBe(
+                    getComputedStyle(referenceCircle.querySelector(selector)!)
+                      .stroke
+                  );
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+  },
 };
 
 export const ActionConfigs: Story = {

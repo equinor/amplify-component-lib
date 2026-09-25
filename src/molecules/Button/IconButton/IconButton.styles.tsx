@@ -5,6 +5,7 @@ import {
   ButtonPrimitive,
   resolveBorderColor,
 } from 'src/molecules/Button/Button.styles';
+import { getInheritedLoadingColors } from 'src/molecules/Button/tokens/inherited';
 
 import styled, { css } from 'styled-components';
 
@@ -81,6 +82,7 @@ export const IconButtonWrapper = styled(
 
 export const StyledCircularProgress = styled(CircularProgress)<{
   $isTertiary: boolean;
+  $inheritedColors?: ReturnType<typeof getInheritedLoadingColors>;
 }>`
   ${(props) =>
     props.$isTertiary &&
@@ -91,6 +93,17 @@ export const StyledCircularProgress = styled(CircularProgress)<{
 
       & circle:last-child {
         stroke: ${colors.interactive.danger__resting.rgba};
+      }
+    `}
+  ${({ $inheritedColors }) =>
+    $inheritedColors &&
+    css`
+      & circle:first-child {
+        stroke: ${$inheritedColors.track};
+      }
+
+      & circle:last-child {
+        stroke: ${$inheritedColors.color};
       }
     `}
 `;

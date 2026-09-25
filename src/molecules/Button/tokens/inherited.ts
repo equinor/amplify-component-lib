@@ -1,3 +1,5 @@
+import { tokens } from '@equinor/eds-tokens';
+
 import { ButtonVariants } from '../types';
 import { PRIMARY_TOKENS } from './primary';
 import { ButtonTokens, VariantTokens } from './types';
@@ -49,10 +51,28 @@ export const INHERITED_BUTTON_TOKENS = {
   ghost: inheritedVariant('ghost'),
 } satisfies ButtonTokens;
 
+// Preserve EDS spinner colors when no ancestor palette is present.
+export function getInheritedLoadingColors(variant: ButtonVariants) {
+  const { interactive, infographic, ui } = tokens.colors;
+  const filled = variant === 'filled';
+  const color = filled
+    ? interactive.icon_on_interactive_colors.rgba
+    : infographic.primary__moss_green_100.rgba;
+  const track = filled
+    ? ui.background__semitransparent.rgba
+    : infographic.primary__moss_green_13.rgba;
+  return {
+    color: `var(${stateVariables(variant, 'resting').color}, ${color})`,
+    track: `var(--amplify_button_${variant}_loading_track, ${track})`,
+  };
+}
+
 export function createButtonTokenVariables(tokens: ButtonTokens) {
   const variables: Record<string, string> = {};
   for (const variant of variants) {
     const variantTokens = tokens[variant];
+    variables[`--amplify_button_${variant}_loading_track`] =
+      `color-mix(in srgb, ${variantTokens.color} 20%, transparent)`;
     variables[`--amplify_button_${variant}_outline`] =
       variantTokens.outlineColor;
     for (const state of states) {
