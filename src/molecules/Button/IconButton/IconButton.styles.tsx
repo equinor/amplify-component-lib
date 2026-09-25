@@ -84,26 +84,26 @@ export const StyledCircularProgress = styled(CircularProgress)<{
   $isTertiary: boolean;
   $inheritedColors?: ReturnType<typeof getInheritedLoadingColors>;
 }>`
-  ${(props) =>
-    props.$isTertiary &&
-    css`
-      & circle:first-child {
-        stroke: ${colors.dataviz.lightpink.lighter};
-      }
+  ${({ $isTertiary, $inheritedColors }) => {
+    const palette =
+      $inheritedColors ??
+      ($isTertiary
+        ? {
+            track: colors.dataviz.lightpink.lighter,
+            color: colors.interactive.danger__resting.rgba,
+          }
+        : undefined);
+    return (
+      palette &&
+      css`
+        & circle:first-child {
+          stroke: ${palette.track};
+        }
 
-      & circle:last-child {
-        stroke: ${colors.interactive.danger__resting.rgba};
-      }
-    `}
-  ${({ $inheritedColors }) =>
-    $inheritedColors &&
-    css`
-      & circle:first-child {
-        stroke: ${$inheritedColors.track};
-      }
-
-      & circle:last-child {
-        stroke: ${$inheritedColors.color};
-      }
-    `}
+        & circle:last-child {
+          stroke: ${palette.color};
+        }
+      `
+    );
+  }}
 `;
