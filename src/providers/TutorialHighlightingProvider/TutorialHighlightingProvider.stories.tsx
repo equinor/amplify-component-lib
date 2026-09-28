@@ -16,7 +16,7 @@ import {
 } from 'src/tests/mockHandlers';
 
 import { http, HttpResponse } from 'msw';
-import { expect, fireEvent, fn, userEvent } from 'storybook/test';
+import { expect, fireEvent, fn, userEvent, waitFor } from 'storybook/test';
 
 const TUTORIAL_IDS = [faker.string.uuid(), faker.string.uuid()];
 const INTERACTIVE_BUTTON_ID = 'interactive-button';
@@ -230,6 +230,84 @@ export const MultipleHighlightingElement: StoryObj = {
         }),
       ],
     },
+  },
+};
+
+export const BottomHighlightedElement: StoryObj = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tutorial cards stay within the viewport when the highlighted element is near the bottom.',
+      },
+    },
+    msw: {
+      handlers: [
+        tokenHandler,
+        http.get(`*/api/v1/Tutorial/*`, () =>
+          HttpResponse.json([
+            fakeTutorial({
+              id: TUTORIAL_IDS[0],
+              willPopUp: true,
+              highlightElement: true,
+              stepAmount: 1,
+            }),
+          ])
+        ),
+      ],
+    },
+  },
+  render: function BottomElement() {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    return (
+      <div
+        ref={contentRef}
+        id="content"
+        style={{ height: '100vh', overflow: 'auto' }}
+      >
+        <TutorialHighlightingProvider contentRef={contentRef}>
+          <div
+            style={{
+              height: '100%',
+              boxSizing: 'border-box',
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              paddingBottom: 24,
+            }}
+          >
+            <Button id={highlightTutorialElementID(TUTORIAL_IDS[0], 0)}>
+              Bottom element
+            </Button>
+          </div>
+        </TutorialHighlightingProvider>
+      </div>
+    );
+  },
+  play: async ({ canvas }) => {
+    const target = canvas.getByRole('button', { name: 'Bottom element' });
+    const start = await canvas.findByRole('button', { name: /start tour/i });
+
+    const expectCardInViewport = async (button: HTMLElement) => {
+      const card = button.parentElement!.parentElement!;
+      await waitFor(() => {
+        const bounds = card.getBoundingClientRect();
+        expect(bounds.height).toBeGreaterThan(0);
+        expect(bounds.top).toBeGreaterThanOrEqual(32);
+        expect(bounds.bottom).toBeLessThanOrEqual(window.innerHeight - 16);
+        expect(bounds.bottom).toBeLessThan(target.getBoundingClientRect().top);
+      });
+    };
+
+    await expectCardInViewport(start);
+    await userEvent.click(start);
+    const finish = await canvas.findByRole('button', { name: /finish/i });
+    await expectCardInViewport(finish);
+    await userEvent.click(finish);
+    await expect(
+      canvas.queryByRole('button', { name: /finish/i })
+    ).not.toBeInTheDocument();
   },
 };
 

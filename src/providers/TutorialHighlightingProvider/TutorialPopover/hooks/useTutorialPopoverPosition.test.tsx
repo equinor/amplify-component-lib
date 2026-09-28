@@ -20,8 +20,108 @@ test("Caps top if it's more than max", () => {
 
   expect(result.current.style.top).toHaveProperty(
     'current',
+    window.innerHeight - CARET_OFFSET - 300
+  );
+});
+
+test('Moves above when the bottom edge would overflow', () => {
+  const popoverSize = { width: 200, height: 300 };
+  const top = window.innerHeight - popoverSize.height - 100 - 8;
+  const { result } = renderHook(() =>
+    useTutorialPopoverPosition({
+      contentRef: { current: null },
+      top,
+      left: window.innerWidth / 2 - 50,
+      width: 100,
+      height: 100,
+      popoverSize,
+    })
+  );
+
+  expect(result.current.caretPosition).toBe('bottom');
+  expect(result.current.style.top).toHaveProperty(
+    'current',
+    top - popoverSize.height - CARET_OFFSET
+  );
+});
+
+test('Stays below when the whole popover fits', () => {
+  const { result } = renderHook(() =>
+    useTutorialPopoverPosition({
+      contentRef: { current: null },
+      top: 100,
+      left: window.innerWidth / 2 - 50,
+      width: 100,
+      height: 100,
+      popoverSize: { width: 200, height: 300 },
+    })
+  );
+
+  expect(result.current.caretPosition).toBe('top');
+  expect(result.current.style.top).toHaveProperty(
+    'current',
+    200 + CARET_OFFSET
+  );
+});
+
+test.each([0, 1, 2])(
+  'Keeps a bottom-aligned popover visible (column %i)',
+  (column) => {
+    const top = window.innerHeight - 120;
+    const popoverSize = { width: 200, height: 300 };
+    const { result } = renderHook(() =>
+      useTutorialPopoverPosition({
+        contentRef: { current: null },
+        top,
+        left: [16, window.innerWidth / 2 - 50, window.innerWidth - 116][column],
+        width: 100,
+        height: 100,
+        popoverSize,
+      })
+    );
+
+    expect(result.current.caretPosition).toBe(
+      ['bottom-left', 'bottom', 'bottom-right'][column]
+    );
+    expect(result.current.style.top).toHaveProperty(
+      'current',
+      top - popoverSize.height - CARET_OFFSET
+    );
+  }
+);
+
+test('Keeps a tall popover inside the viewport when neither placement fits', () => {
+  const popoverSize = { width: 200, height: window.innerHeight * 0.9 };
+  const { result } = renderHook(() =>
+    useTutorialPopoverPosition({
+      contentRef: { current: null },
+      top: 100,
+      left: window.innerWidth / 2 - 50,
+      width: 100,
+      height: window.innerHeight - 200,
+      popoverSize,
+    })
+  );
+
+  expect(result.current.style.top).toHaveProperty('current', CARET_OFFSET * 2);
+  expect(CARET_OFFSET * 2 + popoverSize.height).toBeLessThanOrEqual(
     window.innerHeight - CARET_OFFSET
   );
+});
+
+test('Does not clamp above the minimum for an oversized popover', () => {
+  const { result } = renderHook(() =>
+    useTutorialPopoverPosition({
+      contentRef: { current: null },
+      top: window.innerHeight * 2,
+      left: window.innerWidth / 2 - 50,
+      width: 100,
+      height: 100,
+      popoverSize: { width: 200, height: window.innerHeight },
+    })
+  );
+
+  expect(result.current.style.top).toHaveProperty('current', CARET_OFFSET * 2);
 });
 
 test("Caps top if it's less than min", () => {
