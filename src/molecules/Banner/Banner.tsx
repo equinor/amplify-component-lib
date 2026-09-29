@@ -10,7 +10,7 @@ import {
   DismissButton,
   Message,
 } from './Banner.styles';
-import { getIconSize, getVariantIcon } from './Banner.utils';
+import { getVariantIcon } from './Banner.utils';
 import { Button, ButtonProps } from 'src/molecules/Button/Button';
 
 export interface BannerActionConfig extends Omit<ButtonProps, 'children'> {
@@ -31,7 +31,6 @@ function isActionConfig(action: unknown): action is BannerActionConfig {
 export interface BannerProps extends ComponentPropsWithRef<'div'> {
   variant: 'info' | 'warning' | 'danger';
   children: ReactNode;
-  spacing?: 'compact' | 'comfortable';
   /** Configs default to ghost/outlined/filled from left to right; JSX allows custom actions. */
   actions?: ReactNode | BannerActionConfig[];
   /** Requests dismissal; the caller controls visibility. */
@@ -41,7 +40,6 @@ export interface BannerProps extends ComponentPropsWithRef<'div'> {
 export const Banner: FC<BannerProps> = ({
   variant,
   children,
-  spacing = 'comfortable',
   actions,
   onDismiss,
   ...rest
@@ -66,13 +64,9 @@ export const Banner: FC<BannerProps> = ({
       : actions;
 
   return (
-    <Container $variant={variant} $spacing={spacing} {...rest}>
-      <Message $variant={variant} $spacing={spacing}>
-        <Icon
-          data={getVariantIcon(variant)}
-          size={getIconSize(spacing)}
-          aria-hidden
-        />
+    <Container $variant={variant} {...rest}>
+      <Message $variant={variant}>
+        <Icon data={getVariantIcon(variant)} size={24} aria-hidden />
         <Content>
           {typeof children === 'string' ? (
             <Typography variant="body_long">{children}</Typography>

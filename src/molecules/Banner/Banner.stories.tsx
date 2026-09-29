@@ -76,16 +76,6 @@ export const Variants: Story = {
       <VariantShowcase
         GenericComponent={Banner}
         otherProps={args}
-        columns={[
-          {
-            label: 'Comfortable',
-            value: { spacing: 'comfortable' },
-          },
-          {
-            label: 'Compact',
-            value: { spacing: 'compact' },
-          },
-        ]}
         rows={[
           { label: 'Info', value: { variant: 'info' } },
           { label: 'Warning', value: { variant: 'warning' } },
@@ -117,18 +107,56 @@ export const CustomContent: Story = {
   },
 };
 
-export const Compact: Story = {
-  tags: ['test-only'],
+export const SpacingModes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Spacing follows data-spacings-mode instead of a per-component spacing prop.',
+      },
+    },
+  },
   args: {
-    spacing: 'compact',
     children: 'Please note this important information!',
-    'aria-label': 'Compact banner',
+    actions: [{ label: 'Action', onClick: fn() }],
+    'aria-label': 'Spacing mode banner',
     role: 'group',
   },
-  play: async ({ canvas }) => {
-    await expect(
-      canvas.getByRole('group', { name: 'Compact banner' })
-    ).toHaveStyle('padding: 4px 8px');
+  render: function SpacingModeExample(args) {
+    const [mode, setMode] = useState('comfortable');
+    return (
+      <div>
+        <div role="group" aria-label="Spacing mode">
+          {['comfortable', 'compact', 'extra-compact'].map((value) => (
+            <Button key={value} onClick={() => setMode(value)}>
+              {value}
+            </Button>
+          ))}
+        </div>
+        <div data-spacings-mode={mode}>
+          <Banner {...args} />
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvas, userEvent }) => {
+    const banner = canvas.getByRole('group', { name: 'Spacing mode banner' });
+    for (const [mode, spacing] of [
+      ['comfortable', '12px'],
+      ['compact', '8px'],
+      ['extra-compact', '4px'],
+      ['comfortable', '12px'],
+    ]) {
+      await userEvent.click(canvas.getByRole('button', { name: mode }));
+      await expect(banner).toHaveStyle({ padding: spacing, gap: spacing });
+      await expect(banner.querySelector('svg')).toHaveAttribute(
+        'width',
+        '24px'
+      );
+      await expect(
+        canvas.getByRole('button', { name: 'Action' })
+      ).toBeVisible();
+    }
   },
 };
 
