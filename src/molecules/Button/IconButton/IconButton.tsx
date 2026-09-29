@@ -1,7 +1,6 @@
 import { FC, ReactNode } from 'react';
 
 import { Icon, IconProps } from '@equinor/eds-core-react';
-import { CircularProgressProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 import type {
   RegisteredRouter,
@@ -15,6 +14,10 @@ import {
   StyledCircularProgress,
 } from 'src/molecules/Button/IconButton/IconButton.styles';
 import { isIconData } from 'src/molecules/Button/IconButton/IconButton.utils';
+import {
+  getInheritedLoadingColors,
+  INHERITED_BUTTON_TOKENS,
+} from 'src/molecules/Button/tokens/inherited';
 import { TOKEN_MAPPINGS } from 'src/molecules/Button/tokens/tokens';
 import { CommonButtonProps } from 'src/molecules/Button/types';
 
@@ -38,14 +41,18 @@ type BaseIconButtonProps = (IconDataProps | IconReactNodeProps) & {
 const BaseIconButton: FC<BaseIconButtonProps> = ({
   icon,
   variant = 'filled',
-  color = 'primary',
+  color,
   loading = false,
   shape = 'circular',
   onClick,
   iconProps,
   ...rest
 }) => {
-  const tokens = TOKEN_MAPPINGS[color][variant];
+  const tokens =
+    color === undefined
+      ? INHERITED_BUTTON_TOKENS[variant]
+      : TOKEN_MAPPINGS[color][variant];
+  const loadingColor = getLoadingColor({ color: color ?? 'primary', variant });
 
   return (
     <IconButtonWrapper
@@ -55,23 +62,14 @@ const BaseIconButton: FC<BaseIconButtonProps> = ({
       {...rest}
     >
       {loading ? (
-        <>
-          <StyledCircularProgress
-            size={16}
-            $isTertiary={
-              getLoadingColor({
-                color,
-                variant,
-              }) === 'tertiary'
-            }
-            color={
-              getLoadingColor({
-                color,
-                variant,
-              }) as CircularProgressProps['color']
-            }
-          />
-        </>
+        <StyledCircularProgress
+          size={16}
+          $isTertiary={loadingColor === 'tertiary'}
+          $inheritedColors={
+            color === undefined ? getInheritedLoadingColors(variant) : undefined
+          }
+          color={loadingColor === 'neutral' ? 'neutral' : 'primary'}
+        />
       ) : isIconData(icon) ? (
         <Icon data={icon} {...iconProps} />
       ) : (
