@@ -287,8 +287,10 @@ export const TestDisabledFutureSteps: Story = {
         name: /Select car model/i,
       });
       await expect(futureStep).toHaveAttribute('aria-disabled', 'true');
+      await expect(futureStep).toHaveAttribute('tabindex', '0');
+      await expect(futureStep).toHaveAttribute('aria-describedby');
 
-      await userEvent.hover(canvas.getByText('Select car model'));
+      futureStep.focus();
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       await expect(
@@ -296,6 +298,10 @@ export const TestDisabledFutureSteps: Story = {
           name: 'Complete the previous step first',
         })
       ).toBeInTheDocument();
+
+      futureStep.blur();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await expect(canvas.queryByRole('tooltip')).not.toBeInTheDocument();
     });
 
     await step('Next skips the disabled future step', async () => {
