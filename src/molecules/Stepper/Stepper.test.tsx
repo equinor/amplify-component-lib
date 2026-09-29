@@ -242,6 +242,29 @@ test('Works as expected with title in steps', async () => {
   expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
 });
 
+test('Step tooltip is shown on hover', async () => {
+  const tooltip = 'Complete the previous step first';
+  const steps: StepperProviderProps['steps'] = [
+    { label: 'Step 1' },
+    { label: 'Step 2', tooltip },
+  ];
+
+  await renderWithRouter(
+    <StepperProvider steps={steps}>
+      <Stepper />
+    </StepperProvider>,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    }
+  );
+
+  const user = userEvent.setup();
+  await user.hover(screen.getByText('Step 2'));
+
+  expect(await screen.findByRole('tooltip')).toHaveTextContent(tooltip);
+});
+
 function isStepDisabled({ stepIndex }: { stepIndex: number }) {
   return stepIndex === 0;
 }

@@ -42,6 +42,7 @@ const meta: Meta<typeof Stepper> = {
   decorators: (Story, { parameters }) => {
     const syncToURL = parameters?.syncToURL ?? false;
     const disabledSteps = parameters?.disabledSteps ?? false;
+    const futureDisabledSteps = parameters?.futureDisabledSteps ?? false;
     return (
       <StepperProvider
         syncToURLParam={syncToURL}
@@ -54,6 +55,9 @@ const meta: Meta<typeof Stepper> = {
           },
           {
             label: 'Select car model',
+            tooltip: futureDisabledSteps
+              ? 'Complete the previous step first'
+              : undefined,
             subSteps: [
               {
                 title: 'Select car brand',
@@ -70,7 +74,13 @@ const meta: Meta<typeof Stepper> = {
             label: 'Finish order',
           },
         ]}
-        isStepDisabled={disabledSteps ? isStepDisabled : undefined}
+        isStepDisabled={
+          futureDisabledSteps
+            ? isFutureStepDisabled
+            : disabledSteps
+              ? isStepDisabled
+              : undefined
+        }
       >
         <Story />
       </StepperProvider>
@@ -230,6 +240,10 @@ function isStepDisabled({
   return stepIndex < currentStepIndex;
 }
 
+function isFutureStepDisabled({ stepIndex }: { stepIndex: number }) {
+  return stepIndex === 1;
+}
+
 export const DisabledSteps: Story = {
   parameters: {
     syncToURL: true,
@@ -240,6 +254,56 @@ export const DisabledSteps: Story = {
     },
   },
   render: () => <Story />,
+};
+
+export const DisabledFutureSteps: Story = {
+  args: {
+    hideContent: true,
+  },
+  parameters: {
+    futureDisabledSteps: true,
+    docs: {
+      description: {
+        story:
+          'Future steps can be disabled, show a lock icon, and provide a tooltip explaining why they are unavailable. Next skips the disabled step.',
+      },
+    },
+  },
+  render: (args) => <PrimaryTemplate {...args} />,
+};
+
+export const TestDisabledFutureSteps: Story = {
+  tags: ['test-only'],
+  args: {
+    hideContent: true,
+  },
+  parameters: {
+    futureDisabledSteps: true,
+  },
+  render: (args) => <PrimaryTemplate {...args} />,
+  play: async ({ canvas, step }) => {
+    await step('Future step is locked and has a tooltip', async () => {
+      const futureStep = canvas.getByRole('button', {
+        name: /Select car model/i,
+      });
+      await expect(futureStep).toHaveAttribute('aria-disabled', 'true');
+
+      await userEvent.hover(canvas.getByText('Select car model'));
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      await expect(
+        canvas.getByRole('tooltip', {
+          name: 'Complete the previous step first',
+        })
+      ).toBeInTheDocument();
+    });
+
+    await step('Next skips the disabled future step', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Next' }));
+      await expect(canvas.getByText('Finish order')).toBeInTheDocument();
+      await expect(canvas.getByRole('button', { name: 'Next' })).toBeDisabled();
+    });
+  },
 };
 
 const HideContentTemplate = (args: StepperProps) => {
