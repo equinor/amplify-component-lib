@@ -290,6 +290,24 @@ test('Going previous skips disabled earlier steps', async () => {
   expect(screen.getByText('Current step: 0')).toBeInTheDocument();
 });
 
+test('Going previous does nothing when all earlier steps are disabled', async () => {
+  await renderWithRouter(
+    <StepperProvider
+      steps={[{ label: 'step 1' }, { label: 'step 2' }]}
+      initialStep={1}
+      isStepDisabled={({ stepIndex }) => stepIndex === 0}
+    >
+      <StepperProviderTestHarness />
+    </StepperProvider>
+  );
+
+  const user = userEvent.setup();
+
+  await user.click(screen.getByText('Previous'));
+
+  expect(screen.getByText('Current step: 1')).toBeInTheDocument();
+});
+
 test('Going to the next step does nothing when all future steps are disabled', async () => {
   await renderWithRouter(
     <StepperProvider
