@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { RequestChangeOrcaTypes } from '../Notifications.types';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 

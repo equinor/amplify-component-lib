@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { delete_to_trash } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
@@ -38,6 +37,7 @@ import {
 import { formatRelativeDateTime } from 'src/atoms/utils';
 import { ApplicationIcon } from 'src/molecules/ApplicationIcon/ApplicationIcon';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 const { colors } = tokens;
 

@@ -1,7 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Icon, Menu } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import {
   Link as TanstackLink,
@@ -12,6 +11,7 @@ import {
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { colors, spacings } from 'src/atoms/style';
 import { SideBarMenuItemWithItems } from 'src/atoms/types/SideBar';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import {
   IconContainer,
   ItemText,
