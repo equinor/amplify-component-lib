@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { format_color_text } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { EditorPanel, RichTextEditorFeatures } from '../RichTextEditor.types';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 

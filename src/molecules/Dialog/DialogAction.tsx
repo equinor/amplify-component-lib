@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 
 import { DialogAction as DialogActionProps } from './Dialog';
 import { Button } from 'src/molecules/Button/Button';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 export const DialogAction: FC<DialogActionProps> = ({
   text,

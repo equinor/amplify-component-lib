@@ -11,9 +11,12 @@ import {
 import { TooltipWrapper, Wrapper } from './Tooltip.styles';
 import { assignRef, getResolvedPlacement } from 'src/molecules/Tooltip/utils';
 
-export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
+export type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
+export type TooltipPlacement =
+  | TooltipSide
+  | `${TooltipSide}-${'start' | 'end'}`;
 export interface Arrow {
-  placement: TooltipPlacement;
+  placement: TooltipSide;
   offset: { x?: number; y?: number };
 }
 
@@ -44,7 +47,7 @@ export const Tooltip: FC<TooltipProps> = ({
   const [mounted, setMounted] = useState<boolean>(false);
 
   const [arrow, setArrow] = useState<Arrow>({
-    placement,
+    placement: placement.split('-')[0] as TooltipSide,
     offset: { x: undefined, y: undefined },
   });
 

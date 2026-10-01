@@ -1,10 +1,10 @@
 import { forwardRef, HTMLAttributes } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 
 import { ToggleGroupOption as ToggleGroupOptionType } from './ToggleGroup.types';
 import { colors, shape, spacings } from 'src/atoms/style';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 
@@ -12,11 +12,12 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   padding: calc(${spacings.medium_small} / 2); // 6px in comfortable
-  > span {
+  > span:not(:has(svg)) {
     color: ${colors.text.static_icons__tertiary.rgba};
     padding: ${spacings.x_small} calc(${spacings.medium_small} / 2);
   }
-  > svg {
+  > svg,
+  > span > svg {
     fill: ${colors.text.static_icons__tertiary.rgba};
   }
   &:first-child {
@@ -31,7 +32,8 @@ const Button = styled.button`
     > span {
       color: ${colors.text.static_icons__secondary.rgba};
     }
-    > svg {
+    > svg,
+    > span > svg {
       fill: ${colors.text.static_icons__secondary.rgba};
     }
   }
@@ -41,7 +43,8 @@ const Button = styled.button`
     > span {
       color: ${colors.interactive.primary__resting.rgba};
     }
-    > svg {
+    > svg,
+    > span > svg {
       fill: ${colors.interactive.primary__resting.rgba};
     }
     &:hover {
@@ -49,7 +52,8 @@ const Button = styled.button`
       > span {
         color: ${colors.interactive.primary__hover.rgba};
       }
-      > svg {
+      > svg,
+      > span > svg {
         fill: ${colors.interactive.primary__hover.rgba};
       }
     }
@@ -61,7 +65,8 @@ const Button = styled.button`
     > span {
       color: ${colors.interactive.disabled__text.rgba};
     }
-    > svg {
+    > svg,
+    > span > svg {
       fill: ${colors.interactive.disabled__text.rgba};
     }
   }

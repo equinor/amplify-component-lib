@@ -2,7 +2,6 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
 
 import {
@@ -25,6 +24,7 @@ import {
   readUploadedFileAsText,
 } from './FileProgress.utils';
 import { colors } from 'src/atoms/style';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 const CompactFileProgress: FC<
   CompactFileProgressBaseProps & FileProgressPropsExtension
@@ -156,7 +156,7 @@ const CompactFileProgress: FC<
   return (
     <CompactFileProgressContainer $isError={isError}>
       <FileTooltip title={errorText}>{content}</FileTooltip>
-      <Tooltip title={file.name}>
+      <Tooltip title={file.name} style={{ width: '100%' }}>
         <AdditionalText group="paragraph" variant="meta">
           {file.name}
         </AdditionalText>

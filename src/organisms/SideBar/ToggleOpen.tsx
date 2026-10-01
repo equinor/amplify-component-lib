@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { first_page, last_page } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
 import { IconContainer } from './MenuItem/MenuItem.styles';
 import { Container } from './ToggleOpen.styles';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 const { colors } = tokens;
 
