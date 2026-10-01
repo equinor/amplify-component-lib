@@ -315,6 +315,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
     <Wrapper
       data-loading={loading || undefined}
       data-input-cell-variant={usingVariant}
+      data-input-cell-locked={usingLocked || undefined}
+      data-input-cell-autofilled={usingAutofilled || undefined}
       ref={handleOnRender}
       $variant={usingVariant}
       $disabled={loading ? false : props.disabled}

@@ -77,6 +77,8 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         $locked={usingLocked}
         $autofilled={usingAutofilled}
         data-input-cell-variant={!props.loading ? usingVariant : undefined}
+        data-input-cell-locked={usingLocked || undefined}
+        data-input-cell-autofilled={usingAutofilled || undefined}
         onKeyDownCapture={handleOnKeyDownCapture}
       >
         <EDSDatePicker

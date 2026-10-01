@@ -140,6 +140,11 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
     padding: calc(${spacings.x_small} + ${spacings.xx_small}) ${spacings.small};
   }
 
+  ${cellInputSelector}[data-input-cell-locked] > div > div[id*='react-aria'] {
+    padding-left: calc(${spacings.small} + ${spacings.large});
+    padding-right: calc(${spacings.small} + ${spacings.large});
+  }
+
   ${cellInputSelector} [role='spinbutton'] {
     ${typographyTemplate(tokens.typography.input.text)}
     color: ${colors.text.static_icons__default.rgba};

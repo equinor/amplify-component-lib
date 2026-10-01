@@ -69,6 +69,8 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
         $loading={props.loading}
         $locked={usingLocked}
         $autofilled={usingAutofilled}
+        data-input-cell-locked={usingLocked || undefined}
+        data-input-cell-autofilled={usingAutofilled || undefined}
         onKeyDownCapture={handleOnKeyDownCapture}
       >
         <Base

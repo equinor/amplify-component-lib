@@ -171,6 +171,8 @@ export const SearchBar = <T extends SelectOptionRequired>({
     <Wrapper $showBackgroundColor={mode === 'persistent'}>
       <Container
         data-input-cell-variant={!loading ? usingVariant : undefined}
+        data-input-cell-locked={usingLocked || undefined}
+        data-input-cell-autofilled={usingAutofilled || undefined}
         data-testid={dataTestId ? dataTestId : 'combobox-container'}
         ref={anchorRef}
         onClick={handleOnOpen}
