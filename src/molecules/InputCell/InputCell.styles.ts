@@ -63,12 +63,6 @@ export const Container = styled.td<ContainerProps>`
     background: ${colors.dataviz.primary.primary20};
   }
 
-  &&:has([data-input-cell-locked]${excludeCellPopoverContent}):not(
-      :has([data-input-cell-autofilled]${excludeCellPopoverContent})
-    ) {
-    background: ${colors.ui.background__light.rgba};
-  }
-
   /* Locked fields are read only, so focusing them shouldn't look like editing */
   &&:focus-within:not(
       :where(

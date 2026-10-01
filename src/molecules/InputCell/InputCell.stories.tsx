@@ -173,7 +173,7 @@ export const LockedAndAutofilled: Story = {
       const status = canvas.getByRole('combobox', { name: 'Status' });
       await expect(status).toHaveAttribute('readonly');
       await expect(getComputedStyle(cellOf(status)).backgroundColor).toBe(
-        'rgb(247, 247, 247)'
+        'rgba(0, 0, 0, 0)'
       );
       const field = canvas.getByRole('textbox', { name: 'Field' });
       await expect(field).toHaveAttribute('readonly');
@@ -200,7 +200,7 @@ export const LockedAndAutofilled: Story = {
       source: { code: lockedAndAutofilledCellsSource },
       description: {
         story:
-          'Locked and autofilled inputs colour the whole cell. `autofilled` is controlled by the consumer, so clear it when the user edits the value. Locked cells have no hover or focus decoration.',
+          'Autofilled inputs colour the whole cell, while locked cells keep the regular cell background. `autofilled` is controlled by the consumer, so clear it when the user edits the value. Locked cells have no hover or focus decoration.',
       },
     },
   },

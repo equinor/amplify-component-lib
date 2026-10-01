@@ -193,7 +193,7 @@ export const LockedAndAutofilled: Story = {
     const autofilledBackground = 'rgb(211, 231, 253)';
     const restingShadow = 'rgb(220, 220, 220) 0px -1px 0px 0px inset';
     const cases = [
-      { name: 'locked', props: { locked: true }, bg: lightBackground },
+      { name: 'locked', props: { locked: true }, bg: transparent },
       {
         name: 'autofilled',
         props: { autofilled: true },
@@ -206,7 +206,7 @@ export const LockedAndAutofilled: Story = {
       },
     ];
     for (const { name, props, bg } of cases) {
-      await step(`${name} colours the whole cell`, async () => {
+      await step(`${name} cell background`, async () => {
         const canvas = await mount(
           <>
             <TextCell defaultValue="Some Text" {...props} />
@@ -225,9 +225,14 @@ export const LockedAndAutofilled: Story = {
           </>
         );
         for (const id of ['cell', 'select-cell', 'date-cell']) {
-          await expect(
-            getComputedStyle(canvas.getByTestId(id)).backgroundColor
-          ).toBe(bg);
+          const cell = canvas.getByTestId(id);
+          await expect(getComputedStyle(cell).backgroundColor).toBe(bg);
+          // The locked grey must not leak through from the input surfaces
+          for (const element of cell.querySelectorAll('*')) {
+            await expect(getComputedStyle(element).backgroundColor).not.toBe(
+              lightBackground
+            );
+          }
         }
       });
     }
