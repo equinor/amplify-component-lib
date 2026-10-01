@@ -15,6 +15,9 @@ import CompactFileProgress from 'src/molecules/FileProgress/CompactFileProgress'
 import { FileTooltip } from 'src/molecules/FileProgress/CompactFileProgress.styles';
 import { FileUploadArea } from 'src/molecules/FileUploadArea/FileUploadArea';
 import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
+import { MenuSection } from 'src/molecules/RichTextEditor/MenuBar/MenuBar.styles';
+import { MenuButton } from 'src/molecules/RichTextEditor/MenuBar/MenuButton';
+import { TextField } from 'src/molecules/TextField/TextField';
 import {
   BottomItemContainer,
   NavigationContainer,
@@ -164,8 +167,71 @@ test('Locked field tooltips preserve their width and multiline alignment', async
   const tooltip = await hoverTooltip(screen.getByRole('textbox'));
   expect(getComputedStyle(tooltip).width).toBe('400px');
   expect(getComputedStyle(tooltip).whiteSpace).toBe('break-spaces');
-  expect(getComputedStyle(tooltip.firstElementChild!).textAlign).toBe('center');
+  expect(getComputedStyle(tooltip).textAlign).toBe('center');
 });
+
+test('Locked fields retain their grid width when the tooltip is toggled', () => {
+  const field = (show: boolean) => (
+    <div
+      data-testid="field-grid"
+      style={{ display: 'grid', gridTemplateColumns: '1fr', width: 640 }}
+    >
+      <div>
+        <LockedInputTooltip show={show}>
+          <TextField label="Title" disabled={show} />
+        </LockedInputTooltip>
+      </div>
+    </div>
+  );
+  const { rerender } = render(field(false));
+  const grid = screen.getByTestId('field-grid');
+  const width = screen.getByRole('textbox').getBoundingClientRect().width;
+  expect(width).toBeCloseTo(grid.getBoundingClientRect().width, 0);
+
+  for (const show of [true, false]) {
+    rerender(field(show));
+    expect(
+      screen.getByRole('textbox').getBoundingClientRect().width
+    ).toBeCloseTo(width, 0);
+  }
+});
+
+test.each([
+  ['First', 'Middle', 'Last'],
+  [undefined, undefined, undefined],
+  ['First', undefined, 'Last'],
+  [undefined, 'Middle', undefined],
+])(
+  'Grouped editor buttons retain their corners with tooltips %s / %s / %s',
+  (...titles) => {
+    render(
+      <MenuSection>
+        {titles.map((title, index) => (
+          <MenuButton
+            key={index}
+            icon={folder}
+            tooltip={title}
+            onClick={() => undefined}
+          >
+            Button {index}
+          </MenuButton>
+        ))}
+      </MenuSection>
+    );
+    const [first, middle, last] = screen
+      .getAllByRole('button')
+      .map((button) => getComputedStyle(button));
+    expect(first.borderTopLeftRadius).not.toBe('0px');
+    expect(first.borderBottomLeftRadius).not.toBe('0px');
+    expect(first.borderTopRightRadius).toBe('0px');
+    expect(first.borderBottomRightRadius).toBe('0px');
+    expect(middle.borderRadius).toBe('0px');
+    expect(last.borderTopLeftRadius).toBe('0px');
+    expect(last.borderBottomLeftRadius).toBe('0px');
+    expect(last.borderTopRightRadius).not.toBe('0px');
+    expect(last.borderBottomRightRadius).not.toBe('0px');
+  }
+);
 
 test('ACL defaults open without an enter delay and close after 300ms', async () => {
   vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });

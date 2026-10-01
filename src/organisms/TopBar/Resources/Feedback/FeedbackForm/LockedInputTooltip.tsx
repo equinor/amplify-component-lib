@@ -5,14 +5,13 @@ import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import styled from 'styled-components';
 
 const DisabledTooltip = styled(Tooltip)`
+  width: 100%;
+
   > [role='tooltip'] {
     white-space: break-spaces;
     text-align: center;
     width: 400px;
     max-width: 400px;
-    > span {
-      text-align: center;
-    }
   }
 `;
 

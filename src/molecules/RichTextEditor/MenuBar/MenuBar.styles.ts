@@ -8,19 +8,22 @@ const { spacings, shape } = tokens;
 
 export const MenuSection = styled.section`
   display: flex;
-  > div:not(:first-child):not(:last-child) {
-    > button {
+  > :is(div, span):not(:first-child):not(:last-child) {
+    > button,
+    > div > button {
       border-radius: 0;
     }
   }
-  > div:first-child {
-    > button {
+  > :is(div, span):first-child {
+    > button,
+    > div > button {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
   }
-  > div:last-child {
-    > button {
+  > :is(div, span):last-child {
+    > button,
+    > div > button {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
