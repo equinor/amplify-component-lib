@@ -42,6 +42,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   const selectedValues =
     'values' in props ? props.values.map(({ value }) => value) : [];
   const isSelected = selectedValues.includes(item.value);
+  const isItemDisabled = Boolean(props.disabled || item.disabled);
 
   const spacers = useMemo(
     () =>
@@ -57,6 +58,8 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
   };
 
   const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (isItemDisabled) return;
+
     if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
       onItemKeyDown(event);
     } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {

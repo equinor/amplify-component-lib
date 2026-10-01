@@ -155,6 +155,8 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnItemSelect = (item: SelectOption<T>) => {
+    if (disabled || item.disabled) return;
+
     if ('value' in props) {
       if (props.value?.value === item.value) {
         props.onSelect(undefined);
