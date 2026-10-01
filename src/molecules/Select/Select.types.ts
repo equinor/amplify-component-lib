@@ -187,4 +187,8 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
   leadingContent?: ReactNode;
+  /** Value is validated/accepted and can't be changed. Shows a lock icon. */
+  locked?: boolean;
+  /** Value was filled in automatically. Consumer is responsible for resetting this when the user changes the value. */
+  autofilled?: boolean;
 } & CustomMenuItemComponentProps<T>;

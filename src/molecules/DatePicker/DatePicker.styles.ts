@@ -15,6 +15,8 @@ import styled, { css } from 'styled-components';
 interface DatePickerWrapperProps {
   $variant: DatePickerProps['variant'];
   $loading?: boolean;
+  $locked?: boolean;
+  $autofilled?: boolean;
 }
 
 export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
@@ -32,7 +34,9 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
   }
 
   > div:hover:not(:disabled):not(:focus-within) {
-    ${({ $variant }) => {
+    ${({ $variant, $locked }) => {
+      if ($locked) return;
+
       if ($variant === undefined) {
         return css`
           > div[id*='react-aria'] {
@@ -89,10 +93,44 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
       `;
   }}
 
+  ${({ $autofilled }) =>
+    $autofilled &&
+    css`
+      > div > div[id*='react-aria'] {
+        background-color: ${colors.dataviz.primary.primary20};
+      }
+    `}
+
+  ${({ $locked, $autofilled }) =>
+    $locked &&
+    css`
+      /* Icons are absolutely positioned, so don't let the wrapper shrink below the field content */
+      min-width: min-content;
+
+      > div > div[id*='react-aria'] {
+        background-color: ${$autofilled
+          ? colors.dataviz.primary.primary20
+          : colors.ui.background__light.rgba};
+        box-shadow: none;
+        outline: none;
+        /* Lock icon (left) and calendar icon (right) replace the EDS toggle buttons hidden by readOnly,
+           so keep the same total horizontal space as the unlocked field to avoid overflow */
+        padding: 0 calc(${spacings.small} + ${spacings.large});
+        &:focus-within {
+          box-shadow: none;
+        }
+      }
+    `}
+
   > svg {
     position: absolute;
     right: ${spacings.small};
     transform: translateY(calc(${spacings.x_small} + ${spacings.xx_small}));
+  }
+
+  > svg.lock-icon {
+    right: auto;
+    left: ${spacings.small};
   }
 
   ${cellInputSelector} > div > div[id*='react-aria'] {

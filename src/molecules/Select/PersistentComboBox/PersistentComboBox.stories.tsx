@@ -18,7 +18,7 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
@@ -235,6 +235,73 @@ export const Loading: Story = {
     );
     await expect(actualMenuItems.length).toBe(0);
   },
+};
+
+export const Locked: Story = {
+  args: {
+    locked: true,
+    items: FAKE_ITEMS,
+    values: FAKE_ITEMS.slice(0, 3),
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const searchField = canvas.getByRole('combobox');
+    await expect(searchField).toHaveAttribute('readonly');
+    await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+
+    await expect(
+      canvas.getByText(FAKE_ITEMS[4].label).closest('[inert]')
+    ).toBeInTheDocument();
+    await userEvent.click(canvas.getByText(FAKE_ITEMS[4].label), {
+      pointerEventsCheck: 0,
+    });
+    await userEvent.click(searchField);
+    await userEvent.keyboard('{Backspace}{Backspace}');
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    items: FAKE_ITEMS,
+    values: FAKE_ITEMS.slice(0, 3),
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByText(FAKE_ITEMS[4].label), {
+      pointerEventsCheck: 0,
+    });
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+function PersistentComboBoxAutofilled(args: PersistentComboBoxProps<Item>) {
+  const [values, setValues] = useState<SelectOption<Item>[]>(
+    FAKE_ITEMS.slice(0, 2)
+  );
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <PersistentComboBox
+      {...args}
+      items={FAKE_ITEMS}
+      groups={undefined}
+      values={values}
+      autofilled={autofilled}
+      onSelect={(newValues) => {
+        setValues(newValues);
+        setAutofilled(false);
+      }}
+    />
+  );
+}
+
+export const Autofilled: Story = {
+  args: {
+    helperText: 'Background resets when the values are changed',
+  },
+  render: (args) => <PersistentComboBoxAutofilled {...args} />,
 };
 
 export const SmallParent: Story = {

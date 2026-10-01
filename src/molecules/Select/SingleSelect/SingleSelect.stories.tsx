@@ -278,6 +278,60 @@ export const DisabledSingleSelect: Story = {
   },
 };
 
+export const Locked: Story = {
+  args: {
+    locked: true,
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args, step }) => {
+    const combobox = canvas.getByRole('combobox');
+    await step('Verify that the select is read only', async () => {
+      await expect(combobox).toHaveAttribute('readonly');
+      await expect(combobox).not.toBeDisabled();
+      await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    });
+    await step('Verify that the menu does not open', async () => {
+      await userEvent.click(combobox);
+      await userEvent.keyboard('{Enter}');
+      await expect(
+        screen.queryByText(FAKE_ITEMS[1].label)
+      ).not.toBeInTheDocument();
+      await expect(args.onSelect).not.toHaveBeenCalled();
+    });
+  },
+};
+
+function SingleSelectAutofilled(args: SingleSelectProps<Item>) {
+  const [value, setValue] = useState<SelectOption<Item> | undefined>(
+    FAKE_ITEMS[0]
+  );
+  const [autofilled, setAutofilled] = useState(true);
+
+  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
+    setValue(selectedValue);
+    setAutofilled(false);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      value={value}
+      autofilled={autofilled}
+      onSelect={handleOnSelect}
+    />
+  );
+}
+
+export const Autofilled: Story = {
+  render: SingleSelectAutofilled,
+  args: {
+    items: FAKE_ITEMS,
+    helperText: 'Background resets when the value is changed',
+  },
+};
+
 export const TestDirtyVariant: Story = {
   tags: ['test-only'],
   args: {

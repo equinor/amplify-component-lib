@@ -83,6 +83,8 @@ interface ContainerProps {
   $lightBackground?: boolean;
   $variant?: Variants;
   $loading?: boolean;
+  $locked?: boolean;
+  $autofilled?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -130,6 +132,29 @@ const Container = styled.div<ContainerProps>`
     $lightBackground
       ? `background-color: ${colors.ui.background__default.rgba}`
       : `background-color: ${colors.ui.background__light.rgba}`};
+
+  ${({ $autofilled }) =>
+    $autofilled &&
+    css`
+      &,
+      &:hover:not(:has(input:disabled)) {
+        background-color: ${colors.dataviz.primary.primary20};
+      }
+    `}
+
+  ${({ $locked, $autofilled }) =>
+    $locked &&
+    css`
+      &,
+      &:hover:not(:has(input:disabled)) {
+        cursor: default;
+        background-color: ${$autofilled
+          ? colors.dataviz.primary.primary20
+          : colors.ui.background__light.rgba};
+        box-shadow: none;
+        outline: none;
+      }
+    `}
 
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
@@ -247,6 +272,12 @@ const SearchArea = styled.section`
   }
   input[type='search']:disabled {
     cursor: not-allowed;
+  }
+  input[type='search'][readonly] {
+    cursor: default;
+  }
+  &:has(input[readonly]) > .amplify-combo-box-chip {
+    outline: 1px solid ${colors.ui.background__medium.rgba};
   }
   input[type='search']::-webkit-search-decoration,
   input[type='search']::-webkit-search-cancel-button,
@@ -393,10 +424,24 @@ const PersistentStickyWrapper = styled.div`
   z-index: 1;
 `;
 
-const PersistentListScrollArea = styled.div`
+interface PersistentListScrollAreaProps {
+  $inactive?: boolean;
+}
+
+const PersistentListScrollArea = styled.div<PersistentListScrollAreaProps>`
   flex: 1;
   min-height: 0;
   overflow: auto;
+  ${({ $inactive }) =>
+    $inactive &&
+    css`
+      * {
+        color: ${colors.interactive.disabled__text.rgba} !important;
+      }
+      svg {
+        fill: ${colors.interactive.disabled__text.rgba} !important;
+      }
+    `}
 `;
 
 const PersistentListItem = styled.button`

@@ -55,6 +55,7 @@ export const Select = <T extends SelectOptionRequired>(
     mode = 'menu',
     explanation,
     explanationPosition,
+    locked = false,
   } = props;
   const {
     handleOnAddItem,
@@ -179,7 +180,11 @@ export const Select = <T extends SelectOptionRequired>(
               handleOnClear={handleOnClear}
             />
           </PersistentStickyWrapper>
-          <PersistentListScrollArea>
+          <PersistentListScrollArea
+            inert={disabled || locked || undefined}
+            aria-disabled={disabled || locked || undefined}
+            $inactive={disabled || locked}
+          >
             {props.loading ? (
               <>
                 <SelectItemSkeleton />
