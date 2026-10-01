@@ -18,6 +18,8 @@ interface CommonStep {
   label: string;
   title?: string;
   description?: string;
+  /** Optional content shown when hovering the step item. */
+  tooltip?: ReactNode;
 }
 
 interface StepWithSubSteps extends CommonStep {
@@ -146,6 +148,45 @@ export const StepperProvider: FC<
     }
   };
 
+  const checkIfStepIsDisabled: StepperContextType['isStepAtIndexDisabled'] =
+    useCallback(
+      (stepIndex) => {
+        if (isStepDisabled)
+          return isStepDisabled({
+            step: steps[stepIndex],
+            stepIndex,
+            currentStep: steps[usingStep],
+            currentStepIndex: usingStep,
+          });
+        return false;
+      },
+      [isStepDisabled, usingStep, steps]
+    );
+
+  const getNextEnabledStepIndex = (stepIndex: number) => {
+    for (
+      let nextStepIndex = stepIndex + 1;
+      nextStepIndex < steps.length;
+      nextStepIndex += 1
+    ) {
+      if (!checkIfStepIsDisabled(nextStepIndex)) return nextStepIndex;
+    }
+
+    return undefined;
+  };
+
+  const getPreviousEnabledStepIndex = (stepIndex: number) => {
+    for (
+      let previousStepIndex = stepIndex - 1;
+      previousStepIndex >= 0;
+      previousStepIndex -= 1
+    ) {
+      if (!checkIfStepIsDisabled(previousStepIndex)) return previousStepIndex;
+    }
+
+    return undefined;
+  };
+
   const goToNextStep = () => {
     if (
       'subSteps' in steps[usingStep] &&
@@ -158,7 +199,10 @@ export const StepperProvider: FC<
 
     if (usingStep === steps.length - 1) return;
 
-    handleOnSetStep(usingStep + 1);
+    const nextEnabledStepIndex = getNextEnabledStepIndex(usingStep);
+    if (nextEnabledStepIndex === undefined) return;
+
+    handleOnSetStep(nextEnabledStepIndex);
   };
 
   const goToPreviousStep = () => {
@@ -174,23 +218,11 @@ export const StepperProvider: FC<
 
     if (usingStep === 0) return;
 
-    handleOnSetStep(usingStep - 1);
-  };
+    const previousEnabledStepIndex = getPreviousEnabledStepIndex(usingStep);
+    if (previousEnabledStepIndex === undefined) return;
 
-  const checkIfStepIsDisabled: StepperContextType['isStepAtIndexDisabled'] =
-    useCallback(
-      (stepIndex) => {
-        if (isStepDisabled)
-          return isStepDisabled({
-            step: steps[stepIndex],
-            stepIndex,
-            currentStep: steps[usingStep],
-            currentStepIndex: usingStep,
-          });
-        return false;
-      },
-      [isStepDisabled, usingStep, steps]
-    );
+    handleOnSetStep(previousEnabledStepIndex);
+  };
 
   return (
     <StepperContext.Provider

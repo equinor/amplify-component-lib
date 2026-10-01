@@ -1,5 +1,7 @@
 import type { ComponentPropsWithRef, FC } from 'react';
 import {
+  cloneElement,
+  isValidElement,
   ReactNode,
   useEffect,
   useEffectEvent,
@@ -36,6 +38,7 @@ export const Tooltip: FC<TooltipProps> = ({
   ...rest
 }) => {
   const uid = useId().replace(/:/g, '');
+  const tooltipId = `tooltip-${uid}`;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const anchorRef = useRef<HTMLSpanElement>(null);
@@ -158,20 +161,34 @@ export const Tooltip: FC<TooltipProps> = ({
 
     anchorElement.addEventListener('mouseenter', show);
     anchorElement.addEventListener('mouseleave', hide);
+    anchorElement.addEventListener('focusin', show);
+    anchorElement.addEventListener('focusout', hide);
 
     return () => {
       anchorElement.removeEventListener('mouseenter', show);
       anchorElement.removeEventListener('mouseleave', hide);
+      anchorElement.removeEventListener('focusin', show);
+      anchorElement.removeEventListener('focusout', hide);
     };
   }, [disabled, title]);
 
   if (!title || disabled) return children;
 
+  const trigger = isValidElement<{ 'aria-describedby'?: string }>(children)
+    ? cloneElement(children, { 'aria-describedby': tooltipId })
+    : children;
+
   return (
-    <Wrapper $anchor={`--tooltip-${uid}`} ref={anchorRef} {...rest}>
-      {children}
+    <Wrapper
+      $anchor={`--tooltip-${uid}`}
+      ref={anchorRef}
+      {...rest}
+      aria-describedby={tooltipId}
+    >
+      {trigger}
       {mounted && (
         <TooltipWrapper
+          id={tooltipId}
           ref={setRef}
           role="tooltip"
           popover="hint"

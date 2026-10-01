@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { check } from '@equinor/eds-icons';
+import { check, lock } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { colors } from 'src/atoms/style';
@@ -81,6 +81,35 @@ test('Displays icon/number correctly', async () => {
     'd',
     check.svgPathData
   );
+});
+
+test('Disabled future steps show the lock icon', async () => {
+  const steps: StepperProviderProps['steps'] = [
+    { label: 'Step 1' },
+    { label: 'Step 2' },
+    { label: 'Step 3' },
+  ];
+
+  await renderWithRouter(
+    <StepperProvider
+      steps={steps}
+      isStepDisabled={({ stepIndex }) => stepIndex === 1}
+    >
+      <Stepper />
+    </StepperProvider>,
+    {
+      routes: ['/'],
+      initialEntries: ['/'],
+    }
+  );
+
+  const stepTwo = screen.getByText('Step 2').closest('[data-testid="step"]');
+  expect(stepTwo).toHaveAttribute('aria-disabled', 'true');
+  expect(
+    screen
+      .getAllByTestId('eds-icon-path')
+      .some((iconPath) => iconPath.getAttribute('d') === lock.svgPathData)
+  ).toBe(true);
 });
 
 test('maxWidth works as expected', async () => {
