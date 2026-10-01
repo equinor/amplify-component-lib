@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp",
+      "tools": ["*"]
+    },
+    "atlassian": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v2/mcp",
+      "tools": ["*"]
+    }
+  }
+}
