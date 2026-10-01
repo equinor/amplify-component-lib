@@ -22,6 +22,8 @@ interface RowProps {
   variant?: Variants;
   disabled?: boolean;
   loading?: boolean;
+  locked?: boolean;
+  autofilled?: boolean;
   empty?: boolean;
   selected?: boolean;
   active?: boolean;
@@ -32,6 +34,8 @@ function ExampleRow({
   variant,
   disabled,
   loading,
+  locked,
+  autofilled,
   empty,
   selected,
   active,
@@ -40,7 +44,7 @@ function ExampleRow({
     empty ? undefined : items[0]
   );
   const [multiple, setMultiple] = useState(empty ? [] : items);
-  const inputProps = { variant, disabled, loading };
+  const inputProps = { variant, disabled, loading, locked, autofilled };
   const cellProps = { active, variant };
 
   return (
@@ -119,6 +123,9 @@ export function InputCellExamples() {
         <ExampleRow name="Selected row" selected />
         <ExampleRow name="Disabled" disabled />
         <ExampleRow name="Loading" loading />
+        <ExampleRow name="Autofilled" autofilled />
+        <ExampleRow name="Locked" locked />
+        <ExampleRow name="Locked + autofilled" locked autofilled />
       </tbody>
     </ExampleTable>
   );

@@ -245,6 +245,21 @@ export const LockedAndAutofilled: Story = {
         await expect(getComputedStyle(cell).outline).not.toBe(focusOutline);
       }
     );
+    await step(
+      'Locked text field lock icon does not overlap the text',
+      async () => {
+        const canvas = await mount(<TextCell defaultValue="Volve" locked />);
+        const input = canvas.getByRole('textbox');
+        const lockIcon = canvas
+          .getByTestId('cell')
+          .querySelector('svg')!
+          .getBoundingClientRect();
+        await expect(lockIcon.right).toBeLessThanOrEqual(
+          input.getBoundingClientRect().left +
+            parseFloat(getComputedStyle(input).paddingLeft)
+        );
+      }
+    );
     await step('Locked date field icons do not overlap the date', async () => {
       const canvas = await mount(
         <InputCell as="div" data-testid="cell" style={{ width: 200 }}>

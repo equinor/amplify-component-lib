@@ -11,6 +11,8 @@ import {
 import { InputCellExamples } from 'src/molecules/InputCell/stories/InputCellExamples';
 import inputCellExamplesSource from 'src/molecules/InputCell/stories/InputCellExamples.tsx?raw';
 import { inputExamples } from 'src/molecules/InputCell/stories/inputExamples';
+import { LockedAndAutofilledCells } from 'src/molecules/InputCell/stories/LockedAndAutofilledCells';
+import lockedAndAutofilledCellsSource from 'src/molecules/InputCell/stories/LockedAndAutofilledCells.tsx?raw';
 import { ValidatedCell } from 'src/molecules/InputCell/stories/ValidatedCell';
 import validatedCellSource from 'src/molecules/InputCell/stories/ValidatedCell.tsx?raw';
 
@@ -154,6 +156,51 @@ export const AsDiv: Story = {
       description: {
         story:
           'Use as="div" when a table already supplies the td. Remove the host cell padding to avoid doubling it.',
+      },
+    },
+  },
+};
+
+export const LockedAndAutofilled: Story = {
+  name: 'Locked and autofilled',
+  render: () => <LockedAndAutofilledCells />,
+  play: async ({ canvas, step }) => {
+    const cellOf = (element: HTMLElement) =>
+      element.closest('[data-input-cell]') as HTMLElement;
+    const autofilledBackground = 'rgb(211, 231, 253)';
+
+    await step('Locked cells are read only', async () => {
+      const status = canvas.getByRole('combobox', { name: 'Status' });
+      await expect(status).toHaveAttribute('readonly');
+      await expect(getComputedStyle(cellOf(status)).backgroundColor).toBe(
+        'rgb(247, 247, 247)'
+      );
+      const field = canvas.getByRole('textbox', { name: 'Field' });
+      await expect(field).toHaveAttribute('readonly');
+      await expect(getComputedStyle(cellOf(field)).backgroundColor).toBe(
+        autofilledBackground
+      );
+    });
+
+    await step('Autofill highlights cells until the user edits', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Autofill' }));
+      const name = canvas.getByRole('textbox', { name: 'Well name' });
+      await expect(name).toHaveValue('NO 15/9-F-12');
+      await expect(getComputedStyle(cellOf(name)).backgroundColor).toBe(
+        autofilledBackground
+      );
+      await userEvent.type(name, 'A');
+      await expect(getComputedStyle(cellOf(name)).backgroundColor).not.toBe(
+        autofilledBackground
+      );
+    });
+  },
+  parameters: {
+    docs: {
+      source: { code: lockedAndAutofilledCellsSource },
+      description: {
+        story:
+          'Locked and autofilled inputs colour the whole cell. `autofilled` is controlled by the consumer, so clear it when the user edits the value. Locked cells have no hover or focus decoration.',
       },
     },
   },
