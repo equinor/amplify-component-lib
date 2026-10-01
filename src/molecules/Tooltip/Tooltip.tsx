@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import { LeftAlignedText, TooltipWrapper, Wrapper } from './Tooltip.styles';
+import { TooltipWrapper, Wrapper } from './Tooltip.styles';
 import { assignRef, getResolvedPlacement } from 'src/molecules/Tooltip/utils';
 
 export type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
@@ -182,11 +182,7 @@ export const Tooltip: FC<TooltipProps> = ({
           $placement={placement}
           $arrow={arrow}
         >
-          {typeof title === 'string' ? (
-            <LeftAlignedText>{title}</LeftAlignedText>
-          ) : (
-            title
-          )}
+          {title}
         </TooltipWrapper>
       )}
     </Wrapper>

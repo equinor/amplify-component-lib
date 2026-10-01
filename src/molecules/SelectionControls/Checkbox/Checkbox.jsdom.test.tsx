@@ -15,6 +15,24 @@ test('Renders as expected with outlined=true', () => {
   );
 });
 
+test('Does not render a hover background when disabled', () => {
+  const label = faker.animal.dog();
+  render(<Checkbox label={label} disabled />);
+
+  const wrapper =
+    screen.getByLabelText(label).parentElement!.parentElement!.parentElement;
+
+  expect(wrapper).toHaveStyleRule('background', 'transparent!important', {
+    modifier: ':has(input:disabled) input:disabled',
+  });
+  expect(wrapper).toHaveStyleRule('opacity', '1', {
+    modifier: ':has(input:disabled) input:disabled',
+  });
+  expect(wrapper).toHaveStyleRule('background', 'transparent!important', {
+    modifier: ':has(input:disabled) > label > span::before',
+  });
+});
+
 test('Renders as expected with error=true', () => {
   const label = faker.animal.dog();
   render(<Checkbox label={label} error />);
