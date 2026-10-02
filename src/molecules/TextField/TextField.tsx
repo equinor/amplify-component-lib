@@ -196,7 +196,7 @@ const Wrapper = styled.div<WrapperProps>`
   /* The cell padding above overrides the EDS padding that makes room for the lock adornment */
   ${cellInputSelector}[data-input-cell-locked] input,
   ${cellInputSelector}[data-input-cell-locked] textarea {
-    padding-left: calc(${spacings.small} + ${spacings.large});
+    padding-left: calc(${spacings.small} * 2 + ${spacings.large});
   }
   [data-input-cell] &[data-loading='true']${excludeCellPopoverContent} {
     input,

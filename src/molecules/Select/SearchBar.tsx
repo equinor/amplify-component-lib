@@ -188,7 +188,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
       >
         <Section>
           {usingLocked ? (
-            <LeadingContentWrapper>
+            <LeadingContentWrapper $locked>
               <Icon
                 data={lock}
                 color={colors.text.static_icons__default.rgba}

@@ -12,6 +12,9 @@ import {
 
 import styled, { css } from 'styled-components';
 
+// Edge spacing + 24px icon + 8px gap to the content, as in the Figma locked design
+const lockedFieldPadding = `calc(${spacings.small} * 2 + ${spacings.large})`;
+
 interface DatePickerWrapperProps {
   $variant: DatePickerProps['variant'];
   $loading?: boolean;
@@ -113,9 +116,9 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
           : colors.ui.background__light.rgba};
         box-shadow: none;
         outline: none;
-        /* Lock icon (left) and calendar icon (right) replace the EDS toggle buttons hidden by readOnly,
-           so keep the same total horizontal space as the unlocked field to avoid overflow */
-        padding: 0 calc(${spacings.small} + ${spacings.large});
+        /* Make room for the absolutely positioned lock (left) and calendar (right) icons,
+           with an 8px gap to the content as in the Figma design */
+        padding: 0 ${lockedFieldPadding};
         &:focus-within {
           box-shadow: none;
         }
@@ -141,8 +144,8 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
   }
 
   ${cellInputSelector}[data-input-cell-locked] > div > div[id*='react-aria'] {
-    padding-left: calc(${spacings.small} + ${spacings.large});
-    padding-right: calc(${spacings.small} + ${spacings.large});
+    padding-left: ${lockedFieldPadding};
+    padding-right: ${lockedFieldPadding};
   }
 
   ${cellInputSelector} [role='spinbutton'] {

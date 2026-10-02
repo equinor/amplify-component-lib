@@ -239,11 +239,19 @@ const Section = styled.section`
 
 interface LeadingContentWrapperProps {
   $disabled?: boolean;
+  $locked?: boolean;
 }
 
 const LeadingContentWrapper = styled.span<LeadingContentWrapperProps>`
   display: inline-flex;
   align-items: center;
+
+  ${({ $locked }) =>
+    $locked &&
+    css`
+      /* Section gap is x_small, Figma has an 8px gap after the lock icon */
+      margin-right: ${spacings.x_small};
+    `}
 
   ${({ $disabled }) =>
     $disabled &&
