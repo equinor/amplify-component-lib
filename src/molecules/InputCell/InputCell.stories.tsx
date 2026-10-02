@@ -200,7 +200,7 @@ export const LockedAndAutofilled: Story = {
       source: { code: lockedAndAutofilledCellsSource },
       description: {
         story:
-          'Autofilled inputs colour the whole cell, while locked cells keep the regular cell background. `autofilled` is controlled by the consumer, so clear it when the user edits the value. Locked cells have no hover or focus decoration.',
+          'Autofilled inputs colour the whole cell, while locked cells keep the regular cell background. A background set inline on the row (e.g. a selected row) overrides the autofilled colour. `autofilled` is controlled by the consumer, so clear it when the user edits the value. Locked cells have no hover or focus decoration.',
       },
     },
   },

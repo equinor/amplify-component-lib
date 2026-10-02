@@ -124,6 +124,7 @@ export function InputCellExamples() {
         <ExampleRow name="Disabled" disabled />
         <ExampleRow name="Loading" loading />
         <ExampleRow name="Autofilled" autofilled />
+        <ExampleRow name="Selected + autofilled" selected autofilled />
         <ExampleRow name="Locked" locked />
         <ExampleRow name="Locked + autofilled" locked autofilled />
       </tbody>

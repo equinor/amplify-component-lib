@@ -63,6 +63,12 @@ export const Container = styled.td<ContainerProps>`
     background: ${colors.dataviz.primary.primary20};
   }
 
+  /* A background set inline on the row (e.g. a selected row) overrides the autofilled background */
+  [style*='background']
+    > &&&:has([data-input-cell-autofilled]${excludeCellPopoverContent}) {
+    background: transparent;
+  }
+
   /* Locked fields are read only, so focusing them shouldn't look like editing */
   &&:focus-within:not(
       :where(

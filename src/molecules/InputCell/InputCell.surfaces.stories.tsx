@@ -237,6 +237,42 @@ export const LockedAndAutofilled: Story = {
       });
     }
     await step(
+      'An inline row background overrides the autofilled background',
+      async () => {
+        const selectedBackground = 'rgb(230, 250, 236)';
+        const canvas = await mount(
+          <table>
+            <tbody>
+              <tr style={{ background: selectedBackground }}>
+                <InputCell data-testid="selected-cell">
+                  <TextField
+                    aria-label="Selected"
+                    defaultValue="A"
+                    autofilled
+                  />
+                </InputCell>
+              </tr>
+              <tr>
+                <InputCell data-testid="regular-cell">
+                  <TextField aria-label="Regular" defaultValue="B" autofilled />
+                </InputCell>
+              </tr>
+            </tbody>
+          </table>
+        );
+        const selected = canvas.getByTestId('selected-cell');
+        await expect(getComputedStyle(selected).backgroundColor).toBe(
+          transparent
+        );
+        await expect(
+          getComputedStyle(selected.parentElement!).backgroundColor
+        ).toBe(selectedBackground);
+        await expect(
+          getComputedStyle(canvas.getByTestId('regular-cell')).backgroundColor
+        ).toBe(autofilledBackground);
+      }
+    );
+    await step(
       'Locked cell has no hover underline or focus outline',
       async () => {
         const canvas = await mount(
