@@ -33,12 +33,15 @@ export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
     itemRefs,
     CustomMenuItemComponent,
     mode,
+    noItemsText,
   } = props;
 
   const { filteredGroups, filteredGroupSum } = useGroupedSelectItems(props);
 
   if (filteredGroups.length === 0) {
-    return <PersistentNoItemsFoundText>No items found</PersistentNoItemsFoundText>;
+    return (
+      <PersistentNoItemsFoundText>{noItemsText}</PersistentNoItemsFoundText>
+    );
   }
 
   // This case never happens, since there is a check in select.tsx. This check gives the correct typescript inference.
