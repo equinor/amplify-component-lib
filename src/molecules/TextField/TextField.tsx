@@ -10,11 +10,13 @@ import {
 } from 'react';
 
 import {
+  Icon,
   TextField as Base,
   TextFieldProps as BaseProps,
   TooltipProps,
   Typography,
 } from '@equinor/eds-core-react';
+import { lock } from '@equinor/eds-icons';
 
 import { shape, spacings } from 'src/atoms/style';
 import { animation } from 'src/atoms/style/animation';
@@ -38,6 +40,8 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   maxCharacters?: number;
   explanation?: string;
   explanationPosition?: TooltipProps['placement'];
+  locked?: boolean;
+  autofilled?: boolean;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -47,6 +51,8 @@ interface WrapperProps {
   $variant: TextFieldProps['variant'];
   $helperRightWidth: number;
   $disabled?: boolean;
+  $locked?: boolean;
+  $autofilled?: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -89,7 +95,33 @@ const Wrapper = styled.div<WrapperProps>`
       }
     `}
 
-  ${({ $variant, $disabled }) => {
+  ${({ $autofilled }) =>
+    $autofilled &&
+    css`
+      div[class*='Input__Container'],
+      input:hover:not(:disabled),
+      textarea:hover:not(:disabled) {
+        background: ${colors.dataviz.primary.primary20};
+      }
+    `}
+
+  ${({ $variant, $disabled, $locked, $autofilled }) => {
+    if ($locked) {
+      return css`
+        div[class*='Input__Container'],
+        input:hover:not(:disabled),
+        textarea:hover:not(:disabled) {
+          background: ${$autofilled
+            ? colors.dataviz.primary.primary20
+            : colors.ui.background__light.rgba};
+          box-shadow: none;
+        }
+        div[class*='Input__Adornments'] > svg {
+          fill: ${colors.text.static_icons__default.rgba};
+        }
+      `;
+    }
+
     if ($disabled) {
       return css`
         div {
@@ -160,6 +192,12 @@ const Wrapper = styled.div<WrapperProps>`
   ${cellInputSelector} input {
     height: ${cellInputHeight};
   }
+
+  /* The cell padding above overrides the EDS padding that makes room for the lock adornment */
+  ${cellInputSelector}[data-input-cell-locked] input,
+  ${cellInputSelector}[data-input-cell-locked] textarea {
+    padding-left: calc(${spacings.small} * 2 + ${spacings.large});
+  }
   [data-input-cell] &[data-loading='true']${excludeCellPopoverContent} {
     input,
     textarea {
@@ -197,6 +235,8 @@ export const TextField: FC<TextFieldProps> = (props) => {
     maxCharacters,
     explanation,
     explanationPosition,
+    locked,
+    autofilled,
     ...propsWithoutCustomProps
   } = props;
 
@@ -212,15 +252,22 @@ export const TextField: FC<TextFieldProps> = (props) => {
     );
   }
 
+  const usingLocked = !!locked && !loading && !props.disabled;
+  const usingAutofilled = !!autofilled && !loading && !props.disabled;
+
   const baseProps: BaseProps = {
     ...propsWithoutCustomProps,
     variant:
-      propsWithoutCustomProps.variant !== 'dirty'
+      propsWithoutCustomProps.variant !== 'dirty' && !usingLocked
         ? propsWithoutCustomProps.variant
         : undefined,
+    ...(usingLocked && {
+      readOnly: true,
+      leftAdornments: <Icon data={lock} />,
+    }),
   };
 
-  const usingVariant = loading ? undefined : props.variant;
+  const usingVariant = loading || usingLocked ? undefined : props.variant;
   const skeletonTop = getSkeletonTop(props);
   const skeletonHeight = getSkeletonHeight(props);
   const skeletonWidth = useRef(`${Math.max(20, Math.random() * 80)}%`);
@@ -274,9 +321,13 @@ export const TextField: FC<TextFieldProps> = (props) => {
     <Wrapper
       data-loading={loading || undefined}
       data-input-cell-variant={usingVariant}
+      data-input-cell-locked={usingLocked || undefined}
+      data-input-cell-autofilled={usingAutofilled || undefined}
       ref={handleOnRender}
       $variant={usingVariant}
       $disabled={loading ? false : props.disabled}
+      $locked={usingLocked}
+      $autofilled={usingAutofilled}
       $helperRightWidth={helperRightWidth}
       style={{
         marginBottom:

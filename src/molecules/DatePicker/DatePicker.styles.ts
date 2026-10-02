@@ -12,9 +12,14 @@ import {
 
 import styled, { css } from 'styled-components';
 
+// Edge spacing + 24px icon + 8px gap to the content, as in the Figma locked design
+const lockedFieldPadding = `calc(${spacings.small} * 2 + ${spacings.large})`;
+
 interface DatePickerWrapperProps {
   $variant: DatePickerProps['variant'];
   $loading?: boolean;
+  $locked?: boolean;
+  $autofilled?: boolean;
 }
 
 export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
@@ -32,7 +37,9 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
   }
 
   > div:hover:not(:disabled):not(:focus-within) {
-    ${({ $variant }) => {
+    ${({ $variant, $locked }) => {
+      if ($locked) return;
+
       if ($variant === undefined) {
         return css`
           > div[id*='react-aria'] {
@@ -89,10 +96,44 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
       `;
   }}
 
+  ${({ $autofilled }) =>
+    $autofilled &&
+    css`
+      > div > div[id*='react-aria'] {
+        background-color: ${colors.dataviz.primary.primary20};
+      }
+    `}
+
+  ${({ $locked, $autofilled }) =>
+    $locked &&
+    css`
+      /* Icons are absolutely positioned, so don't let the wrapper shrink below the field content */
+      min-width: min-content;
+
+      > div > div[id*='react-aria'] {
+        background-color: ${$autofilled
+          ? colors.dataviz.primary.primary20
+          : colors.ui.background__light.rgba};
+        box-shadow: none;
+        outline: none;
+        /* Make room for the absolutely positioned lock (left) and calendar (right) icons,
+           with an 8px gap to the content as in the Figma design */
+        padding: 0 ${lockedFieldPadding};
+        &:focus-within {
+          box-shadow: none;
+        }
+      }
+    `}
+
   > svg {
     position: absolute;
     right: ${spacings.small};
     transform: translateY(calc(${spacings.x_small} + ${spacings.xx_small}));
+  }
+
+  > svg.lock-icon {
+    right: auto;
+    left: ${spacings.small};
   }
 
   ${cellInputSelector} > div > div[id*='react-aria'] {
@@ -100,6 +141,11 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
     box-sizing: border-box;
     min-height: ${cellInputHeight};
     padding: calc(${spacings.x_small} + ${spacings.xx_small}) ${spacings.small};
+  }
+
+  ${cellInputSelector}[data-input-cell-locked] > div > div[id*='react-aria'] {
+    padding-left: ${lockedFieldPadding};
+    padding-right: ${lockedFieldPadding};
   }
 
   ${cellInputSelector} [role='spinbutton'] {

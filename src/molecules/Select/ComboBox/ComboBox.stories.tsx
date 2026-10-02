@@ -249,16 +249,23 @@ const CustomValueElement: FC<{
   item: SelectOption<Item>;
   onDelete: () => void;
   tryingToRemove: boolean;
-}> = ({ item, onDelete, tryingToRemove }) => (
-  <ComboBoxChip
-    className="amplify-combo-box-chip"
-    onDelete={onDelete}
-    $tryingToRemove={tryingToRemove}
-  >
-    <Dot />
-    {item.label}
-  </ComboBoxChip>
-);
+  locked?: boolean;
+}> = ({ item, onDelete, tryingToRemove, locked }) =>
+  locked ? (
+    <ComboBoxChip className="amplify-combo-box-chip" $tryingToRemove={false}>
+      <Dot />
+      {item.label}
+    </ComboBoxChip>
+  ) : (
+    <ComboBoxChip
+      className="amplify-combo-box-chip"
+      onDelete={onDelete}
+      $tryingToRemove={tryingToRemove}
+    >
+      <Dot />
+      {item.label}
+    </ComboBoxChip>
+  );
 
 export const CustomizableValueElement: Story = {
   render: ComboBoxStateful,
@@ -684,6 +691,72 @@ export const TestRemoveWithBackspace: Story = {
     await userEvent.keyboard('{Backspace}');
 
     await expect(args.onSelect).toHaveBeenCalledWith([], TEST_ITEMS[0]);
+  },
+};
+
+export const Locked: Story = {
+  args: {
+    locked: true,
+    items: FAKE_ITEMS,
+    values: FAKE_ITEMS.slice(0, 3),
+    onSelect: fn(),
+  },
+};
+
+function ComboBoxAutofilled(args: ComboBoxProps<Item>) {
+  const [values, setValues] = useState<SelectOption<Item>[]>(
+    FAKE_ITEMS.slice(0, 2)
+  );
+  const [autofilled, setAutofilled] = useState(true);
+
+  const handleOnSelect = (selectedValues: SelectOption<Item>[]) => {
+    setValues(selectedValues);
+    setAutofilled(false);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      values={values}
+      autofilled={autofilled}
+      onSelect={handleOnSelect}
+    />
+  );
+}
+
+export const Autofilled: Story = {
+  render: ComboBoxAutofilled,
+  args: {
+    items: FAKE_ITEMS,
+    helperText: 'Background resets when the values are changed',
+  },
+};
+
+export const TestLockedPreventsChanges: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Locked Test',
+    locked: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const searchField = canvas.getByRole('combobox');
+    await expect(searchField).toHaveAttribute('readonly');
+    await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('button', { name: TEST_ITEMS[0].label })
+    ).not.toBeInTheDocument();
+    await expect(canvas.getByText(TEST_ITEMS[0].label)).toBeInTheDocument();
+
+    await userEvent.click(searchField);
+    await userEvent.keyboard('{Backspace}');
+    await userEvent.keyboard('{Backspace}');
+    await expect(args.onSelect).not.toHaveBeenCalled();
+    await expect(
+      screen.queryByText(TEST_ITEMS[1].label)
+    ).not.toBeInTheDocument();
   },
 };
 

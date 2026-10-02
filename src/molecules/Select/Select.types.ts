@@ -18,6 +18,8 @@ export interface SingleSelectCommon<T extends SelectOptionRequired> {
   onSelect: (value: SelectOption<T> | undefined) => void;
   customValueComponent?: FC<{
     item: SelectOption<T>;
+    /** True when the select is locked, so the value can't be changed */
+    locked?: boolean;
   }>;
 }
 
@@ -48,6 +50,8 @@ type MultiSelectWithCustomValueComponent<T extends SelectOptionRequired> = {
     item: SelectOption<T>;
     onDelete: () => void;
     tryingToRemove: boolean;
+    /** True when the select is locked. `onDelete` does nothing, so hide any delete control */
+    locked?: boolean;
   }>;
 } & MultiSelectBase<T>;
 
@@ -187,4 +191,8 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
   leadingContent?: ReactNode;
+  /** Value is validated/accepted and can't be changed. Shows a lock icon. */
+  locked?: boolean;
+  /** Value was filled in automatically. Consumer is responsible for resetting this when the user changes the value. */
+  autofilled?: boolean;
 } & CustomMenuItemComponentProps<T>;

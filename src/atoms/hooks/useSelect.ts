@@ -18,12 +18,23 @@ const useSelect = <T extends SelectOptionRequired>(
   const {
     loading,
     disabled,
+    locked,
     sortValues,
     onSearchChange,
     onOpenCallback,
     mode,
   } = props;
+  const inactive = disabled || loading || locked;
+  // Loading keeps an already open menu usable, so only these block selection
+  const blocked = !!(disabled || locked);
   const [open, setOpen] = useState(false);
+  const [wasBlocked, setWasBlocked] = useState(blocked);
+
+  // Close an already open menu when the select becomes locked or disabled
+  if (wasBlocked !== blocked) {
+    setWasBlocked(blocked);
+    if (blocked) setOpen(false);
+  }
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -84,7 +95,7 @@ const useSelect = <T extends SelectOptionRequired>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (open || disabled || loading) return;
+    if (open || inactive) return;
     if (mode === 'persistent') {
       searchRef.current?.focus();
       return;
@@ -101,7 +112,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleToggleOpen = () => {
-    if (disabled || loading) return;
+    if (inactive) return;
 
     if (open) {
       handleOnClose();
@@ -111,7 +122,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === ' ' || loading || disabled) return;
+    if (event.target.value === ' ' || inactive) return;
     setSearch(event.target.value);
     onSearchChange?.(event.target.value);
     if (!open) {
@@ -155,6 +166,8 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnItemSelect = (item: SelectOption<T>) => {
+    if (blocked) return;
+
     if ('value' in props) {
       if (props.value?.value === item.value) {
         props.onSelect(undefined);
@@ -172,7 +185,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnRemoveItem = (item: SelectOption<T>) => {
-    if ('values' in props && !loading && !disabled) {
+    if ('values' in props && !inactive) {
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
         item
@@ -188,6 +201,8 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (locked) return;
+
     if (
       event.key === 'Enter' &&
       search !== '' &&

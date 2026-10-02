@@ -1,5 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
-import { person } from '@equinor/eds-icons';
+import { calendar_date_range, lock, person } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { DateRangePicker } from './DateRangePicker';
@@ -101,4 +101,97 @@ test('Loading works as expected with helper props', async () => {
   );
 
   expect(await screen.findByRole('progressbar')).toBeInTheDocument();
+});
+
+test('Locked is read only, shows lock icon and does not open calendar', async () => {
+  const value = { from: new Date(2021, 6, 25), to: new Date(2021, 6, 30) };
+  const onChange = vi.fn();
+  const { container } = render(
+    <DateRangePicker
+      label="Locked"
+      value={value}
+      onChange={onChange}
+      variant="error"
+      locked
+    />
+  );
+  const user = userEvent.setup();
+
+  expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  expect(
+    container.querySelector(`path[d="${lock.svgPathData}"]`)
+  ).toBeInTheDocument();
+  expect(
+    container.querySelector(`path[d="${calendar_date_range.svgPathData}"]`)
+  ).toBeInTheDocument();
+
+  const [dayEl] = screen.getAllByRole('spinbutton');
+  const field = dayEl.closest('[class*="StyledInputFieldWrapper"]');
+  expect(dayEl).toHaveAttribute('aria-readonly', 'true');
+  expect(field).toHaveStyle('background-color: rgb(247, 247, 247)');
+  expect(field).toHaveStyle('box-shadow: none');
+
+  await user.click(dayEl);
+  await user.keyboard('{Enter}');
+  await user.keyboard('1');
+
+  expect(screen.queryByText('July 2021')).not.toBeInTheDocument();
+  expect(onChange).not.toHaveBeenCalled();
+});
+
+test('Locked calendar icon does not overlap the dates', () => {
+  const value = { from: new Date(2021, 6, 25), to: new Date(2021, 6, 30) };
+  const { container } = render(
+    <div style={{ width: '200px' }}>
+      <DateRangePicker label="Locked" value={value} locked />
+    </div>
+  );
+
+  const spinbuttons = screen.getAllByRole('spinbutton');
+  const lastDateRight =
+    spinbuttons[spinbuttons.length - 1].getBoundingClientRect().right;
+  const calendarIcon = container
+    .querySelector(`path[d="${calendar_date_range.svgPathData}"]`)!
+    .closest('svg')!;
+
+  expect(lastDateRight).toBeLessThanOrEqual(
+    calendarIcon.getBoundingClientRect().left
+  );
+});
+
+test('Disabled takes precedence over locked', async () => {
+  const { container } = render(
+    <DateRangePicker label="Test" disabled locked />
+  );
+
+  expect(
+    container.querySelector(`path[d="${lock.svgPathData}"]`)
+  ).not.toBeInTheDocument();
+});
+
+test('Locked and autofilled shows lock icon with autofilled background', () => {
+  const value = { from: new Date(2021, 6, 25), to: new Date(2021, 6, 30) };
+  const { container } = render(
+    <DateRangePicker value={value} locked autofilled />
+  );
+
+  const [dayEl] = screen.getAllByRole('spinbutton');
+  const field = dayEl.closest('[class*="StyledInputFieldWrapper"]');
+  expect(dayEl).toHaveAttribute('aria-readonly', 'true');
+  expect(
+    container.querySelector(`path[d="${lock.svgPathData}"]`)
+  ).toBeInTheDocument();
+  expect(field).toHaveStyle('background-color: rgb(211, 231, 253)');
+  expect(field).toHaveStyle('box-shadow: none');
+});
+
+test('Autofilled sets autofilled background', async () => {
+  const value = { from: new Date(2021, 6, 25), to: new Date(2021, 6, 30) };
+  render(<DateRangePicker value={value} autofilled />);
+
+  const [dayEl] = screen.getAllByRole('spinbutton');
+  expect(dayEl.closest('[class*="StyledInputFieldWrapper"]')).toHaveStyle(
+    'background-color: rgb(211, 231, 253)'
+  );
+  expect(screen.getAllByRole('button').length).toBeGreaterThan(0);
 });
