@@ -249,16 +249,23 @@ const CustomValueElement: FC<{
   item: SelectOption<Item>;
   onDelete: () => void;
   tryingToRemove: boolean;
-}> = ({ item, onDelete, tryingToRemove }) => (
-  <ComboBoxChip
-    className="amplify-combo-box-chip"
-    onDelete={onDelete}
-    $tryingToRemove={tryingToRemove}
-  >
-    <Dot />
-    {item.label}
-  </ComboBoxChip>
-);
+  locked?: boolean;
+}> = ({ item, onDelete, tryingToRemove, locked }) =>
+  locked ? (
+    <ComboBoxChip className="amplify-combo-box-chip" $tryingToRemove={false}>
+      <Dot />
+      {item.label}
+    </ComboBoxChip>
+  ) : (
+    <ComboBoxChip
+      className="amplify-combo-box-chip"
+      onDelete={onDelete}
+      $tryingToRemove={tryingToRemove}
+    >
+      <Dot />
+      {item.label}
+    </ComboBoxChip>
+  );
 
 export const CustomizableValueElement: Story = {
   render: ComboBoxStateful,

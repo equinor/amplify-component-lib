@@ -98,7 +98,9 @@ export const SearchBar = <T extends SelectOptionRequired>({
       'customValueComponent' in props &&
       props.customValueComponent
     ) {
-      return <props.customValueComponent item={props.value} />;
+      return (
+        <props.customValueComponent item={props.value} locked={usingLocked} />
+      );
     } else if ('value' in props && props.value) {
       return <ValueText>{props.value.label}</ValueText>;
     } else if ('showSelectedAsText' in props && props.showSelectedAsText) {
@@ -123,6 +125,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
               key={value.value}
               item={value}
               onDelete={() => handleOnRemoveItem(value)}
+              locked={usingLocked}
               tryingToRemove={
                 tryingToRemoveItem !== undefined &&
                 tryingToRemoveItem.value === value.value

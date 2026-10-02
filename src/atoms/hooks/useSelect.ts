@@ -25,7 +25,16 @@ const useSelect = <T extends SelectOptionRequired>(
     mode,
   } = props;
   const inactive = disabled || loading || locked;
+  // Loading keeps an already open menu usable, so only these block selection
+  const blocked = !!(disabled || locked);
   const [open, setOpen] = useState(false);
+  const [wasBlocked, setWasBlocked] = useState(blocked);
+
+  // Close an already open menu when the select becomes locked or disabled
+  if (wasBlocked !== blocked) {
+    setWasBlocked(blocked);
+    if (blocked) setOpen(false);
+  }
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -157,7 +166,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnItemSelect = (item: SelectOption<T>) => {
-    if (inactive) return;
+    if (blocked) return;
 
     if ('value' in props) {
       if (props.value?.value === item.value) {
