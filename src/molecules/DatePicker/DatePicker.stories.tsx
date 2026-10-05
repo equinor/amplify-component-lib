@@ -93,6 +93,34 @@ export const Variants: StoryFn = (props: DatePickerProps) => {
   );
 };
 
+export const Locked: StoryFn = (props: DatePickerProps) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <DatePicker {...props} label="Locked" value={new Date()} locked />
+      <DatePicker {...props} label="Locked empty" locked />
+    </div>
+  );
+};
+
+export const Autofilled: StoryFn = (props: DatePickerProps) => {
+  const [value, setValue] = useState<Date | null>(new Date());
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <DatePicker
+      {...props}
+      label="Autofilled"
+      helperProps={{ text: 'Background resets when the value is changed' }}
+      value={value}
+      autofilled={autofilled}
+      onChange={(date) => {
+        setValue(date);
+        setAutofilled(false);
+      }}
+    />
+  );
+};
+
 const min = new Date();
 const max = new Date();
 min.setDate(2);

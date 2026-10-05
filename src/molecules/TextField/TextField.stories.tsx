@@ -569,6 +569,63 @@ Disabled.decorators = [
   },
 ];
 
+export const Locked: Story = () => (
+  <>
+    <TextField
+      id="storybook-locked"
+      label="Locked"
+      defaultValue="Validated value"
+      helperText="Helper text"
+      locked
+    />
+    <TextField
+      id="storybook-locked-unit"
+      label="Locked with unit"
+      defaultValue="500"
+      unit="$"
+      meta="Meta"
+      locked
+    />
+    <TextField
+      id="storybook-locked-multiline"
+      label="Locked multiline"
+      defaultValue="Validated value that spans multiple lines"
+      multiline
+      rows={3}
+      locked
+    />
+  </>
+);
+Locked.decorators = Disabled.decorators;
+
+function AutofilledComponent(args: TextFieldProps) {
+  const [value, setValue] = useState('Autofilled value');
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <TextField
+      {...args}
+      value={value}
+      autofilled={autofilled}
+      onChange={(
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => {
+        setValue(event.target.value);
+        setAutofilled(false);
+      }}
+    />
+  );
+}
+
+export const Autofilled: StoryObject = {
+  args: {
+    id: 'storybook-autofilled',
+    label: 'Autofilled',
+    helperText: 'Background resets when the value is changed',
+  },
+  render: (args) => <AutofilledComponent {...args} />,
+};
+
 export const Compact: Story = () => {
   const [density, setDensity] = useState<Density>('comfortable');
 

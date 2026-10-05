@@ -51,14 +51,31 @@ export const Container = styled.td<ContainerProps>`
         :is(
           :disabled,
           [aria-disabled='true'],
-          [readonly]
+          [readonly],
+          [data-input-cell-locked]
         )${excludeCellPopoverContent}
       )
     ) {
     box-shadow: inset 0 -2px 0 ${colors.interactive.primary__resting.rgba};
   }
 
-  &&:focus-within:not(:where(:has([popover]:focus-within))),
+  &&:has([data-input-cell-autofilled]${excludeCellPopoverContent}) {
+    background: ${colors.dataviz.primary.primary20};
+  }
+
+  /* A background set inline on the row (e.g. a selected row) overrides the autofilled background */
+  [style*='background']
+    > &&&:has([data-input-cell-autofilled]${excludeCellPopoverContent}) {
+    background: transparent;
+  }
+
+  /* Locked fields are read only, so focusing them shouldn't look like editing */
+  &&:focus-within:not(
+      :where(
+        :has([popover]:focus-within),
+        :has([data-input-cell-locked]${excludeCellPopoverContent})
+      )
+    ),
   &&:has([aria-expanded='true']${excludeCellPopoverContent}) {
     ${cellOutline(colors.interactive.primary__resting.rgba)}
   }

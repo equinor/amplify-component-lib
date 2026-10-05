@@ -90,6 +90,47 @@ export const Variants: StoryFn = (props: DateRangePickerProps) => (
   </div>
 );
 
+export const Locked: StoryFn<DateRangePickerProps> = (args) => {
+  const from = new Date();
+  const to = new Date();
+  to.setDate(to.getDate() + 7);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <DateRangePicker {...args} label="Locked" value={{ from, to }} locked />
+      <DateRangePicker
+        {...args}
+        label="Locked empty"
+        value={undefined}
+        locked
+      />
+    </div>
+  );
+};
+
+export const Autofilled: StoryFn<DateRangePickerProps> = (args) => {
+  const [value, setValue] = useState<DateRangePickerProps['value']>(() => {
+    const to = new Date();
+    to.setDate(to.getDate() + 7);
+    return { from: new Date(), to };
+  });
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <DateRangePicker
+      {...args}
+      label="Autofilled"
+      helperProps={{ text: 'Background resets when the value is changed' }}
+      value={value}
+      autofilled={autofilled}
+      onChange={(range) => {
+        setValue(range ?? undefined);
+        setAutofilled(false);
+      }}
+    />
+  );
+};
+
 const min = new Date();
 const max = new Date();
 min.setDate(2);
