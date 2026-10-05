@@ -9,8 +9,12 @@ import { check, close } from '@equinor/eds-icons';
 import { Wrapper } from '../SelectionControls.styles';
 import { SwitchIcon } from './Switch.styles';
 
-export interface SwitchProps extends EDSSwitchProps {
+export interface SwitchProps extends Omit<
+  EDSSwitchProps,
+  'checked' | 'defaultChecked'
+> {
   label: string;
+  checked: boolean;
   outlined?: boolean;
 }
 
@@ -28,7 +32,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         <SwitchIcon
           data={checked ? check : close}
           size={16}
-          $checked={!!checked}
+          $checked={checked}
           $disabled={otherProps.disabled}
           data-testid="switch-icon"
         />

@@ -5,7 +5,7 @@ import { render, screen } from 'src/tests/browsertest-utils';
 
 test('Renders as expected', () => {
   const label = faker.animal.dog();
-  render(<Switch label={label} />);
+  render(<Switch label={label} checked={false} />);
 
   expect(screen.getByText(label)).toBeInTheDocument();
 });

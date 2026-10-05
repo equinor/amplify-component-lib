@@ -66,7 +66,7 @@ export const Wrapper = styled.span<WrapperProps>`
     }
     > label:has(input:checked) > span > span > span:last-child {
       transform: translate(16px, -50%);
-      background: ${colors.text.static_icons__primary_white.rgba};
+      background: ${colors.text.static_icons__primary_white.hex};
     }
 
     > label:hover:not(:has(input:disabled)) > span > span > span:first-child {

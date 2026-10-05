@@ -6,7 +6,7 @@ import { render, screen } from 'src/tests/jsdomtest-utils';
 
 test('Renders as expected with outlined=true', () => {
   const label = faker.animal.dog();
-  render(<Switch label={label} outlined />);
+  render(<Switch label={label} checked={false} outlined />);
 
   const parent = screen.getByLabelText(label).parentElement!.parentElement;
 

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { check, close } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Switch, SwitchProps } from './Switch';
+import { Switch } from './Switch';
 
+import { useArgs } from 'storybook/preview-api';
 import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Switch> = {
@@ -20,22 +21,35 @@ const meta: Meta<typeof Switch> = {
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=25793-38443&m=dev',
     },
   },
-  args: {},
+  args: {
+    checked: false,
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
-/* Switch is controlled; stories hold the state so the knob/icon can toggle */
-const StatefulSwitch = (props: SwitchProps) => {
-  const [checked, setChecked] = useState(props.checked ?? false);
+/**
+ * Switch is controlled. Mirror the `checked` arg in local state so clicks
+ * re-render immediately (the vitest runner does not re-render on updateArgs),
+ * while still syncing with Storybook Controls through useArgs.
+ */
+const StorySwitch: Story['render'] = function StorySwitch(args) {
+  const [, updateArgs] = useArgs();
+  const [checked, setChecked] = useState(args.checked);
+
+  useEffect(() => {
+    setChecked(args.checked);
+  }, [args.checked]);
+
   return (
     <Switch
-      {...props}
+      {...args}
       checked={checked}
       onChange={(event) => {
         setChecked(event.target.checked);
-        props.onChange?.(event);
+        updateArgs({ checked: event.target.checked });
+        args.onChange?.(event);
       }}
     />
   );
@@ -50,9 +64,10 @@ const getIconPath = (canvasElement: HTMLElement) =>
     ?.getAttribute('d');
 
 export const Default: Story = {
-  render: (args) => <StatefulSwitch {...args} />,
+  render: StorySwitch,
   args: {
     label: 'Toyota',
+    checked: false,
     onChange: fn(),
   },
   play: async ({ args, canvas, canvasElement }) => {
@@ -108,7 +123,7 @@ export const DisabledOutlined: Story = {
 };
 
 export const Checked: Story = {
-  render: (args) => <StatefulSwitch {...args} />,
+  render: StorySwitch,
   args: {
     label: 'Toyota',
     checked: true,
