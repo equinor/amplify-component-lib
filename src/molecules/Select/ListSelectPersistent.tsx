@@ -35,13 +35,13 @@ export const ListSelectPersistent = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const { search, itemRefs, onItemKeyDown, mode } = props;
+  const { search, itemRefs, onItemKeyDown, mode, noItemsText } = props;
 
   const { filteredItems } = useListSelectItems(props);
 
   if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
     return (
-      <PersistentNoItemsFoundText>No items found</PersistentNoItemsFoundText>
+      <PersistentNoItemsFoundText>{noItemsText}</PersistentNoItemsFoundText>
     );
   }
 

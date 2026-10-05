@@ -559,6 +559,22 @@ export const TestFilteringListNoMatch: Story = {
   },
 };
 
+export const TestCustomNoItemsText: Story = {
+  tags: ['test-only'],
+  args: {
+    items: [],
+    value: undefined,
+    label: 'Search users',
+    noItemsText: 'Start typing to search for users',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await expect(canvas.getByText(args.noItemsText!)).toBeInTheDocument();
+    await expect(canvas.queryByText(/no items found/i)).not.toBeInTheDocument();
+  },
+};
+
 export const TestAddItem: Story = {
   tags: ['test-only'],
   args: {
