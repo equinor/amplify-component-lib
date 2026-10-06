@@ -20,10 +20,6 @@ const Container = styled.div<ContainerProps>`
   gap: ${spacings.small};
   align-items: center;
   white-space: nowrap;
-  &:focus-visible {
-    outline: 2px dashed ${colors.interactive.primary__resting.rgba};
-    outline-offset: 2px;
-  }
   ${({ $disabled, $clickable }) => {
     if ($disabled) {
       return css`
@@ -108,7 +104,7 @@ export const Step: FC<StepProps> = ({
         $disabled={isDisabled}
         aria-disabled={!isClickable}
         role="button"
-        tabIndex={isClickable || (isDisabled && Boolean(tooltip)) ? 0 : -1}
+        tabIndex={isClickable ? 0 : -1}
       >
         <StepIcon
           index={index}

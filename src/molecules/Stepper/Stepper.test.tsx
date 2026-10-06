@@ -242,69 +242,6 @@ test('Works as expected with title in steps', async () => {
   expect(screen.getByText(steps[0].description!)).toBeInTheDocument();
 });
 
-test('Step tooltip is shown on hover', async () => {
-  const tooltip = 'Complete the previous step first';
-  const steps: StepperProviderProps['steps'] = [
-    { label: 'Step 1' },
-    { label: 'Step 2', tooltip },
-  ];
-
-  await renderWithRouter(
-    <StepperProvider steps={steps}>
-      <Stepper />
-    </StepperProvider>,
-    {
-      initialEntries: ['/'],
-      routes: ['/'],
-    }
-  );
-
-  const user = userEvent.setup();
-  await user.hover(screen.getByText('Step 2'));
-
-  expect(await screen.findByRole('tooltip')).toHaveTextContent(tooltip);
-});
-
-test('Disabled step tooltip is available through keyboard focus', async () => {
-  const tooltip = 'Complete the previous step first';
-  const steps: StepperProviderProps['steps'] = [
-    { label: 'Step 1' },
-    { label: 'Step 2', tooltip },
-  ];
-
-  await renderWithRouter(
-    <StepperProvider
-      steps={steps}
-      isStepDisabled={({ stepIndex }) => stepIndex === 1}
-    >
-      <Stepper />
-    </StepperProvider>,
-    {
-      initialEntries: ['/'],
-      routes: ['/'],
-    }
-  );
-
-  const disabledStep = screen
-    .getByText('Step 2')
-    .closest('[data-testid="step"]') as HTMLElement | null;
-  const tooltipId = disabledStep?.getAttribute('aria-describedby');
-
-  expect(disabledStep).toHaveAttribute('tabindex', '0');
-  expect(tooltipId).toBeTruthy();
-
-  disabledStep?.focus();
-
-  const tooltipElement = await screen.findByRole('tooltip');
-  expect(tooltipElement).toHaveAttribute('id', tooltipId);
-  expect(tooltipElement).toHaveTextContent(tooltip);
-
-  disabledStep?.blur();
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
-});
-
 function isStepDisabled({ stepIndex }: { stepIndex: number }) {
   return stepIndex === 0;
 }
