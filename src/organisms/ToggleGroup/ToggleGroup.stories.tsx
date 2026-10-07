@@ -6,11 +6,15 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { ToggleGroup as ToggleGroupProps } from './ToggleGroup.types';
 import { ToggleGroup as ToggleGroupComponent } from '.';
 import { colors } from 'src/atoms/style';
+import type { TooltipProps } from 'src/molecules/Tooltip/Tooltip';
+
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 interface StoryComponentProps extends ToggleGroupProps {
   withIcons?: boolean;
   onlyIcons?: boolean;
   withTooltips?: boolean;
+  tooltipPlacement?: TooltipProps['placement'];
   disabled?: boolean;
 }
 
@@ -21,6 +25,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
   withIcons = false,
   onlyIcons = false,
   withTooltips = false,
+  tooltipPlacement,
   disabled = false,
 }) => {
   const [recentlyPublished, setRecentlyPublished] = useState(false);
@@ -53,6 +58,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
             ? {
                 icon: new_label,
                 tooltip: withTooltips ? 'Recently published' : undefined,
+                tooltipPlacement,
               }
             : {
                 label: 'Recently published',
@@ -66,6 +72,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
             ? {
                 icon: person,
                 tooltip: withTooltips ? 'My files' : undefined,
+                tooltipPlacement,
               }
             : {
                 label: 'My files',
@@ -79,6 +86,7 @@ const ToggleGroup: FC<StoryComponentProps> = ({
             ? {
                 icon: star_outlined,
                 tooltip: withTooltips ? 'Favourites' : undefined,
+                tooltipPlacement,
               }
             : {
                 label: 'Favourites',
@@ -105,6 +113,13 @@ const meta: Meta = {
     withIcons: {
       description: 'This is only used in the story',
       control: 'boolean',
+    },
+    tooltipPlacement: {
+      description:
+        'Passed to each ToggleGroup.Option, not to the ToggleGroup container.',
+      control: 'select',
+      options: ['top', 'bottom', 'left', 'right'],
+      if: { arg: 'withTooltips', truthy: true },
     },
   },
   parameters: {
@@ -181,6 +196,53 @@ export const OnlyIconsOutlined: Story = {
   args: {
     onlyIcons: true,
     variant: 'outlined',
+  },
+};
+
+export const WithTooltipPlacement: Story = {
+  args: {
+    onlyIcons: true,
+    withTooltips: true,
+    tooltipPlacement: 'bottom',
+    variant: 'outlined',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Hover an icon to show its tooltip. Use the tooltipPlacement control to compare the four ACL placements: top, bottom, left, and right.',
+      },
+      source: {
+        code: `<ToggleGroup variant="outlined">
+  <ToggleGroup.Option
+    icon={new_label}
+    tooltip="Recently published"
+    tooltipPlacement="bottom"
+    checked={recentlyPublished}
+    onToggle={setRecentlyPublished}
+  />
+  <ToggleGroup.Option
+    icon={person}
+    tooltip="My files"
+    tooltipPlacement="bottom"
+    checked={myFiles}
+    onToggle={setMyFiles}
+  />
+</ToggleGroup>`,
+      },
+    },
+  },
+  play: async ({ canvas }) => {
+    const icon = canvas.getAllByTestId('eds-icon-path')[0];
+    await userEvent.hover(icon);
+    const tooltip = await screen.findByRole('tooltip');
+    await expect(tooltip).toBeVisible();
+    await expect(tooltip).toHaveTextContent('Recently published');
+
+    await userEvent.unhover(icon);
+    await waitFor(() => {
+      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    });
   },
 };
 

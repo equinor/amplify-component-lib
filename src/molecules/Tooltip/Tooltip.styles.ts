@@ -107,51 +107,29 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
     }};
   }
 
-  ${({ $placement }) => {
-    const [side, alignment] = $placement.split('-');
-    const vertical = side === 'top' || side === 'bottom';
-    const span =
-      alignment === 'start'
-        ? vertical
-          ? 'span-right'
-          : 'span-bottom'
-        : alignment === 'end'
-          ? vertical
-            ? 'span-left'
-            : 'span-top'
-          : '';
-    const alignmentStyles = alignment
-      ? css`
-          ${vertical ? 'justify-self' : 'align-self'}: ${alignment};
-        `
-      : '';
-
-    switch (side) {
+  ${(props) => {
+    switch (props.$placement) {
       case 'top':
         return css`
-          position-area: top ${span};
-          ${alignmentStyles}
+          position-area: top;
           bottom: ${TOOLTIP_DISTANCE};
           position-try-fallbacks: flip-block;
         `;
       case 'bottom':
         return css`
-          position-area: bottom ${span};
-          ${alignmentStyles}
+          position-area: bottom;
           top: ${TOOLTIP_DISTANCE};
           position-try-fallbacks: flip-block;
         `;
       case 'left':
         return css`
-          position-area: left ${span};
-          ${alignmentStyles}
+          position-area: left;
           right: ${TOOLTIP_DISTANCE};
           position-try-fallbacks: flip-inline;
         `;
       case 'right':
         return css`
-          position-area: right ${span};
-          ${alignmentStyles}
+          position-area: right;
           left: ${TOOLTIP_DISTANCE};
           position-try-fallbacks: flip-inline;
         `;
