@@ -4,7 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { chevron_down, chevron_right } from '@equinor/eds-icons';
 import { tokens } from '@equinor/eds-tokens';
 
-import { getChildOffset } from './Select.utils';
+import { getChildOffset, getNextEnabledItemIndex } from './Select.utils';
 import { spacings } from 'src/atoms/style/spacings';
 import { DynamicMenuItem } from 'src/molecules/Select/DynamicMenuItem';
 import {
@@ -35,7 +35,6 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
     mode,
   } = props;
   const [openParent, setOpenParent] = useState(false);
-  const focusingChildIndex = useRef<number>(-1);
   const childRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const selectedValues =
@@ -53,50 +52,45 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
 
   const handleChevronIconClick = (event: MouseEvent) => {
     event.stopPropagation();
+    if (isItemDisabled) return;
     setOpenParent((prev) => !prev);
+  };
+
+  const handleOnChildKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    fromIndex = childRefs.current.indexOf(event.currentTarget)
+  ) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+
+    event.preventDefault();
+    const nextIndex = getNextEnabledItemIndex(
+      childRefs.current,
+      fromIndex === -1 ? childOffset - 1 : fromIndex,
+      event.key === 'ArrowDown' ? 1 : -1
+    );
+
+    if (nextIndex !== -1) {
+      childRefs.current[nextIndex]?.focus();
+    } else if (event.key === 'ArrowUp') {
+      itemRefs.current[index]?.focus();
+    } else {
+      // Keep focus on the parent if there is no enabled item after this subtree.
+      itemRefs.current[index]?.focus();
+      onItemKeyDown(event, index);
+      setOpenParent(false);
+    }
   };
 
   const handleOnParentKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (isItemDisabled) return;
 
     if ((!openParent && event.key === 'ArrowDown') || event.key === 'ArrowUp') {
-      onItemKeyDown(event);
+      onItemKeyDown(event, index);
     } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      event.preventDefault();
       setOpenParent((prev) => !prev);
-    } else if (
-      openParent &&
-      event.key === 'ArrowDown' &&
-      focusingChildIndex.current === -1
-    ) {
-      focusingChildIndex.current = 0;
-      childRefs.current[focusingChildIndex.current + childOffset]?.focus();
-    }
-  };
-
-  const handleOnChildKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (event.key === 'ArrowDown') {
-      focusingChildIndex.current += 1;
-    } else if (event.key === 'ArrowUp') {
-      focusingChildIndex.current -= 1;
-    }
-
-    if (focusingChildIndex.current <= -1) {
-      // On first child and moving up
-      itemRefs.current[index]?.focus();
-      focusingChildIndex.current = -1;
-    } else if (
-      focusingChildIndex.current + childOffset ===
-      childRefs.current.length
-    ) {
-      // Last child, move to next top level
-      focusingChildIndex.current = -1;
-      onItemKeyDown(event);
-      setOpenParent(false);
-    } else if (
-      focusingChildIndex.current >= 0 &&
-      focusingChildIndex.current < childRefs.current.length - childOffset
-    ) {
-      childRefs.current[focusingChildIndex.current + childOffset]?.focus();
+    } else if (openParent && event.key === 'ArrowDown') {
+      handleOnChildKeyDown(event, childOffset - 1);
     }
   };
 
@@ -111,6 +105,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
             variant="ghost_icon"
             onClick={handleChevronIconClick}
             data-testid="toggle-button"
+            disabled={isItemDisabled}
           >
             <Icon
               color={colors.interactive.primary__resting.rgba}
@@ -138,6 +133,7 @@ export const SelectMenuItem = <T extends SelectOptionRequired>(
               onItemKeyDown={handleOnChildKeyDown}
               onItemSelect={onItemSelect}
               mode={mode}
+              disabled={isItemDisabled}
               parentHasNestedItems
               CustomMenuItemComponent={CustomMenuItemComponent}
             />

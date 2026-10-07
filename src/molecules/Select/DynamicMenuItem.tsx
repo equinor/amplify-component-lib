@@ -58,6 +58,10 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
   };
 
   const handleOnKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    // Select owns arrow navigation; do not let EDS Menu move focus again.
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.stopPropagation();
+    }
     if (handleOnParentKeyDown !== undefined) {
       handleOnParentKeyDown(e);
     } else {

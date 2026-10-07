@@ -114,9 +114,13 @@ export interface ListSelectMenuProps {
 }
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {
+  disabled?: boolean;
   search: string;
   itemRefs: RefObject<(HTMLButtonElement | null)[]>;
-  onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
+  onItemKeyDown: (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index?: number
+  ) => void;
   onItemSelect: (item: SelectOption<T>) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
 }
@@ -129,7 +133,6 @@ interface SelectMenuItemProps<T extends SelectOptionRequired> {
   isParentSelected?: boolean;
   mode: 'persistent' | 'menu' | undefined;
   parentHasNestedItems?: boolean;
-  disabled?: boolean;
   customMenuItemComponent?: FC<{
     item: SelectOption<T>;
     selected: boolean;

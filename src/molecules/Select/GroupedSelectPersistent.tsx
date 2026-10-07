@@ -63,6 +63,7 @@ export const GroupedSelectPersistent = <T extends SelectOptionRequired>(
               onItemSelect={onItemSelect}
               values={props.values}
               mode={mode}
+              disabled={props.disabled}
               CustomMenuItemComponent={CustomMenuItemComponent}
             />
           ))}

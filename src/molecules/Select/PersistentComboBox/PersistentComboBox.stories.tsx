@@ -107,12 +107,13 @@ const FAKE_ITEMS_WITH_REALLY_LONG_NAMES = new Array(
     value: faker.string.uuid(),
   }));
 
-const FAKE_ITEMS_WITH_DISABLED_ITEMS: Item[] = FAKE_ITEMS.map(
-  (item, index) => ({
-    ...item,
-    disabled: index === 1 || index === 4,
-  })
-);
+const ITEMS_WITH_DISABLED_OPTIONS = [
+  { label: 'Apricot', value: 'apricot', disabled: true },
+  { label: 'Apple', value: 'apple' },
+  { label: 'Banana', value: 'banana', disabled: true },
+  { label: 'Cherry', value: 'cherry' },
+  { label: 'Date', value: 'date', disabled: true },
+];
 
 type Story = StoryObj<typeof PersistentComboBox>;
 
@@ -126,6 +127,7 @@ const PersistentComboBoxWithState = (
     selectedValue?: SelectOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
+    args.onSelect?.(selectedValues, selectedValue);
     setValues(selectedValues);
   };
 
@@ -521,61 +523,247 @@ export const CustomizableMenuItem: Story = {
 };
 
 export const DisabledMenuItems: Story = {
-  args: {
-    items: FAKE_ITEMS_WITH_DISABLED_ITEMS,
-  },
   render: (args) => <PersistentComboBoxWithState {...args} />,
-  play: async ({ canvasElement }) => {
+  args: {
+    items: ITEMS_WITH_DISABLED_OPTIONS,
+    label: 'Disabled options',
+    helperText: 'Apricot, Banana, and Date are unavailable',
+    onSelect: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-
-    const disabledItem = FAKE_ITEMS_WITH_DISABLED_ITEMS[1];
-    const enabledItem = FAKE_ITEMS_WITH_DISABLED_ITEMS[0];
-
-    await expect(
-      canvas.getByRole('button', { name: disabledItem.label })
-    ).toBeDisabled();
-
-    await userEvent.click(
-      canvas.getByRole('button', { name: disabledItem.label })
-    );
+    for (const item of ITEMS_WITH_DISABLED_OPTIONS.filter(
+      (item) => item.disabled
+    )) {
+      const option = canvas.getByRole('button', { name: item.label });
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).not.toHaveBeenCalled();
     await expect(
       canvas.queryByTestId('amplify-combobox-chip')
     ).not.toBeInTheDocument();
 
-    await userEvent.click(
-      canvas.getByRole('button', { name: enabledItem.label })
-    );
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Cherry' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Cherry' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(canvas.getByRole('button', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(canvas.getByRole('combobox')).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(canvas.getByRole('button', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
     await expect(canvas.getByTestId('amplify-combobox-chip')).toHaveTextContent(
-      enabledItem.label
+      'Apple'
     );
   },
 };
 
 export const DisabledPersistentComboBox: Story = {
-  tags: ['test-only'],
   args: {
     disabled: true,
     helperText: 'You cannot change this selection',
-    items: FAKE_ITEMS,
-    values: [FAKE_ITEMS[0]],
+    items: ITEMS_WITH_DISABLED_OPTIONS,
+    values: [ITEMS_WITH_DISABLED_OPTIONS[1]],
     label: 'Disabled Persistent ComboBox',
     onSelect: fn(),
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-
     await expect(canvas.getByRole('combobox')).toBeDisabled();
     await expect(canvas.getByTestId('clearBtn')).toBeDisabled();
-    await expect(
-      canvas.getByRole('button', { name: FAKE_ITEMS[1].label })
-    ).toBeDisabled();
-
+    for (const item of ITEMS_WITH_DISABLED_OPTIONS) {
+      for (const option of canvas.getAllByRole('button', {
+        name: item.label,
+      })) {
+        await expect(option).toBeDisabled();
+        await userEvent.click(option);
+      }
+    }
     await userEvent.click(canvas.getByTestId('clearBtn'));
-    await userEvent.click(
-      canvas.getByRole('button', { name: FAKE_ITEMS[1].label })
-    );
-
     await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+const NESTED_ITEMS_WITH_DISABLED_OPTIONS = [
+  {
+    label: 'Fruits',
+    value: 'fruits',
+    children: ITEMS_WITH_DISABLED_OPTIONS,
+  },
+  {
+    label: 'Vegetables',
+    value: 'vegetables',
+    disabled: true,
+    children: [{ label: 'Carrot', value: 'carrot' }],
+  },
+  { label: 'Bread', value: 'bread' },
+];
+
+export const DisabledNestedMenuItems: Story = {
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  args: {
+    items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
+    label: 'Disabled nested options',
+    helperText:
+      'Expand Fruits to see disabled children; Vegetables is disabled',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByTestId('toggle-button')[1]).toBeDisabled();
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Cherry' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+    await expect(canvas.getByRole('button', { name: 'Fruits' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Bread' })).toHaveFocus();
+  },
+};
+
+export const AllMenuItemsDisabled: Story = {
+  tags: ['test-only'],
+  args: {
+    items: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
+      ...item,
+      disabled: true,
+    })),
+    values: [],
+  },
+  play: async ({ canvas }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.click(search);
+    await userEvent.keyboard('{ArrowDown}{ArrowUp}');
+    await expect(search).toHaveFocus();
+  },
+};
+
+export const AllChildrenDisabled: Story = {
+  tags: ['test-only'],
+  args: {
+    items: [
+      {
+        ...NESTED_ITEMS_WITH_DISABLED_OPTIONS[0],
+        children: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
+          ...item,
+          disabled: true,
+        })),
+      },
+      NESTED_ITEMS_WITH_DISABLED_OPTIONS[2],
+    ],
+    values: [],
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}{ArrowDown}');
+    await expect(canvas.getByRole('button', { name: 'Bread' })).toHaveFocus();
+  },
+};
+
+export const NoEnabledItemAfterSubtree: Story = {
+  tags: ['test-only'],
+  args: {
+    items: NESTED_ITEMS_WITH_DISABLED_OPTIONS.slice(0, 2),
+    values: [],
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard(
+      '{ArrowDown}{ArrowRight}{ArrowDown}{ArrowDown}{ArrowDown}'
+    );
+    await expect(canvas.getByRole('button', { name: 'Fruits' })).toHaveFocus();
+  },
+};
+
+export const DisabledAfterSelection: Story = {
+  tags: ['test-only'],
+  args: {
+    items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
+    values: [],
+    onSelect: fn(),
+  },
+  render: function Render(args) {
+    const [disabled, setDisabled] = useState(false);
+    return (
+      <PersistentComboBox
+        {...args}
+        disabled={disabled}
+        onSelect={(values, item) => {
+          args.onSelect(values, item);
+          setDisabled(true);
+        }}
+      />
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getAllByTestId('toggle-button')[0]);
+    await userEvent.click(canvas.getByRole('button', { name: 'Apple' }));
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    await expect(canvas.getAllByTestId('toggle-button')[0]).toBeDisabled();
+    for (const option of canvas.getAllByRole('button')) {
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const DisabledParentAfterSelection: Story = {
+  ...DisabledAfterSelection,
+  render: function Render(args) {
+    const [disabled, setDisabled] = useState(false);
+    return (
+      <PersistentComboBox
+        {...args}
+        groups={undefined}
+        items={NESTED_ITEMS_WITH_DISABLED_OPTIONS.map((item, index) =>
+          index === 0 ? { ...item, disabled } : item
+        )}
+        onSelect={(values, item) => {
+          args.onSelect(values, item);
+          setDisabled(true);
+        }}
+      />
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getAllByTestId('toggle-button')[0]);
+    await userEvent.click(canvas.getByRole('button', { name: 'Apple' }));
+    await expect(canvas.getByRole('combobox')).toBeEnabled();
+    await expect(canvas.getByRole('button', { name: 'Fruits' })).toBeDisabled();
+    await expect(canvas.getAllByTestId('toggle-button')[0]).toBeDisabled();
+    for (const item of ITEMS_WITH_DISABLED_OPTIONS) {
+      const option = canvas.getByRole('button', { name: item.label });
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const DisabledGroupsAfterSelection: Story = {
+  ...DisabledAfterSelection,
+  args: {
+    groups: [{ title: 'Fruit', items: ITEMS_WITH_DISABLED_OPTIONS }],
+    items: undefined,
+    values: [],
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Apple' }));
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    for (const option of canvas.getAllByRole('button')) {
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
   },
 };
 
