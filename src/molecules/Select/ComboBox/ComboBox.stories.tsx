@@ -715,6 +715,35 @@ export const TestOnAddItemWithClick: Story = {
   },
 };
 
+export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
+  tags: ['test-only'],
+  args: {
+    items: ITEMS_WITH_DISABLED_OPTIONS,
+    values: [],
+    onAddItem: fn(),
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.type(search, 'Ban');
+    await userEvent.click(search);
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Banana' })
+    ).toBeDisabled();
+    const addItem = canvas.getByRole('menuitem', { name: /Add "Ban"/ });
+    const onAddItem = 'onAddItem' in args ? args.onAddItem : undefined;
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(addItem).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(search).toHaveFocus();
+    await expect(onAddItem).not.toHaveBeenCalled();
+    await expect(args.onSelect).not.toHaveBeenCalled();
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await expect(onAddItem).toHaveBeenCalledWith('Ban');
+    await expect(onAddItem).toHaveBeenCalledTimes(1);
+  },
+};
+
 export const TestGroupsPreselected: Story = {
   tags: ['test-only'],
   args: {
