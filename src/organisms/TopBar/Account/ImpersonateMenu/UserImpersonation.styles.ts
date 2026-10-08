@@ -28,7 +28,11 @@ export const Container = styled.div<ContainerProps>`
         ? colors.interactive.primary__selected_hover.rgba
         : colors.interactive.primary__hover_alt.rgba};
   }
-  > p {
+  > span:has(> p) {
+    min-width: 0;
+  }
+  > p,
+  > span > p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -62,7 +66,7 @@ export const RoleChipContainer = styled.div<ContainerProps>`
   ${({ $selected }) => {
     if (!$selected) return '';
     return css`
-      > div {
+      > ${RoleChip}, > span > ${RoleChip} {
         background: ${colors.interactive.primary__resting.rgba};
         color: ${colors.text.static_icons__primary_white.rgba};
         outline-color: ${colors.interactive.primary__resting.rgba};

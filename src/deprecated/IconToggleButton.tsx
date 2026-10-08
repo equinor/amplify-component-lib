@@ -1,8 +1,12 @@
 import { forwardRef, useState } from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
-import { Tooltip as EdsTooltip, TooltipProps } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
+
+import {
+  Tooltip as AmplifyTooltip,
+  TooltipProps,
+} from 'src/molecules/Tooltip/Tooltip';
 
 type Placement = TooltipProps['placement'];
 
@@ -45,23 +49,23 @@ const IconToggleButton = forwardRef<HTMLButtonElement, IconToggleButtonProps>(
     };
 
     return toggle ? (
-      <EdsTooltip
+      <AmplifyTooltip
         title={toggleOn.tooltip?.title}
         placement={toggleOn.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOff}>
           <Icon size={24} data={toggleOn.icon} />
         </Button>
-      </EdsTooltip>
+      </AmplifyTooltip>
     ) : (
-      <EdsTooltip
+      <AmplifyTooltip
         title={toggleOff.tooltip?.title}
         placement={toggleOff.tooltip?.placement as Placement}
       >
         <Button ref={ref} variant="ghost_icon" onClick={handleToggleOn}>
           <Icon size={24} data={toggleOff.icon} />
         </Button>
-      </EdsTooltip>
+      </AmplifyTooltip>
     );
   }
 );

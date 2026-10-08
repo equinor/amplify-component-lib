@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import {
   CreateButton,
   MenuItemContainer,

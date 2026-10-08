@@ -1,4 +1,5 @@
 import { colors, spacings } from 'src/atoms/style';
+import { Wrapper as TooltipAnchor } from 'src/molecules/Tooltip/Tooltip.styles';
 
 import styled from 'styled-components';
 
@@ -19,6 +20,11 @@ export const NavigationContainer = styled.div<ContainerProps>`
   overflow: hidden;
   border-right: 1px solid ${colors.ui.background__medium.rgba};
   background-color: ${colors.ui.background__default.rgba};
+
+  /* Keep sidebar buttons full-width when wrapped in a tooltip. */
+  > div > ${TooltipAnchor} {
+    align-self: stretch;
+  }
 `;
 
 export const TopItemContainer = styled.div`

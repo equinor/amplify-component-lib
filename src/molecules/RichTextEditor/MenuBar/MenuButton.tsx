@@ -1,10 +1,10 @@
 import { forwardRef, ReactNode, RefObject } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
 
 import { MenuButtonStyle } from './MenuBar.styles';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 export interface MenuButtonProps {
   ref?: RefObject<HTMLButtonElement>;

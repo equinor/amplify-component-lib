@@ -1,9 +1,10 @@
 import { FC } from 'react';
 
-import { Tooltip, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import { ReviewQANotificationsTypes } from '../Notifications.types';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 

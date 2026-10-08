@@ -8,6 +8,14 @@ import { FileProgressProps } from 'src/molecules/FileProgress/FileProgress.types
 
 import { expect, fn, userEvent } from 'storybook/test';
 
+// A valid 1×1 PNG avoids allocating large buffers for story files.
+const tinyPng = Uint8Array.from(
+  atob(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgaPj/HwAEggJ/59habAAAAABJRU5ErkJggg=='
+  ),
+  (character) => character.charCodeAt(0)
+);
+
 const StoryComponent = (args: FileProgressProps) => {
   const [file, setFile] = useState<File | undefined>(undefined);
 
@@ -61,11 +69,7 @@ const meta: Meta<typeof FileProgress> = {
   args: {
     compact: false,
     file: new File(
-      [
-        new ArrayBuffer(
-          faker.number.int({ min: Math.pow(10, 7), max: Math.pow(10, 9) })
-        ),
-      ],
+      [tinyPng],
       `${faker.commerce.productName().replaceAll(' ', '_')}.${faker.system.fileExt('image/png')}`,
       {
         type: 'image/png',
@@ -100,11 +104,7 @@ export const ReallyLongFileName: Story = {
     isDone: true,
 
     file: new File(
-      [
-        new ArrayBuffer(
-          faker.number.int({ min: Math.pow(10, 7), max: Math.pow(10, 9) })
-        ),
-      ],
+      [tinyPng],
       `${(faker.string.uuid() + faker.string.uuid()).replaceAll('-', '')}.${faker.system.fileExt('image/png')}`,
       {
         type: 'image/png',
@@ -175,7 +175,7 @@ export const TestCompactCompletedBasic: Story = {
     indeterminate: true,
     isDone: true,
     compact: true,
-    file: new File([], 'basic.txt', { type: 'text/plain' }),
+    file: new File([], 'basic.pdf', { type: 'application/pdf' }),
   },
   play: async ({ canvas }) => {
     await expect(canvas.queryByRole('img')).not.toBeInTheDocument();
@@ -206,6 +206,8 @@ export const TestOnError: Story = {
 export const TestOnDelete: Story = {
   tags: ['test-only'],
   args: {
+    file: new File([], 'basic.txt', { type: 'text/plain' }),
+    isDone: true,
     indeterminate: true,
     compact: true,
     onDelete: fn(),

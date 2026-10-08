@@ -1,8 +1,7 @@
 import { FC, KeyboardEvent, ReactNode, RefObject } from 'react';
 
-import type { TooltipProps } from '@equinor/eds-core-react';
-
 import { Variants } from 'src/atoms/types/variants';
+import type { TooltipProps } from 'src/molecules/Tooltip/Tooltip';
 
 export interface SelectOptionRequired {
   value: string;
