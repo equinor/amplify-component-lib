@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { FileWithPath } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { clear, error_outlined } from '@equinor/eds-icons';
@@ -18,11 +17,7 @@ import {
   CompactFileProgressBaseProps,
   FileProgressPropsExtension,
 } from './FileProgress.types';
-import {
-  getFileIcon,
-  isFileImage,
-  readUploadedFileAsText,
-} from './FileProgress.utils';
+import { getFileIcon, isFileImage } from './FileProgress.utils';
 import { colors } from 'src/atoms/style';
 import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
@@ -38,17 +33,18 @@ const CompactFileProgress: FC<
   isDeleting,
   ...rest
 }) => {
-  const [src, setSrc] = useState('');
+  const [src, setSrc] = useState<string>();
+  const showImagePreview =
+    !isError && showCompleteState && !isDeleting && isFileImage(file.name);
 
   useEffect(() => {
-    const getSrc = async (file: FileWithPath) => {
-      const src = await readUploadedFileAsText(file);
-      setSrc(src);
-    };
-    if (!isError) {
-      getSrc(file);
-    }
-  }, [isError, file]);
+    if (!showImagePreview) return;
+
+    const objectUrl = URL.createObjectURL(file);
+    setSrc(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file, showImagePreview]);
 
   const errorText = useMemo(() => {
     if (!isError) return '';
@@ -93,7 +89,7 @@ const CompactFileProgress: FC<
       );
     }
 
-    if (showCompleteState && !isDeleting && isFileImage(file.name)) {
+    if (showImagePreview) {
       return (
         <DoneWrapper>
           <img src={src} alt={' ' + `${file.name}`} />
@@ -146,6 +142,7 @@ const CompactFileProgress: FC<
   }, [
     isError,
     showCompleteState,
+    showImagePreview,
     isDeleting,
     shortErrorText,
     src,
