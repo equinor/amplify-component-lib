@@ -114,6 +114,11 @@ const exerciseSearchableSubmenu = async (isOpen: boolean) => {
     parentBackground
   );
   await expect(search).toHaveFocus();
+  if (!isOpen) {
+    await userEvent.keyboard('[Home][End]');
+    await expect(search).toHaveFocus();
+    await expect(search).toHaveValue(' TEAM ');
+  }
 
   await userEvent.clear(search);
   await expect(
@@ -124,6 +129,10 @@ const exerciseSearchableSubmenu = async (isOpen: boolean) => {
     screen.getByRole('status', { name: 'Search results' })
   ).toHaveTextContent('No matching items');
   await expect(screen.queryAllByRole(itemRole)).toHaveLength(0);
+  if (!isOpen) {
+    await userEvent.keyboard('[ArrowDown][ArrowUp]');
+    await expect(search).toHaveFocus();
+  }
 
   await userEvent.clear(search);
   await expect(
@@ -145,6 +154,18 @@ const exerciseSearchableSubmenu = async (isOpen: boolean) => {
     await userEvent.keyboard('[ArrowDown]');
     await expect(
       screen.getByRole(itemRole, { name: 'My favourites' })
+    ).toHaveFocus();
+    await userEvent.keyboard('[ArrowUp]');
+    await expect(
+      screen.getByRole(itemRole, { name: 'Team favourites' })
+    ).toHaveFocus();
+    await userEvent.keyboard('[Home]');
+    await expect(
+      screen.getByRole(itemRole, { name: 'My favourites' })
+    ).toHaveFocus();
+    await userEvent.keyboard('[End]');
+    await expect(
+      screen.getByRole(itemRole, { name: 'Team favourites' })
     ).toHaveFocus();
     await userEvent.type(search, 'team');
     await userEvent.keyboard('[Escape]');
