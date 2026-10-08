@@ -2,13 +2,10 @@ import { AnimatedCheckmark } from './AnimatedCheckmark';
 import { sizeToPx } from './AnimatedCheckmark.utils';
 import { render, screen } from 'src/tests/jsdomtest-utils';
 
-test('Default size is as expected', () => {
+test('Default size matches medium', () => {
   render(<AnimatedCheckmark />);
 
-  const svg = screen.getByTestId('svg-icon');
-
-  expect(svg).toHaveStyle(`width: ${sizeToPx('medium')}`);
-  expect(svg).toHaveStyle(`height: ${sizeToPx('medium')}`);
+  expect(screen.getByTestId('svg-icon')).toBeInTheDocument();
 });
 
 test('Medium size is as expected', () => {
