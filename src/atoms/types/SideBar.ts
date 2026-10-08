@@ -13,6 +13,10 @@ export type BasicSideBarMenuItem = {
   onClick?: () => void;
 } & SideBarMenuItemBase;
 
+export type SideBarSubMenuItem = Omit<SideBarMenuItemBase, 'icon'> & {
+  disabled?: boolean;
+};
+
 export interface SideBarMenuItemWithItems extends Omit<
   HTMLAttributes<HTMLButtonElement>,
   'children'
@@ -20,7 +24,9 @@ export interface SideBarMenuItemWithItems extends Omit<
   icon: IconData;
   name: string;
   featureUuid?: string;
-  items: (Omit<SideBarMenuItemBase, 'icon'> & { disabled?: boolean })[];
+  items: SideBarSubMenuItem[];
+  /** Show a search field that filters submenu items by name. */
+  isSearchable?: boolean;
 }
 
 export type SideBarMenuItem = SideBarMenuItemWithItems | BasicSideBarMenuItem;
