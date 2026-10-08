@@ -1,10 +1,7 @@
-# Azure DevOps links
+# Jira links
 
-## User story
-- AB#USER_STORY_ID
-
-### Tasks
-- AB#TASK_ID
+## Issue
+- [JIRA-ISSUE_ID](https://equinor.atlassian.net/browse/JIRA-ISSUE_ID)
 
 ---
 
