@@ -53,6 +53,7 @@ type Story = StoryObj<typeof ComboBox>;
 interface Item {
   label: string;
   value: string;
+  disabled?: boolean;
 }
 
 const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
@@ -108,6 +109,7 @@ function ComboBoxStateful(args: ComboBoxProps<Item>) {
     selectedValue?: SelectOption<Item>
   ) => {
     actions('onSelect').onSelect(selectedValues, selectedValue);
+    args.onSelect?.(selectedValues, selectedValue);
     setValues(selectedValues);
   };
 
@@ -326,6 +328,268 @@ const TEST_ITEMS = [
   { label: 'Elderberry', value: 'elderberry' },
 ];
 
+const ITEMS_WITH_DISABLED_OPTIONS = [
+  { label: 'Apricot', value: 'apricot', disabled: true },
+  { label: 'Apple', value: 'apple' },
+  { label: 'Banana', value: 'banana', disabled: true },
+  { label: 'Cherry', value: 'cherry' },
+  { label: 'Date', value: 'date', disabled: true },
+];
+
+export const DisabledComboBox: Story = {
+  args: {
+    disabled: true,
+    helperText: 'You cannot change this selection',
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Disabled ComboBox',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    await expect(canvas.getByTestId('clearBtn')).toBeDisabled();
+    await userEvent.click(canvas.getByTestId('combobox-container'));
+    await expect(canvas.queryByText('Banana')).not.toBeInTheDocument();
+    await userEvent.click(canvas.getByTestId('clearBtn'));
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const DisabledMenuItems: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: ITEMS_WITH_DISABLED_OPTIONS,
+    label: 'Disabled options',
+    helperText: 'Apricot, Banana, and Date are unavailable',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    for (const item of ITEMS_WITH_DISABLED_OPTIONS.filter(
+      (item) => item.disabled
+    )) {
+      const option = canvas.getByRole('menuitem', { name: item.label });
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).not.toHaveBeenCalled();
+
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(canvas.getByRole('menuitem', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Cherry' })
+    ).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Cherry' })
+    ).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(canvas.getByRole('menuitem', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(canvas.getByRole('combobox')).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(canvas.getByRole('menuitem', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await expect(canvas.getByTestId('amplify-combobox-chip')).toHaveTextContent(
+      'Apple'
+    );
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [ITEMS_WITH_DISABLED_OPTIONS[1]],
+      ITEMS_WITH_DISABLED_OPTIONS[1]
+    );
+  },
+};
+
+const NESTED_ITEMS_WITH_DISABLED_OPTIONS = [
+  {
+    label: 'Fruits',
+    value: 'fruits',
+    children: ITEMS_WITH_DISABLED_OPTIONS,
+  },
+  {
+    label: 'Vegetables',
+    value: 'vegetables',
+    disabled: true,
+    children: [{ label: 'Carrot', value: 'carrot' }],
+  },
+  { label: 'Bread', value: 'bread' },
+];
+
+export const DisabledNestedMenuItems: Story = {
+  render: ComboBoxStateful,
+  args: {
+    items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
+    label: 'Disabled nested options',
+    helperText:
+      'Expand Fruits to see disabled children; Vegetables is disabled',
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await expect(canvas.getAllByTestId('toggle-button')[1]).toBeDisabled();
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}{ArrowDown}');
+    await expect(canvas.getByRole('menuitem', { name: 'Apple' })).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Cherry' })
+    ).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Fruits' })
+    ).toHaveFocus();
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
+    await expect(canvas.getByRole('menuitem', { name: 'Bread' })).toHaveFocus();
+  },
+};
+
+export const AllMenuItemsDisabled: Story = {
+  tags: ['test-only'],
+  args: {
+    items: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
+      ...item,
+      disabled: true,
+    })),
+    values: [],
+  },
+  play: async ({ canvas }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.click(search);
+    await userEvent.click(search);
+    await userEvent.keyboard('{ArrowDown}{ArrowUp}');
+    await expect(search).toHaveFocus();
+  },
+};
+
+export const AllChildrenDisabled: Story = {
+  tags: ['test-only'],
+  args: {
+    items: [
+      {
+        ...NESTED_ITEMS_WITH_DISABLED_OPTIONS[0],
+        children: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
+          ...item,
+          disabled: true,
+        })),
+      },
+      NESTED_ITEMS_WITH_DISABLED_OPTIONS[2],
+    ],
+    values: [],
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}{ArrowDown}');
+    await expect(canvas.getByRole('menuitem', { name: 'Bread' })).toHaveFocus();
+  },
+};
+
+export const NoEnabledItemAfterSubtree: Story = {
+  tags: ['test-only'],
+  args: {
+    items: NESTED_ITEMS_WITH_DISABLED_OPTIONS.slice(0, 2),
+    values: [],
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard(
+      '{ArrowDown}{ArrowRight}{ArrowDown}{ArrowDown}{ArrowDown}'
+    );
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Fruits' })
+    ).toHaveFocus();
+  },
+};
+
+export const DisabledAfterSelection: Story = {
+  tags: ['test-only'],
+  args: {
+    items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
+    values: [],
+    onSelect: fn(),
+  },
+  render: function Render(args) {
+    const [disabled, setDisabled] = useState(false);
+    return (
+      <ComboBox
+        {...args}
+        disabled={disabled}
+        onSelect={(values, item) => {
+          args.onSelect(values, item);
+          setDisabled(true);
+        }}
+      />
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.click(canvas.getAllByTestId('toggle-button')[0]);
+    await userEvent.click(canvas.getByRole('menuitem', { name: 'Apple' }));
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    await expect(canvas.getAllByTestId('toggle-button')[0]).toBeDisabled();
+    for (const option of canvas.getAllByRole('menuitem')) {
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const DisabledParentAfterSelection: Story = {
+  ...DisabledAfterSelection,
+  render: function Render(args) {
+    const [disabled, setDisabled] = useState(false);
+    return (
+      <ComboBox
+        {...args}
+        groups={undefined}
+        items={NESTED_ITEMS_WITH_DISABLED_OPTIONS.map((item, index) =>
+          index === 0 ? { ...item, disabled } : item
+        )}
+        onSelect={(values, item) => {
+          args.onSelect(values, item);
+          setDisabled(true);
+        }}
+      />
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.click(canvas.getAllByTestId('toggle-button')[0]);
+    await userEvent.click(canvas.getByRole('menuitem', { name: 'Apple' }));
+    await expect(canvas.getByRole('combobox')).toBeEnabled();
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Fruits' })
+    ).toBeDisabled();
+    await expect(canvas.getAllByTestId('toggle-button')[0]).toBeDisabled();
+    for (const item of ITEMS_WITH_DISABLED_OPTIONS) {
+      const option = canvas.getByRole('menuitem', { name: item.label });
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const DisabledGroupsAfterSelection: Story = {
+  ...DisabledAfterSelection,
+  args: {
+    groups: [{ title: 'Fruit', items: ITEMS_WITH_DISABLED_OPTIONS }],
+    items: undefined,
+    values: [],
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.click(canvas.getByRole('menuitem', { name: 'Apple' }));
+    await expect(canvas.getByRole('combobox')).toBeDisabled();
+    for (const option of canvas.getAllByRole('menuitem')) {
+      await expect(option).toBeDisabled();
+      await userEvent.click(option);
+    }
+    await expect(args.onSelect).toHaveBeenCalledTimes(1);
+  },
+};
+
 const TEST_ITEMS_WITH_CHILDREN = [
   {
     label: 'Fruits',
@@ -456,6 +720,35 @@ export const TestOnAddItemWithClick: Story = {
     const handleOnAddItemClick = 'onAddItem' in args ? args.onAddItem : null;
     await expect(handleOnAddItemClick).toHaveBeenCalledWith('New Tag');
     await expect(handleOnAddItemClick).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
+  tags: ['test-only'],
+  args: {
+    items: ITEMS_WITH_DISABLED_OPTIONS,
+    values: [],
+    onAddItem: fn(),
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.type(search, 'Ban');
+    await userEvent.click(search);
+    await expect(
+      canvas.getByRole('menuitem', { name: 'Banana' })
+    ).toBeDisabled();
+    const addItem = canvas.getByRole('menuitem', { name: /Add "Ban"/ });
+    const onAddItem = 'onAddItem' in args ? args.onAddItem : undefined;
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(addItem).toHaveFocus();
+    await userEvent.keyboard('{ArrowUp}');
+    await expect(search).toHaveFocus();
+    await expect(onAddItem).not.toHaveBeenCalled();
+    await expect(args.onSelect).not.toHaveBeenCalled();
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await expect(onAddItem).toHaveBeenCalledWith('Ban');
+    await expect(onAddItem).toHaveBeenCalledTimes(1);
   },
 };
 
@@ -986,8 +1279,12 @@ export const TestOpenWithKeyboard: Story = {
       await expect(canvas.getAllByText(items[0].label).length).not.toBe(0);
     });
 
-    await step('Moves focus to search field', async () => {
+    await step('Moves focus between search field and options', async () => {
+      combobox.focus();
       await userEvent.keyboard('{ArrowDown}');
+      await expect(
+        canvas.getByRole('menuitem', { name: items[0].label })
+      ).toHaveFocus();
       await userEvent.keyboard('{ArrowUp}');
       await expect(canvas.getByRole('combobox')).toHaveFocus();
     });

@@ -7,6 +7,7 @@ import { Variants } from 'src/atoms/types/variants';
 export interface SelectOptionRequired {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export type SelectOption<T extends SelectOptionRequired> = T & {
@@ -113,9 +114,13 @@ export interface ListSelectMenuProps {
 }
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {
+  disabled?: boolean;
   search: string;
   itemRefs: RefObject<(HTMLButtonElement | null)[]>;
-  onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
+  onItemKeyDown: (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index?: number
+  ) => void;
   onItemSelect: (item: SelectOption<T>) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
   noItemsText?: string;
