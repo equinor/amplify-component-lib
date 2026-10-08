@@ -261,9 +261,9 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   isSearchable = false,
   ...rest
 }) => {
-  const { pathname } = useLocation();
+  const { href } = useLocation();
   const matchRoute = useMatchRoute();
-  const previousPathname = usePrevious(pathname);
+  const previousHref = usePrevious(href);
   const { isOpen } = useSideBar();
   const previousIsOpen = usePrevious(isOpen);
   const isActive = items.some((item) => !!matchRoute({ ...item }));
@@ -275,11 +275,11 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   useEffect(() => {
     if (
       (previousIsOpen && !isOpen && expanded) ||
-      (previousPathname !== pathname && expanded && !isOpen)
+      (previousHref !== href && expanded && !isOpen)
     ) {
       setExpanded(false);
     }
-  }, [expanded, isOpen, pathname, previousIsOpen, previousPathname]);
+  }, [expanded, href, isOpen, previousHref, previousIsOpen]);
 
   const parentContent = useMemo(() => {
     return (

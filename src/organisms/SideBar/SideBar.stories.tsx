@@ -70,15 +70,19 @@ const searchableMenuItem: SideBarMenuItem = {
   ],
 };
 
-const SearchableSubmenuComponent = () => {
-  const { pathname } = useLocation();
+const SearchableSubmenuComponent = ({
+  menuItem = searchableMenuItem,
+}: {
+  menuItem?: SideBarMenuItem;
+}) => {
+  const { href } = useLocation();
   return (
     <SideBarProvider>
       <div style={{ display: 'flex', height: '100%' }}>
         <SideBar>
-          <SideBar.Item {...searchableMenuItem} />
+          <SideBar.Item {...menuItem} />
         </SideBar>
-        <output aria-label="Current route">{pathname}</output>
+        <output aria-label="Current route">{href}</output>
       </div>
     </SideBarProvider>
   );
@@ -308,6 +312,63 @@ export const SearchableExpanded: Story = {
     );
   },
   play: async () => exerciseSearchableSubmenu(true),
+};
+
+export const TestSearchableLocationChanges: Story = {
+  tags: ['test-only'],
+  parameters: {
+    router: { initial: '/dashboard', routes: ['$'] },
+  },
+  beforeEach: SearchFieldFirst.beforeEach,
+  render: () => (
+    <SearchableSubmenuComponent
+      menuItem={{
+        ...searchableMenuItem,
+        items: [
+          {
+            name: 'Filtered dashboard',
+            to: '/dashboard',
+            search: { view: 'filtered' },
+          },
+          {
+            name: 'Dashboard section',
+            to: '/dashboard',
+            search: true,
+            hash: 'details',
+          },
+        ],
+      }}
+    />
+  ),
+  play: async () => {
+    const parent = screen.getByRole('button', { name: 'Favourites' });
+    const currentRoute = screen.getByRole('status', { name: 'Current route' });
+
+    await userEvent.click(parent);
+    const search = await screen.findByRole('searchbox', {
+      name: 'Search Favourites',
+    });
+    await userEvent.click(
+      screen.getByRole('menuitem', { name: 'Filtered dashboard' })
+    );
+    await waitFor(() =>
+      expect(currentRoute).toHaveTextContent('view=filtered')
+    );
+    await waitFor(() => expect(search).not.toBeInTheDocument());
+    await expect(parent).toHaveAttribute('aria-expanded', 'false');
+
+    await userEvent.click(parent);
+    const reopenedSearch = await screen.findByRole('searchbox', {
+      name: 'Search Favourites',
+    });
+    await userEvent.click(
+      screen.getByRole('menuitem', { name: 'Dashboard section' })
+    );
+    await waitFor(() => expect(currentRoute).toHaveTextContent('#details'));
+    await expect(currentRoute).toHaveTextContent('view=filtered');
+    await waitFor(() => expect(reopenedSearch).not.toBeInTheDocument());
+    await expect(parent).toHaveAttribute('aria-expanded', 'false');
+  },
 };
 
 export const TestNonSearchableSubmenu: Story = {
