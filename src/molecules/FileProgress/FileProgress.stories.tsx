@@ -175,7 +175,7 @@ export const TestCompactCompletedBasic: Story = {
     indeterminate: true,
     isDone: true,
     compact: true,
-    file: new File([], 'basic.txt', { type: 'text/plain' }),
+    file: new File([], 'basic.pdf', { type: 'application/pdf' }),
   },
   play: async ({ canvas }) => {
     await expect(canvas.queryByRole('img')).not.toBeInTheDocument();
@@ -206,6 +206,8 @@ export const TestOnError: Story = {
 export const TestOnDelete: Story = {
   tags: ['test-only'],
   args: {
+    file: new File([], 'basic.txt', { type: 'text/plain' }),
+    isDone: true,
     indeterminate: true,
     compact: true,
     onDelete: fn(),
