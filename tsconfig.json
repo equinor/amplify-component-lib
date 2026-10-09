@@ -30,6 +30,14 @@
       "src/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "vite.config.ts", "vitest.config.ts", "tsdown.config.ts", "eslint.config.js", ".storybook/**/*"],
+  "include": [
+    "src/**/*",
+    "tooling/*.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "tsdown.config.ts",
+    "eslint.config.js",
+    ".storybook/**/*"
+  ],
   "exclude": ["node_modules"]
 }
