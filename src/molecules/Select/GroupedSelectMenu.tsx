@@ -19,12 +19,13 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
     itemRefs,
     CustomMenuItemComponent,
     mode,
+    noItemsText,
   } = props;
 
   const { filteredGroups, filteredGroupSum } = useGroupedSelectItems(props);
 
   if (filteredGroups.length === 0) {
-    return <NoItemsFoundText>No items found</NoItemsFoundText>;
+    return <NoItemsFoundText>{noItemsText}</NoItemsFoundText>;
   }
 
   if ('values' in props)
@@ -41,6 +42,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
             childOffset={0}
             item={item}
             mode={mode}
+            disabled={props.disabled}
             itemRefs={itemRefs}
             onItemKeyDown={onItemKeyDown}
             onItemSelect={onItemSelect}
@@ -64,6 +66,7 @@ export const GroupedSelectMenu = <T extends SelectOptionRequired>(
           childOffset={0}
           item={item}
           mode={mode}
+          disabled={props.disabled}
           itemRefs={itemRefs}
           onItemKeyDown={onItemKeyDown}
           onItemSelect={onItemSelect}

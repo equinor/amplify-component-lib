@@ -50,6 +50,8 @@ export interface TagProps {
   iconColor?: string;
   textColor?: string;
   children: ReactNode;
+  className?: string;
+  style?: React.CSSProperties | undefined;
 }
 
 export const Tag: FC<TagProps> = ({
@@ -59,9 +61,17 @@ export const Tag: FC<TagProps> = ({
   trailingIcon,
   textColor,
   iconColor,
+  className,
+  style,
 }) => {
   return (
-    <Container $color={color} $iconColor={iconColor} $textColor={textColor}>
+    <Container
+      $color={color}
+      $iconColor={iconColor}
+      $textColor={textColor}
+      className={className}
+      style={style}
+    >
       {leadingIcon && <Icon data={leadingIcon} size={16} />}
       <Typography variant="cell_text" group="table" as="span">
         {children}
