@@ -2,21 +2,31 @@ import {
   FC,
   ReactElement,
   ReactNode,
+  useCallback,
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
 } from 'react';
 
 import {
+  AuthenticationResult,
   BrowserAuthError,
   BrowserAuthErrorCodes,
+  EventType,
   InteractionRequiredAuthError,
+  InteractionStatus,
   InteractionType,
 } from '@azure/msal-browser';
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
 
-import { auth, environment } from 'src/atoms/utils/auth_environment';
+import {
+  auth,
+  environment,
+  getPendingSso,
+  subscribePendingSso,
+} from 'src/atoms/utils/auth_environment';
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { MissingAccessToApp } from 'src/organisms/Status/collections/MissingAccessToApp';
 import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
@@ -24,8 +34,12 @@ import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 interface ExtendedJwtPayload extends JwtPayload {
-  roles: string[];
+  roles?: unknown;
 }
+
+type AuthorizationResult =
+  | { account: AccountInfo; roles: string[] }
+  | { account: AccountInfo | undefined; error: unknown };
 
 const {
   GRAPH_ENDPOINTS,
@@ -37,6 +51,16 @@ const {
 } = auth;
 
 const { getApiScope } = environment;
+
+const accountKey = (account: AccountInfo | null | undefined) =>
+  account
+    ? `${account.homeAccountId}:${account.localAccountId}:${account.tenantId}:${account.environment}`
+    : undefined;
+
+const requiresInteraction = (error: unknown) =>
+  error instanceof InteractionRequiredAuthError ||
+  (error instanceof BrowserAuthError &&
+    error.errorCode === BrowserAuthErrorCodes.monitorWindowTimeout);
 
 export interface AuthProviderInnerProps {
   children: ReactNode;
@@ -66,165 +90,217 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   withoutBackend,
 }) => {
   const { instance, accounts, inProgress } = useMsal();
-  const { login, result, error, acquireToken } = useMsalAuthentication(
+  const { error } = useMsalAuthentication(
     InteractionType.Silent,
     GRAPH_REQUESTS_LOGIN
   );
-  const [isInitialized, setIsInitialized] = useState(false);
-  const hasFetchedRolesAndPhoto = useRef(false);
+  const pendingSso = useSyncExternalStore(subscribePendingSso, getPendingSso);
+  const [initializationError, setInitializationError] = useState<unknown>();
+  const [authorizationResult, setAuthorizationResult] =
+    useState<AuthorizationResult>();
+  const selectedAccount = useRef(account);
+
+  const selectAccount = useCallback(
+    (nextAccount: AccountInfo | null) => {
+      const snapshot = nextAccount ? { ...nextAccount } : undefined;
+      selectedAccount.current = snapshot;
+      instance.setActiveAccount(snapshot ?? null);
+      setAccount(snapshot);
+      setRoles(undefined);
+      setPhoto(undefined);
+      setAuthState(snapshot ? 'loading' : 'unauthorized');
+    },
+    [instance, setAccount, setRoles, setPhoto, setAuthState]
+  );
 
   useEffect(() => {
-    if (isInitialized) return;
+    const callbackId = instance.addEventCallback((message) => {
+      if (message.eventType === EventType.ACTIVE_ACCOUNT_CHANGED) {
+        const activeAccount = instance.getActiveAccount();
+        if (accountKey(activeAccount) !== accountKey(selectedAccount.current))
+          selectAccount(activeAccount);
+        return;
+      }
 
-    const handleInit = async () => {
-      console.log('[AuthProvider] Initializing');
-      await instance.initialize();
-      console.log('[AuthProvider] Finished initializing');
-      setIsInitialized(true);
-    };
-
-    handleInit().catch((error) => {
-      console.error('[AuthProvider] Error during initialization', error);
+      const interactive =
+        message.interactionType === InteractionType.Popup ||
+        message.interactionType === InteractionType.Redirect;
+      // A cached-account popup emits ACQUIRE_TOKEN_SUCCESS, which the
+      // authentication hook does not observe. Silent token events are not login.
+      if (
+        message.eventType !== EventType.SSO_SILENT_SUCCESS &&
+        !(
+          interactive &&
+          (message.eventType === EventType.LOGIN_SUCCESS ||
+            message.eventType === EventType.ACQUIRE_TOKEN_SUCCESS)
+        )
+      )
+        return;
+      const response = message.payload as AuthenticationResult | null;
+      if (!response?.account) return;
+      const current = selectedAccount.current ?? instance.getActiveAccount();
+      if (
+        message.eventType === EventType.SSO_SILENT_SUCCESS &&
+        current &&
+        accountKey(current) !== accountKey(response.account)
+      )
+        return;
+      selectAccount(response.account);
     });
-  }, [instance, isInitialized]);
+    return () => {
+      if (callbackId) instance.removeEventCallback(callbackId);
+    };
+  }, [instance, selectAccount]);
 
   useEffect(() => {
-    if (!isInitialized) return;
+    // MsalProvider swallows initialize rejection and can remain in Startup.
+    let cancelled = false;
+    instance.initialize().catch((error) => {
+      if (!cancelled) setInitializationError(error);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [instance]);
 
-    if (
-      error instanceof InteractionRequiredAuthError &&
-      !isInIframe() &&
-      authState !== 'unauthorized'
-    ) {
-      console.error(error);
-      console.log(
-        '[AuthProvider] No account found, need to login via. redirect'
-      );
-      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
-        console.error('[AuthProvider] Error during login', error);
-      });
-    } else if (result?.account && !account) {
-      console.log(
-        '[AuthProvider] Found account in useMsalAuth result, setting that one as active'
-      );
-      instance.setActiveAccount(result.account);
-      setAccount(result.account);
-    } else if (accounts.length > 0 && !account) {
-      console.log(
-        '[AuthProvider] Found account in accounts array, setting that one as active'
-      );
-      instance.setActiveAccount(accounts[0]);
-      setAccount(accounts[0]);
-    } else if (
-      error instanceof BrowserAuthError &&
-      error.errorCode === BrowserAuthErrorCodes.monitorWindowTimeout
-    ) {
-      console.error(error);
-      console.log(
-        '[AuthProvider] Trying to login again via. redirect due to monitor window timeout'
-      );
-      login(InteractionType.Redirect, GRAPH_REQUESTS_LOGIN).catch((error) => {
-        console.error('[AuthProvider] Error during login', error);
-      });
-    } else if (error) {
-      console.error('[AuthProvider] Unexpected error:', error);
+  useEffect(() => {
+    if (initializationError || inProgress === InteractionStatus.Startup) return;
+    const activeAccount = instance.getActiveAccount();
+    if (activeAccount) {
+      if (accountKey(activeAccount) !== accountKey(selectedAccount.current))
+        selectAccount(activeAccount);
+    } else if (!selectedAccount.current && accounts.length > 0) {
+      selectAccount(accounts[0]);
     }
+  }, [instance, accounts, inProgress, initializationError, selectAccount]);
+
+  useEffect(() => {
+    if (selectedAccount.current !== account) return;
+    const result =
+      authorizationResult?.account === account
+        ? authorizationResult
+        : undefined;
+    const roles = result && 'roles' in result ? result.roles : undefined;
+    if (account && (withoutBackend || roles)) {
+      setRoles(withoutBackend ? undefined : roles);
+      setAuthState('authorized');
+      return;
+    }
+    setRoles(undefined);
+    if (initializationError) {
+      setAuthState('unauthorized');
+      return;
+    }
+    if (
+      pendingSso > 0 ||
+      inProgress !== InteractionStatus.None ||
+      (account && !result)
+    ) {
+      setAuthState('loading');
+      return;
+    }
+    if (!result && !error) return;
+    const failure = result && 'error' in result ? result.error : error;
+    if (isInIframe() || !requiresInteraction(failure)) {
+      setAuthState('unauthorized');
+      return;
+    }
+    setAuthState('loading');
+    instance.loginRedirect(GRAPH_REQUESTS_LOGIN).catch((redirectError) => {
+      if (selectedAccount.current !== account) return;
+      console.error('[AuthProvider] Error during login', redirectError);
+      setAuthorizationResult({
+        account,
+        error: new Error('Redirect login failed', { cause: redirectError }),
+      });
+    });
   }, [
     account,
-    accounts,
+    authorizationResult,
+    withoutBackend,
     error,
+    initializationError,
+    inProgress,
+    pendingSso,
     instance,
-    isInitialized,
-    login,
-    result,
-    setAccount,
-    authState,
+    setRoles,
+    setAuthState,
   ]);
 
   useEffect(() => {
-    if (
-      !account ||
-      !isInitialized ||
-      hasFetchedRolesAndPhoto.current ||
-      inProgress !== 'none'
-    )
-      return;
-    hasFetchedRolesAndPhoto.current = true;
-
-    const getPhoto = async () => {
-      try {
-        const tokenResponse = await acquireToken(
-          InteractionType.Silent,
-          GRAPH_REQUESTS_PHOTO
-        );
-        if (tokenResponse) {
-          const graphResponse = await fetchMsGraph(
-            GRAPH_ENDPOINTS.PHOTO,
-            tokenResponse.accessToken
-          );
-          if (graphResponse.status === 404) return null;
-
-          const graphPhoto = await graphResponse.blob();
-          const url = window.URL ?? window.webkitURL;
-          const blobUrl = url.createObjectURL(graphPhoto);
-          setPhoto(blobUrl);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
+    if (!account || withoutBackend) return;
+    let cancelled = false;
+    const isCurrent = () =>
+      !cancelled &&
+      selectedAccount.current === account &&
+      accountKey(instance.getActiveAccount()) === accountKey(account);
+    setAuthorizationResult(undefined);
     const getRoles = async () => {
       try {
-        const tokenResponse = await acquireToken(
-          InteractionType.Silent,
-          GRAPH_REQUESTS_BACKEND(getApiScope(import.meta.env.VITE_API_SCOPE))
-        );
-        console.log('[AuthProvider] Successfully acquired token');
-        if (tokenResponse && tokenResponse.accessToken) {
-          console.log('[AuthProvider] Decoding token');
-          const accessToken: ExtendedJwtPayload = jwtDecode(
-            tokenResponse.accessToken
-          );
-          console.log('[AuthProvider] Token was valid');
-          if (accessToken.roles) {
-            console.log('[AuthProvider] Found roles');
-            setRoles(accessToken.roles);
-          } else {
-            throw new Error('Could not find roles in token');
-          }
-          setAuthState('authorized');
+        const response = await instance.acquireTokenSilent({
+          ...GRAPH_REQUESTS_BACKEND(
+            getApiScope(import.meta.env.VITE_API_SCOPE)
+          ),
+          account,
+        });
+        if (!isCurrent()) return;
+        if (!response?.accessToken) throw new Error('No backend access token');
+        const token = jwtDecode<ExtendedJwtPayload>(response.accessToken);
+        if (
+          !Array.isArray(token.roles) ||
+          !token.roles.every((role): role is string => typeof role === 'string')
+        ) {
+          throw new Error('Could not find roles in token');
         }
+        setAuthorizationResult({ account, roles: token.roles });
       } catch (error) {
+        if (!isCurrent()) return;
         console.error(
           '[AuthProvider] Token error when trying to get roles!',
           error
         );
-        setAuthState('unauthorized');
+        setAuthorizationResult({ account, error });
       }
     };
+    void getRoles();
+    return () => {
+      cancelled = true;
+    };
+  }, [account, withoutBackend, instance]);
 
-    const getPhotoAndRoles = async () => {
-      await getPhoto();
-      if (withoutBackend) {
-        setAuthState('authorized');
-      } else {
-        await getRoles();
-      }
+  useEffect(() => {
+    if (!account) return;
+    let cancelled = false;
+    let photoUrl: string | undefined;
+    const isCurrent = () =>
+      !cancelled &&
+      selectedAccount.current === account &&
+      accountKey(instance.getActiveAccount()) === accountKey(account);
+
+    const getPhoto = async () => {
+      const response = await instance.acquireTokenSilent({
+        ...GRAPH_REQUESTS_PHOTO,
+        account,
+      });
+      if (!isCurrent() || !response?.accessToken) return;
+      const graphResponse = await fetchMsGraph(
+        GRAPH_ENDPOINTS.PHOTO,
+        response.accessToken
+      );
+      if (!isCurrent() || !graphResponse.ok) return;
+      const photo = await graphResponse.blob();
+      if (!isCurrent()) return;
+      photoUrl = URL.createObjectURL(photo);
+      setPhoto(photoUrl);
     };
 
-    getPhotoAndRoles();
-  }, [
-    account,
-    acquireToken,
-    error,
-    isInitialized,
-    inProgress,
-    setAuthState,
-    setPhoto,
-    setRoles,
-    withoutBackend,
-  ]);
+    void getPhoto().catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+      if (photoUrl) URL.revokeObjectURL(photoUrl);
+    };
+  }, [account, instance, setPhoto]);
 
   if (authState === 'unauthorized')
     return unauthorizedComponent ?? <MissingAccessToApp />;
