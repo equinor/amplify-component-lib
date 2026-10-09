@@ -98,6 +98,7 @@ export const Stepper: FC<StepperProps> = ({
           key={`step-${index}`}
           index={index}
           onlyShowCurrentStepLabel={onlyShowCurrentStepLabel}
+          tooltip={step.tooltip}
           allowJumpingAhead={allowJumpingAhead}
         >
           {step.label}
