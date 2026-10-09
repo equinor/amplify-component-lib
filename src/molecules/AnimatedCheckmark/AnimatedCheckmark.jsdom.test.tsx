@@ -5,7 +5,10 @@ import { render, screen } from 'src/tests/jsdomtest-utils';
 test('Default size matches medium', () => {
   render(<AnimatedCheckmark />);
 
-  expect(screen.getByTestId('svg-icon')).toBeInTheDocument();
+  const svg = screen.getByTestId('svg-icon');
+
+  expect(svg).toHaveStyle(`width: ${sizeToPx('medium')}`);
+  expect(svg).toHaveStyle(`height: ${sizeToPx('medium')}`);
 });
 
 test('Medium size is as expected', () => {
