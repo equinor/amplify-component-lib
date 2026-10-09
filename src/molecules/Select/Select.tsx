@@ -56,6 +56,7 @@ export const Select = <T extends SelectOptionRequired>(
     explanation,
     explanationPosition,
     locked = false,
+    noItemsText = 'No items found',
   } = props;
   const {
     handleOnAddItem,
@@ -116,6 +117,7 @@ export const Select = <T extends SelectOptionRequired>(
       'groups' in props && props.groups ? (
         <GroupedSelectPersistent
           {...props}
+          noItemsText={noItemsText}
           search={search}
           itemRefs={itemRefs}
           onItemSelect={handleOnItemSelect}
@@ -126,6 +128,7 @@ export const Select = <T extends SelectOptionRequired>(
       ) : (
         <ListSelectPersistent
           {...props}
+          noItemsText={noItemsText}
           search={search}
           itemRefs={itemRefs}
           onAddItem={props.onAddItem ? handleOnAddItem : undefined}
@@ -251,6 +254,7 @@ export const Select = <T extends SelectOptionRequired>(
           {'groups' in props && props.groups ? (
             <GroupedSelectMenu
               {...props}
+              noItemsText={noItemsText}
               search={search}
               itemRefs={itemRefs}
               onItemSelect={handleOnItemSelect}
@@ -261,6 +265,7 @@ export const Select = <T extends SelectOptionRequired>(
           ) : (
             <ListSelectMenu
               {...props}
+              noItemsText={noItemsText}
               search={search}
               itemRefs={itemRefs}
               onAddItem={props.onAddItem ? handleOnAddItem : undefined}

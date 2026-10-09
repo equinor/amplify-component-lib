@@ -5,7 +5,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tooltip } from './Tooltip';
 
-import { expect, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 const meta = {
   title: 'Molecules/Tooltip',
@@ -29,7 +29,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'This component enables us to show a tooltip optionally, so if the title is either null or empty or it has disabled state it hides the tooltip',
+          'Optional tooltip with centered text. Empty titles and disabled tooltips are hidden.',
       },
     },
   },
@@ -42,6 +42,55 @@ export const Primary: Story = {
   args: {
     title: 'Optional tooltip title',
     children: <Icon data={folder} />,
+  },
+};
+
+export const Multiline: Story = {
+  args: {
+    title:
+      'This is a tooltip that goes over multiple lines. The text will fill the max width of the container.',
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.hover(canvas.getByText('Hover me'));
+    const tooltip = await canvas.findByRole('tooltip');
+    const text = canvas.getByText(args.title as string);
+
+    await waitFor(() => {
+      expect(tooltip).toBeVisible();
+      expect(getComputedStyle(text).textAlign).toBe('center');
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      const lines = Array.from(range.getClientRects());
+      expect(lines.length).toBeGreaterThan(1);
+      const bounds = tooltip.getBoundingClientRect();
+      for (const line of lines) {
+        expect(
+          Math.abs(
+            line.left + line.width / 2 - (bounds.left + bounds.width / 2)
+          )
+        ).toBeLessThan(1);
+      }
+    });
+  },
+};
+
+export const CustomTextAlignment: Story = {
+  args: {
+    title: (
+      <div style={{ textAlign: 'left' }}>
+        Custom content can keep its own alignment.
+        <br />
+        This line stays left-aligned.
+      </div>
+    ),
+  },
+  play: async ({ canvas }) => {
+    await userEvent.hover(canvas.getByText('Hover me'));
+    const tooltip = await canvas.findByRole('tooltip');
+    await expect(tooltip).toBeVisible();
+    await expect(
+      getComputedStyle(canvas.getByText(/Custom content can keep/)).textAlign
+    ).toBe('left');
   },
 };
 
