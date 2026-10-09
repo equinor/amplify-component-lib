@@ -1,11 +1,32 @@
-import { faker } from '@faker-js/faker';
+import { useState } from 'react';
+
+import { Typography } from '@equinor/eds-core-react';
+import {
+  error_outlined,
+  info_circle,
+  warning_outlined,
+} from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '../Button/Button';
-import { Banner } from './Banner';
+import { Banner, BannerActionConfig } from './Banner';
+import { getVariantIcon } from './Banner.utils';
+import { Button } from 'src/molecules/Button/Button';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
-import { expect } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
+
+const message =
+  'Please make sure this banner is used correctly when used in a manner to inform, warn or advice users.';
+
+const onGhost = fn();
+const onOutlined = fn();
+const onFilled = fn();
+
+const actions: BannerActionConfig[] = [
+  { label: 'Btn 3', onClick: onGhost },
+  { label: 'Btn 2', onClick: onOutlined },
+  { label: 'Btn 1', onClick: onFilled },
+];
 
 const meta: Meta<typeof Banner> = {
   title: 'Molecules/Banner',
@@ -16,10 +37,16 @@ const meta: Meta<typeof Banner> = {
       type: 'figma',
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=5694-19571&t=RLoN5FomasdRBr2V-11',
     },
+    docs: {
+      description: {
+        component:
+          'Use banners for page or section-level information, warnings, and errors. Actions accept configs ({ label, ...buttonProps }) or custom JSX. Configs default to filled for one action, outlined/filled for two, and ghost/outlined/filled for three; additional actions default to ghost. Prefer one or two actions. Nested ACL buttons inherit banner colors through CSS variables unless color is explicit. onDismiss adds an icon button; the caller controls visibility. Actions and dismiss can coexist.',
+      },
+    },
   },
   args: {
     variant: 'info',
-    children: faker.airline.airplane().name,
+    children: message,
   },
 };
 
@@ -28,7 +55,7 @@ type Story = StoryObj<typeof Banner>;
 
 export const Default: Story = {
   args: {
-    children: faker.airline.airplane().name,
+    children: 'Please note this important information!',
   },
   decorators: (Story) => (
     <div style={{ width: '20rem' }}>
@@ -42,23 +69,13 @@ export const Default: Story = {
 
 export const Variants: Story = {
   args: {
-    children: faker.airline.airplane().name,
+    children: 'Please note this important information!',
   },
   render: (args) => (
     <div style={{ width: '100%' }}>
       <VariantShowcase
         GenericComponent={Banner}
         otherProps={args}
-        columns={[
-          {
-            label: 'Comfortable',
-            value: { spacing: 'comfortable' },
-          },
-          {
-            label: 'Compact',
-            value: { spacing: 'compact' },
-          },
-        ]}
         rows={[
           { label: 'Info', value: { variant: 'info' } },
           { label: 'Warning', value: { variant: 'warning' } },
@@ -67,6 +84,15 @@ export const Variants: Story = {
       />
     </div>
   ),
+  play: async () => {
+    for (const [variant, icon] of [
+      ['info', info_circle],
+      ['warning', warning_outlined],
+      ['danger', error_outlined],
+    ] as const) {
+      await expect(getVariantIcon(variant)).toBe(icon);
+    }
+  },
 };
 
 export const CustomContent: Story = {
@@ -81,14 +107,222 @@ export const CustomContent: Story = {
   },
 };
 
-export const Compact: Story = {
-  tags: ['test-only'],
+export const SpacingModes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Spacing follows data-spacings-mode instead of a per-component spacing prop.',
+      },
+    },
+  },
   args: {
-    spacing: 'compact',
-    children: faker.airline.airplane().name,
+    children: 'Please note this important information!',
+    actions: [{ label: 'Action', onClick: fn() }],
+    'aria-label': 'Spacing mode banner',
+    role: 'group',
   },
-  play: async ({ canvas, args }) => {
-    const container = canvas.getByText(args.children as string);
-    await expect(container.parentElement).toHaveStyle('padding: 4px 8px');
+  render: function SpacingModeExample(args) {
+    const [mode, setMode] = useState('comfortable');
+    return (
+      <div>
+        <div role="group" aria-label="Spacing mode">
+          {['comfortable', 'compact', 'extra-compact'].map((value) => (
+            <Button key={value} onClick={() => setMode(value)}>
+              {value}
+            </Button>
+          ))}
+        </div>
+        <div data-spacings-mode={mode}>
+          <Banner {...args} />
+        </div>
+      </div>
+    );
   },
+  play: async ({ canvas, userEvent }) => {
+    const banner = canvas.getByRole('group', { name: 'Spacing mode banner' });
+    for (const [mode, spacing] of [
+      ['comfortable', '12px'],
+      ['compact', '8px'],
+      ['extra-compact', '4px'],
+      ['comfortable', '12px'],
+    ]) {
+      await userEvent.click(canvas.getByRole('button', { name: mode }));
+      await expect(banner).toHaveStyle({ padding: spacing, gap: spacing });
+      await expect(banner.querySelector('svg')).toHaveAttribute(
+        'width',
+        '24px'
+      );
+      await expect(
+        canvas.getByRole('button', { name: 'Action' })
+      ).toBeVisible();
+    }
+  },
+};
+
+export const WithActions: Story = {
+  args: { actions },
+  decorators: (Story) => (
+    <div style={{ width: 615, maxWidth: '100%' }}>
+      <Story />
+    </div>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const buttons = canvas.getAllByRole('button');
+    await expect(buttons.map((button) => button.textContent)).toEqual([
+      'Btn 3',
+      'Btn 2',
+      'Btn 1',
+    ]);
+    await userEvent.click(buttons[0]);
+    await expect(onGhost).toHaveBeenCalledTimes(1);
+    await userEvent.tab();
+    await expect(buttons[1]).toHaveFocus();
+    await expect(buttons[1]).toHaveStyle('outline-style: dashed');
+    await userEvent.keyboard('{Enter}');
+    await expect(onOutlined).toHaveBeenCalledTimes(1);
+    await userEvent.tab();
+    await userEvent.keyboard(' ');
+    await expect(onFilled).toHaveBeenCalledTimes(1);
+  },
+};
+
+export const Dismissible: Story = {
+  args: { onDismiss: fn() },
+  decorators: WithActions.decorators,
+  render: function Render(args) {
+    const [visible, setVisible] = useState(true);
+    return visible ? (
+      <Banner
+        {...args}
+        onDismiss={() => {
+          args.onDismiss?.();
+          setVisible(false);
+        }}
+      />
+    ) : (
+      <Typography>Banner dismissed</Typography>
+    );
+  },
+  play: async ({ canvas, args, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Dismiss banner' })
+    );
+    await expect(args.onDismiss).toHaveBeenCalledTimes(1);
+    await expect(canvas.getByText('Banner dismissed')).toBeVisible();
+    await expect(canvas.queryByText(message)).not.toBeInTheDocument();
+  },
+};
+
+export const ActionModes: Story = {
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/?node-id=20964-5214',
+    },
+  },
+  render: (args, { globals }) => (
+    <div
+      data-theme={globals.themeToggle}
+      style={{ display: 'grid', gap: 25, width: 615, maxWidth: '100%' }}
+    >
+      {(['info', 'warning', 'danger'] as const).map((variant) => (
+        <div key={variant} style={{ display: 'grid', gap: 21 }}>
+          <Banner {...args} variant={variant} />
+          <Banner {...args} variant={variant} onDismiss={fn()} />
+          <Banner {...args} variant={variant} actions={actions} />
+        </div>
+      ))}
+    </div>
+  ),
+  play: async ({ canvas, globals }) => {
+    const paragraphs = canvas.getAllByText(message);
+    await expect(paragraphs).toHaveLength(9);
+    for (const index of [3, 6]) {
+      const previous = paragraphs[index - 1].getBoundingClientRect();
+      const current = paragraphs[index].getBoundingClientRect();
+      await expect(current.top).toBeGreaterThan(previous.bottom);
+      await expect(current.left).toBeCloseTo(previous.left, 1);
+    }
+    await expect(canvas.getAllByRole('button')).toHaveLength(12);
+    const dark = globals.themeToggle === 'dark';
+    const actionColors = dark
+      ? ['rgb(183, 232, 255)', 'rgb(255, 198, 122)', 'rgb(255, 171, 176)']
+      : ['rgb(0, 112, 169)', 'rgb(173, 98, 0)', 'rgb(179, 13, 47)'];
+    await waitFor(() =>
+      expect(canvas.getAllByRole('button', { name: 'Btn 3' })[0]).toHaveStyle({
+        color: actionColors[0],
+      })
+    );
+    for (const paragraph of canvas.getAllByText(message)) {
+      await expect(paragraph).toHaveStyle({
+        fontFamily: 'Equinor',
+        fontSize: '16px',
+        fontWeight: '400',
+        lineHeight: '24px',
+        color: dark ? 'rgb(255, 255, 255)' : 'rgb(61, 61, 61)',
+      });
+    }
+    for (const [index, color] of actionColors.entries()) {
+      const dismiss = canvas.getAllByRole('button', {
+        name: 'Dismiss banner',
+      })[index];
+      await expect(dismiss).toHaveStyle({ width: '36px', height: '36px' });
+      await expect(getComputedStyle(dismiss, '::before').width).toBe('36px');
+      const ghost = canvas.getAllByRole('button', { name: 'Btn 3' })[index];
+      const outlined = canvas.getAllByRole('button', { name: 'Btn 2' })[index];
+      const filled = canvas.getAllByRole('button', { name: 'Btn 1' })[index];
+      await expect(ghost).toHaveStyle({
+        color,
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+      });
+      await expect(outlined).toHaveStyle({
+        color,
+        borderColor: color,
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+      });
+      await expect(filled).toHaveStyle({ backgroundColor: color });
+      for (const button of [ghost, outlined, filled]) {
+        await expect(button).toHaveStyle({
+          height: '36px',
+          fontFamily: 'Equinor',
+          fontSize: '14px',
+          fontWeight: '500',
+        });
+        await expect(
+          parseFloat(getComputedStyle(button).lineHeight)
+        ).toBeCloseTo(16, 1);
+      }
+    }
+  },
+};
+
+export const Narrow: Story = {
+  args: {
+    actions,
+    children:
+      'A long message with an unbroken identifier: abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz',
+    role: 'group',
+    'aria-label': 'Narrow banner',
+  },
+  decorators: (Story) => (
+    <div style={{ width: 280 }}>
+      <Story />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const banner = canvas.getByRole('group', { name: 'Narrow banner' });
+    const bounds = banner.getBoundingClientRect();
+    await expect(banner.scrollWidth).toBeLessThanOrEqual(banner.clientWidth);
+    for (const button of canvas.getAllByRole('button')) {
+      const buttonBounds = button.getBoundingClientRect();
+      await expect(buttonBounds.left).toBeGreaterThanOrEqual(bounds.left);
+      await expect(buttonBounds.right).toBeLessThanOrEqual(bounds.right);
+    }
+  },
+};
+
+export const ButtonsAndDismissible: Story = {
+  ...Dismissible,
+  args: { ...Dismissible.args, actions },
 };
