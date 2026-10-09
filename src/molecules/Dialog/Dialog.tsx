@@ -39,7 +39,7 @@ export interface DialogAction {
 }
 
 export interface DialogProps extends Omit<EDSDialogProps, 'title'> {
-  title: string | ReactNode | [ReactNode, ReactNode];
+  title?: string | ReactNode | [ReactNode, ReactNode];
   children: string | ReactNode | ReactNode[];
   onClose: () => void;
   width?: number | 'auto';
@@ -127,7 +127,9 @@ export const Dialog = forwardRef<HTMLDivElement, DialogProps>(
           $withBorders={withBorders}
           style={{ width: width ? `${width}px` : undefined }}
         >
-          <section>{titleElements}</section>
+          {titleElements ? (
+            <section data-testid="dialog-title">{titleElements}</section>
+          ) : null}
           <div>
             {/* TODO: Check with designers if we should have a toggle color on this button, to help indicate whether it is selected or not */}
             {additionalInfo && (
