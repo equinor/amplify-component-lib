@@ -26,6 +26,9 @@ test('Does not render a hover background when disabled', () => {
   expect(wrapper).toHaveStyleRule('background', 'transparent!important', {
     modifier: ':has(input:disabled) input:disabled',
   });
+  expect(wrapper).toHaveStyleRule('background', 'transparent!important', {
+    modifier: ':has(input:disabled) > label > span::before',
+  });
 });
 
 test('Renders as expected with error=true', () => {
