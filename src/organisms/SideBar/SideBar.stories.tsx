@@ -239,7 +239,11 @@ export const TestCreateItemActive: Story = {
   play: async ({ canvas }) => {
     const container = canvas.getByTestId('create-item-container');
 
-    await expect(container).toBeInTheDocument();
+    // Resolved value of colors.interactive.primary__selected_highlight in
+    // the default (light) theme.
+    await expect(getComputedStyle(container).backgroundColor).toBe(
+      'rgb(230, 250, 236)'
+    );
   },
 };
 
