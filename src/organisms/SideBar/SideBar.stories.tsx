@@ -11,7 +11,7 @@ import { SideBar } from '.';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
-import { expect, userEvent } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 const menuItems: SideBarMenuItem[] = [
   {
@@ -52,22 +52,22 @@ const StoryComponent = (args: {
   hasCreateButton: boolean;
   createLabel: string;
   createActive?: boolean;
+  createDisabled?: boolean;
   hasBottomItem: boolean;
   disabledItem: 'none' | 'dashboard' | 'history' | 'favourites';
+  onCreate?: () => void;
 }) => {
   return (
     <SideBarProvider>
       <div style={{ display: 'flex', height: '100%' }}>
         <SideBar
-          onCreate={
-            args.hasCreateButton ? () => console.log('Created 🖋') : undefined
-          }
+          {...args}
+          onCreate={args.hasCreateButton ? args.onCreate : undefined}
           bottomItem={
             args.hasBottomItem ? (
               <SideBar.Item icon={car} name="Cars" to="/" />
             ) : undefined
           }
-          {...args}
         >
           {menuItems.map((m) => (
             <SideBar.Item
@@ -92,6 +92,7 @@ const meta: Meta = {
     hasBottomItem: { control: 'boolean' },
     createLabel: { control: 'text' },
     createActive: { control: 'boolean' },
+    createDisabled: { control: 'boolean' },
     disabledItem: {
       control: 'select',
       options: ['none', 'dashboard', 'history', 'favourites'],
@@ -102,6 +103,7 @@ const meta: Meta = {
     hasBottomItem: true,
     createLabel: 'Create story',
     disabledItem: 'none',
+    onCreate: () => console.log('Created 🖋'),
   },
   parameters: {
     layout: 'fullscreen',
@@ -195,5 +197,111 @@ export const TestToggleKeyboard: Story = {
 
     await userEvent.keyboard('[Enter]');
     await expect(toggleButton).toBeInTheDocument();
+  },
+};
+
+export const TestCreateItemDisabled: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({ isOpen: true })
+    );
+  },
+  args: {
+    createDisabled: true,
+    onCreate: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const container = canvas.getByTestId('create-item-container');
+    const button = within(container).getByRole('button', {
+      name: args.createLabel,
+    });
+
+    await expect(button).toBeDisabled();
+
+    await userEvent.click(button);
+    await expect(args.onCreate).not.toHaveBeenCalled();
+  },
+};
+
+export const TestCreateItemActive: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({ isOpen: true })
+    );
+  },
+  args: {
+    createActive: true,
+  },
+  play: async ({ canvas }) => {
+    const container = canvas.getByTestId('create-item-container');
+
+    // Resolved value of colors.interactive.primary__selected_highlight in
+    // the default (light) theme.
+    await expect(getComputedStyle(container).backgroundColor).toBe(
+      'rgb(230, 250, 236)'
+    );
+  },
+};
+
+export const TestCreateItemLabelHiddenWhenCollapsed: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({ isOpen: false })
+    );
+  },
+  play: async ({ canvas, args }) => {
+    const container = canvas.getByTestId('create-item-container');
+    const button = within(container).getByRole('button');
+
+    await expect(button).not.toHaveAccessibleName(args.createLabel ?? '');
+    await expect(canvas.queryByText(args.createLabel ?? '')).toBeNull();
+  },
+};
+
+export const TestCreateItemClickExpanded: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({ isOpen: true })
+    );
+  },
+  args: {
+    onCreate: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const container = canvas.getByTestId('create-item-container');
+    const button = within(container).getByRole('button', {
+      name: args.createLabel,
+    });
+
+    await userEvent.click(button);
+    await expect(args.onCreate).toHaveBeenCalledOnce();
+  },
+};
+
+export const TestCreateItemClickCollapsed: Story = {
+  tags: ['test-only'],
+  beforeEach: () => {
+    window.localStorage.setItem(
+      'amplify-sidebar-state',
+      JSON.stringify({ isOpen: false })
+    );
+  },
+  args: {
+    onCreate: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const container = canvas.getByTestId('create-item-container');
+    const button = within(container).getByRole('button');
+
+    await userEvent.click(button);
+    await expect(args.onCreate).toHaveBeenCalledOnce();
   },
 };
