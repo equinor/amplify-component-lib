@@ -12,7 +12,7 @@ import { SideBar } from '.';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
-import { expect, screen, userEvent, waitFor } from 'storybook/test';
+import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 
 const menuItems: SideBarMenuItem[] = [
   {
