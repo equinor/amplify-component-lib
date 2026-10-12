@@ -28,7 +28,11 @@ export const Wrapper = styled.span<WrapperProps>`
 
     > label {
       padding: 0 ${spacings.medium_small};
-      gap: ${spacings.small};
+      gap: ${spacings.x_small};
+
+      &:has(> span > input:focus-visible) {
+        outline: 1px dashed ${colors.interactive.primary__resting.rgba};
+      }
 
       > span:first-child {
         height: unset;
@@ -89,6 +93,7 @@ export const Wrapper = styled.span<WrapperProps>`
   /* Switch hover state override */
   > label > span > input[type='checkbox'] + span {
     background: transparent !important;
+    outline: none !important;
   }
   svg {
     transition: fill ${animation.transitionMS};
