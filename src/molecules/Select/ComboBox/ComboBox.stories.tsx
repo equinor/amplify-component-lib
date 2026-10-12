@@ -1026,7 +1026,7 @@ export const Autofilled: Story = {
 };
 
 export const TestLockedPreventsChanges: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1054,7 +1054,7 @@ export const TestLockedPreventsChanges: Story = {
 };
 
 export const TestLockingClosesOpenMenu: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -1089,7 +1089,7 @@ export const TestLockingClosesOpenMenu: Story = {
 };
 
 export const TestLoadingKeepsOpenMenuSelectable: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -1118,7 +1118,7 @@ export const TestLoadingKeepsOpenMenuSelectable: Story = {
 };
 
 export const TestCustomValueComponentReceivesLocked: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1136,7 +1136,7 @@ export const TestCustomValueComponentReceivesLocked: Story = {
 };
 
 export const TestSearchIgnoresLeadingSpace: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],

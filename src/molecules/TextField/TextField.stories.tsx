@@ -911,7 +911,7 @@ const getInputContainer = (input: HTMLElement) =>
   input.closest('[class*="Input__Container"]');
 
 export const TestLockedIsReadOnly: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     id: 'text',
     defaultValue: 'Value',
@@ -935,7 +935,7 @@ export const TestLockedIsReadOnly: StoryObject = {
 };
 
 export const TestDisabledTakesPrecedenceOverLocked: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { id: 'text', locked: true, disabled: true },
   play: async ({ canvas, canvasElement }) => {
     const input = canvas.getByRole('textbox');
@@ -949,7 +949,7 @@ export const TestDisabledTakesPrecedenceOverLocked: StoryObject = {
 };
 
 export const TestLockedAndAutofilled: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { id: 'text', defaultValue: 'Value', locked: true, autofilled: true },
   play: async ({ canvas, canvasElement }) => {
     const input = canvas.getByRole('textbox');
@@ -965,7 +965,7 @@ export const TestLockedAndAutofilled: StoryObject = {
 };
 
 export const TestAutofilledBackground: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { id: 'text', defaultValue: 'Value', autofilled: true },
   play: async ({ canvas }) => {
     const input = canvas.getByRole('textbox');
