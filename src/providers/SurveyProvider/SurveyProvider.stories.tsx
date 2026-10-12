@@ -145,7 +145,7 @@ export const StandardSurvey: Story = {
 };
 
 export const TestStandard: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {},
   parameters: {
     msw: {
@@ -360,7 +360,7 @@ export const Umux: Story = {
 };
 
 export const TestUmux: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {},
   parameters: {
     msw: {
@@ -399,7 +399,7 @@ export const TestUmux: Story = {
 };
 
 export const TestMaybeLater: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {},
   parameters: {
     msw: {
@@ -426,7 +426,7 @@ export const TestMaybeLater: Story = {
 };
 
 export const TestDoNotShowMe: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {},
   parameters: {
     msw: {
@@ -467,7 +467,7 @@ function NoActiveSurveyComponent() {
 }
 
 export const TestNoActiveSurvey: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {},
   decorators: (Story) => (
     <ToastProvider>

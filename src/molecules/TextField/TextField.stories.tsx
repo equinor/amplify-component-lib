@@ -696,7 +696,7 @@ export const MaxCharacterCount: StoryObject = {
 };
 
 export const MaxCharacterCountWithoutHelper: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     placeholder: 'Enter product name',
     label: 'Product Name',
@@ -743,7 +743,7 @@ function TestComponent(args: TextFieldProps) {
 }
 
 export const MaxCharacterCountExternalUpdate: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     placeholder: 'Enter product name',
     label: 'Product Name',
@@ -769,7 +769,7 @@ export const MaxCharacterCountExternalUpdate: StoryObject = {
 };
 
 export const LoadingState: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Test',
     loading: true,

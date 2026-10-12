@@ -183,7 +183,7 @@ export const TestCompactCompletedBasic: Story = {
 };
 
 export const TestOnError: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     indeterminate: false,
     isError: true,
@@ -204,7 +204,7 @@ export const TestOnError: Story = {
 };
 
 export const TestOnDelete: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     indeterminate: true,
     compact: true,
@@ -219,7 +219,7 @@ export const TestOnDelete: Story = {
 };
 
 export const TestOnDeleteProgress: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     indeterminate: true,
     compact: false,
@@ -236,7 +236,7 @@ export const TestOnDeleteProgress: Story = {
 };
 
 export const TestOnCancel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     indeterminate: true,
     compact: false,

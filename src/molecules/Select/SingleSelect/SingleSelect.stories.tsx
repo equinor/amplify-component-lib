@@ -279,7 +279,7 @@ export const DisabledSingleSelect: Story = {
 };
 
 export const TestDirtyVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -296,7 +296,7 @@ export const TestDirtyVariant: Story = {
 };
 
 export const TestErrorVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -313,7 +313,7 @@ export const TestErrorVariant: Story = {
 };
 
 export const TestRendersPlaceholder: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -326,7 +326,7 @@ export const TestRendersPlaceholder: Story = {
 };
 
 export const TestDataTestId: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -339,7 +339,7 @@ export const TestDataTestId: Story = {
 };
 
 export const TestHelperText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -352,7 +352,7 @@ export const TestHelperText: Story = {
 };
 
 export const TestHelperTextWithVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -371,7 +371,7 @@ export const TestHelperTextWithVariant: Story = {
 };
 
 export const TestOnlyMetaLabel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -385,7 +385,7 @@ export const TestOnlyMetaLabel: Story = {
 };
 
 export const TestClickingItems: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS.map((item, index) => ({
       ...item,
@@ -414,7 +414,7 @@ export const TestClickingItems: Story = {
 };
 
 export const TestDeselectItem: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
@@ -439,7 +439,7 @@ const CustomMenuItemComponent: FC<{ item: SelectOption<Item> }> = ({
 }) => <span>custom item - {item.value}</span>;
 
 export const TestCustomMenuItem: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
@@ -456,7 +456,7 @@ export const TestCustomMenuItem: Story = {
 };
 
 export const TestCustomFilterFn: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -475,7 +475,7 @@ export const TestCustomFilterFn: Story = {
 };
 
 export const TestCustomFilterFnGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: FAKE_GROUPS,
     value: undefined,
@@ -496,7 +496,7 @@ export const TestCustomFilterFnGroups: Story = {
 };
 
 export const TestFilteringGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: FAKE_GROUPS,
     value: undefined,
@@ -516,7 +516,7 @@ export const TestFilteringGroups: Story = {
 };
 
 export const TestFilteringGroupsNoMatch: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: FAKE_GROUPS,
     value: undefined,
@@ -539,7 +539,7 @@ export const TestFilteringGroupsNoMatch: Story = {
 };
 
 export const TestFilteringListNoMatch: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -560,7 +560,7 @@ export const TestFilteringListNoMatch: Story = {
 };
 
 export const TestCustomNoItemsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [],
     value: undefined,
@@ -576,7 +576,7 @@ export const TestCustomNoItemsText: Story = {
 };
 
 export const TestAddItem: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -607,7 +607,7 @@ export const TestAddItem: Story = {
 };
 
 export const TestWithoutHelperIcon: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,

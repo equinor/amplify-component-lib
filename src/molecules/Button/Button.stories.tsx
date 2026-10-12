@@ -223,7 +223,7 @@ export const LinkButton: Story = {
 };
 
 export const TestLoadingState: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => {
     return <Button {...args}>Loading Button</Button>;
   },
@@ -241,7 +241,7 @@ export const TestLoadingState: Story = {
 };
 
 export const TestRendersAsLink: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => <Button linkOptions={{ to: '/somewhere' }}>Save</Button>,
   play: async ({ canvas }) => {
     const link = canvas.getByRole('link', { name: 'Save' });

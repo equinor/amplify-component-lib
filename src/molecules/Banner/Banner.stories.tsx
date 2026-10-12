@@ -70,7 +70,7 @@ export const Variants: Story = {
 };
 
 export const CustomContent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     children: <Button>Custom button</Button>,
   },
@@ -82,7 +82,7 @@ export const CustomContent: Story = {
 };
 
 export const Compact: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     spacing: 'compact',
     children: faker.airline.airplane().name,
