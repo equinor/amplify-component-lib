@@ -11,7 +11,7 @@ import { SwitchIcon } from './Switch.styles';
 
 export interface SwitchProps extends Omit<
   EDSSwitchProps,
-  'checked' | 'defaultChecked'
+  'checked' | 'defaultChecked' | 'size'
 > {
   label: string;
   checked: boolean;
@@ -30,6 +30,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       >
         <Base ref={ref} {...otherProps} checked={checked} onChange={onChange} />
         <SwitchIcon
+          key={`checked-${checked}`}
           data={checked ? check : close}
           size={16}
           $checked={checked}

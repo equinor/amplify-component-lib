@@ -1,4 +1,4 @@
-import { animation, colors, shape, spacings } from 'src/atoms/style';
+import { animation, colors, elevation, shape, spacings } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
 
@@ -20,9 +20,6 @@ export const Wrapper = styled.span<WrapperProps>`
       height: 24px;
       aspect-ratio: 1;
     }
-    > span[class*='Switch']:last-child {
-      padding: 0 ${spacings.medium_small} 0 0;
-    }
   }
 
   &.switch {
@@ -30,18 +27,16 @@ export const Wrapper = styled.span<WrapperProps>`
     display: inline-flex;
 
     > label {
-      padding: 0 ${spacings.x_small} 0 ${spacings.medium_small};
+      padding: 0 ${spacings.medium_small};
       gap: ${spacings.small};
 
       > span:first-child {
-        height: 36px;
+        height: unset;
+        aspect-ratio: unset;
       }
 
       input {
         width: 0;
-        ~ span {
-          height: 36px;
-        }
       }
     }
 
@@ -61,7 +56,7 @@ export const Wrapper = styled.span<WrapperProps>`
       width: 12px;
       height: 12px;
       left: 6px;
-      box-shadow: none;
+      box-shadow: ${elevation.overlay};
       background: ${colors.text.static_icons__primary_white.hex};
     }
     > label:has(input:checked) > span > span > span:last-child {
