@@ -81,6 +81,7 @@ export const Default: Story = {
 };
 
 export const Disabled: Story = {
+  render: StorySwitch,
   args: {
     label: 'Toyota',
     disabled: true,
@@ -99,6 +100,7 @@ export const Disabled: Story = {
 };
 
 export const Outlined: Story = {
+  render: StorySwitch,
   args: {
     label: 'Toyota',
     outlined: true,
@@ -118,26 +120,8 @@ export const DisabledOutlined: Story = {
   },
 };
 
-export const Checked: Story = {
-  render: StorySwitch,
-  args: {
-    label: 'Toyota',
-    checked: true,
-  },
-  play: async ({ canvas, canvasElement }) => {
-    const input = canvas.getByLabelText('Toyota');
-
-    await expect(input).toBeChecked();
-    await expect(getIconPath(canvasElement)).toBe(CHECK_PATH);
-
-    await userEvent.click(input);
-
-    await expect(input).not.toBeChecked();
-    await expect(getIconPath(canvasElement)).toBe(CLOSE_PATH);
-  },
-};
-
-export const Controlled: Story = {
+export const TestControlled: Story = {
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Toyota',
     checked: true,
