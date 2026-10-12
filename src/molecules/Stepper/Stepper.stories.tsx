@@ -147,7 +147,7 @@ export const Primary: Story = {
 };
 
 export const TestPrimary: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => <PrimaryTemplate {...args} />,
   play: async ({ canvas, step }) => {
     await step('Future steps are not clickable by default', async () => {
@@ -205,7 +205,7 @@ export const SyncedToURL: Story = {
 };
 
 export const TestSyncedToURL: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     syncToURL: true,
     router: {
@@ -274,7 +274,7 @@ export const DisabledFutureSteps: Story = {
 };
 
 export const TestDisabledFutureSteps: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     hideContent: true,
   },
@@ -353,7 +353,7 @@ export const HideContent: Story = {
 };
 
 export const TestHideContent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     hideContent: true,
   },
@@ -412,7 +412,7 @@ export const AllowJumpingAhead: Story = {
 };
 
 export const TestAllowJumpingAhead: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     allowJumpingAhead: true,
   },

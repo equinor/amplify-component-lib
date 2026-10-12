@@ -639,7 +639,7 @@ export const DisabledNestedMenuItems: Story = {
 };
 
 export const AllMenuItemsDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
       ...item,
@@ -656,7 +656,7 @@ export const AllMenuItemsDisabled: Story = {
 };
 
 export const AllChildrenDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [
       {
@@ -678,7 +678,7 @@ export const AllChildrenDisabled: Story = {
 };
 
 export const NoEnabledItemAfterSubtree: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS.slice(0, 2),
     values: [],
@@ -693,7 +693,7 @@ export const NoEnabledItemAfterSubtree: Story = {
 };
 
 export const DisabledAfterSelection: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -778,7 +778,7 @@ export const DisabledGroupsAfterSelection: Story = {
 };
 
 export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -804,7 +804,7 @@ export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
 };
 
 export const NoItemsFound: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [],
   },
@@ -823,7 +823,7 @@ export const NoItemsFound: Story = {
 };
 
 export const NoItemsFoundWithGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: [],
     items: undefined,
@@ -843,7 +843,7 @@ export const NoItemsFoundWithGroups: Story = {
 };
 
 export const AddItemWithExactMatch: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -888,7 +888,7 @@ export const AddItemWithExactMatch: Story = {
 };
 
 export const AddItemWithCustomSingularWord: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

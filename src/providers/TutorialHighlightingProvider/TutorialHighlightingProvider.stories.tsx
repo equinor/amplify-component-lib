@@ -582,7 +582,7 @@ export const TutorialWithImage: StoryObj = {
 
 /** Blocks interactions until the tutorial is dismissed. */
 export const BlockedInteractions: StoryObj<typeof RouteComponent> = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     msw: {
       handlers: [
@@ -670,7 +670,7 @@ export const AllowedInteractions: StoryObj<typeof RouteComponent> = {
 
 export const InvalidSelectors: StoryObj<typeof RouteComponent> = {
   ...AllowedInteractions,
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     ...AllowedInteractions.args,
     interactiveElementSelectors: [
@@ -707,7 +707,7 @@ export const InteractiveTutorial: StoryObj<typeof RouteComponent> = {
 };
 
 export const CancelledLookup: StoryObj<typeof RouteComponent> = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   parameters: Default.parameters,
   args: { missingStepElement: true },
   play: async ({ mount }) => {

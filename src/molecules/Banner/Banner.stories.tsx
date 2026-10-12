@@ -96,7 +96,7 @@ export const Variants: Story = {
 };
 
 export const CustomContent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     children: <Button>Custom button</Button>,
   },

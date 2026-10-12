@@ -124,7 +124,7 @@ export const SeasonalColorsExample: StoryFn = () => {
 type Story = StoryObj<typeof Confetti>;
 
 export const TestRendersCanvas: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     mode: 'shower',
     duration: 1000,
@@ -135,7 +135,7 @@ export const TestRendersCanvas: Story = {
 };
 
 export const TestCustomClassName: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     className: 'my-custom-confetti',
   },

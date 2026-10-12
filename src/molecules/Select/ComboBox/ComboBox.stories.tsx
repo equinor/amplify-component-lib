@@ -56,8 +56,8 @@ interface Item {
   disabled?: boolean;
 }
 
-const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
-  label: faker.animal.fish(),
+const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
+  label: `${faker.animal.fish()} ${index + 1}`,
   value: faker.string.uuid(),
 }));
 
@@ -444,7 +444,7 @@ export const DisabledNestedMenuItems: Story = {
 };
 
 export const AllMenuItemsDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
       ...item,
@@ -462,7 +462,7 @@ export const AllMenuItemsDisabled: Story = {
 };
 
 export const AllChildrenDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [
       {
@@ -484,7 +484,7 @@ export const AllChildrenDisabled: Story = {
 };
 
 export const NoEnabledItemAfterSubtree: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS.slice(0, 2),
     values: [],
@@ -501,7 +501,7 @@ export const NoEnabledItemAfterSubtree: Story = {
 };
 
 export const DisabledAfterSelection: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -627,7 +627,7 @@ const TEST_GROUPS = [
 ];
 
 export const TestRendersPlaceholder: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -640,7 +640,7 @@ export const TestRendersPlaceholder: Story = {
 };
 
 export const TestDataTestId: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -653,7 +653,7 @@ export const TestDataTestId: Story = {
 };
 
 export const TestSelectItemsWithClicks: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -680,7 +680,7 @@ export const TestSelectItemsWithClicks: Story = {
 };
 
 export const TestOnAddItemWithEnter: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -700,7 +700,7 @@ export const TestOnAddItemWithEnter: Story = {
 };
 
 export const TestOnAddItemWithClick: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -724,7 +724,7 @@ export const TestOnAddItemWithClick: Story = {
 };
 
 export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -753,7 +753,7 @@ export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
 };
 
 export const TestGroupsPreselected: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: TEST_GROUPS,
     values: [TEST_GROUPS[0].items[0]],
@@ -776,7 +776,7 @@ export const TestGroupsPreselected: Story = {
 };
 
 export const TestGroupsPreselectedSelectedAsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: TEST_GROUPS,
     values: [TEST_GROUPS[0].items[0]],
@@ -793,7 +793,7 @@ export const TestGroupsPreselectedSelectedAsText: Story = {
 };
 
 export const TestFilteringGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: TEST_GROUPS,
     values: [],
@@ -810,7 +810,7 @@ export const TestFilteringGroups: Story = {
 };
 
 export const TestParentChildSelection: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [],
@@ -831,7 +831,7 @@ export const TestParentChildSelection: Story = {
 };
 
 export const TestParentChildSelectionSyncParentFalse: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [TEST_ITEMS_WITH_CHILDREN[1].children[0]],
@@ -853,7 +853,7 @@ export const TestParentChildSelectionSyncParentFalse: Story = {
 };
 
 export const TestParentChildSelectionSyncParent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [TEST_ITEMS_WITH_CHILDREN[1]],
@@ -875,7 +875,7 @@ export const TestParentChildSelectionSyncParent: Story = {
 };
 
 export const TestParentChildSelectionSyncParentSelectedChild: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [TEST_ITEMS_WITH_CHILDREN[0].children[0]],
@@ -897,7 +897,7 @@ export const TestParentChildSelectionSyncParentSelectedChild: Story = {
 };
 
 export const TestNestedChildLabel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const items = [
       {
@@ -929,7 +929,7 @@ export const TestNestedChildLabel: Story = {
 };
 
 export const TestNestedChildPadding: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const items = [
       {
@@ -962,7 +962,7 @@ export const TestNestedChildPadding: Story = {
 };
 
 export const TestRemoveWithBackspace: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -981,7 +981,7 @@ export const TestRemoveWithBackspace: Story = {
 };
 
 export const TestDisabledPreventsChipRemoval: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1016,7 +1016,7 @@ const TestCustomValueElement: FC<{
 );
 
 export const TestCustomValueComponentRenders: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1035,7 +1035,7 @@ export const TestCustomValueComponentRenders: Story = {
 };
 
 export const TestCustomValueRemovalByClick: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1055,7 +1055,7 @@ export const TestCustomValueRemovalByClick: Story = {
 };
 
 export const TestShowSelectedAsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1071,7 +1071,7 @@ export const TestShowSelectedAsText: Story = {
 };
 
 export const TestCustomShowSelectedAsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1088,7 +1088,7 @@ export const TestCustomShowSelectedAsText: Story = {
 };
 
 export const TestCustomMenuItemComponent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const items = [
       {
@@ -1129,7 +1129,7 @@ export const TestCustomMenuItemComponent: Story = {
 };
 
 export const TestSortsValues: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[3], TEST_ITEMS[1], TEST_ITEMS[0]],
@@ -1153,7 +1153,7 @@ export const TestSortsValues: Story = {
 };
 
 export const TestKeyboardNavigation: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     values: [],
     items: FAKE_ITEMS_WITH_CHILDREN,
@@ -1190,7 +1190,7 @@ export const TestKeyboardNavigation: Story = {
 };
 
 export const TestSortValuesFalse: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [FAKE_ITEMS[3], FAKE_ITEMS[1], FAKE_ITEMS[0]],
@@ -1211,7 +1211,7 @@ export const TestSortValuesFalse: Story = {
 };
 
 export const TestOnOpenCallback: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [],
@@ -1243,7 +1243,7 @@ export const TestOnOpenCallback: Story = {
 };
 
 export const TestOnClear: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [FAKE_ITEMS[0]],
@@ -1259,7 +1259,7 @@ export const TestOnClear: Story = {
 };
 
 export const TestOpenWithKeyboard: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [],

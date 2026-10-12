@@ -110,7 +110,7 @@ export const Disabled: Story = {
 };
 
 export const TestWithTitle: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: faker.animal.dog(),
     children: <p>Hover me</p>,
@@ -128,7 +128,7 @@ export const TestWithTitle: Story = {
 };
 
 export const TestDisabled: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Should not appear',
     disabled: true,
@@ -146,7 +146,7 @@ export const TestDisabled: Story = {
 };
 
 export const TestHideWhileShowing: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Hide me quickly',
     enterDelay: 500,
@@ -165,7 +165,7 @@ export const TestHideWhileShowing: Story = {
 };
 
 export const TestShowWhileAlreadyOpen: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Already open',
     enterDelay: 0,
@@ -189,7 +189,7 @@ export const TestShowWhileAlreadyOpen: Story = {
 };
 
 export const TestPlacementTop: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Top tooltip',
     placement: 'top',
@@ -212,7 +212,7 @@ export const TestPlacementTop: Story = {
 };
 
 export const TestPlacementBottom: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Bottom tooltip',
     placement: 'bottom',
@@ -235,7 +235,7 @@ export const TestPlacementBottom: Story = {
 };
 
 export const TestPlacementLeft: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Left tooltip',
     placement: 'left',
@@ -258,7 +258,7 @@ export const TestPlacementLeft: Story = {
 };
 
 export const TestPlacementRight: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Right tooltip',
     placement: 'right',
@@ -281,7 +281,7 @@ export const TestPlacementRight: Story = {
 };
 
 export const TestWithReactNodeTitle: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: <strong>Rich title</strong>,
     children: <p>Node title</p>,
@@ -295,7 +295,7 @@ export const TestWithReactNodeTitle: Story = {
 };
 
 export const WithoutTitle: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: undefined,
     children: <p>Hover me</p>,

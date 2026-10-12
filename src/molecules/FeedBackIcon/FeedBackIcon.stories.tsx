@@ -31,7 +31,7 @@ export const Primary: StoryFn<FeedBackIconProps> = (args) => (
 );
 
 export const TestPositiveOutlined: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'positive',
     variant: 'outlined',
@@ -46,7 +46,7 @@ export const TestPositiveOutlined: Story = {
 };
 
 export const TestNegativeFilled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'negative',
     variant: 'filled',
@@ -61,7 +61,7 @@ export const TestNegativeFilled: Story = {
 };
 
 export const TestNegativeOutlined: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'negative',
     variant: 'outlined',

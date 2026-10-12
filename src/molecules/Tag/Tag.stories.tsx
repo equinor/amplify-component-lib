@@ -123,7 +123,7 @@ export const CustomTextAndIconColors: Story = {
 };
 
 export const LeadingIcon: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     leadingIcon: code,
     trailingIcon: undefined,
@@ -138,7 +138,7 @@ export const LeadingIcon: Story = {
 };
 
 export const TrailingIcon: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     leadingIcon: undefined,
     trailingIcon: code,

@@ -157,7 +157,7 @@ export const Open: Story = {
 };
 
 export const TestToggleClick: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
@@ -177,7 +177,7 @@ export const TestToggleClick: Story = {
 };
 
 export const TestToggleKeyboard: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',

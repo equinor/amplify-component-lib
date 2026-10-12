@@ -281,7 +281,7 @@ export const CustomReactElement: Story = {
 };
 
 export const TestRenderLabel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Test Label',
     icon: cake,
@@ -295,7 +295,7 @@ export const TestRenderLabel: Story = {
 };
 
 export const TestRenderIcons: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Icon Test',
     icon: cake,
@@ -311,7 +311,7 @@ export const TestRenderIcons: Story = {
 };
 
 export const TestCustomContent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Custom Content',
     icon: <div>icon</div>,
@@ -326,7 +326,7 @@ export const TestCustomContent: Story = {
 };
 
 export const TestClickHandler: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Clickable',
     icon: cake,
