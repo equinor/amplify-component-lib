@@ -14,6 +14,7 @@ import {
   transparent,
   UpdateExample,
 } from 'src/molecules/InputCell/stories/testUtils';
+import { SingleSelect } from 'src/molecules/Select/SingleSelect/SingleSelect';
 import { TextField } from 'src/molecules/TextField/TextField';
 
 import { expect, userEvent, waitFor, within } from 'storybook/test';
@@ -183,6 +184,147 @@ export const DateFieldHover: Story = {
         }
       );
     }
+  },
+};
+
+export const LockedAndAutofilled: Story = {
+  play: async ({ mount, step }) => {
+    const lightBackground = 'rgb(247, 247, 247)';
+    const autofilledBackground = 'rgb(211, 231, 253)';
+    const restingShadow = 'rgb(220, 220, 220) 0px -1px 0px 0px inset';
+    const cases = [
+      { name: 'locked', props: { locked: true }, bg: transparent },
+      {
+        name: 'autofilled',
+        props: { autofilled: true },
+        bg: autofilledBackground,
+      },
+      {
+        name: 'locked + autofilled',
+        props: { locked: true, autofilled: true },
+        bg: autofilledBackground,
+      },
+    ];
+    for (const { name, props, bg } of cases) {
+      await step(`${name} cell background`, async () => {
+        const canvas = await mount(
+          <>
+            <TextCell defaultValue="Some Text" {...props} />
+            <InputCell as="div" data-testid="select-cell">
+              <SingleSelect
+                aria-label="Select"
+                items={[{ value: '1', label: 'Item 1' }]}
+                value={{ value: '1', label: 'Item 1' }}
+                onSelect={() => undefined}
+                {...props}
+              />
+            </InputCell>
+            <InputCell as="div" data-testid="date-cell">
+              <DatePicker value={new Date(2026, 8, 3)} {...props} />
+            </InputCell>
+          </>
+        );
+        for (const id of ['cell', 'select-cell', 'date-cell']) {
+          const cell = canvas.getByTestId(id);
+          await expect(getComputedStyle(cell).backgroundColor).toBe(bg);
+          // The locked grey must not leak through from the input surfaces
+          for (const element of cell.querySelectorAll('*')) {
+            await expect(getComputedStyle(element).backgroundColor).not.toBe(
+              lightBackground
+            );
+          }
+        }
+      });
+    }
+    await step(
+      'An inline row background overrides the autofilled background',
+      async () => {
+        const selectedBackground = 'rgb(230, 250, 236)';
+        const canvas = await mount(
+          <table>
+            <tbody>
+              <tr style={{ background: selectedBackground }}>
+                <InputCell data-testid="selected-cell">
+                  <TextField
+                    aria-label="Selected"
+                    defaultValue="A"
+                    autofilled
+                  />
+                </InputCell>
+              </tr>
+              <tr>
+                <InputCell data-testid="regular-cell">
+                  <TextField aria-label="Regular" defaultValue="B" autofilled />
+                </InputCell>
+              </tr>
+            </tbody>
+          </table>
+        );
+        const selected = canvas.getByTestId('selected-cell');
+        await expect(getComputedStyle(selected).backgroundColor).toBe(
+          transparent
+        );
+        await expect(
+          getComputedStyle(selected.parentElement!).backgroundColor
+        ).toBe(selectedBackground);
+        await expect(
+          getComputedStyle(canvas.getByTestId('regular-cell')).backgroundColor
+        ).toBe(autofilledBackground);
+      }
+    );
+    await step(
+      'Locked cell has no hover underline or focus outline',
+      async () => {
+        const canvas = await mount(
+          <TextCell defaultValue="Some Text" locked />
+        );
+        const cell = canvas.getByTestId('cell');
+        await hover(cell);
+        await expect(getComputedStyle(cell).boxShadow).toBe(restingShadow);
+        await userEvent.click(canvas.getByRole('textbox'));
+        await expect(canvas.getByRole('textbox')).toHaveFocus();
+        await expect(getComputedStyle(cell).outline).not.toBe(focusOutline);
+      }
+    );
+    await step(
+      'Locked text field lock icon does not overlap the text',
+      async () => {
+        const canvas = await mount(<TextCell defaultValue="Volve" locked />);
+        const input = canvas.getByRole('textbox');
+        const lockIcon = canvas
+          .getByTestId('cell')
+          .querySelector('svg')!
+          .getBoundingClientRect();
+        await expect(lockIcon.right).toBeLessThanOrEqual(
+          input.getBoundingClientRect().left +
+            parseFloat(getComputedStyle(input).paddingLeft)
+        );
+      }
+    );
+    await step('Locked date field icons do not overlap the date', async () => {
+      const canvas = await mount(
+        <InputCell as="div" data-testid="cell" style={{ width: 200 }}>
+          <DatePicker value={new Date(2026, 8, 3)} locked />
+        </InputCell>
+      );
+      const spinbuttons = canvas.getAllByRole('spinbutton');
+      const [lockIcon, calendarIcon] = Array.from(
+        canvas.getByTestId('cell').querySelectorAll('svg')
+      ).map((svg) => svg.getBoundingClientRect());
+      const field = spinbuttons[0]
+        .closest('[class*="StyledInputFieldWrapper"]')!
+        .getBoundingClientRect();
+      await expect(lockIcon.right).toBeLessThanOrEqual(
+        spinbuttons[0].getBoundingClientRect().left
+      );
+      await expect(
+        spinbuttons[spinbuttons.length - 1].getBoundingClientRect().right
+      ).toBeLessThanOrEqual(calendarIcon.left);
+      for (const icon of [lockIcon, calendarIcon]) {
+        await expect(icon.top).toBeGreaterThanOrEqual(field.top);
+        await expect(icon.bottom).toBeLessThanOrEqual(field.bottom);
+      }
+    });
   },
 };
 

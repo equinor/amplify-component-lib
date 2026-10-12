@@ -102,3 +102,16 @@ test('Loading works as expected with helperprops', async () => {
 
   expect(await screen.findByRole('progressbar')).toBeInTheDocument();
 });
+
+// The locked tests live in DatePicker.stories.tsx. This one stays here because
+// the browser and storybook projects instrument this file differently, so a
+// handler only called from a story counts as uncovered in the merged report.
+test('Locked ignores Enter so the calendar does not open', async () => {
+  render(<DatePicker value={new Date('25. july 2021')} locked />);
+  const user = userEvent.setup();
+
+  await user.click(screen.getAllByRole('spinbutton')[0]);
+  await user.keyboard('{Enter}');
+
+  expect(screen.queryByText('July 2021')).not.toBeInTheDocument();
+});

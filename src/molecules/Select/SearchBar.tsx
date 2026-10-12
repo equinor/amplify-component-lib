@@ -1,7 +1,12 @@
 import { ReactNode, useMemo, useRef } from 'react';
 
 import { Label } from '@equinor/eds-core-react';
-import { arrow_drop_down, arrow_drop_up, clear } from '@equinor/eds-icons';
+import {
+  arrow_drop_down,
+  arrow_drop_up,
+  clear,
+  lock,
+} from '@equinor/eds-icons';
 
 import { colors, getVariantIcon } from 'src/atoms';
 import {
@@ -68,7 +73,13 @@ export const SearchBar = <T extends SelectOptionRequired>({
     variant,
     'data-testid': dataTestId,
     mode = 'menu',
+    locked = false,
+    autofilled = false,
   } = props;
+
+  const usingLocked = locked && !disabled && !loading;
+  const usingAutofilled = autofilled && !disabled && !loading;
+  const usingVariant = usingLocked ? undefined : variant;
 
   const skeletonWidth = useRef(`${Math.max(40, Math.random() * 80)}%`);
   const shouldShowHelper = useMemo(() => {
@@ -77,8 +88,8 @@ export const SearchBar = <T extends SelectOptionRequired>({
   const helperIcon = useMemo(() => {
     if (!showHelperIcon) return;
 
-    return getVariantIcon(variant);
-  }, [showHelperIcon, variant]);
+    return getVariantIcon(usingVariant);
+  }, [showHelperIcon, usingVariant]);
 
   const valueElements = useMemo<ReactNode>(() => {
     if (
@@ -87,7 +98,9 @@ export const SearchBar = <T extends SelectOptionRequired>({
       'customValueComponent' in props &&
       props.customValueComponent
     ) {
-      return <props.customValueComponent item={props.value} />;
+      return (
+        <props.customValueComponent item={props.value} locked={usingLocked} />
+      );
     } else if ('value' in props && props.value) {
       return <ValueText>{props.value.label}</ValueText>;
     } else if ('showSelectedAsText' in props && props.showSelectedAsText) {
@@ -112,11 +125,24 @@ export const SearchBar = <T extends SelectOptionRequired>({
               key={value.value}
               item={value}
               onDelete={() => handleOnRemoveItem(value)}
+              locked={usingLocked}
               tryingToRemove={
                 tryingToRemoveItem !== undefined &&
                 tryingToRemoveItem.value === value.value
               }
             />
+          );
+        }
+        if (usingLocked) {
+          return (
+            <ComboBoxChip
+              key={value.value}
+              data-testid="amplify-combobox-chip"
+              className="amplify-combo-box-chip"
+              $tryingToRemove={false}
+            >
+              {value.label}
+            </ComboBoxChip>
           );
         }
         return (
@@ -139,6 +165,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
     tryingToRemoveItem,
     lightBackground,
     disabled,
+    usingLocked,
     props,
     handleOnRemoveItem,
   ]);
@@ -146,20 +173,33 @@ export const SearchBar = <T extends SelectOptionRequired>({
   return (
     <Wrapper $showBackgroundColor={mode === 'persistent'}>
       <Container
-        data-input-cell-variant={!loading ? variant : undefined}
+        data-input-cell-variant={!loading ? usingVariant : undefined}
+        data-input-cell-locked={usingLocked || undefined}
+        data-input-cell-autofilled={usingAutofilled || undefined}
         data-testid={dataTestId ? dataTestId : 'combobox-container'}
         ref={anchorRef}
         onClick={handleOnOpen}
         aria-expanded={open}
-        $variant={variant}
+        $variant={usingVariant}
         $loading={loading}
         $lightBackground={lightBackground}
+        $locked={usingLocked}
+        $autofilled={usingAutofilled}
       >
         <Section>
-          {props.leadingContent && (
-            <LeadingContentWrapper $disabled={disabled || loading}>
-              {props.leadingContent}
+          {usingLocked ? (
+            <LeadingContentWrapper $locked>
+              <Icon
+                data={lock}
+                color={colors.text.static_icons__default.rgba}
+              />
             </LeadingContentWrapper>
+          ) : (
+            props.leadingContent && (
+              <LeadingContentWrapper $disabled={disabled || loading}>
+                {props.leadingContent}
+              </LeadingContentWrapper>
+            )
           )}
           <SearchArea>
             {!loading && search === '' && selectedValues.length === 0 && (
@@ -177,6 +217,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             <input
               id={id}
               disabled={disabled || loading}
+              readOnly={usingLocked}
               ref={searchRef}
               type="search"
               role="combobox"
@@ -184,7 +225,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
               autoComplete="off"
               onChange={handleOnSearchChange}
               onKeyDownCapture={handleOnSearchKeyDown}
-              aria-invalid={variant === 'error' ? true : undefined}
+              aria-invalid={usingVariant === 'error' ? true : undefined}
               aria-label={props['aria-label']}
               aria-labelledby={props['aria-labelledby']}
               aria-describedby={props['aria-describedby']}
@@ -203,7 +244,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             )}
           </SearchArea>
         </Section>
-        {mode === 'menu' && (
+        {mode === 'menu' && !usingLocked && (
           <Icon
             onClick={handleToggleOpen}
             data={open ? arrow_drop_up : arrow_drop_down}
@@ -214,7 +255,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             }
           />
         )}
-        {clearable && selectedValues.length > 0 && !loading && (
+        {clearable && selectedValues.length > 0 && !loading && !usingLocked && (
           <ClearButton
             id="clear"
             variant="ghost_icon"
@@ -230,7 +271,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
       {shouldShowHelper && (
         <HelperWrapper
           $borderBottom={mode === 'persistent'}
-          $variant={disabled ? 'disabled' : variant}
+          $variant={disabled ? 'disabled' : usingVariant}
         >
           {helperIcon && <Icon data={helperIcon} size={16} />}
           <Label label={helperText} htmlFor={id} />
