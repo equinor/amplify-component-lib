@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { calendar_date_range, lock } from '@equinor/eds-icons';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { DateRangePicker, DateRangePickerProps } from './DateRangePicker';
 import { Stack } from 'src/storybook';
 
 import { action } from 'storybook/actions';
+import { expect, fn, screen, userEvent, within } from 'storybook/test';
 
 const PrimaryComponent = (props: DateRangePickerProps) => {
   const [value, setValue] = useState({
@@ -57,6 +59,8 @@ const meta: Meta<typeof DateRangePicker> = {
 };
 
 export default meta;
+
+type Story = StoryObj<typeof DateRangePicker>;
 
 export const Introduction: StoryFn<DateRangePickerProps> = (args) => (
   <PrimaryComponent {...args} />
@@ -129,6 +133,117 @@ export const Autofilled: StoryFn<DateRangePickerProps> = (args) => {
       }}
     />
   );
+};
+
+const LOCKED_BACKGROUND = 'rgb(247, 247, 247)';
+const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
+const TEST_RANGE = { from: new Date(2021, 6, 25), to: new Date(2021, 6, 30) };
+
+const getField = (canvasElement: HTMLElement) => {
+  const spinbuttons = within(canvasElement).getAllByRole('spinbutton');
+  return {
+    spinbuttons,
+    dayEl: spinbuttons[0],
+    field: spinbuttons[0].closest('[class*="StyledInputFieldWrapper"]'),
+  };
+};
+
+export const TestLockedIsReadOnly: Story = {
+  tags: ['test-only'],
+  args: {
+    label: 'Locked',
+    value: TEST_RANGE,
+    variant: 'error',
+    locked: true,
+    onChange: fn(),
+  },
+  play: async ({ canvas, canvasElement, args }) => {
+    const { dayEl, field } = getField(canvasElement);
+
+    await expect(canvas.queryByRole('button')).not.toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(
+        `path[d="${calendar_date_range.svgPathData}"]`
+      )
+    ).toBeInTheDocument();
+    await expect(dayEl).toHaveAttribute('aria-readonly', 'true');
+    await expect(field).toHaveStyle({
+      backgroundColor: LOCKED_BACKGROUND,
+      boxShadow: 'none',
+    });
+
+    await userEvent.click(dayEl);
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('1');
+
+    await expect(screen.queryByText('July 2021')).not.toBeInTheDocument();
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const TestLockedCalendarIconDoesNotOverlapDates: Story = {
+  tags: ['test-only'],
+  args: { label: 'Locked', value: TEST_RANGE, locked: true },
+  render: (args) => (
+    <div style={{ width: '200px' }}>
+      <DateRangePicker {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const { spinbuttons } = getField(canvasElement);
+    const lastDateRight =
+      spinbuttons[spinbuttons.length - 1].getBoundingClientRect().right;
+    const calendarIcon = canvasElement
+      .querySelector(`path[d="${calendar_date_range.svgPathData}"]`)!
+      .closest('svg')!;
+
+    await expect(lastDateRight).toBeLessThanOrEqual(
+      calendarIcon.getBoundingClientRect().left
+    );
+  },
+};
+
+export const TestDisabledTakesPrecedenceOverLocked: Story = {
+  tags: ['test-only'],
+  args: { label: 'Test', disabled: true, locked: true },
+  play: async ({ canvasElement }) => {
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).not.toBeInTheDocument();
+  },
+};
+
+export const TestLockedAndAutofilled: Story = {
+  tags: ['test-only'],
+  args: { value: TEST_RANGE, locked: true, autofilled: true },
+  play: async ({ canvasElement }) => {
+    const { dayEl, field } = getField(canvasElement);
+
+    await expect(dayEl).toHaveAttribute('aria-readonly', 'true');
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(field).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+      boxShadow: 'none',
+    });
+  },
+};
+
+export const TestAutofilledBackground: Story = {
+  tags: ['test-only'],
+  args: { value: TEST_RANGE, autofilled: true },
+  play: async ({ canvas, canvasElement }) => {
+    const { field } = getField(canvasElement);
+
+    await expect(field).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+    });
+    await expect(canvas.getAllByRole('button').length).toBeGreaterThan(0);
+  },
 };
 
 const min = new Date();

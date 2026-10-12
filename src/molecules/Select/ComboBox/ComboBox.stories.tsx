@@ -1053,6 +1053,108 @@ export const TestLockedPreventsChanges: Story = {
   },
 };
 
+export const TestLockingClosesOpenMenu: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    onAddItem: fn(),
+  },
+  render: function Render(args) {
+    const [locked, setLocked] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setLocked((prev) => !prev)}>Toggle lock</Button>
+        <ComboBox {...args} locked={locked} />
+      </>
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.type(canvas.getByRole('combobox'), 'New tag');
+    await expect(screen.getByRole('menuitem')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Toggle lock' }));
+    await expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    await expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+
+    // Unlocking does not reopen the menu by itself
+    await userEvent.click(canvas.getByRole('button', { name: 'Toggle lock' }));
+    await expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    await expect(
+      'onAddItem' in args ? args.onAddItem : null
+    ).not.toHaveBeenCalled();
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const TestLoadingKeepsOpenMenuSelectable: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+  },
+  render: function Render(args) {
+    const [loading, setLoading] = useState(false);
+    return (
+      <ComboBox
+        {...args}
+        loading={loading}
+        onSearchChange={() => setLoading(true)}
+      />
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.type(canvas.getByRole('combobox'), 'a');
+    await userEvent.click(
+      screen.getByRole('menuitem', { name: TEST_ITEMS[0].label })
+    );
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS[0]],
+      TEST_ITEMS[0]
+    );
+  },
+};
+
+export const TestCustomValueComponentReceivesLocked: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    locked: true,
+    onSelect: fn(),
+    customValueComponent: ({ item, locked }) => (
+      <span>{`${item.label} locked=${locked}`}</span>
+    ),
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText(`${TEST_ITEMS[0].label} locked=true`)
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestSearchIgnoresLeadingSpace: Story = {
+  tags: ['test-only'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    onSearchChange: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const search = canvas.getByRole('combobox');
+
+    await userEvent.type(search, ' ');
+    await expect(search).toHaveValue('');
+    await expect(args.onSearchChange).not.toHaveBeenCalled();
+
+    await userEvent.type(search, 'a');
+    await expect(args.onSearchChange).toHaveBeenCalledWith('a');
+  },
+};
+
 export const TestDisabledPreventsChipRemoval: Story = {
   tags: ['test-only'],
   args: {
