@@ -149,7 +149,7 @@ const getField = (canvasElement: HTMLElement) => {
 };
 
 export const TestLockedIsReadOnly: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Locked',
     value: TEST_RANGE,
@@ -185,7 +185,7 @@ export const TestLockedIsReadOnly: Story = {
 };
 
 export const TestLockedCalendarIconDoesNotOverlapDates: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { label: 'Locked', value: TEST_RANGE, locked: true },
   render: (args) => (
     <div style={{ width: '200px' }}>
@@ -207,7 +207,7 @@ export const TestLockedCalendarIconDoesNotOverlapDates: Story = {
 };
 
 export const TestDisabledTakesPrecedenceOverLocked: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { label: 'Test', disabled: true, locked: true },
   play: async ({ canvasElement }) => {
     await expect(
@@ -217,7 +217,7 @@ export const TestDisabledTakesPrecedenceOverLocked: Story = {
 };
 
 export const TestLockedAndAutofilled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { value: TEST_RANGE, locked: true, autofilled: true },
   play: async ({ canvasElement }) => {
     const { dayEl, field } = getField(canvasElement);
@@ -234,7 +234,7 @@ export const TestLockedAndAutofilled: Story = {
 };
 
 export const TestAutofilledBackground: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { value: TEST_RANGE, autofilled: true },
   play: async ({ canvas, canvasElement }) => {
     const { field } = getField(canvasElement);
