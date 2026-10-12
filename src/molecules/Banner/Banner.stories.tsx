@@ -11,6 +11,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { Banner, BannerActionConfig } from './Banner';
 import { getVariantIcon } from './Banner.utils';
 import { Button } from 'src/molecules/Button/Button';
+import { Story } from 'src/storybook';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect, fn, waitFor } from 'storybook/test';
@@ -47,6 +48,16 @@ const meta: Meta<typeof Banner> = {
   args: {
     variant: 'info',
     children: message,
+  },
+  argTypes: {
+    actions: {
+      control: 'select',
+      options: ['none', 'withActions'],
+      mapping: {
+        none: [],
+        withActions: actions,
+      },
+    },
   },
 };
 
