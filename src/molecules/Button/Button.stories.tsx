@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 
-import { Checkbox, Icon, Snackbar, Tooltip } from '@equinor/eds-core-react';
+import { Checkbox, Icon, Snackbar } from '@equinor/eds-core-react';
 import { chevron_down, save } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import { Stack } from 'src/storybook';
 
 import { expect, fn, userEvent } from 'storybook/test';
@@ -223,7 +224,7 @@ export const LinkButton: Story = {
 };
 
 export const TestLoadingState: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => {
     return <Button {...args}>Loading Button</Button>;
   },
@@ -241,7 +242,7 @@ export const TestLoadingState: Story = {
 };
 
 export const TestRendersAsLink: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => <Button linkOptions={{ to: '/somewhere' }}>Save</Button>,
   play: async ({ canvas }) => {
     const link = canvas.getByRole('link', { name: 'Save' });

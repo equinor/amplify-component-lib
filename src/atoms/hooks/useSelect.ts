@@ -10,7 +10,10 @@ import {
 import { SelectComponentProps } from 'src/molecules/Select/Select';
 import { SelectOption } from 'src/molecules/Select/Select.types';
 import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
-import { flattenOptions } from 'src/molecules/Select/Select.utils';
+import {
+  flattenOptions,
+  getNextEnabledItemIndex,
+} from 'src/molecules/Select/Select.utils';
 
 const useSelect = <T extends SelectOptionRequired>(
   props: SelectComponentProps<T>
@@ -18,16 +21,26 @@ const useSelect = <T extends SelectOptionRequired>(
   const {
     loading,
     disabled,
+    locked,
     sortValues,
     onSearchChange,
     onOpenCallback,
     mode,
   } = props;
+  const inactive = disabled || loading || locked;
+  // Loading keeps an already open menu usable, so only these block selection
+  const blocked = !!(disabled || locked);
   const [open, setOpen] = useState(false);
+  const [wasLocked, setWasLocked] = useState(!!locked);
+
+  // Close an already open menu when the select becomes locked. A disabled select keeps it open with disabled items
+  if (wasLocked !== !!locked) {
+    setWasLocked(!!locked);
+    if (locked) setOpen(false);
+  }
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const focusingItemIndex = useRef<number>(-1);
   const [tryingToRemoveItem, setTryingToRemoveItem] = useState<T | undefined>(
     undefined
   );
@@ -84,7 +97,7 @@ const useSelect = <T extends SelectOptionRequired>(
   }, [selectedValues.length]);
 
   const handleOnOpen = () => {
-    if (open || disabled || loading) return;
+    if (open || inactive) return;
     if (mode === 'persistent') {
       searchRef.current?.focus();
       return;
@@ -97,11 +110,10 @@ const useSelect = <T extends SelectOptionRequired>(
   const handleOnClose = () => {
     setOpen(false);
     setSearch('');
-    focusingItemIndex.current = 0;
   };
 
   const handleToggleOpen = () => {
-    if (disabled || loading) return;
+    if (inactive) return;
 
     if (open) {
       handleOnClose();
@@ -111,7 +123,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value === ' ' || loading || disabled) return;
+    if (event.target.value === ' ' || inactive) return;
     setSearch(event.target.value);
     onSearchChange?.(event.target.value);
     if (!open) {
@@ -155,6 +167,8 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnItemSelect = (item: SelectOption<T>) => {
+    if (blocked || item.disabled) return;
+
     if ('value' in props) {
       if (props.value?.value === item.value) {
         props.onSelect(undefined);
@@ -172,7 +186,7 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnRemoveItem = (item: SelectOption<T>) => {
-    if ('values' in props && !loading && !disabled) {
+    if ('values' in props && !inactive) {
       props.onSelect(
         props.values.filter((i) => i.value !== item.value),
         item
@@ -188,6 +202,8 @@ const useSelect = <T extends SelectOptionRequired>(
   };
 
   const handleOnSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (locked) return;
+
     if (
       event.key === 'Enter' &&
       search !== '' &&
@@ -202,12 +218,12 @@ const useSelect = <T extends SelectOptionRequired>(
     } else if (event.key === 'Escape') {
       searchRef.current?.blur();
       handleOnClose();
-    } else if (
-      (event.key === 'ArrowDown' || event.key === 'ArrowUp') &&
-      itemRefs.current.at(0)
-    ) {
-      itemRefs.current[0]?.focus();
-      focusingItemIndex.current = 0;
+    } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const nextIndex = getNextEnabledItemIndex(itemRefs.current, -1, 1);
+      if (nextIndex !== -1) {
+        itemRefs.current[nextIndex]?.focus();
+      }
     } else if (
       event.key === 'Backspace' &&
       tryingToRemoveItem === undefined &&
@@ -227,18 +243,22 @@ const useSelect = <T extends SelectOptionRequired>(
     }
   };
 
-  const handleOnItemKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-    if (
-      event.key === 'ArrowDown' &&
-      focusingItemIndex.current < itemRefs.current.length - 1
-    ) {
-      focusingItemIndex.current += 1;
-      itemRefs.current.at(focusingItemIndex.current)?.focus();
-    } else if (event.key === 'ArrowUp' && focusingItemIndex.current > 0) {
-      focusingItemIndex.current -= 1;
-      itemRefs.current.at(focusingItemIndex.current)?.focus();
-    } else if (event.key === 'ArrowUp' && focusingItemIndex.current === 0) {
-      focusingItemIndex.current = -1;
+  const handleOnItemKeyDown = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    currentIndex = itemRefs.current.indexOf(event.currentTarget)
+  ) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+
+    event.preventDefault();
+    const nextIndex = getNextEnabledItemIndex(
+      itemRefs.current,
+      currentIndex,
+      event.key === 'ArrowDown' ? 1 : -1
+    );
+
+    if (nextIndex !== -1) {
+      itemRefs.current[nextIndex]?.focus();
+    } else if (event.key === 'ArrowUp') {
       searchRef.current?.focus();
     }
   };

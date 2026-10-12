@@ -1,12 +1,12 @@
 import { FC, KeyboardEvent, ReactNode, RefObject } from 'react';
 
-import type { TooltipProps } from '@equinor/eds-core-react';
-
 import { Variants } from 'src/atoms/types/variants';
+import type { TooltipProps } from 'src/molecules/Tooltip/Tooltip';
 
 export interface SelectOptionRequired {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 export type SelectOption<T extends SelectOptionRequired> = T & {
@@ -18,6 +18,8 @@ export interface SingleSelectCommon<T extends SelectOptionRequired> {
   onSelect: (value: SelectOption<T> | undefined) => void;
   customValueComponent?: FC<{
     item: SelectOption<T>;
+    /** True when the select is locked, so the value can't be changed */
+    locked?: boolean;
   }>;
 }
 
@@ -48,6 +50,8 @@ type MultiSelectWithCustomValueComponent<T extends SelectOptionRequired> = {
     item: SelectOption<T>;
     onDelete: () => void;
     tryingToRemove: boolean;
+    /** True when the select is locked. `onDelete` does nothing, so hide any delete control */
+    locked?: boolean;
   }>;
 } & MultiSelectBase<T>;
 
@@ -113,9 +117,13 @@ export interface ListSelectMenuProps {
 }
 
 export interface SelectMenuProps<T extends SelectOptionRequired> {
+  disabled?: boolean;
   search: string;
   itemRefs: RefObject<(HTMLButtonElement | null)[]>;
-  onItemKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
+  onItemKeyDown: (
+    event: KeyboardEvent<HTMLButtonElement>,
+    index?: number
+  ) => void;
   onItemSelect: (item: SelectOption<T>) => void;
   onSearchFilter?: (searchValue: string, item: T) => void;
   noItemsText?: string;
@@ -190,4 +198,8 @@ export type CommonSelectProps<T extends SelectOptionRequired> = {
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
   leadingContent?: ReactNode;
+  /** Value is validated/accepted and can't be changed. Shows a lock icon. */
+  locked?: boolean;
+  /** Value was filled in automatically. Consumer is responsible for resetting this when the user changes the value. */
+  autofilled?: boolean;
 } & CustomMenuItemComponentProps<T>;

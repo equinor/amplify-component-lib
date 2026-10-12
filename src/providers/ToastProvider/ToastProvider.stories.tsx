@@ -162,7 +162,7 @@ export const AdvancedToastButton: Story = {
 };
 
 export const ClickingOnClose: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'This is the title',
   },
@@ -193,7 +193,7 @@ function JustTitleTest(args: ToastProps) {
 }
 
 export const JustTitle: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Just me here',
   },

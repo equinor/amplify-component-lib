@@ -16,7 +16,7 @@ import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 const meta = {
   title: 'Molecules/Cell/InputCell/Popovers',
   component: InputCell,
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
 } satisfies Meta<typeof InputCell>;
 export default meta;
 type Story = StoryObj<typeof meta>;

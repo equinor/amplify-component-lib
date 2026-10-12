@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import Counter from './custom-extensions/Counter';
 import { EditorMenu, EditorText } from './MenuBar/MenuBar';
@@ -13,6 +13,8 @@ import { RichText } from '.';
 import { amplify_h2, amplify_h3 } from 'src/atoms/icons/wysiwyg';
 import { colors } from 'src/atoms/style';
 import { getFeatures } from 'src/atoms/utils';
+
+import { expect } from 'storybook/test';
 
 const meta: Meta<typeof RichTextEditor> = {
   title: 'Molecules/RichTextEditor',
@@ -38,6 +40,30 @@ export default meta;
 
 export const Primary: StoryFn<RichTextEditorProps> = (args) => {
   return <RichTextEditor {...args} />;
+};
+
+export const GroupedToolbarButtons: StoryObj<typeof RichTextEditor> = {
+  args: {
+    features: [RichTextEditorFeatures.ALIGNMENT],
+  },
+  play: async ({ canvas }) => {
+    const firstButton = await canvas.findByTestId('align-left-button');
+    const middleButton = canvas.getByTestId('align-center-button');
+    const lastButton = canvas.getByTestId('align-right-button');
+    const [first, middle, last] = [firstButton, middleButton, lastButton].map(
+      (button) => getComputedStyle(button)
+    );
+
+    expect(first.borderTopLeftRadius).not.toBe('0px');
+    expect(first.borderBottomLeftRadius).not.toBe('0px');
+    expect(first.borderTopRightRadius).toBe('0px');
+    expect(first.borderBottomRightRadius).toBe('0px');
+    expect(middle.borderRadius).toBe('0px');
+    expect(last.borderTopLeftRadius).toBe('0px');
+    expect(last.borderBottomLeftRadius).toBe('0px');
+    expect(last.borderTopRightRadius).not.toBe('0px');
+    expect(last.borderBottomRightRadius).not.toBe('0px');
+  },
 };
 
 export const DefaultBackground: StoryFn<RichTextEditorProps> = (args) => {

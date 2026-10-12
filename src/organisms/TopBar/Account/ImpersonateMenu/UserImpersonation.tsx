@@ -1,7 +1,6 @@
 import { FC, MouseEvent, useRef, useState } from 'react';
 
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import {
   account_circle,
   check,
@@ -19,6 +18,7 @@ import {
 } from './UserImpersonation.styles';
 import { colors } from 'src/atoms/style/colors';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 
 import styled from 'styled-components';

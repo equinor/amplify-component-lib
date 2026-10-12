@@ -44,7 +44,8 @@ export const SmallUploadWrapper = styled(UploadWrapper)`
   > p {
     color: ${colors.interactive.primary__resting.rgba};
   }
-  > p:last-child {
+  > p:last-child,
+  > span:last-child {
     color: ${colors.text.static_icons__tertiary.rgba};
     max-width: 100%;
     overflow: hidden;
@@ -52,6 +53,12 @@ export const SmallUploadWrapper = styled(UploadWrapper)`
     text-wrap: nowrap;
     position: absolute;
     bottom: calc((1.6em + ${spacings.small}) * -1);
+  }
+  > span:last-child > p {
+    color: ${colors.text.static_icons__tertiary.rgba};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
   }
 
   &:hover {
@@ -68,7 +75,8 @@ export const MediumUploadWrapper = styled(UploadWrapper)`
     width: 62px;
     height: 62px;
   }
-  > section > p {
+  > section > p,
+  > section > span > p {
     text-wrap: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

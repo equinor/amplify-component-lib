@@ -38,7 +38,10 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
     onItemSelect,
     CustomMenuItemComponent,
     mode,
+    disabled,
   } = menuItemProps;
+
+  const isDisabled = Boolean(disabled || item.disabled);
 
   let checkboxIcon = isSelected ? checkbox : checkbox_outline;
   let selectedState: SelectedState = isSelected ? 'selected' : 'none';
@@ -50,10 +53,15 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
   const handleOnItemClick = (e: MouseEvent) => {
     // Stop form submission
     e.preventDefault();
+    if (isDisabled) return;
     onItemSelect(item);
   };
 
   const handleOnKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    // Select owns arrow navigation; do not let EDS Menu move focus again.
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.stopPropagation();
+    }
     if (handleOnParentKeyDown !== undefined) {
       handleOnParentKeyDown(e);
     } else {
@@ -99,6 +107,7 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
         }}
         onKeyDownCapture={handleOnKeyDown}
         onClick={handleOnItemClick}
+        disabled={isDisabled}
       >
         {itemContent}
       </PersistentListItem>
@@ -121,6 +130,7 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
       closeMenuOnClick={'value' in menuItemProps}
       onKeyDownCapture={handleOnKeyDown}
       onClick={handleOnItemClick}
+      disabled={isDisabled}
     >
       {itemContent}
     </StyledMenuItem>

@@ -74,7 +74,7 @@ export const Equinor: Story = {
 };
 
 export const TestWithScrim: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     withScrim: true,
   },
@@ -86,7 +86,7 @@ export const TestWithScrim: Story = {
 };
 
 export const TestEquinorVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     variant: 'equinor',
   },
@@ -98,7 +98,7 @@ export const TestEquinorVariant: Story = {
 };
 
 export const TestCircleVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     variant: 'circle',
   },
@@ -110,7 +110,7 @@ export const TestCircleVariant: Story = {
 };
 
 export const TestDotsVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     variant: 'dots',
   },
@@ -123,7 +123,7 @@ export const TestDotsVariant: Story = {
 
 const childText = faker.animal.dog();
 export const TestChildrenHidden: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <Container>
       <FullPageSpinner>{childText}</FullPageSpinner>
@@ -135,7 +135,7 @@ export const TestChildrenHidden: Story = {
 };
 
 export const TestChildrenHiddenWithScrim: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <Container>
       <FullPageSpinner withScrim>{childText}</FullPageSpinner>
