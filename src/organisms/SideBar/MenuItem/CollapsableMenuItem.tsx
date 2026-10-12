@@ -8,14 +8,15 @@ import {
   useMatchRoute,
 } from '@tanstack/react-router';
 
+import { SearchableSubMenu } from './SearchableSubMenu';
 import { usePrevious } from 'src/atoms/hooks/usePrevious';
 import { colors, spacings } from 'src/atoms/style';
 import { SideBarMenuItemWithItems } from 'src/atoms/types/SideBar';
 import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import {
+  Child,
   IconContainer,
   ItemText,
-  Link,
   MenuItemWrapper,
 } from 'src/organisms/SideBar/MenuItem/MenuItem.styles';
 import { useSideBar } from 'src/providers/SideBarProvider';
@@ -80,15 +81,6 @@ const Parent = styled.button<ParentProps>`
     `}
 `;
 
-const Child = styled(Link)`
-  display: grid;
-  grid-template-columns: 32px 1fr;
-  height: unset;
-  > p:first-child {
-    grid-column: 2;
-  }
-`;
-
 const StyledMenu = styled(Menu)`
   max-height: 80vh;
   overflow-y: auto;
@@ -100,11 +92,12 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   icon,
   name,
   items,
+  isSearchable = false,
   ...rest
 }) => {
-  const { pathname } = useLocation();
+  const { href } = useLocation();
   const matchRoute = useMatchRoute();
-  const previousPathname = usePrevious(pathname);
+  const previousHref = usePrevious(href);
   const { isOpen } = useSideBar();
   const previousIsOpen = usePrevious(isOpen);
   const isActive = items.some((item) => !!matchRoute({ ...item }));
@@ -116,11 +109,11 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
   useEffect(() => {
     if (
       (previousIsOpen && !isOpen && expanded) ||
-      (previousPathname !== pathname && expanded && !isOpen)
+      (previousHref !== href && expanded && !isOpen)
     ) {
       setExpanded(false);
     }
-  }, [expanded, isOpen, pathname, previousIsOpen, previousPathname]);
+  }, [expanded, href, isOpen, previousHref, previousIsOpen]);
 
   const parentContent = useMemo(() => {
     return (
@@ -132,6 +125,9 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
             $active={isActive}
             $expanded={expanded}
             onClick={handleOnToggleExpanded}
+            aria-label={name}
+            aria-expanded={expanded}
+            aria-haspopup={isOpen ? undefined : 'menu'}
             {...rest}
           >
             <IconContainer data-testid="icon-container">
@@ -168,18 +164,22 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
     return (
       <>
         {parentContent}
-        {items.map((item, index) => (
-          <Child key={index} $disabled={item.disabled || false} {...item}>
-            <ItemText
-              $active={isActive}
-              $disabled={item.disabled || false}
-              variant="button"
-              group="navigation"
-            >
-              {item.name}
-            </ItemText>
-          </Child>
-        ))}
+        {isSearchable ? (
+          <SearchableSubMenu items={items} name={name} isOpen={isOpen} />
+        ) : (
+          items.map((item, index) => (
+            <Child key={index} $disabled={item.disabled || false} {...item}>
+              <ItemText
+                $active={isActive}
+                $disabled={item.disabled || false}
+                variant="button"
+                group="navigation"
+              >
+                {item.name}
+              </ItemText>
+            </Child>
+          ))
+        )}
       </>
     );
   }
@@ -194,17 +194,21 @@ export const CollapsableMenuItem: FC<CollapsableMenuItemProps> = ({
           placement="right-start"
           onClose={handleOnToggleExpanded}
         >
-          {items.map((item) => (
-            <Menu.Item
-              as={TanstackLink}
-              key={`${item.to}-${item.name}`}
-              active={!!matchRoute({ ...item })}
-              style={{ width: '256px' }}
-              {...item}
-            >
-              {item.name}
-            </Menu.Item>
-          ))}
+          {isSearchable ? (
+            <SearchableSubMenu items={items} name={name} isOpen={isOpen} />
+          ) : (
+            items.map((item) => (
+              <Menu.Item
+                as={TanstackLink}
+                key={`${item.to}-${item.name}`}
+                active={!!matchRoute({ ...item })}
+                style={{ width: '256px' }}
+                {...item}
+              >
+                {item.name}
+              </Menu.Item>
+            ))
+          )}
         </StyledMenu>
       </>
     );
