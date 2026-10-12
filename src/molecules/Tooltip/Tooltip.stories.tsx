@@ -4,8 +4,9 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tooltip } from './Tooltip';
+import { Theme } from 'src/atoms/enums/Theme';
 
-import { expect, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 const meta = {
   title: 'Molecules/Tooltip',
@@ -29,7 +30,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'This component enables us to show a tooltip optionally, so if the title is either null or empty or it has disabled state it hides the tooltip',
+          'Optional tooltip with centered text. Empty titles and disabled tooltips are hidden.',
       },
     },
   },
@@ -42,6 +43,94 @@ export const Primary: Story = {
   args: {
     title: 'Optional tooltip title',
     children: <Icon data={folder} />,
+  },
+};
+
+export const ThemeColors: Story = {
+  args: {
+    title: 'Theme-aware tooltip colors',
+    children: <button>Hover to compare themes</button>,
+  },
+  play: async ({ canvas }) => {
+    const originalTheme = document.documentElement.getAttribute('data-theme');
+    const anchor = canvas.getByRole('button');
+    await userEvent.hover(anchor);
+    const tooltip = await canvas.findByRole('tooltip');
+
+    try {
+      for (const theme of [Theme.LIGHT, Theme.DARK, Theme.LIGHT]) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const background =
+          theme === Theme.LIGHT ? 'rgb(61, 61, 61)' : 'rgb(255, 255, 255)';
+        const foreground =
+          theme === Theme.LIGHT ? 'rgb(255, 255, 255)' : 'rgb(61, 61, 61)';
+
+        await waitFor(() => {
+          expect(tooltip.matches(':popover-open')).toBe(true);
+          expect(getComputedStyle(tooltip).backgroundColor).toBe(background);
+          expect(getComputedStyle(tooltip).color).toBe(foreground);
+          expect(getComputedStyle(tooltip, '::before').backgroundColor).toBe(
+            background
+          );
+        });
+      }
+    } finally {
+      if (originalTheme === null) {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', originalTheme);
+      }
+      await userEvent.unhover(anchor);
+    }
+  },
+};
+
+export const Multiline: Story = {
+  args: {
+    title:
+      'This is a tooltip that goes over multiple lines. The text will fill the max width of the container.',
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.hover(canvas.getByText('Hover me'));
+    const tooltip = await canvas.findByRole('tooltip');
+    const text = canvas.getByText(args.title as string);
+
+    await waitFor(() => {
+      expect(tooltip).toBeVisible();
+      expect(getComputedStyle(text).textAlign).toBe('center');
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      const lines = Array.from(range.getClientRects());
+      expect(lines.length).toBeGreaterThan(1);
+      const bounds = tooltip.getBoundingClientRect();
+      for (const line of lines) {
+        expect(
+          Math.abs(
+            line.left + line.width / 2 - (bounds.left + bounds.width / 2)
+          )
+        ).toBeLessThan(1);
+      }
+    });
+  },
+};
+
+export const CustomTextAlignment: Story = {
+  args: {
+    title: (
+      <div style={{ textAlign: 'left' }}>
+        Custom content can keep its own alignment.
+        <br />
+        This line stays left-aligned.
+      </div>
+    ),
+  },
+  play: async ({ canvas }) => {
+    await userEvent.hover(canvas.getByText('Hover me'));
+    const tooltip = await canvas.findByRole('tooltip');
+    await expect(tooltip).toBeVisible();
+    await expect(
+      getComputedStyle(canvas.getByText(/Custom content can keep/)).textAlign
+    ).toBe('left');
   },
 };
 
@@ -61,7 +150,7 @@ export const Disabled: Story = {
 };
 
 export const TestWithTitle: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: faker.animal.dog(),
     children: <p>Hover me</p>,
@@ -79,7 +168,7 @@ export const TestWithTitle: Story = {
 };
 
 export const TestDisabled: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Should not appear',
     disabled: true,
@@ -97,7 +186,7 @@ export const TestDisabled: Story = {
 };
 
 export const TestHideWhileShowing: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Hide me quickly',
     enterDelay: 500,
@@ -116,7 +205,7 @@ export const TestHideWhileShowing: Story = {
 };
 
 export const TestShowWhileAlreadyOpen: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Already open',
     enterDelay: 0,
@@ -140,7 +229,7 @@ export const TestShowWhileAlreadyOpen: Story = {
 };
 
 export const TestPlacementTop: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Top tooltip',
     placement: 'top',
@@ -163,7 +252,7 @@ export const TestPlacementTop: Story = {
 };
 
 export const TestPlacementBottom: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Bottom tooltip',
     placement: 'bottom',
@@ -186,7 +275,7 @@ export const TestPlacementBottom: Story = {
 };
 
 export const TestPlacementLeft: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Left tooltip',
     placement: 'left',
@@ -209,7 +298,7 @@ export const TestPlacementLeft: Story = {
 };
 
 export const TestPlacementRight: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: 'Right tooltip',
     placement: 'right',
@@ -232,7 +321,7 @@ export const TestPlacementRight: Story = {
 };
 
 export const TestWithReactNodeTitle: Story = {
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: <strong>Rich title</strong>,
     children: <p>Node title</p>,
@@ -246,7 +335,7 @@ export const TestWithReactNodeTitle: Story = {
 };
 
 export const WithoutTitle: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     title: undefined,
     children: <p>Hover me</p>,

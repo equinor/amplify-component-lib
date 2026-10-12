@@ -190,7 +190,7 @@ export const SearchFaqsNotFound: Story = {
 };
 
 export const SearchFaqsCleared: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     router: {
       initial: '/faq?search=log+in',
@@ -284,7 +284,7 @@ export const Loading: Story = {
 };
 
 export const OpenQuestion: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     router: {
       initial: '/faq',
@@ -310,7 +310,7 @@ export const OpenQuestion: Story = {
 };
 
 export const InitiallyOpenQuestion: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     router: {
       initial: '/faq#faq-1',
@@ -329,7 +329,7 @@ export const InitiallyOpenQuestion: Story = {
 };
 
 export const EmptyCategory: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     router: {
       initial: '/faq',
@@ -376,7 +376,7 @@ export const EmptyCategory: Story = {
 };
 
 export const SearchWithNullFaqs: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     router: {
       initial: '/faq?search=subcategory',

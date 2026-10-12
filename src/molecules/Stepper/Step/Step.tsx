@@ -1,10 +1,11 @@
-import { FC, KeyboardEvent, useMemo } from 'react';
+import { FC, KeyboardEvent, ReactNode, useMemo } from 'react';
 
 import { Typography } from '@equinor/eds-core-react';
 import { TypographyVariants } from '@equinor/eds-core-react/dist/types/components/Typography/Typography.tokens';
 
 import { colors, spacings } from 'src/atoms/style';
 import { StepIcon } from 'src/molecules/Stepper/Step/StepIcon';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import { useStepper } from 'src/providers/StepperProvider';
 
 import styled, { css } from 'styled-components';
@@ -43,6 +44,7 @@ interface StepProps {
   index: number;
   onlyShowCurrentStepLabel?: boolean;
   children?: string;
+  tooltip?: ReactNode;
   allowJumpingAhead?: boolean;
 }
 
@@ -50,6 +52,7 @@ export const Step: FC<StepProps> = ({
   index,
   onlyShowCurrentStepLabel = false,
   children,
+  tooltip,
   allowJumpingAhead = false,
 }) => {
   const { currentStep, setCurrentStep, isStepAtIndexDisabled } = useStepper();
@@ -92,27 +95,29 @@ export const Step: FC<StepProps> = ({
   };
 
   return (
-    <Container
-      data-testid="step"
-      $clickable={isClickable}
-      onClick={handleOnClick}
-      onKeyDown={handleOnKeyDown}
-      $disabled={isDisabled}
-      aria-disabled={!isClickable}
-      role="button"
-      tabIndex={isClickable ? 0 : -1}
-    >
-      <StepIcon
-        index={index}
-        disabled={isDisabled}
-        allowJumpingAhead={allowJumpingAhead}
-      />
-      {(!onlyShowCurrentStepLabel || currentStep === index) && (
-        <Typography variant={textVariant} color={textColor}>
-          {children}
-        </Typography>
-      )}
-    </Container>
+    <Tooltip title={tooltip}>
+      <Container
+        data-testid="step"
+        $clickable={isClickable}
+        onClick={handleOnClick}
+        onKeyDown={handleOnKeyDown}
+        $disabled={isDisabled}
+        aria-disabled={!isClickable}
+        role="button"
+        tabIndex={isClickable ? 0 : -1}
+      >
+        <StepIcon
+          index={index}
+          disabled={isDisabled}
+          allowJumpingAhead={allowJumpingAhead}
+        />
+        {(!onlyShowCurrentStepLabel || currentStep === index) && (
+          <Typography variant={textVariant} color={textColor}>
+            {children}
+          </Typography>
+        )}
+      </Container>
+    </Tooltip>
   );
 };
 

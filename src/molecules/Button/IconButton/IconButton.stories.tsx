@@ -142,7 +142,7 @@ export const CustomContentIcon: Story = {
 };
 
 export const TestLoadingState: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     loading: true,
     'aria-label': 'Save',
@@ -158,7 +158,7 @@ export const TestLoadingState: Story = {
 };
 
 export const TestRendersAsLink: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <IconButton
       linkOptions={{ to: '/somewhere' }}

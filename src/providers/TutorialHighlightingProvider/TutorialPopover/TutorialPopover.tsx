@@ -1,4 +1,4 @@
-import { FC, RefObject, useState } from 'react';
+import { FC, RefObject, useCallback, useState } from 'react';
 
 import { Button, Card, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
@@ -190,16 +190,22 @@ export const TutorialPopover: FC<TutorialPopoverProps> = ({
       popoverSize,
     });
 
-  const handleSetPopoverSize = (element: HTMLDivElement | null) => {
-    if (!element) {
-      setPopoverSize(undefined);
-      return;
-    }
-    setPopoverSize({
-      width: element.clientWidth,
-      height: element.clientHeight,
-    });
-  };
+  const handleSetPopoverSize = useCallback((element: HTMLDivElement) => {
+    const updateSize = () => {
+      const width = element.offsetWidth;
+      const height = element.offsetHeight;
+      setPopoverSize((previous) =>
+        previous?.width === width && previous.height === height
+          ? previous
+          : { width, height }
+      );
+    };
+    const observer = new ResizeObserver(updateSize);
+    observer.observe(element, { box: 'border-box' });
+    updateSize();
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleSkip = () => {
     skipTutorial(id);

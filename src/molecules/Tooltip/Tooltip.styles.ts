@@ -136,8 +136,3 @@ export const TooltipWrapper = styled.div<TooltipWrapperProps>`
     }
   }})
 `;
-
-export const LeftAlignedText = styled.span`
-  display: inline-block;
-  text-align: left;
-`;

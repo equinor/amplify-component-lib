@@ -1,4 +1,4 @@
-import { TooltipPlacement } from 'src/molecules/Tooltip/Tooltip';
+import type { TooltipPlacement } from 'src/molecules/Tooltip/Tooltip';
 
 export const getResolvedPlacement = (
   tooltip: DOMRect,

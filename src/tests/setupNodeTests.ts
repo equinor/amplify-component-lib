@@ -23,8 +23,23 @@ beforeAll(() => {
   HTMLDialogElement.prototype.show = vi.fn();
   HTMLDialogElement.prototype.showModal = vi.fn();
   HTMLDialogElement.prototype.close = vi.fn();
-  HTMLElement.prototype.showPopover = vi.fn();
-  HTMLElement.prototype.hidePopover = vi.fn();
+  // JSDOM has no native popover state or :popover-open selector support.
+  const openPopovers = new WeakSet<Element>();
+  const nativeMatches = Element.prototype.matches;
+  vi.spyOn(Element.prototype, 'matches').mockImplementation(function (
+    this: Element,
+    selector: string
+  ) {
+    return selector === ':popover-open'
+      ? openPopovers.has(this)
+      : nativeMatches.call(this, selector);
+  });
+  HTMLElement.prototype.showPopover = vi.fn(function (this: HTMLElement) {
+    openPopovers.add(this);
+  });
+  HTMLElement.prototype.hidePopover = vi.fn(function (this: HTMLElement) {
+    openPopovers.delete(this);
+  });
   HTMLElement.prototype.scrollIntoView = vi.fn();
 });
 

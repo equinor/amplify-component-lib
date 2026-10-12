@@ -12,7 +12,6 @@ import {
 import {
   TextField as Base,
   TextFieldProps as BaseProps,
-  TooltipProps,
   Typography,
 } from '@equinor/eds-core-react';
 
@@ -29,6 +28,7 @@ import {
 } from 'src/molecules/InputCell/InputCell.styles';
 import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
+import type { TooltipProps } from 'src/molecules/Tooltip/Tooltip';
 
 import styled, { css } from 'styled-components';
 

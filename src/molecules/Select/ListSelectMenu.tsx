@@ -34,12 +34,12 @@ export const ListSelectMenu = <T extends SelectOptionRequired>(
       | SingleSelectCommon<T>
     )
 ) => {
-  const { search, itemRefs, onItemKeyDown, mode } = props;
+  const { search, itemRefs, onItemKeyDown, mode, noItemsText } = props;
 
   const { filteredItems } = useListSelectItems(props);
 
   if (filteredItems.length === 0 && (!props.onAddItem || search === '')) {
-    return <NoItemsFoundText>No items found</NoItemsFoundText>;
+    return <NoItemsFoundText>{noItemsText}</NoItemsFoundText>;
   }
 
   const hasNestedItems = filteredItems.some(

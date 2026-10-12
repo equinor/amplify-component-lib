@@ -42,7 +42,7 @@ function Component({ title }: { title: string }) {
 }
 
 export const TestSetsDocumentTitle: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: Component,
   args: {
     title: faker.book.title(),

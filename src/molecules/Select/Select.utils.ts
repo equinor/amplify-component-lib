@@ -17,6 +17,23 @@ export function getChildOffset<T extends SelectOptionRequired>(
   return offset + before;
 }
 
+export function getNextEnabledItemIndex(
+  items: (HTMLButtonElement | null)[],
+  currentIndex: number,
+  direction: 1 | -1
+): number {
+  for (
+    let index = currentIndex + direction;
+    index >= 0 && index < items.length;
+    index += direction
+  ) {
+    const item = items[index];
+    if (item && !item.disabled) return index;
+  }
+
+  return -1;
+}
+
 export const flattenOptions = <T extends SelectOptionRequired>(
   options: SelectOption<T>[]
 ): (SelectOption<T> & { parent?: string })[] => {

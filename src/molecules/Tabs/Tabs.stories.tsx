@@ -379,7 +379,7 @@ export const NotAnimated: Story = {
   },
 };
 export const OnHover: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     onHover: fn(),
   },

@@ -48,7 +48,10 @@ export function useTutorialPopoverPosition({
   const minLeft = (popoverSize?.width ?? 0) / 2 + CARET_OFFSET;
   const minTop = CARET_OFFSET * 2;
   const maxLeft = window.innerWidth - CARET_OFFSET;
-  const maxTop = window.innerHeight - CARET_OFFSET;
+  const maxTop = Math.max(
+    minTop,
+    window.innerHeight - CARET_OFFSET - (popoverSize?.height ?? 0)
+  );
 
   const overflowingLeft =
     top !== undefined &&
@@ -82,18 +85,18 @@ export function useTutorialPopoverPosition({
     height !== undefined &&
     usingTop !== undefined &&
     popoverSize !== undefined &&
-    top + height / 2 + popoverSize.height >= window.innerHeight;
+    usingTop + popoverSize.height > window.innerHeight - CARET_OFFSET;
   const overflowingTop =
     top !== undefined &&
     height !== undefined &&
     usingTop !== undefined &&
     popoverSize !== undefined &&
-    usingTop < popoverSize.height;
+    usingTop < minTop;
 
   if (overflowingTop) {
     usingTop = top + height + CARET_OFFSET;
   } else if (overflowingBottom) {
-    usingTop = top - popoverSize.height - height - CARET_OFFSET * 2;
+    usingTop = top - popoverSize.height - CARET_OFFSET;
   }
 
   if (overflowingLeft && (overflowingTop || overflowingBottom)) {
