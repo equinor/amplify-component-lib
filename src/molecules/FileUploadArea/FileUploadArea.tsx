@@ -2,7 +2,6 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { folder } from '@equinor/eds-icons';
 
 import {
@@ -15,6 +14,7 @@ import { colors } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
 import { FILE_UPLOAD_SCRIM_ID } from 'src/molecules/FileUploadArea/FileUploadArea.constants';
 import { UploadIllustration } from 'src/molecules/FileUploadArea/UploadIllustration';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 export type FileUploadAreaProps = {
   /*

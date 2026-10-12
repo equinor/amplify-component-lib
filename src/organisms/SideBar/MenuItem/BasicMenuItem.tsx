@@ -1,11 +1,11 @@
 import { FC, MouseEvent, useCallback, useMemo } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { Tooltip } from '@equinor/eds-core-react';
 import { Feature } from '@equinor/subsurface-app-management';
 import { useMatchRoute } from '@tanstack/react-router';
 
 import { BasicSideBarMenuItem } from 'src/atoms/types/SideBar';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import {
   IconContainer,
   ItemText,

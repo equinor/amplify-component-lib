@@ -8,6 +8,7 @@ interface ContainerProps {
 
 export const Container = styled.button<ContainerProps>`
   display: flex;
+  width: 100%;
   align-self: stretch;
   align-items: center;
   justify-content: ${({ $isOpen }) => ($isOpen ? 'flex-start' : 'center')};

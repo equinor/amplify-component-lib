@@ -1,9 +1,10 @@
 import { FC } from 'react';
 
-import { Icon, Tooltip, TooltipProps } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { help_outline } from '@equinor/eds-icons';
 
 import { colors, shape } from 'src/atoms/style';
+import { Tooltip, TooltipProps } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 
@@ -20,7 +21,7 @@ const StyledIcon = styled(Icon)`
 interface InputExplanationProps {
   /**
    * Controls where the tooltip is placed relative to the help icon.
-   * Uses the same placement options as the underlying EDS Tooltip component.
+   * Uses the same placement options as the underlying Amplify Tooltip component.
    */
   position?: TooltipProps['placement'];
   /**

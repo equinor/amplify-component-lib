@@ -13,10 +13,12 @@ import {
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
+import { Theme } from 'src/atoms/enums/Theme';
 import { TextField, TextFieldProps } from 'src/molecules/TextField/TextField';
+import { LockedInputTooltip } from 'src/organisms/TopBar/Resources/Feedback/FeedbackForm/LockedInputTooltip';
 import { Stack } from 'src/storybook';
 
-import { expect, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 const icons = {
   thumbs_up,
@@ -111,11 +113,75 @@ export const Explanation: StoryObject = {
     placeholder: 'Write an airport name',
   },
   play: async ({ canvas, args }) => {
-    await userEvent.hover(canvas.getByTestId('eds-icon-path'));
-    await expect(
-      await screen.findByText(`${args.explanation}`)
-    ).toBeInTheDocument();
+    const icon = canvas.getByTestId('eds-icon-path');
+    await userEvent.hover(icon);
+    const tooltip = await screen.findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent(`${args.explanation}`);
+
+    const darkMode =
+      document.documentElement.getAttribute('data-theme') === Theme.DARK;
+    const background = darkMode ? 'rgb(255, 255, 255)' : 'rgb(61, 61, 61)';
+    const foreground = darkMode ? 'rgb(61, 61, 61)' : 'rgb(255, 255, 255)';
+    await waitFor(() => {
+      expect(getComputedStyle(tooltip).backgroundColor).toBe(background);
+      expect(getComputedStyle(tooltip).color).toBe(foreground);
+      expect(getComputedStyle(tooltip, '::before').backgroundColor).toBe(
+        background
+      );
+    });
+    await userEvent.unhover(icon);
   },
+};
+
+export const ExplanationDarkMode: StoryObject = {
+  ...Explanation,
+  globals: { themeToggle: Theme.DARK },
+};
+
+export const LockedField: StoryObject = {
+  args: {
+    label: 'Title',
+    disabled: true,
+  },
+  render: (args) => (
+    <div
+      data-testid="locked-field-grid"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        width: 640,
+        maxWidth: '100%',
+      }}
+    >
+      <LockedInputTooltip show={!!args.disabled}>
+        <TextField {...args} />
+      </LockedInputTooltip>
+    </div>
+  ),
+  play: async ({ canvas, args }) => {
+    const field = canvas.getByRole('textbox');
+    const grid = canvas.getByTestId('locked-field-grid');
+    expect(field.getBoundingClientRect().width).toBeCloseTo(
+      grid.getBoundingClientRect().width,
+      0
+    );
+    if (!args.disabled) return;
+
+    await userEvent.hover(field);
+    const tooltip = await screen.findByRole('tooltip');
+    await waitFor(() => {
+      const styles = getComputedStyle(tooltip);
+      expect(styles.width).toBe('400px');
+      expect(styles.whiteSpace).toBe('break-spaces');
+      expect(styles.textAlign).toBe('center');
+    });
+    await userEvent.unhover(field);
+  },
+};
+
+export const UnlockedField: StoryObject = {
+  ...LockedField,
+  args: { ...LockedField.args, disabled: false },
 };
 
 export const Types: Story = () => (

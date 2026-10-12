@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tooltip } from './Tooltip';
+import { Theme } from 'src/atoms/enums/Theme';
 
 import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
@@ -42,6 +43,45 @@ export const Primary: Story = {
   args: {
     title: 'Optional tooltip title',
     children: <Icon data={folder} />,
+  },
+};
+
+export const ThemeColors: Story = {
+  args: {
+    title: 'Theme-aware tooltip colors',
+    children: <button>Hover to compare themes</button>,
+  },
+  play: async ({ canvas }) => {
+    const originalTheme = document.documentElement.getAttribute('data-theme');
+    const anchor = canvas.getByRole('button');
+    await userEvent.hover(anchor);
+    const tooltip = await canvas.findByRole('tooltip');
+
+    try {
+      for (const theme of [Theme.LIGHT, Theme.DARK, Theme.LIGHT]) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const background =
+          theme === Theme.LIGHT ? 'rgb(61, 61, 61)' : 'rgb(255, 255, 255)';
+        const foreground =
+          theme === Theme.LIGHT ? 'rgb(255, 255, 255)' : 'rgb(61, 61, 61)';
+
+        await waitFor(() => {
+          expect(tooltip.matches(':popover-open')).toBe(true);
+          expect(getComputedStyle(tooltip).backgroundColor).toBe(background);
+          expect(getComputedStyle(tooltip).color).toBe(foreground);
+          expect(getComputedStyle(tooltip, '::before').backgroundColor).toBe(
+            background
+          );
+        });
+      }
+    } finally {
+      if (originalTheme === null) {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', originalTheme);
+      }
+      await userEvent.unhover(anchor);
+    }
   },
 };
 

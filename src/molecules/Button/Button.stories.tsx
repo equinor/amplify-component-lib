@@ -1,11 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 
-import { Checkbox, Icon, Snackbar, Tooltip } from '@equinor/eds-core-react';
+import { Checkbox, Icon, Snackbar } from '@equinor/eds-core-react';
 import { chevron_down, save } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { spacings } from 'src/atoms/style';
 import { Button } from 'src/molecules/Button/Button';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import { Stack } from 'src/storybook';
 
 import { expect, fn, userEvent } from 'storybook/test';
