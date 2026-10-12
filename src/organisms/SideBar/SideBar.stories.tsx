@@ -9,6 +9,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import { useLocation } from '@tanstack/react-router';
 
 import { SideBar } from '.';
+import { colors } from 'src/atoms/style';
 import { SideBarMenuItem } from 'src/atoms/types/SideBar';
 import { SideBarProvider } from 'src/providers/SideBarProvider';
 
@@ -88,6 +89,31 @@ const SearchableSubmenuComponent = ({
   );
 };
 
+const resolveBackground = (element: HTMLElement, background: string) => {
+  const probe = document.createElement('div');
+  probe.style.background = background;
+  element.appendChild(probe);
+  const resolved = window.getComputedStyle(probe).backgroundColor;
+  probe.remove();
+  return resolved;
+};
+
+// The real cursor can rest on the parent in CI and apply :hover at any point,
+// so check for the active colour matching the current hover state.
+const expectActiveParentBackground = async (parent: HTMLElement) => {
+  await waitFor(() => {
+    expect(parent.getAnimations()).toHaveLength(0);
+    expect(window.getComputedStyle(parent).backgroundColor).toBe(
+      resolveBackground(
+        parent,
+        parent.matches(':hover')
+          ? colors.interactive.primary__selected_hover.rgba
+          : colors.interactive.primary__selected_highlight.rgba
+      )
+    );
+  });
+};
+
 const exerciseSearchableSubmenu = async (isOpen: boolean) => {
   const parent = screen.getByRole('button', { name: 'Favourites' });
   await userEvent.click(parent);
@@ -95,7 +121,7 @@ const exerciseSearchableSubmenu = async (isOpen: boolean) => {
     name: 'Search Favourites',
   });
   const itemRole = isOpen ? 'link' : 'menuitem';
-  const parentBackground = window.getComputedStyle(parent).backgroundColor;
+  await expectActiveParentBackground(parent);
 
   await waitFor(() => expect(search).toHaveFocus());
   const firstItem = screen.getByRole(itemRole, { name: 'My favourites' });
@@ -110,9 +136,7 @@ const exerciseSearchableSubmenu = async (isOpen: boolean) => {
   await expect(
     screen.getByRole(itemRole, { name: 'Team favourites' })
   ).toBeInTheDocument();
-  await expect(window.getComputedStyle(parent).backgroundColor).toBe(
-    parentBackground
-  );
+  await expectActiveParentBackground(parent);
   await expect(search).toHaveFocus();
   if (!isOpen) {
     await userEvent.keyboard('[Home][End]');
@@ -336,7 +360,7 @@ export const SearchableExpanded: Story = {
 };
 
 export const TestSearchableLocationChanges: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   parameters: {
     router: { initial: '/dashboard', routes: ['$'] },
   },
@@ -393,7 +417,7 @@ export const TestSearchableLocationChanges: Story = {
 };
 
 export const TestNonSearchableSubmenu: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <SideBarProvider>
       <SideBar>
