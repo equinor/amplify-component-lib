@@ -48,6 +48,16 @@ const meta: Meta<typeof Banner> = {
     variant: 'info',
     children: message,
   },
+  argTypes: {
+    actions: {
+      control: 'select',
+      options: ['none', 'withActions'],
+      mapping: {
+        none: [],
+        withActions: actions,
+      },
+    },
+  },
 };
 
 export default meta;

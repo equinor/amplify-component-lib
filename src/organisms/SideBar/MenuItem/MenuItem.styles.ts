@@ -53,6 +53,17 @@ const AnchorTag = styled.a<LinkProps>`
 
 export const Link = createLink(AnchorTag);
 
+const ChildAnchorTag = styled(AnchorTag)`
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  height: unset;
+  > p:first-child {
+    grid-column: 2;
+  }
+`;
+
+export const Child = createLink(ChildAnchorTag);
+
 export const IconContainer = styled.div`
   display: flex;
   padding: ${spacings.x_small};
