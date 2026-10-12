@@ -5,7 +5,6 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Switch } from './Switch';
 
-import { useArgs } from 'storybook/preview-api';
 import { expect, fn, userEvent } from 'storybook/test';
 
 const meta: Meta<typeof Switch> = {
@@ -30,12 +29,10 @@ export default meta;
 type Story = StoryObj<typeof Switch>;
 
 /**
- * Switch is controlled. Mirror the `checked` arg in local state so clicks
- * re-render immediately (the vitest runner does not re-render on updateArgs),
- * while still syncing with Storybook Controls through useArgs.
+ * Switch is controlled, so hold `checked` in local state. Plain useState is
+ * used instead of useArgs because preview hooks crash in the Docs page.
  */
 const StorySwitch: Story['render'] = function StorySwitch(args) {
-  const [, updateArgs] = useArgs();
   const [checked, setChecked] = useState(args.checked);
 
   useEffect(() => {
@@ -48,7 +45,6 @@ const StorySwitch: Story['render'] = function StorySwitch(args) {
       checked={checked}
       onChange={(event) => {
         setChecked(event.target.checked);
-        updateArgs({ checked: event.target.checked });
         args.onChange?.(event);
       }}
     />
