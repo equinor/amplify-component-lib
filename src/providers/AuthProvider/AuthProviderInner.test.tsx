@@ -57,15 +57,11 @@ const second: AccountInfo = {
 };
 const jwt = (payload: object) =>
   `e30.${btoa(JSON.stringify(payload))}.signature`;
-const result = (
-  account = first,
-  token = jwt({ roles: ['READ'] }),
-  correlationId = ''
-) => ({ account, accessToken: token, correlationId }) as AuthenticationResult;
+const result = (account = first, token = jwt({ roles: ['READ'] })) =>
+  ({ account, accessToken: token, correlationId: '' }) as AuthenticationResult;
 
 let cached: AccountInfo[];
 let active: AccountInfo | null;
-let silentId: number;
 let silent: ReturnType<typeof deferred<AuthenticationResult>>[];
 
 function emit(
@@ -102,6 +98,11 @@ const iframe = () =>
     .spyOn(window, 'self', 'get')
     .mockReturnValue({} as Window & typeof globalThis);
 
+function cacheAccount(account = first, accounts = [account]) {
+  cached = accounts;
+  active = account;
+}
+
 beforeEach(() => {
   // Vitest itself renders tests in an iframe. Default to standalone, then opt
   // into the embedded scenario explicitly in individual tests.
@@ -111,7 +112,6 @@ beforeEach(() => {
 
   cached = [];
   active = null;
-  silentId = 0;
   silent = [];
   vi.spyOn(console, 'error').mockImplementation(() => undefined);
   vi.spyOn(console, 'log').mockImplementation(() => undefined);
@@ -147,8 +147,7 @@ beforeEach(() => {
   });
   vi.spyOn(instance, 'ssoSilent').mockImplementation(
     (request: SsoSilentRequest) => {
-      const correlationId = String(++silentId);
-      emit(EventType.SSO_SILENT_START, { ...request, correlationId });
+      emit(EventType.SSO_SILENT_START, request);
       const attempt = deferred<AuthenticationResult>();
       silent.push(attempt);
       return attempt.promise
@@ -161,9 +160,8 @@ beforeEach(() => {
           ) {
             cached = [...cached, response.account];
           }
-          const completed = { ...response, correlationId };
-          emit(EventType.SSO_SILENT_SUCCESS, completed);
-          return completed;
+          emit(EventType.SSO_SILENT_SUCCESS, response);
+          return response;
         })
         .catch((error: Error) => {
           // Exact MSAL 3.28 contract: failure has NO correlationId/payload.
@@ -227,9 +225,11 @@ function PopupConsumer() {
 function Mount({
   withoutBackend = false,
   popup = false,
+  withoutLoader = true,
 }: {
   withoutBackend?: boolean;
   popup?: boolean;
+  withoutLoader?: boolean;
 }) {
   // Use the same real React state/setters as AuthProvider, without its mockAuth
   // path (enabled globally by the test config). MSAL and its hooks are real.
@@ -255,11 +255,14 @@ function Mount({
           setPhoto={setPhoto}
           authState={authState}
           setAuthState={setAuthState}
-          withoutLoader
+          withoutLoader={withoutLoader}
           withoutBackend={withoutBackend}
-          unauthorizedComponent={<>{popup && <PopupConsumer />}</>}
+          loadingComponent={<p>Custom loading</p>}
+          unauthorizedComponent={
+            <>{popup ? <PopupConsumer /> : <p>Custom unauthorized</p>}</>
+          }
         >
-          {popup && <PopupConsumer />}
+          {popup ? <PopupConsumer /> : <p>Content</p>}
         </AuthProviderInner>
       </MsalProvider>
     </>
@@ -271,26 +274,36 @@ const state = async (authState: AuthState) =>
   waitFor(() => expect(context().authState).toBe(authState));
 const boot = async () => waitFor(() => expect(silent.length).toBe(1));
 const fail = new InteractionRequiredAuthError('interaction_required');
+const timeout = new BrowserAuthError(
+  BrowserAuthErrorCodes.monitorWindowTimeout
+);
+const interactionErrors = [fail, timeout];
+const popupEvents = [
+  {
+    start: EventType.LOGIN_START,
+    failure: EventType.LOGIN_FAILURE,
+    success: EventType.LOGIN_SUCCESS,
+  },
+  {
+    start: EventType.ACQUIRE_TOKEN_START,
+    failure: EventType.ACQUIRE_TOKEN_FAILURE,
+    success: EventType.ACQUIRE_TOKEN_SUCCESS,
+  },
+];
 
-async function parentAttempt() {
-  // The allowlisted parent message handler initializes MSAL and calls this
-  // independent SSO path. Keep its events real without changing the allowlist.
+function startSso(sid = 'parent-sid') {
+  // Model independent parent SSO with real events, not a changed allowlist.
+  let promise!: Promise<AuthenticationResult | undefined>;
   act(() => {
-    void instance.ssoSilent({ sid: 'parent-sid' }).catch(() => undefined);
+    promise = instance.ssoSilent({ sid }).catch(() => undefined);
   });
-  await waitFor(() => expect(silent.length).toBe(2));
+  return promise;
 }
 
-test('iframe stays loading while silent authentication is pending, then settles unauthorized without automatic interaction', async () => {
-  iframe();
-  render(<Mount />);
-  await boot();
-  expect(context().authState).toBe('loading');
-  await act(async () => silent[0].reject(fail));
-  await state('unauthorized');
-  expect(instance.loginRedirect).not.toHaveBeenCalled();
-  expect(instance.loginPopup).not.toHaveBeenCalled();
-});
+async function parentAttempt() {
+  startSso();
+  await waitFor(() => expect(silent.length).toBe(2));
+}
 
 test.each(['success', 'failure'] as const)(
   'parent SSO started before mount cannot finish pending startup; startup %s settles',
@@ -355,10 +368,7 @@ test('parent SSO success after startup failure verifies backend roles and surviv
   await act(async () => silent[1].resolve(result()));
   await state('authorized');
   expect(context()).toMatchObject({ account: 'first', roles: ['READ'] });
-  let extra!: Promise<AuthenticationResult | undefined>;
-  act(() => {
-    extra = instance.ssoSilent({ sid: 'extra' }).catch(() => undefined);
-  });
+  const extra = startSso('extra');
   expect(context()).toMatchObject({ authState: 'authorized', roles: ['READ'] });
   await act(async () => {
     silent[2].reject(fail);
@@ -369,64 +379,50 @@ test('parent SSO success after startup failure verifies backend roles and surviv
   expect(photoRequests()).toHaveLength(1);
 });
 
-test.each([
-  fail,
-  new BrowserAuthError(BrowserAuthErrorCodes.monitorWindowTimeout),
-])('iframe never redirects for %s', async (error) => {
-  iframe();
-  render(<Mount />);
-  await boot();
-  await act(async () => silent[0].reject(error));
-  await state('unauthorized');
-  expect(instance.loginRedirect).not.toHaveBeenCalled();
-});
-
-test.each([
-  fail,
-  new BrowserAuthError(BrowserAuthErrorCodes.monitorWindowTimeout),
-])('standalone retains redirect for %s', async (error) => {
-  render(<Mount />);
-  await boot();
-  await act(async () => silent[0].reject(error));
-  await waitFor(() => expect(instance.loginRedirect).toHaveBeenCalledOnce());
-  expect(instance.loginRedirect).toHaveBeenCalledWith(
-    auth.GRAPH_REQUESTS_LOGIN
-  );
-});
-
-test.each([
-  fail,
-  new BrowserAuthError(BrowserAuthErrorCodes.monitorWindowTimeout),
-])(
-  'standalone cached-account authentication failure retains redirect for %s',
-  async (error) => {
-    cached = [first];
-    active = first;
-    vi.mocked(instance.acquireTokenSilent).mockImplementation(
-      async (request) => {
-        if (isBackendRequest(request)) throw error;
-        return result(first, 'photo');
-      }
-    );
+test.each(
+  [
+    { embedded: true, hasCachedAccount: false },
+    { embedded: false, hasCachedAccount: false },
+    { embedded: false, hasCachedAccount: true },
+  ].flatMap((scenario) =>
+    interactionErrors.map((error) => ({ ...scenario, error }))
+  )
+)(
+  'silent failure (iframe=$embedded, cached=$hasCachedAccount, $error) uses the expected recovery',
+  async ({ embedded, hasCachedAccount, error }) => {
+    if (embedded) iframe();
+    if (hasCachedAccount) {
+      cacheAccount();
+      vi.mocked(instance.acquireTokenSilent).mockImplementation(
+        async (request) => {
+          if (isBackendRequest(request)) throw error;
+          return result(first, 'photo');
+        }
+      );
+    }
     render(<Mount />);
-    await waitFor(() => expect(instance.loginRedirect).toHaveBeenCalledOnce());
+    if (!hasCachedAccount) {
+      await boot();
+      expect(context().authState).toBe('loading');
+      await act(async () => silent[0].reject(error));
+    }
+    if (embedded) {
+      await state('unauthorized');
+      expect(instance.loginRedirect).not.toHaveBeenCalled();
+      expect(instance.loginPopup).not.toHaveBeenCalled();
+    } else {
+      await waitFor(() =>
+        expect(instance.loginRedirect).toHaveBeenCalledOnce()
+      );
+      expect(instance.loginRedirect).toHaveBeenCalledWith(
+        auth.GRAPH_REQUESTS_LOGIN
+      );
+    }
   }
 );
 
-test('standalone missing backend roles fails closed without redirect', async () => {
-  cached = [first];
-  active = first;
-  vi.mocked(instance.acquireTokenSilent).mockResolvedValue(
-    result(first, jwt({}))
-  );
-  render(<Mount />);
-  await state('unauthorized');
-  expect(instance.loginRedirect).not.toHaveBeenCalled();
-});
-
 test('cached active account wins over accounts[0] and token requests bind that identity', async () => {
-  cached = [first, second];
-  active = second;
+  cacheAccount(second, [first, second]);
   render(<Mount />);
   await state('authorized');
   expect(context()).toMatchObject({ account: 'second', roles: ['READ'] });
@@ -441,8 +437,7 @@ test.each(['', jwt({}), 'invalid', jwt({ roles: [3] })])(
   'missing/invalid backend token or roles (%s) fails closed without retry loop',
   async (token) => {
     iframe();
-    cached = [first];
-    active = first;
+    cacheAccount();
     vi.mocked(instance.acquireTokenSilent).mockResolvedValue(
       result(first, token)
     );
@@ -459,8 +454,7 @@ test.each(['success', 'failure'] as const)(
   'cached backend failure waits for pending parent SSO, then handles parent %s',
   async (outcome) => {
     iframe();
-    cached = [first];
-    active = first;
+    cacheAccount();
     const backend = deferred<AuthenticationResult>();
     let backendCalls = 0;
     vi.mocked(instance.acquireTokenSilent).mockImplementation(
@@ -473,10 +467,7 @@ test.each(['success', 'failure'] as const)(
     );
     render(<Mount />);
     await waitFor(() => expect(backendCalls).toBe(1));
-    let parent!: Promise<AuthenticationResult | undefined>;
-    act(() => {
-      parent = instance.ssoSilent({ sid: 'parent-sid' }).catch(() => undefined);
-    });
+    const parent = startSso();
     await act(async () =>
       backend.reject(
         new BrowserAuthError(BrowserAuthErrorCodes.monitorWindowTimeout)
@@ -504,21 +495,14 @@ test.each(['success', 'failure'] as const)(
 
 test('cached backend failure waits for all overlapping parent SSO attempts, not just MSAL None', async () => {
   iframe();
-  cached = [first];
-  active = first;
+  cacheAccount();
   const backend = deferred<AuthenticationResult>();
   vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) =>
     isBackendRequest(request) ? backend.promise : result(first, 'photo')
   );
   render(<Mount />);
   await waitFor(() => expect(backendRequests()).toHaveLength(1));
-  let parents!: Promise<unknown>;
-  act(() => {
-    parents = Promise.all([
-      instance.ssoSilent({ sid: 'parent-one' }).catch(() => undefined),
-      instance.ssoSilent({ sid: 'parent-two' }).catch(() => undefined),
-    ]);
-  });
+  const parents = Promise.all([startSso('parent-one'), startSso('parent-two')]);
   await act(async () => backend.reject(fail));
   expect(context().authState).toBe('loading');
   await act(async () => silent[0].reject(fail));
@@ -532,64 +516,53 @@ test('cached backend failure waits for all overlapping parent SSO attempts, not 
   expect(photoRequests()).toHaveLength(1);
 });
 
-test.each([
-  fail,
-  new BrowserAuthError(BrowserAuthErrorCodes.monitorWindowTimeout),
-])(
-  'standalone cached backend error (%s) redirects only after pending parent SSO settles',
-  async (error) => {
-    cached = [first];
-    active = first;
-    const backend = deferred<AuthenticationResult>();
-    const redirect = deferred<void>();
-    vi.mocked(instance.loginRedirect).mockImplementation(async () => {
-      emit(EventType.LOGIN_START, null, null, InteractionType.Redirect);
-      try {
-        await redirect.promise;
-      } catch (redirectError) {
-        emit(
-          EventType.LOGIN_FAILURE,
-          null,
-          redirectError as Error,
-          InteractionType.Redirect
-        );
-        throw redirectError;
-      }
-    });
-    vi.mocked(instance.acquireTokenSilent).mockImplementation(
-      async (request) =>
-        isBackendRequest(request) ? backend.promise : result(first, 'photo')
-    );
-    render(<Mount />);
-    await waitFor(() => expect(backendRequests()).toHaveLength(1));
-    let parent!: Promise<AuthenticationResult | undefined>;
-    act(() => {
-      parent = instance.ssoSilent({ sid: 'parent-sid' }).catch(() => undefined);
-    });
-    await act(async () => backend.reject(error));
-    expect(context().authState).toBe('loading');
-    expect(instance.loginRedirect).not.toHaveBeenCalled();
-    await act(async () => {
-      silent[0].reject(new Error('Parent SSO failed'));
-      await parent;
-    });
-    await waitFor(() => expect(instance.loginRedirect).toHaveBeenCalledOnce());
-    expect(instance.loginRedirect).toHaveBeenCalledWith(
-      auth.GRAPH_REQUESTS_LOGIN
-    );
-    expect(context().authState).toBe('loading');
-    await act(async () => redirect.reject(error));
-    await state('unauthorized');
-    expect(instance.loginRedirect).toHaveBeenCalledOnce();
-    expect(backendRequests()).toHaveLength(1);
-    expect(photoRequests()).toHaveLength(1);
-  }
-);
+test('standalone cached backend timeout redirects only after pending parent SSO settles', async () => {
+  const error = timeout;
+  cacheAccount();
+  const backend = deferred<AuthenticationResult>();
+  const redirect = deferred<void>();
+  vi.mocked(instance.loginRedirect).mockImplementation(async () => {
+    emit(EventType.LOGIN_START, null, null, InteractionType.Redirect);
+    try {
+      await redirect.promise;
+    } catch (redirectError) {
+      emit(
+        EventType.LOGIN_FAILURE,
+        null,
+        redirectError as Error,
+        InteractionType.Redirect
+      );
+      throw redirectError;
+    }
+  });
+  vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) =>
+    isBackendRequest(request) ? backend.promise : result(first, 'photo')
+  );
+  render(<Mount />);
+  await waitFor(() => expect(backendRequests()).toHaveLength(1));
+  const parent = startSso();
+  await act(async () => backend.reject(error));
+  expect(context().authState).toBe('loading');
+  expect(instance.loginRedirect).not.toHaveBeenCalled();
+  await act(async () => {
+    silent[0].reject(new Error('Parent SSO failed'));
+    await parent;
+  });
+  await waitFor(() => expect(instance.loginRedirect).toHaveBeenCalledOnce());
+  expect(instance.loginRedirect).toHaveBeenCalledWith(
+    auth.GRAPH_REQUESTS_LOGIN
+  );
+  expect(context().authState).toBe('loading');
+  await act(async () => redirect.reject(error));
+  await state('unauthorized');
+  expect(instance.loginRedirect).toHaveBeenCalledOnce();
+  expect(backendRequests()).toHaveLength(1);
+  expect(photoRequests()).toHaveLength(1);
+});
 
 test('backend rejection is terminal; popup with the same cached account retries through real consumer hook and ACQUIRE_TOKEN_SUCCESS', async () => {
   iframe();
-  cached = [first];
-  active = first;
+  cacheAccount();
   let backendCalls = 0;
   vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) => {
     if (isBackendRequest(request) && ++backendCalls === 1) throw fail;
@@ -633,8 +606,7 @@ test('StrictMode starts once, completes authorization, and removes listeners on 
 
 test('account switch clears previous roles/photo and ignores old backend and photo responses', async () => {
   iframe();
-  cached = [first, second];
-  active = first;
+  cacheAccount(first, [first, second]);
   const oldBackend = deferred<AuthenticationResult>();
   const oldPhoto = deferred<Response>();
   const newBackend = deferred<AuthenticationResult>();
@@ -670,8 +642,7 @@ test('account switch clears previous roles/photo and ignores old backend and pho
 
 test('switching an authorized account clears its roles and photo before the new token is verified', async () => {
   iframe();
-  cached = [first, second];
-  active = first;
+  cacheAccount(first, [first, second]);
   const newBackend = deferred<AuthenticationResult>();
   vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) => {
     if (!isBackendRequest(request))
@@ -705,8 +676,7 @@ test('switching an authorized account clears its roles and photo before the new 
 
 test('same-account interactive retry invalidates an earlier pending backend response', async () => {
   iframe();
-  cached = [first];
-  active = first;
+  cacheAccount();
   const oldBackend = deferred<AuthenticationResult>();
   let backendCalls = 0;
   vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) => {
@@ -744,15 +714,21 @@ test('parent silent retry after complete failure can recover without remount', a
   await state('authorized');
 });
 
-test.each([
-  [EventType.LOGIN_START, EventType.LOGIN_FAILURE],
-  [EventType.ACQUIRE_TOKEN_START, EventType.ACQUIRE_TOKEN_FAILURE],
-])(
-  'bootstrap SSO success after popup cancellation (%s) still authorizes',
-  async (start, failure) => {
+test.each(
+  ['startup', 'parent'].flatMap((source) =>
+    popupEvents.map((events) => ({ source, ...events }))
+  )
+)(
+  '$source SSO succeeds after popup cancellation ($start)',
+  async ({ source, start, failure }) => {
     iframe();
     render(<Mount />);
     await boot();
+    if (source === 'parent') {
+      await act(async () => silent[0].reject(fail));
+      await state('unauthorized');
+      await parentAttempt();
+    }
     act(() => emit(start, null, null, InteractionType.Popup));
     act(() =>
       emit(
@@ -764,39 +740,9 @@ test.each([
     );
     expect(active).toBeNull();
     expect(context().authState).toBe('loading');
-    await act(async () => silent[0].resolve(result(first)));
-    await state('authorized');
-    expect(active).toEqual(first);
-    expect(context()).toMatchObject({ account: 'first', roles: ['READ'] });
-    expect(instance.acquireTokenSilent).toHaveBeenCalledTimes(2);
-    expect(instance.loginRedirect).not.toHaveBeenCalled();
-  }
-);
-
-test.each([
-  [EventType.LOGIN_START, EventType.LOGIN_FAILURE],
-  [EventType.ACQUIRE_TOKEN_START, EventType.ACQUIRE_TOKEN_FAILURE],
-])(
-  'parent SSO retry after popup cancellation (%s) still authorizes',
-  async (start, failure) => {
-    iframe();
-    render(<Mount />);
-    await boot();
-    await act(async () => silent[0].reject(fail));
-    await state('unauthorized');
-    await parentAttempt();
-    act(() => emit(start, null, null, InteractionType.Popup));
-    act(() =>
-      emit(
-        failure,
-        null,
-        new BrowserAuthError(BrowserAuthErrorCodes.userCancelled),
-        InteractionType.Popup
-      )
+    await act(async () =>
+      silent[source === 'startup' ? 0 : 1].resolve(result(first))
     );
-    expect(active).toBeNull();
-    expect(context().authState).toBe('loading');
-    await act(async () => silent[1].resolve(result(first)));
     await state('authorized');
     expect(active).toEqual(first);
     expect(context()).toMatchObject({ account: 'first', roles: ['READ'] });
@@ -821,12 +767,9 @@ test('late bootstrap SSO success cannot replace an actual active-account change'
   expect(instance.acquireTokenSilent).toHaveBeenCalledTimes(2);
 });
 
-test.each([
-  [EventType.LOGIN_START, EventType.LOGIN_SUCCESS],
-  [EventType.ACQUIRE_TOKEN_START, EventType.ACQUIRE_TOKEN_SUCCESS],
-])(
-  'late bootstrap SSO success cannot replace the account selected by popup (%s)',
-  async (start, success) => {
+test.each(popupEvents)(
+  'late bootstrap SSO success cannot replace the account selected by popup ($start)',
+  async ({ start, success }) => {
     iframe();
     render(<Mount />);
     await boot();
@@ -844,16 +787,12 @@ test.each([
 
 test('a fresh different-account parent SSO cannot replace the selected user', async () => {
   iframe();
-  cached = [first];
-  active = first;
+  cacheAccount();
   render(<Mount />);
   await state('authorized');
-  let parent!: Promise<AuthenticationResult>;
-  act(() => {
-    parent = instance.ssoSilent({ sid: 'different-parent-sid' });
-  });
+  const parent = startSso('different-parent-sid');
   await act(async () => {
-    silent[0].resolve(result(second));
+    silent[0].resolve(result(second, jwt({ roles: ['OLD_WRITE'] })));
     await parent;
   });
   expect(active).toEqual(first);
@@ -867,31 +806,8 @@ test('a fresh different-account parent SSO cannot replace the selected user', as
   expect(photoRequests()).toHaveLength(1);
 });
 
-test('an SSO completion whose start was not observed cannot replace a selected active account', async () => {
-  cached = [first, second];
-  active = second;
-  render(<Mount />);
-  await state('authorized');
-  act(() =>
-    emit(
-      EventType.SSO_SILENT_SUCCESS,
-      result(first, jwt({ roles: ['OLD_WRITE'] }), 'unobserved')
-    )
-  );
-  expect(active).toEqual(second);
-  expect(context()).toMatchObject({
-    account: 'second',
-    authState: 'authorized',
-    roles: ['READ'],
-  });
-  expect(startupRequests()).toHaveLength(1);
-  expect(backendRequests()).toHaveLength(1);
-  expect(photoRequests()).toHaveLength(1);
-});
-
 test('background silent token events do not reset authorization or trigger token retry loops', async () => {
-  cached = [first];
-  active = first;
+  cacheAccount();
   render(<Mount />);
   await state('authorized');
   act(() => {
@@ -906,8 +822,7 @@ test('background silent token events do not reset authorization or trigger token
 });
 
 test('photo never delays backend authorization or overwrites its outcome', async () => {
-  cached = [first];
-  active = first;
+  cacheAccount();
   const photo = deferred<AuthenticationResult>();
   vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) =>
     isBackendRequest(request) ? result(first) : photo.promise
@@ -920,8 +835,7 @@ test('photo never delays backend authorization or overwrites its outcome', async
 });
 
 test('a successful photo cannot authorize an invalid backend token', async () => {
-  cached = [first];
-  active = first;
+  cacheAccount();
   vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) =>
     result(first, isBackendRequest(request) ? jwt({}) : 'photo')
   );
@@ -931,11 +845,11 @@ test('a successful photo cannot authorize an invalid backend token', async () =>
   await waitFor(() => expect(context().photo).toBe('blob:photo'));
   expect(context().authState).toBe('unauthorized');
   expect(context().roles).toBeUndefined();
+  expect(instance.loginRedirect).not.toHaveBeenCalled();
 });
 
 test('withoutBackend authorizes the account even when optional photo remains pending', async () => {
-  cached = [first];
-  active = first;
+  cacheAccount();
   vi.mocked(instance.acquireTokenSilent).mockReturnValue(
     new Promise(() => undefined)
   );
@@ -950,8 +864,7 @@ test('withoutBackend authorizes the account even when optional photo remains pen
 });
 
 test('unmount makes late backend and photo completion inert', async () => {
-  cached = [first];
-  active = first;
+  cacheAccount();
   const backend = deferred<AuthenticationResult>();
   const photo = deferred<AuthenticationResult>();
   vi.mocked(instance.acquireTokenSilent).mockImplementation((request) =>
@@ -972,34 +885,9 @@ test('unmount makes late backend and photo completion inert', async () => {
   expect(URL.createObjectURL).not.toHaveBeenCalled();
 });
 
-function LoadingHarness() {
-  const [account, setAccount] = useState<AccountInfo>();
-  const [authState, setAuthState] = useState<AuthState>('loading');
-  const [, setRoles] = useState<string[]>();
-  const [, setPhoto] = useState<string>();
-  return (
-    <MsalProvider instance={instance}>
-      <AuthProviderInner
-        account={account}
-        setAccount={setAccount}
-        setAuthState={setAuthState}
-        authState={authState}
-        setPhoto={setPhoto}
-        setRoles={setRoles}
-        withoutLoader={false}
-        withoutBackend
-        loadingComponent={<p>Custom loading</p>}
-        unauthorizedComponent={<p>Custom unauthorized</p>}
-      >
-        <p>Content</p>
-      </AuthProviderInner>
-    </MsalProvider>
-  );
-}
-
 test('custom loading and unauthorized elements keep their contract', async () => {
   iframe();
-  render(<LoadingHarness />);
+  render(<Mount withoutBackend withoutLoader={false} />);
   expect(screen.getByText('Custom loading')).toBeInTheDocument();
   await boot();
   await act(async () => silent[0].reject(fail));

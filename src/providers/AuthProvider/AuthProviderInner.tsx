@@ -114,6 +114,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   );
 
   useEffect(() => {
+    let cancelled = false;
     const callbackId = instance.addEventCallback((message) => {
       if (message.eventType === EventType.ACTIVE_ACCOUNT_CHANGED) {
         const activeAccount = instance.getActiveAccount();
@@ -147,21 +148,15 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         return;
       selectAccount(response.account);
     });
-    return () => {
-      if (callbackId) instance.removeEventCallback(callbackId);
-    };
-  }, [instance, selectAccount]);
-
-  useEffect(() => {
     // MsalProvider swallows initialize rejection and can remain in Startup.
-    let cancelled = false;
     instance.initialize().catch((error) => {
       if (!cancelled) setInitializationError(error);
     });
     return () => {
       cancelled = true;
+      if (callbackId) instance.removeEventCallback(callbackId);
     };
-  }, [instance]);
+  }, [instance, selectAccount]);
 
   useEffect(() => {
     if (initializationError || inProgress === InteractionStatus.Startup) return;
