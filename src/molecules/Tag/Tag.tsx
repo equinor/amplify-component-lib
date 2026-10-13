@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
@@ -49,7 +49,7 @@ export interface TagProps {
   trailingIcon?: IconData;
   iconColor?: string;
   textColor?: string;
-  children: string;
+  children: ReactNode;
   className?: string;
   style?: React.CSSProperties | undefined;
 }
