@@ -79,7 +79,7 @@ type Story = StoryObj<typeof Tag>;
 export const Default: Story = {
   args: {},
   play: async ({ canvas, args }) => {
-    await expect(canvas.getByText(args.children)).toBeInTheDocument();
+    await expect(canvas.getByText(args.children as string)).toBeInTheDocument();
   },
 };
 
@@ -129,7 +129,7 @@ export const LeadingIcon: Story = {
     trailingIcon: undefined,
   },
   play: async ({ canvas, args }) => {
-    await expect(canvas.getByText(args.children)).toBeInTheDocument();
+    await expect(canvas.getByText(args.children as string)).toBeInTheDocument();
     await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
       'd',
       code.svgPathData
@@ -144,10 +144,27 @@ export const TrailingIcon: Story = {
     trailingIcon: code,
   },
   play: async ({ canvas, args }) => {
-    await expect(canvas.getByText(args.children)).toBeInTheDocument();
+    await expect(canvas.getByText(args.children as string)).toBeInTheDocument();
     await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
       'd',
       code.svgPathData
     );
+  },
+};
+
+export const ReactNodeContent: Story = {
+  name: 'React node content',
+  args: {
+    leadingIcon: undefined,
+    trailingIcon: undefined,
+    children: (
+      <>
+        SO<sub>4</sub>
+      </>
+    ),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('SO')).toBeInTheDocument();
+    await expect(canvas.getByText('4')).toBeInTheDocument();
   },
 };

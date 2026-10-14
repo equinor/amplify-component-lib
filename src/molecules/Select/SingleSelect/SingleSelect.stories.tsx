@@ -342,7 +342,7 @@ export const Autofilled: Story = {
 const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
 
 export const TestLockedShowsLockIcon: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
@@ -364,7 +364,7 @@ export const TestLockedShowsLockIcon: Story = {
 };
 
 export const TestLockedAndAutofilled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
@@ -385,7 +385,7 @@ export const TestLockedAndAutofilled: Story = {
 };
 
 export const TestAutofilledIsInteractive: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],

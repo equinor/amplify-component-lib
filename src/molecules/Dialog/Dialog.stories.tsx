@@ -124,6 +124,21 @@ export const Default: Story = {
   },
 };
 
+export const WithoutTitle: Story = {
+  args: {
+    title: undefined,
+  },
+  play: async ({ canvasElement, context }) => {
+    const { children } = context.args;
+    const canvas = within(canvasElement);
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Show dialog' }));
+
+    await expect(canvas.getByText(children as string)).toBeInTheDocument();
+    await expect(canvas.queryByTestId('dialog-title')).not.toBeInTheDocument();
+  },
+};
+
 export const WithBorders: Story = {
   args: {
     withBorders: true,

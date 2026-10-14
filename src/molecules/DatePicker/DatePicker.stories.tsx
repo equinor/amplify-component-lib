@@ -138,7 +138,7 @@ const getField = (canvasElement: HTMLElement) => {
 };
 
 export const TestLockedIsReadOnly: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Locked',
     value: TEST_DATE,
@@ -172,7 +172,7 @@ export const TestLockedIsReadOnly: Story = {
 };
 
 export const TestDisabledTakesPrecedenceOverLocked: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { label: 'Test', disabled: true, locked: true },
   play: async ({ canvasElement }) => {
     await expect(
@@ -182,7 +182,7 @@ export const TestDisabledTakesPrecedenceOverLocked: Story = {
 };
 
 export const TestLockedAndAutofilled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { value: TEST_DATE, locked: true, autofilled: true },
   play: async ({ canvasElement }) => {
     const { dayEl, field } = getField(canvasElement);
@@ -199,7 +199,7 @@ export const TestLockedAndAutofilled: Story = {
 };
 
 export const TestAutofilledBackground: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: { value: TEST_DATE, autofilled: true },
   play: async ({ canvas, canvasElement }) => {
     const { field } = getField(canvasElement);

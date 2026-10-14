@@ -17,7 +17,7 @@ import styled from 'styled-components';
 const meta = {
   title: 'Molecules/Banner/Contracts',
   component: Banner,
-  tags: ['test-only', '!dev', '!autodocs'],
+  tags: ['!dev', '!autodocs'],
   args: { variant: 'info', children: 'Message' },
   parameters: { router: { initial: '/', routes: ['$'] } },
 } satisfies Meta<typeof Banner>;
