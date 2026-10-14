@@ -101,7 +101,7 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
             style={{ top: skeletonTop }}
             data={lock}
             size={24}
-            color={colors.text.static_icons__default.rgba}
+            color={colors.text.static_icons__tertiary.rgba}
           />
         )}
         {(usingDisabled || usingLocked) && (

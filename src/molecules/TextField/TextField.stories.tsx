@@ -931,6 +931,10 @@ export const TestLockedIsReadOnly: StoryObject = {
     await expect(getInputContainer(input)).toHaveStyle({
       backgroundColor: LOCKED_BACKGROUND,
     });
+
+    await userEvent.click(input);
+    await expect(input).toHaveFocus();
+    await waitFor(() => expect(input).toHaveStyle({ boxShadow: 'none' }));
   },
 };
 

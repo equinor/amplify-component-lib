@@ -136,6 +136,13 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
     left: ${spacings.small};
   }
 
+  /* Match the clear icon used in the other inputs (Select) and Figma */
+  button[aria-label='Reset'] svg {
+    fill: ${colors.text.static_icons__tertiary.rgba};
+    width: 18px;
+    height: 18px;
+  }
+
   ${cellInputSelector} > div > div[id*='react-aria'] {
     ${cellInputSurface}
     box-sizing: border-box;
@@ -159,11 +166,5 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
 
   ${cellInputSelector} [role='spinbutton'].placeholder:not([aria-disabled='true']) {
     color: ${colors.text.static_icons__tertiary.rgba};
-  }
-
-  ${cellInputSelector} button[aria-label='Reset'] svg {
-    fill: ${colors.text.static_icons__tertiary.rgba};
-    width: calc(${spacings.medium} + ${spacings.xx_small});
-    height: calc(${spacings.medium} + ${spacings.xx_small});
   }
 `;
