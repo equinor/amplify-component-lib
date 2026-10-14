@@ -1,4 +1,4 @@
-import { PublicClientApplication } from '@azure/msal-browser';
+import { EventType, PublicClientApplication } from '@azure/msal-browser';
 
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 
@@ -185,6 +185,28 @@ const msalApp = new PublicClientApplication({
   },
 });
 
+// Observe SSO for the singleton's lifetime, before parent messages can start it.
+// MSAL failures have null payloads and inProgress clears on the first completion.
+let pendingSso = 0;
+const ssoListeners = new Set<() => void>();
+export const getPendingSso = () => pendingSso;
+export const subscribePendingSso = (listener: () => void) => {
+  ssoListeners.add(listener);
+  return () => {
+    ssoListeners.delete(listener);
+  };
+};
+msalApp.addEventCallback(({ eventType }) => {
+  if (eventType === EventType.SSO_SILENT_START) pendingSso += 1;
+  else if (
+    eventType === EventType.SSO_SILENT_SUCCESS ||
+    eventType === EventType.SSO_SILENT_FAILURE
+  )
+    pendingSso = Math.max(0, pendingSso - 1);
+  else return;
+  ssoListeners.forEach((listener) => listener());
+});
+
 const allowedParentDomains = getAllowedParentDomains(
   import.meta.env.ALLOWED_PARENT_DOMAINS
 );
@@ -198,9 +220,8 @@ window.addEventListener('message', async (event: MessageEvent) => {
     // TODO: type check sid
     const sid = event.data;
     if (sid) {
-      await msalApp.initialize();
-
       try {
+        await msalApp.initialize();
         await msalApp.ssoSilent({ sid });
         console.log('postMessage successfully logged in user!');
       } catch (error) {
