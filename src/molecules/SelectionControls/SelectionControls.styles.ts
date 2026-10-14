@@ -1,10 +1,11 @@
-import { animation, colors, shape, spacings } from 'src/atoms/style';
+import { animation, colors, elevation, shape, spacings } from 'src/atoms/style';
 
 import styled, { css } from 'styled-components';
 
 interface WrapperProps {
   $outlined: boolean;
   $error?: boolean;
+  $checked?: boolean;
 }
 
 export const Wrapper = styled.span<WrapperProps>`
@@ -19,23 +20,67 @@ export const Wrapper = styled.span<WrapperProps>`
       height: 24px;
       aspect-ratio: 1;
     }
-    > span[class*='Switch']:last-child {
-      padding: 0 ${spacings.medium_small} 0 0;
-    }
   }
 
-  &.switch > label {
-    padding: 0 ${spacings.x_small} 0 ${spacings.medium_small};
-    gap: ${spacings.small};
+  &.switch {
+    position: relative;
+    display: inline-flex;
 
-    > span:first-child {
-      height: 36px;
+    > label {
+      padding: 0 ${spacings.medium_small};
+      gap: ${spacings.x_small};
+
+      &:has(> span > input:focus-visible) {
+        outline: 1px dashed ${colors.interactive.primary__resting.rgba};
+      }
+
+      > span:first-child {
+        height: unset;
+        aspect-ratio: unset;
+      }
+
+      input {
+        width: 0;
+      }
     }
 
-    input {
-      width: 0;
-      ~ span {
-        height: 36px;
+    /* Track: 34x20 pill centered in the 40px EDS click bound */
+    > label > span > span > span:first-child {
+      width: 34px;
+      height: 20px;
+      border-radius: 10px;
+      background: ${({ $checked }) =>
+        $checked
+          ? colors.interactive.primary__resting.rgba
+          : colors.ui.background__medium.rgba};
+    }
+
+    /* Handle: 12px knob, 3px inset from the pill edge */
+    > label > span > span > span:last-child {
+      width: 12px;
+      height: 12px;
+      left: 6px;
+      box-shadow: ${elevation.overlay};
+      background: ${colors.text.static_icons__primary_white.hex};
+    }
+    > label:has(input:checked) > span > span > span:last-child {
+      transform: translate(16px, -50%);
+      background: ${colors.text.static_icons__primary_white.hex};
+    }
+
+    > label:hover:not(:has(input:disabled)) > span > span > span:first-child {
+      background: ${({ $checked }) =>
+        $checked
+          ? colors.interactive.primary__hover.rgba
+          : colors.ui.background__heavy.rgba};
+    }
+
+    &:has(input:disabled) {
+      > label > span > span > span:first-child {
+        background: ${colors.interactive.disabled__fill.rgba};
+      }
+      > label > span > span > span:last-child {
+        background: ${colors.ui.background__default.rgba};
       }
     }
   }
@@ -48,6 +93,7 @@ export const Wrapper = styled.span<WrapperProps>`
   /* Switch hover state override */
   > label > span > input[type='checkbox'] + span {
     background: transparent !important;
+    outline: none !important;
   }
   svg {
     transition: fill ${animation.transitionMS};
@@ -79,20 +125,6 @@ export const Wrapper = styled.span<WrapperProps>`
     }
     return '';
   }}
-
-  /* Switch dot override */
-  > label:has(input:checked)
-    > span
-    > span
-    > span:last-child:not([class*='SwitchSmall']) {
-    background: ${colors.interactive.primary__resting.rgba};
-  }
-  > label:has(input)
-    > span
-    > span
-    > span:last-child:not([class*='SwitchSmall']) {
-    background: ${colors.text.static_icons__tertiary.rgba};
-  }
 
   > label:hover:not(:has(input:disabled)) {
     background: ${({ $error }) =>

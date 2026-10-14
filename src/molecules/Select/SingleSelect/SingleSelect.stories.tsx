@@ -625,10 +625,28 @@ export const TestCustomFilterFnGroups: Story = {
   },
 };
 
+/* Deterministic so an item label never matches an item in another group */
+const TEST_GROUPS = [
+  {
+    title: 'Group A',
+    items: [
+      { label: 'Item A1', value: 'a1' },
+      { label: 'Item A2', value: 'a2' },
+    ],
+  },
+  {
+    title: 'Group B',
+    items: [
+      { label: 'Item B1', value: 'b1' },
+      { label: 'Item B2', value: 'b2' },
+    ],
+  },
+];
+
 export const TestFilteringGroups: Story = {
   tags: ['!dev', '!autodocs'],
   args: {
-    groups: FAKE_GROUPS,
+    groups: TEST_GROUPS,
     value: undefined,
     label: 'Filter Groups',
     onSelect: fn(),
@@ -648,7 +666,7 @@ export const TestFilteringGroups: Story = {
 export const TestFilteringGroupsNoMatch: Story = {
   tags: ['!dev', '!autodocs'],
   args: {
-    groups: FAKE_GROUPS,
+    groups: TEST_GROUPS,
     value: undefined,
     label: 'Filter Groups',
     onSelect: fn(),
