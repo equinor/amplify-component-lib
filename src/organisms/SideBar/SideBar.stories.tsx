@@ -480,7 +480,7 @@ export const TestToggleKeyboard: Story = {
 };
 
 export const TestCreateItemDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
@@ -505,7 +505,7 @@ export const TestCreateItemDisabled: Story = {
 };
 
 export const TestCreateItemActive: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
@@ -527,7 +527,7 @@ export const TestCreateItemActive: Story = {
 };
 
 export const TestCreateItemLabelHiddenWhenCollapsed: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
@@ -544,7 +544,7 @@ export const TestCreateItemLabelHiddenWhenCollapsed: Story = {
 };
 
 export const TestCreateItemClickExpanded: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
@@ -566,7 +566,7 @@ export const TestCreateItemClickExpanded: Story = {
 };
 
 export const TestCreateItemClickCollapsed: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   beforeEach: () => {
     window.localStorage.setItem(
       'amplify-sidebar-state',
