@@ -82,8 +82,8 @@ interface ContainerProps extends MotionProps {
 }
 
 const Container = styled(motion.create(Card))<ContainerProps>`
-  width: ${({ $hasImage }) => ($hasImage ? 'fit-content' : '360px')};
-  max-width: 90vw;
+  width: ${({ $hasImage }) => ($hasImage ? 'max-content' : '360px')};
+  max-width: ${({ $hasImage }) => ($hasImage ? 'min(90vw, 640px)' : '90vw')};
   max-height: 90vh;
   padding: ${spacings.medium};
   background: ${colors.ui.background__tutorial_card.rgba};
