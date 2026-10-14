@@ -241,7 +241,7 @@ export const WithTooltipPlacement: Story = {
 
     await userEvent.unhover(icon);
     await waitFor(() => {
-      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+      expect(screen.queryByText('Recently published')).not.toBeInTheDocument();
     });
   },
 };

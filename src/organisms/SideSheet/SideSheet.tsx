@@ -36,8 +36,8 @@ export const SideSheet: FC<SideSheetProps> = ({
         onClick={open ? onClose : undefined}
         $zIndex={rest.zIndex}
         initial={{
-          display: 'none',
-          background: 'rgba(111,111,111,0)',
+          display: open ? 'block' : 'none',
+          background: open ? 'rgba(111,111,111,0.35)' : 'rgba(111,111,111,0)',
         }}
         animate={{
           background: open ? 'rgba(111,111,111,0.35)' : 'rgba(111,111,111,0)',
