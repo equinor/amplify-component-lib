@@ -189,14 +189,14 @@ const Container = styled.div<ContainerProps>`
 
   &:has(button#clear) {
     > section {
-      width: calc(100% - ${spacings.large} - ${spacings.small});
+      width: calc(100% - ${spacings.large});
     }
   }
 
   /* Menu mode also has the dropdown arrow, with an 8px gap between clear and arrow */
   &:has(button#clear):has(> svg) {
     > section {
-      width: calc(100% - ${spacings.large} - ${spacings.small} * 2);
+      width: calc(100% - ${spacings.large} - ${spacings.small});
     }
   }
 
