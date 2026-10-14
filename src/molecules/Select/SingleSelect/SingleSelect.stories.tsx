@@ -556,7 +556,7 @@ export const TestDeselectItem: Story = {
 
     // Click the same item to deselect
     await userEvent.click(
-      canvas.getByRole('menuitem', { name: FAKE_ITEMS[0].label })
+      await canvas.findByRole('menuitem', { name: FAKE_ITEMS[0].label })
     );
 
     await expect(args.onSelect).toHaveBeenCalledTimes(1);
