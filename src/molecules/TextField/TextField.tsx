@@ -116,8 +116,16 @@ const Wrapper = styled.div<WrapperProps>`
             : colors.ui.background__light.rgba};
           box-shadow: none;
         }
+        /* Locked fields are non-interactive, so beat the global Template focus underline */
+        && input,
+        && textarea,
+        && input:focus,
+        && textarea:focus {
+          box-shadow: none;
+          cursor: default;
+        }
         div[class*='Input__Adornments'] > svg {
-          fill: ${colors.text.static_icons__default.rgba};
+          fill: ${colors.text.static_icons__tertiary.rgba};
         }
       `;
     }

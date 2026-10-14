@@ -191,7 +191,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             <LeadingContentWrapper $locked>
               <Icon
                 data={lock}
-                color={colors.text.static_icons__default.rgba}
+                color={colors.text.static_icons__tertiary.rgba}
               />
             </LeadingContentWrapper>
           ) : (
@@ -251,7 +251,7 @@ export const SearchBar = <T extends SelectOptionRequired>({
             color={
               loading
                 ? colors.interactive.disabled__fill.rgba
-                : colors.interactive.primary__resting.rgba
+                : colors.text.static_icons__tertiary.rgba
             }
           />
         )}

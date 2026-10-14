@@ -189,7 +189,14 @@ const Container = styled.div<ContainerProps>`
 
   &:has(button#clear) {
     > section {
-      width: calc(100% - 24px);
+      width: calc(100% - ${spacings.large} - ${spacings.small});
+    }
+  }
+
+  /* Menu mode also has the dropdown arrow, with an 8px gap between clear and arrow */
+  &:has(button#clear):has(> svg) {
+    > section {
+      width: calc(100% - ${spacings.large} - ${spacings.small} * 2);
     }
   }
 
@@ -329,11 +336,13 @@ const ClearButton = styled(Button)<ClearButtonProps>`
   top: 50%;
   transform: translate(0, -50%);
   right: ${({ $rightPadding }) =>
-    $rightPadding ? spacings.x_large : spacings.small};
+    $rightPadding
+      ? `calc(${spacings.small} * 2 + ${spacings.large})`
+      : spacings.small};
   width: 24px;
   height: 24px;
   svg {
-    fill: ${colors.text.static_icons__secondary.rgba};
+    fill: ${colors.text.static_icons__tertiary.rgba};
   }
   &:after {
     width: 24px;
