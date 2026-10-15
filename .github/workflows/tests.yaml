@@ -21,6 +21,9 @@ jobs:
       - name: Install playwright with dependencies
         run: bunx playwright install --with-deps chromium
 
+      - name: Test published Tailwind CSS
+        run: bun run test:tailwind
+
       - name: Tests
         timeout-minutes: 15
         run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --no-file-parallelism --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
