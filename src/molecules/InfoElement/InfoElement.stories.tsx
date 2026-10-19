@@ -131,3 +131,26 @@ export const TestUnitAndCopyOnlyValue: Story = {
     await expect(spy).toHaveBeenCalledWith('42');
   },
 };
+
+export const TestNoUnitByDefault: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { title: TEST_TITLE, content: '42' },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('42')).toBeInTheDocument();
+    await expect(canvas.queryByText('kg')).not.toBeInTheDocument();
+  },
+};
+
+export const TestUnitNotCapitalized: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    title: TEST_TITLE,
+    content: 'value',
+    unit: 'kg',
+    capitalizeContent: true,
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('VALUE')).toBeInTheDocument();
+    await expect(canvas.getByText('kg')).toBeInTheDocument();
+  },
+};
