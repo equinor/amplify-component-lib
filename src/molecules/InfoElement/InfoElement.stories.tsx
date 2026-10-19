@@ -1,3 +1,5 @@
+import { Component, ReactNode, useState } from 'react';
+
 import { faker } from '@faker-js/faker';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
@@ -152,5 +154,67 @@ export const TestUnitNotCapitalized: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText('VALUE')).toBeInTheDocument();
     await expect(canvas.getByText('kg')).toBeInTheDocument();
+  },
+};
+
+class ErrorCatcher extends Component<
+  { children: ReactNode },
+  { error?: string }
+> {
+  state: { error?: string } = {};
+
+  static getDerivedStateFromError(error: Error) {
+    return { error: error.message };
+  }
+
+  render() {
+    if (this.state.error) return <p>{this.state.error}</p>;
+    return this.props.children;
+  }
+}
+
+const NON_STRING_ERROR =
+  'copyableContent, capitalizeContent and unit only work when content is string';
+
+export const TestThrowsWhenContentIsNotStringWithStringOnlyProps: Story = {
+  tags: ['!dev', '!autodocs'],
+  render: () => (
+    <div>
+      {(['copyableContent', 'capitalizeContent', 'unit'] as const).map(
+        (prop) => (
+          <ErrorCatcher key={prop}>
+            <InfoElement
+              title={TEST_TITLE}
+              content={<span>element</span>}
+              {...{ [prop]: prop === 'unit' ? 'kg' : true }}
+            />
+          </ErrorCatcher>
+        )
+      )}
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    await expect(canvas.getAllByText(NON_STRING_ERROR)).toHaveLength(3);
+  },
+};
+
+export const TestCopyResetAfterUnmount: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { title: TEST_TITLE, content: TEST_CONTENT, copyableContent: true },
+  render: function Render(args) {
+    const [show, setShow] = useState(true);
+    return (
+      <div>
+        {show && <InfoElement {...args} />}
+        <button onClick={() => setShow(false)}>unmount</button>
+      </div>
+    );
+  },
+  play: async ({ canvas }) => {
+    await userEvent.click(canvas.getByText(TEST_CONTENT));
+    await userEvent.click(canvas.getByText('unmount'));
+    await expect(canvas.queryByText(TEST_CONTENT)).not.toBeInTheDocument();
+    // Let the 3s reset timer fire after unmount
+    await new Promise((resolve) => setTimeout(resolve, 3200));
   },
 };
