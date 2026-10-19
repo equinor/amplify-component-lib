@@ -68,7 +68,7 @@ export function useTutorialPopoverPosition({
     width !== undefined &&
     usingLeft !== undefined &&
     popoverSize !== undefined &&
-    usingLeft + popoverSize.width > window.innerWidth;
+    usingLeft + popoverSize.width / 2 > window.innerWidth;
 
   if (overflowingLeft) {
     usingLeft = left + width + popoverSize.width / 2 + CARET_OFFSET;

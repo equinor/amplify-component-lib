@@ -194,7 +194,7 @@ export const WithAction: Story = {
 };
 
 export const CallsOnCloseOnClick: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   play: async ({ canvas, args }) => {
     await userEvent.click(canvas.getByRole('button'));
     await expect(args.onClose).toHaveBeenCalled();
@@ -202,7 +202,7 @@ export const CallsOnCloseOnClick: Story = {
 };
 
 export const CallsOnCloseAfterDuration: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     duration: 1,
   },

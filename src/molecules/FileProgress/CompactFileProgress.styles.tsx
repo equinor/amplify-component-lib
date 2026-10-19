@@ -1,10 +1,10 @@
 import {
   CircularProgress as EDSCircularProgress,
-  Tooltip,
   Typography,
 } from '@equinor/eds-core-react';
 
 import { animation, colors, spacings } from 'src/atoms/style';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled, { css } from 'styled-components';
 
@@ -121,7 +121,12 @@ export const AdditionalText = styled(Typography)`
 `;
 
 export const FileTooltip = styled(Tooltip)`
-  white-space: pre;
+  width: 100%;
+  height: 100%;
+
+  > [role='tooltip'] {
+    white-space: pre;
+  }
 `;
 
 export const CircularProgress = styled(EDSCircularProgress)`

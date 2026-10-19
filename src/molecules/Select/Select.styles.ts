@@ -83,6 +83,8 @@ interface ContainerProps {
   $lightBackground?: boolean;
   $variant?: Variants;
   $loading?: boolean;
+  $locked?: boolean;
+  $autofilled?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -131,6 +133,29 @@ const Container = styled.div<ContainerProps>`
       ? `background-color: ${colors.ui.background__default.rgba}`
       : `background-color: ${colors.ui.background__light.rgba}`};
 
+  ${({ $autofilled }) =>
+    $autofilled &&
+    css`
+      &,
+      &:hover:not(:has(input:disabled)) {
+        background-color: ${colors.dataviz.primary.primary20};
+      }
+    `}
+
+  ${({ $locked, $autofilled }) =>
+    $locked &&
+    css`
+      &,
+      &:hover:not(:has(input:disabled)) {
+        cursor: default;
+        background-color: ${$autofilled
+          ? colors.dataviz.primary.primary20
+          : colors.ui.background__light.rgba};
+        box-shadow: none;
+        outline: none;
+      }
+    `}
+
   &[aria-expanded='true'] {
     box-shadow: inset 0 -2px 0 0 ${colors.interactive.primary__resting.rgba};
   }
@@ -165,6 +190,13 @@ const Container = styled.div<ContainerProps>`
   &:has(button#clear) {
     > section {
       width: calc(100% - 24px);
+    }
+  }
+
+  /* Menu mode also has the dropdown arrow, with a gap between clear and arrow */
+  &:has(button#clear):has(> svg) {
+    > section {
+      width: calc(100% - 24px - ${spacings.small});
     }
   }
 
@@ -214,11 +246,19 @@ const Section = styled.section`
 
 interface LeadingContentWrapperProps {
   $disabled?: boolean;
+  $locked?: boolean;
 }
 
 const LeadingContentWrapper = styled.span<LeadingContentWrapperProps>`
   display: inline-flex;
   align-items: center;
+
+  ${({ $locked }) =>
+    $locked &&
+    css`
+      /* Section gap is x_small, Figma has an 8px gap after the lock icon */
+      margin-right: ${spacings.x_small};
+    `}
 
   ${({ $disabled }) =>
     $disabled &&
@@ -247,6 +287,12 @@ const SearchArea = styled.section`
   }
   input[type='search']:disabled {
     cursor: not-allowed;
+  }
+  input[type='search'][readonly] {
+    cursor: default;
+  }
+  &:has(input[readonly]) > .amplify-combo-box-chip {
+    outline: 1px solid ${colors.ui.background__medium.rgba};
   }
   input[type='search']::-webkit-search-decoration,
   input[type='search']::-webkit-search-cancel-button,
@@ -290,11 +336,13 @@ const ClearButton = styled(Button)<ClearButtonProps>`
   top: 50%;
   transform: translate(0, -50%);
   right: ${({ $rightPadding }) =>
-    $rightPadding ? spacings.x_large : spacings.small};
+    $rightPadding
+      ? `calc(${spacings.small} * 2 + 24px)` // inset + 24px arrow + gap
+      : spacings.small};
   width: 24px;
   height: 24px;
   svg {
-    fill: ${colors.text.static_icons__secondary.rgba};
+    fill: ${colors.text.static_icons__tertiary.rgba};
   }
   &:after {
     width: 24px;
@@ -411,10 +459,24 @@ const PersistentStickyWrapper = styled.div`
   z-index: 1;
 `;
 
-const PersistentListScrollArea = styled.div`
+interface PersistentListScrollAreaProps {
+  $inactive?: boolean;
+}
+
+const PersistentListScrollArea = styled.div<PersistentListScrollAreaProps>`
   flex: 1;
   min-height: 0;
   overflow: auto;
+  ${({ $inactive }) =>
+    $inactive &&
+    css`
+      * {
+        color: ${colors.interactive.disabled__text.rgba} !important;
+      }
+      svg {
+        fill: ${colors.interactive.disabled__text.rgba} !important;
+      }
+    `}
 `;
 
 const PersistentListItem = styled.button`

@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { I18nProvider } from 'react-aria';
 
 import { Autocomplete, NativeSelect } from '@equinor/eds-core-react';
+import { calendar, lock } from '@equinor/eds-icons';
 import { CalendarDate } from '@internationalized/date';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { DatePicker, DatePickerProps } from './DatePicker';
 import { Stack } from 'src/storybook';
 
 import { action } from 'storybook/actions';
+import { expect, fn, screen, userEvent, within } from 'storybook/test';
 
 const meta: Meta<typeof DatePicker> = {
   title: 'Molecules/Datepicker',
@@ -44,6 +46,8 @@ const meta: Meta<typeof DatePicker> = {
 };
 
 export default meta;
+
+type Story = StoryObj<typeof DatePicker>;
 
 export const Default: StoryFn = (props: DatePickerProps) => {
   return (
@@ -91,6 +95,120 @@ export const Variants: StoryFn = (props: DatePickerProps) => {
       <DatePicker {...props} variant="dirty" />
     </div>
   );
+};
+
+export const Locked: StoryFn = (props: DatePickerProps) => {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <DatePicker {...props} label="Locked" value={new Date()} locked />
+      <DatePicker {...props} label="Locked empty" locked />
+    </div>
+  );
+};
+
+export const Autofilled: StoryFn = (props: DatePickerProps) => {
+  const [value, setValue] = useState<Date | null>(new Date());
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <DatePicker
+      {...props}
+      label="Autofilled"
+      helperProps={{ text: 'Background resets when the value is changed' }}
+      value={value}
+      autofilled={autofilled}
+      onChange={(date) => {
+        setValue(date);
+        setAutofilled(false);
+      }}
+    />
+  );
+};
+
+const LOCKED_BACKGROUND = 'rgb(247, 247, 247)';
+const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
+const TEST_DATE = new Date('25. july 2021');
+
+const getField = (canvasElement: HTMLElement) => {
+  const [dayEl] = within(canvasElement).getAllByRole('spinbutton');
+  return {
+    dayEl,
+    field: dayEl.closest('[class*="StyledInputFieldWrapper"]'),
+  };
+};
+
+export const TestLockedIsReadOnly: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    label: 'Locked',
+    value: TEST_DATE,
+    variant: 'error',
+    locked: true,
+    onChange: fn(),
+  },
+  play: async ({ canvas, canvasElement, args }) => {
+    const { dayEl, field } = getField(canvasElement);
+
+    await expect(canvas.queryByRole('button')).not.toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(`path[d="${calendar.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(dayEl).toHaveAttribute('aria-readonly', 'true');
+    await expect(field).toHaveStyle({
+      backgroundColor: LOCKED_BACKGROUND,
+      boxShadow: 'none',
+    });
+
+    await userEvent.click(dayEl);
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('1');
+
+    await expect(screen.queryByText('July 2021')).not.toBeInTheDocument();
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const TestDisabledTakesPrecedenceOverLocked: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { label: 'Test', disabled: true, locked: true },
+  play: async ({ canvasElement }) => {
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).not.toBeInTheDocument();
+  },
+};
+
+export const TestLockedAndAutofilled: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { value: TEST_DATE, locked: true, autofilled: true },
+  play: async ({ canvasElement }) => {
+    const { dayEl, field } = getField(canvasElement);
+
+    await expect(dayEl).toHaveAttribute('aria-readonly', 'true');
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(field).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+      boxShadow: 'none',
+    });
+  },
+};
+
+export const TestAutofilledBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { value: TEST_DATE, autofilled: true },
+  play: async ({ canvas, canvasElement }) => {
+    const { field } = getField(canvasElement);
+
+    await expect(field).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+    });
+    await expect(canvas.getAllByRole('button').length).toBeGreaterThan(0);
+  },
 };
 
 const min = new Date();

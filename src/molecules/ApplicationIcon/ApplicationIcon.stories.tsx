@@ -101,7 +101,7 @@ export const Fallback: Story = {
 };
 
 export const TestFallback: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'some random app name',
   },
@@ -111,7 +111,7 @@ export const TestFallback: Story = {
 };
 
 export const TestFallbackShort: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'some',
   },
@@ -122,7 +122,7 @@ export const TestFallbackShort: Story = {
 
 const createTestStory = (appName: string): Story => {
   return {
-    tags: ['test-only'],
+    tags: ['!dev', '!autodocs'],
     args: {
       name: appName,
     },
@@ -155,7 +155,7 @@ export const TestSAM = createTestStory('sam');
 export const TestSubsurfacePortal = createTestStory('subsurface portal');
 
 export const TestGrayScale: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'acquire',
     grayScale: true,
@@ -169,7 +169,7 @@ export const TestGrayScale: Story = {
 };
 
 export const TestIconOnly: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     name: 'acquire',
     iconOnly: true,

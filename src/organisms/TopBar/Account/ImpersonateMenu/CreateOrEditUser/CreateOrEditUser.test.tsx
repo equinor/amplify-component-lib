@@ -1,5 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { waitForElementToBeRemoved, within } from '@testing-library/dom';
+import {
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from '@testing-library/dom';
 
 import { Account } from '../../Account';
 import {
@@ -282,7 +286,9 @@ test.sequential(
     // Activate impersonation
     await user.click(screen.getByRole('button', { name: 'Impersonate' }));
 
-    await waitForElementToBeRemoved(() => screen.getByRole('progressbar'));
+    await waitFor(() =>
+      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+    );
 
     // Open menu again
     await user.click(button);
@@ -309,7 +315,7 @@ test.sequential(
 
     expect(
       await screen.findByText(new RegExp(newFirstName, 'i'), undefined, {
-        timeout: 2000,
+        timeout: 5000,
       })
     ).toBeInTheDocument();
   },

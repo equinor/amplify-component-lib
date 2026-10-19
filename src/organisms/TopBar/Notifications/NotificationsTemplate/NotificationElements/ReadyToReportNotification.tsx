@@ -1,12 +1,13 @@
 import { FC } from 'react';
 
-import { Chip, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Chip, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 
 import {
   NotificationsTypes,
   ReadyToReportNotificationTypes,
 } from '../Notifications.types';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 
@@ -31,8 +32,7 @@ const LastContainer = styled.div`
   align-items: center;
 `;
 
-interface ReadyToReportNotificationsProps
-  extends ReadyToReportNotificationTypes {
+interface ReadyToReportNotificationsProps extends ReadyToReportNotificationTypes {
   onClick?: () => void;
 }
 

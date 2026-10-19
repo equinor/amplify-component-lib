@@ -1,13 +1,18 @@
 import { forwardRef, ReactNode, useMemo } from 'react';
 
-import { Tooltip } from '@equinor/eds-core-react';
+import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 
 import styled from 'styled-components';
 
 const DisabledTooltip = styled(Tooltip)`
-  white-space: break-spaces;
-  text-align: center;
-  width: 400px;
+  width: 100%;
+
+  > [role='tooltip'] {
+    white-space: break-spaces;
+    text-align: center;
+    width: 400px;
+    max-width: 400px;
+  }
 `;
 
 export interface LockedInputTooltipProps {

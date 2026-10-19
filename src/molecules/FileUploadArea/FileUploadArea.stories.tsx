@@ -59,7 +59,7 @@ export const DraggingOver: StoryFn<FileUploadAreaProps> = (args) => {
 };
 
 export const TestTextAndIcon: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   play: async ({ canvas }) => {
     const icon = canvas.getByTestId('eds-icon-path');
     const text = canvas.getByText(/browse files/i);
@@ -70,7 +70,7 @@ export const TestTextAndIcon: Story = {
 };
 
 export const TestSmallSize: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     size: 'small',
   },
@@ -83,7 +83,7 @@ export const TestSmallSize: Story = {
 };
 
 export const TestMediumSize: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     size: 'medium',
   },

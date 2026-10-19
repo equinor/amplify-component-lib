@@ -111,7 +111,7 @@ export const WithMissingAccesses: StoryFn<StatusStoryProps> = (args) => {
 type Story = StoryObj<typeof Status>;
 
 export const TestDefaultValues: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <StatusWrapper>
       <Status>
@@ -133,7 +133,7 @@ export const TestDefaultValues: Story = {
 };
 
 export const TestMissingAccessesLink: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const fakeAccess = {
       title: 'Test Access',
@@ -157,7 +157,7 @@ export const TestMissingAccessesLink: Story = {
 };
 
 export const TestCenterProp: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => (
     <StatusWrapper>
       <Status center={false}>

@@ -247,6 +247,73 @@ export const Loading: Story = {
   },
 };
 
+export const Locked: Story = {
+  args: {
+    locked: true,
+    items: FAKE_ITEMS,
+    values: FAKE_ITEMS.slice(0, 3),
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const searchField = canvas.getByRole('combobox');
+    await expect(searchField).toHaveAttribute('readonly');
+    await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+
+    await expect(
+      canvas.getByText(FAKE_ITEMS[4].label).closest('[inert]')
+    ).toBeInTheDocument();
+    await userEvent.click(canvas.getByText(FAKE_ITEMS[4].label), {
+      pointerEventsCheck: 0,
+    });
+    await userEvent.click(searchField);
+    await userEvent.keyboard('{Backspace}{Backspace}');
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    items: FAKE_ITEMS,
+    values: FAKE_ITEMS.slice(0, 3),
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.click(canvas.getByText(FAKE_ITEMS[4].label), {
+      pointerEventsCheck: 0,
+    });
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+function PersistentComboBoxAutofilled(args: PersistentComboBoxProps<Item>) {
+  const [values, setValues] = useState<SelectOption<Item>[]>(
+    FAKE_ITEMS.slice(0, 2)
+  );
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <PersistentComboBox
+      {...args}
+      items={FAKE_ITEMS}
+      groups={undefined}
+      values={values}
+      autofilled={autofilled}
+      onSelect={(newValues) => {
+        setValues(newValues);
+        setAutofilled(false);
+      }}
+    />
+  );
+}
+
+export const Autofilled: Story = {
+  args: {
+    helperText: 'Background resets when the values are changed',
+  },
+  render: (args) => <PersistentComboBoxAutofilled {...args} />,
+};
+
 export const SmallParent: Story = {
   render: (args) => (
     <div
@@ -639,7 +706,7 @@ export const DisabledNestedMenuItems: Story = {
 };
 
 export const AllMenuItemsDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
       ...item,
@@ -656,7 +723,7 @@ export const AllMenuItemsDisabled: Story = {
 };
 
 export const AllChildrenDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [
       {
@@ -678,7 +745,7 @@ export const AllChildrenDisabled: Story = {
 };
 
 export const NoEnabledItemAfterSubtree: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS.slice(0, 2),
     values: [],
@@ -693,7 +760,7 @@ export const NoEnabledItemAfterSubtree: Story = {
 };
 
 export const DisabledAfterSelection: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -778,7 +845,7 @@ export const DisabledGroupsAfterSelection: Story = {
 };
 
 export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -804,7 +871,7 @@ export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
 };
 
 export const NoItemsFound: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [],
   },
@@ -823,7 +890,7 @@ export const NoItemsFound: Story = {
 };
 
 export const NoItemsFoundWithGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: [],
     items: undefined,
@@ -843,7 +910,7 @@ export const NoItemsFoundWithGroups: Story = {
 };
 
 export const AddItemWithExactMatch: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -888,7 +955,7 @@ export const AddItemWithExactMatch: Story = {
 };
 
 export const AddItemWithCustomSingularWord: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: (args) => <PersistentComboBoxWithAddState {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

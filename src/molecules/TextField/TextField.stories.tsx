@@ -7,16 +7,19 @@ import {
   done,
   error_filled,
   info_circle,
+  lock,
   thumbs_up,
   warning_filled,
 } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
+import { Theme } from 'src/atoms/enums/Theme';
 import { TextField, TextFieldProps } from 'src/molecules/TextField/TextField';
+import { LockedInputTooltip } from 'src/organisms/TopBar/Resources/Feedback/FeedbackForm/LockedInputTooltip';
 import { Stack } from 'src/storybook';
 
-import { expect, screen, userEvent } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 const icons = {
   thumbs_up,
@@ -111,11 +114,75 @@ export const Explanation: StoryObject = {
     placeholder: 'Write an airport name',
   },
   play: async ({ canvas, args }) => {
-    await userEvent.hover(canvas.getByTestId('eds-icon-path'));
-    await expect(
-      await screen.findByText(`${args.explanation}`)
-    ).toBeInTheDocument();
+    const icon = canvas.getByTestId('eds-icon-path');
+    await userEvent.hover(icon);
+    const tooltip = await screen.findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent(`${args.explanation}`);
+
+    const darkMode =
+      document.documentElement.getAttribute('data-theme') === Theme.DARK;
+    const background = darkMode ? 'rgb(255, 255, 255)' : 'rgb(61, 61, 61)';
+    const foreground = darkMode ? 'rgb(61, 61, 61)' : 'rgb(255, 255, 255)';
+    await waitFor(() => {
+      expect(getComputedStyle(tooltip).backgroundColor).toBe(background);
+      expect(getComputedStyle(tooltip).color).toBe(foreground);
+      expect(getComputedStyle(tooltip, '::before').backgroundColor).toBe(
+        background
+      );
+    });
+    await userEvent.unhover(icon);
   },
+};
+
+export const ExplanationDarkMode: StoryObject = {
+  ...Explanation,
+  globals: { themeToggle: Theme.DARK },
+};
+
+export const LockedField: StoryObject = {
+  args: {
+    label: 'Title',
+    disabled: true,
+  },
+  render: (args) => (
+    <div
+      data-testid="locked-field-grid"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        width: 640,
+        maxWidth: '100%',
+      }}
+    >
+      <LockedInputTooltip show={!!args.disabled}>
+        <TextField {...args} />
+      </LockedInputTooltip>
+    </div>
+  ),
+  play: async ({ canvas, args }) => {
+    const field = canvas.getByRole('textbox');
+    const grid = canvas.getByTestId('locked-field-grid');
+    expect(field.getBoundingClientRect().width).toBeCloseTo(
+      grid.getBoundingClientRect().width,
+      0
+    );
+    if (!args.disabled) return;
+
+    await userEvent.hover(field);
+    const tooltip = await screen.findByRole('tooltip');
+    await waitFor(() => {
+      const styles = getComputedStyle(tooltip);
+      expect(styles.width).toBe('400px');
+      expect(styles.whiteSpace).toBe('break-spaces');
+      expect(styles.textAlign).toBe('center');
+    });
+    await userEvent.unhover(field);
+  },
+};
+
+export const UnlockedField: StoryObject = {
+  ...LockedField,
+  args: { ...LockedField.args, disabled: false },
 };
 
 export const Types: Story = () => (
@@ -569,6 +636,63 @@ Disabled.decorators = [
   },
 ];
 
+export const Locked: Story = () => (
+  <>
+    <TextField
+      id="storybook-locked"
+      label="Locked"
+      defaultValue="Validated value"
+      helperText="Helper text"
+      locked
+    />
+    <TextField
+      id="storybook-locked-unit"
+      label="Locked with unit"
+      defaultValue="500"
+      unit="$"
+      meta="Meta"
+      locked
+    />
+    <TextField
+      id="storybook-locked-multiline"
+      label="Locked multiline"
+      defaultValue="Validated value that spans multiple lines"
+      multiline
+      rows={3}
+      locked
+    />
+  </>
+);
+Locked.decorators = Disabled.decorators;
+
+function AutofilledComponent(args: TextFieldProps) {
+  const [value, setValue] = useState('Autofilled value');
+  const [autofilled, setAutofilled] = useState(true);
+
+  return (
+    <TextField
+      {...args}
+      value={value}
+      autofilled={autofilled}
+      onChange={(
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      ) => {
+        setValue(event.target.value);
+        setAutofilled(false);
+      }}
+    />
+  );
+}
+
+export const Autofilled: StoryObject = {
+  args: {
+    id: 'storybook-autofilled',
+    label: 'Autofilled',
+    helperText: 'Background resets when the value is changed',
+  },
+  render: (args) => <AutofilledComponent {...args} />,
+};
+
 export const Compact: Story = () => {
   const [density, setDensity] = useState<Density>('comfortable');
 
@@ -696,7 +820,7 @@ export const MaxCharacterCount: StoryObject = {
 };
 
 export const MaxCharacterCountWithoutHelper: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     placeholder: 'Enter product name',
     label: 'Product Name',
@@ -743,7 +867,7 @@ function TestComponent(args: TextFieldProps) {
 }
 
 export const MaxCharacterCountExternalUpdate: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     placeholder: 'Enter product name',
     label: 'Product Name',
@@ -769,7 +893,7 @@ export const MaxCharacterCountExternalUpdate: StoryObject = {
 };
 
 export const LoadingState: StoryObject = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Test',
     loading: true,
@@ -777,5 +901,83 @@ export const LoadingState: StoryObject = {
   play: async ({ canvas }) => {
     await expect(canvas.getByRole('progressbar')).toBeInTheDocument();
     await expect(canvas.getByRole('textbox')).toBeDisabled();
+  },
+};
+
+const LOCKED_BACKGROUND = 'rgb(247, 247, 247)';
+const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
+
+const getInputContainer = (input: HTMLElement) =>
+  input.closest('[class*="Input__Container"]');
+
+export const TestLockedIsReadOnly: StoryObject = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    id: 'text',
+    defaultValue: 'Value',
+    locked: true,
+    variant: 'error',
+  },
+  play: async ({ canvas, canvasElement }) => {
+    const input = canvas.getByRole('textbox');
+
+    await expect(input).toHaveAttribute('readonly');
+    await expect(input).not.toBeDisabled();
+    await expect(input).not.toHaveAttribute('locked');
+    await expect(input).not.toHaveAttribute('aria-invalid');
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(getInputContainer(input)).toHaveStyle({
+      backgroundColor: LOCKED_BACKGROUND,
+    });
+
+    await userEvent.click(input);
+    await expect(input).toHaveFocus();
+    await waitFor(() => expect(input).toHaveStyle({ boxShadow: 'none' }));
+  },
+};
+
+export const TestDisabledTakesPrecedenceOverLocked: StoryObject = {
+  tags: ['!dev', '!autodocs'],
+  args: { id: 'text', locked: true, disabled: true },
+  play: async ({ canvas, canvasElement }) => {
+    const input = canvas.getByRole('textbox');
+
+    await expect(input).toBeDisabled();
+    await expect(input).not.toHaveAttribute('readonly');
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).not.toBeInTheDocument();
+  },
+};
+
+export const TestLockedAndAutofilled: StoryObject = {
+  tags: ['!dev', '!autodocs'],
+  args: { id: 'text', defaultValue: 'Value', locked: true, autofilled: true },
+  play: async ({ canvas, canvasElement }) => {
+    const input = canvas.getByRole('textbox');
+
+    await expect(input).toHaveAttribute('readonly');
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(getInputContainer(input)).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+    });
+  },
+};
+
+export const TestAutofilledBackground: StoryObject = {
+  tags: ['!dev', '!autodocs'],
+  args: { id: 'text', defaultValue: 'Value', autofilled: true },
+  play: async ({ canvas }) => {
+    const input = canvas.getByRole('textbox');
+
+    await expect(input).not.toHaveAttribute('autofilled');
+    await expect(input).not.toHaveAttribute('readonly');
+    await expect(getInputContainer(input)).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+    });
   },
 };

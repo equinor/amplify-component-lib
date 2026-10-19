@@ -1,7 +1,14 @@
 import { FC, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { boat, car, error_outlined, flight, search } from '@equinor/eds-icons';
+import {
+  boat,
+  car,
+  error_outlined,
+  flight,
+  lock,
+  search,
+} from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
@@ -278,8 +285,131 @@ export const DisabledSingleSelect: Story = {
   },
 };
 
+export const Locked: Story = {
+  args: {
+    locked: true,
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args, step }) => {
+    const combobox = canvas.getByRole('combobox');
+    await step('Verify that the select is read only', async () => {
+      await expect(combobox).toHaveAttribute('readonly');
+      await expect(combobox).not.toBeDisabled();
+      await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    });
+    await step('Verify that the menu does not open', async () => {
+      await userEvent.click(combobox);
+      await userEvent.keyboard('{Enter}');
+      await expect(
+        screen.queryByText(FAKE_ITEMS[1].label)
+      ).not.toBeInTheDocument();
+      await expect(args.onSelect).not.toHaveBeenCalled();
+    });
+  },
+};
+
+function SingleSelectAutofilled(args: SingleSelectProps<Item>) {
+  const [value, setValue] = useState<SelectOption<Item> | undefined>(
+    FAKE_ITEMS[0]
+  );
+  const [autofilled, setAutofilled] = useState(true);
+
+  const handleOnSelect = (selectedValue: SelectOption<Item> | undefined) => {
+    setValue(selectedValue);
+    setAutofilled(false);
+  };
+
+  return (
+    <SingleSelect
+      {...args}
+      value={value}
+      autofilled={autofilled}
+      onSelect={handleOnSelect}
+    />
+  );
+}
+
+export const Autofilled: Story = {
+  render: SingleSelectAutofilled,
+  args: {
+    items: FAKE_ITEMS,
+    helperText: 'Background resets when the value is changed',
+  },
+};
+
+const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
+
+export const TestLockedShowsLockIcon: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    leadingContent: <span>leading</span>,
+    locked: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, canvasElement, args }) => {
+    await expect(canvas.queryByText('leading')).not.toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('combobox'));
+    await userEvent.keyboard('abc');
+    await expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const TestLockedAndAutofilled: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    locked: true,
+    autofilled: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByRole('combobox')).toHaveAttribute('readonly');
+    await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    await expect(
+      canvasElement.querySelector(`path[d="${lock.svgPathData}"]`)
+    ).toBeInTheDocument();
+    await expect(canvas.getByTestId('combobox-container')).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+    });
+  },
+};
+
+export const TestAutofilledIsInteractive: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    autofilled: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const combobox = canvas.getByRole('combobox');
+    await expect(combobox).not.toHaveAttribute('readonly');
+    await expect(combobox).not.toHaveAttribute('autofilled');
+    await expect(canvas.getByTestId('combobox-container')).toHaveStyle({
+      backgroundColor: AUTOFILLED_BACKGROUND,
+    });
+    await expect(canvas.getByTestId('clearBtn')).toBeInTheDocument();
+
+    await userEvent.click(combobox);
+    await expect(screen.getAllByRole('menuitem')).toHaveLength(
+      FAKE_ITEMS.length
+    );
+  },
+};
+
 export const TestDirtyVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -296,7 +426,7 @@ export const TestDirtyVariant: Story = {
 };
 
 export const TestErrorVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -313,7 +443,7 @@ export const TestErrorVariant: Story = {
 };
 
 export const TestRendersPlaceholder: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -326,7 +456,7 @@ export const TestRendersPlaceholder: Story = {
 };
 
 export const TestDataTestId: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -339,7 +469,7 @@ export const TestDataTestId: Story = {
 };
 
 export const TestHelperText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -352,7 +482,7 @@ export const TestHelperText: Story = {
 };
 
 export const TestHelperTextWithVariant: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -371,7 +501,7 @@ export const TestHelperTextWithVariant: Story = {
 };
 
 export const TestOnlyMetaLabel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -385,7 +515,7 @@ export const TestOnlyMetaLabel: Story = {
 };
 
 export const TestClickingItems: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS.map((item, index) => ({
       ...item,
@@ -414,7 +544,7 @@ export const TestClickingItems: Story = {
 };
 
 export const TestDeselectItem: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
@@ -426,7 +556,7 @@ export const TestDeselectItem: Story = {
 
     // Click the same item to deselect
     await userEvent.click(
-      canvas.getByRole('menuitem', { name: FAKE_ITEMS[0].label })
+      await canvas.findByRole('menuitem', { name: FAKE_ITEMS[0].label })
     );
 
     await expect(args.onSelect).toHaveBeenCalledTimes(1);
@@ -439,7 +569,7 @@ const CustomMenuItemComponent: FC<{ item: SelectOption<Item> }> = ({
 }) => <span>custom item - {item.value}</span>;
 
 export const TestCustomMenuItem: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: FAKE_ITEMS[0],
@@ -456,7 +586,7 @@ export const TestCustomMenuItem: Story = {
 };
 
 export const TestCustomFilterFn: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -475,7 +605,7 @@ export const TestCustomFilterFn: Story = {
 };
 
 export const TestCustomFilterFnGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: FAKE_GROUPS,
     value: undefined,
@@ -495,10 +625,28 @@ export const TestCustomFilterFnGroups: Story = {
   },
 };
 
+/* Deterministic so an item label never matches an item in another group */
+const TEST_GROUPS = [
+  {
+    title: 'Group A',
+    items: [
+      { label: 'Item A1', value: 'a1' },
+      { label: 'Item A2', value: 'a2' },
+    ],
+  },
+  {
+    title: 'Group B',
+    items: [
+      { label: 'Item B1', value: 'b1' },
+      { label: 'Item B2', value: 'b2' },
+    ],
+  },
+];
+
 export const TestFilteringGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
-    groups: FAKE_GROUPS,
+    groups: TEST_GROUPS,
     value: undefined,
     label: 'Filter Groups',
     onSelect: fn(),
@@ -516,9 +664,9 @@ export const TestFilteringGroups: Story = {
 };
 
 export const TestFilteringGroupsNoMatch: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
-    groups: FAKE_GROUPS,
+    groups: TEST_GROUPS,
     value: undefined,
     label: 'Filter Groups',
     onSelect: fn(),
@@ -539,7 +687,7 @@ export const TestFilteringGroupsNoMatch: Story = {
 };
 
 export const TestFilteringListNoMatch: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -560,7 +708,7 @@ export const TestFilteringListNoMatch: Story = {
 };
 
 export const TestCustomNoItemsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [],
     value: undefined,
@@ -576,7 +724,7 @@ export const TestCustomNoItemsText: Story = {
 };
 
 export const TestAddItem: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,
@@ -607,7 +755,7 @@ export const TestAddItem: Story = {
 };
 
 export const TestWithoutHelperIcon: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     value: undefined,

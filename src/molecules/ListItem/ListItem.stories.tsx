@@ -89,7 +89,7 @@ export const CustomReactElement: Story = {
 };
 
 export const TestRendersLabel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Test Label',
   },
@@ -99,7 +99,7 @@ export const TestRendersLabel: Story = {
 };
 
 export const TestRendersIcons: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Icon Test',
     leadingContent: car,
@@ -113,7 +113,7 @@ export const TestRendersIcons: Story = {
 };
 
 export const TestCustomContent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Custom',
     trailingContent: <div>trailing</div>,
@@ -126,7 +126,7 @@ export const TestCustomContent: Story = {
 };
 
 export const TestClickHandler: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Clickable',
     onClick: fn(),
@@ -140,7 +140,7 @@ export const TestClickHandler: Story = {
 };
 
 export const TestFocusBlur: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     label: 'Focus Test',
     onClick: fn(),

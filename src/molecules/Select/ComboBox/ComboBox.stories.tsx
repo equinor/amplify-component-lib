@@ -56,8 +56,8 @@ interface Item {
   disabled?: boolean;
 }
 
-const FAKE_ITEMS = new Array(10).fill(0).map(() => ({
-  label: faker.animal.fish(),
+const FAKE_ITEMS = new Array(10).fill(0).map((_, index) => ({
+  label: `${faker.animal.fish()} ${index + 1}`,
   value: faker.string.uuid(),
 }));
 
@@ -251,16 +251,23 @@ const CustomValueElement: FC<{
   item: SelectOption<Item>;
   onDelete: () => void;
   tryingToRemove: boolean;
-}> = ({ item, onDelete, tryingToRemove }) => (
-  <ComboBoxChip
-    className="amplify-combo-box-chip"
-    onDelete={onDelete}
-    $tryingToRemove={tryingToRemove}
-  >
-    <Dot />
-    {item.label}
-  </ComboBoxChip>
-);
+  locked?: boolean;
+}> = ({ item, onDelete, tryingToRemove, locked }) =>
+  locked ? (
+    <ComboBoxChip className="amplify-combo-box-chip" $tryingToRemove={false}>
+      <Dot />
+      {item.label}
+    </ComboBoxChip>
+  ) : (
+    <ComboBoxChip
+      className="amplify-combo-box-chip"
+      onDelete={onDelete}
+      $tryingToRemove={tryingToRemove}
+    >
+      <Dot />
+      {item.label}
+    </ComboBoxChip>
+  );
 
 export const CustomizableValueElement: Story = {
   render: ComboBoxStateful,
@@ -444,7 +451,7 @@ export const DisabledNestedMenuItems: Story = {
 };
 
 export const AllMenuItemsDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS.map((item) => ({
       ...item,
@@ -462,7 +469,7 @@ export const AllMenuItemsDisabled: Story = {
 };
 
 export const AllChildrenDisabled: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: [
       {
@@ -484,7 +491,7 @@ export const AllChildrenDisabled: Story = {
 };
 
 export const NoEnabledItemAfterSubtree: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS.slice(0, 2),
     values: [],
@@ -501,7 +508,7 @@ export const NoEnabledItemAfterSubtree: Story = {
 };
 
 export const DisabledAfterSelection: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: NESTED_ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -627,7 +634,7 @@ const TEST_GROUPS = [
 ];
 
 export const TestRendersPlaceholder: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -640,7 +647,7 @@ export const TestRendersPlaceholder: Story = {
 };
 
 export const TestDataTestId: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -653,7 +660,7 @@ export const TestDataTestId: Story = {
 };
 
 export const TestSelectItemsWithClicks: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -680,7 +687,7 @@ export const TestSelectItemsWithClicks: Story = {
 };
 
 export const TestOnAddItemWithEnter: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -700,7 +707,7 @@ export const TestOnAddItemWithEnter: Story = {
 };
 
 export const TestOnAddItemWithClick: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [],
@@ -724,7 +731,7 @@ export const TestOnAddItemWithClick: Story = {
 };
 
 export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: ITEMS_WITH_DISABLED_OPTIONS,
     values: [],
@@ -753,7 +760,7 @@ export const TestAddItemKeyboardNavigationWithDisabledOptions: Story = {
 };
 
 export const TestGroupsPreselected: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: TEST_GROUPS,
     values: [TEST_GROUPS[0].items[0]],
@@ -776,7 +783,7 @@ export const TestGroupsPreselected: Story = {
 };
 
 export const TestGroupsPreselectedSelectedAsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: TEST_GROUPS,
     values: [TEST_GROUPS[0].items[0]],
@@ -793,7 +800,7 @@ export const TestGroupsPreselectedSelectedAsText: Story = {
 };
 
 export const TestFilteringGroups: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     groups: TEST_GROUPS,
     values: [],
@@ -810,7 +817,7 @@ export const TestFilteringGroups: Story = {
 };
 
 export const TestParentChildSelection: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [],
@@ -831,7 +838,7 @@ export const TestParentChildSelection: Story = {
 };
 
 export const TestParentChildSelectionSyncParentFalse: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [TEST_ITEMS_WITH_CHILDREN[1].children[0]],
@@ -853,7 +860,7 @@ export const TestParentChildSelectionSyncParentFalse: Story = {
 };
 
 export const TestParentChildSelectionSyncParent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [TEST_ITEMS_WITH_CHILDREN[1]],
@@ -875,7 +882,7 @@ export const TestParentChildSelectionSyncParent: Story = {
 };
 
 export const TestParentChildSelectionSyncParentSelectedChild: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS_WITH_CHILDREN,
     values: [TEST_ITEMS_WITH_CHILDREN[0].children[0]],
@@ -897,7 +904,7 @@ export const TestParentChildSelectionSyncParentSelectedChild: Story = {
 };
 
 export const TestNestedChildLabel: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const items = [
       {
@@ -929,7 +936,7 @@ export const TestNestedChildLabel: Story = {
 };
 
 export const TestNestedChildPadding: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const items = [
       {
@@ -962,7 +969,7 @@ export const TestNestedChildPadding: Story = {
 };
 
 export const TestRemoveWithBackspace: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -980,8 +987,176 @@ export const TestRemoveWithBackspace: Story = {
   },
 };
 
+export const Locked: Story = {
+  args: {
+    locked: true,
+    items: FAKE_ITEMS,
+    values: FAKE_ITEMS.slice(0, 3),
+    onSelect: fn(),
+  },
+};
+
+function ComboBoxAutofilled(args: ComboBoxProps<Item>) {
+  const [values, setValues] = useState<SelectOption<Item>[]>(
+    FAKE_ITEMS.slice(0, 2)
+  );
+  const [autofilled, setAutofilled] = useState(true);
+
+  const handleOnSelect = (selectedValues: SelectOption<Item>[]) => {
+    setValues(selectedValues);
+    setAutofilled(false);
+  };
+
+  return (
+    <ComboBox
+      {...args}
+      values={values}
+      autofilled={autofilled}
+      onSelect={handleOnSelect}
+    />
+  );
+}
+
+export const Autofilled: Story = {
+  render: ComboBoxAutofilled,
+  args: {
+    items: FAKE_ITEMS,
+    helperText: 'Background resets when the values are changed',
+  },
+};
+
+export const TestLockedPreventsChanges: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    label: 'Locked Test',
+    locked: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const searchField = canvas.getByRole('combobox');
+    await expect(searchField).toHaveAttribute('readonly');
+    await expect(canvas.queryByTestId('clearBtn')).not.toBeInTheDocument();
+    await expect(
+      canvas.queryByRole('button', { name: TEST_ITEMS[0].label })
+    ).not.toBeInTheDocument();
+    await expect(canvas.getByText(TEST_ITEMS[0].label)).toBeInTheDocument();
+
+    await userEvent.click(searchField);
+    await userEvent.keyboard('{Backspace}');
+    await userEvent.keyboard('{Backspace}');
+    await expect(args.onSelect).not.toHaveBeenCalled();
+    await expect(
+      screen.queryByText(TEST_ITEMS[1].label)
+    ).not.toBeInTheDocument();
+  },
+};
+
+export const TestLockingClosesOpenMenu: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    onAddItem: fn(),
+  },
+  render: function Render(args) {
+    const [locked, setLocked] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setLocked((prev) => !prev)}>Toggle lock</Button>
+        <ComboBox {...args} locked={locked} />
+      </>
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.type(canvas.getByRole('combobox'), 'New tag');
+    await expect(screen.getByRole('menuitem')).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Toggle lock' }));
+    await expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    await expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+
+    // Unlocking does not reopen the menu by itself
+    await userEvent.click(canvas.getByRole('button', { name: 'Toggle lock' }));
+    await expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    await expect(
+      'onAddItem' in args ? args.onAddItem : null
+    ).not.toHaveBeenCalled();
+    await expect(args.onSelect).not.toHaveBeenCalled();
+  },
+};
+
+export const TestLoadingKeepsOpenMenuSelectable: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+  },
+  render: function Render(args) {
+    const [loading, setLoading] = useState(false);
+    return (
+      <ComboBox
+        {...args}
+        loading={loading}
+        onSearchChange={() => setLoading(true)}
+      />
+    );
+  },
+  play: async ({ canvas, args }) => {
+    await userEvent.type(canvas.getByRole('combobox'), 'a');
+    await userEvent.click(
+      screen.getByRole('menuitem', { name: TEST_ITEMS[0].label })
+    );
+    await expect(args.onSelect).toHaveBeenCalledWith(
+      [TEST_ITEMS[0]],
+      TEST_ITEMS[0]
+    );
+  },
+};
+
+export const TestCustomValueComponentReceivesLocked: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: TEST_ITEMS,
+    values: [TEST_ITEMS[0]],
+    locked: true,
+    onSelect: fn(),
+    customValueComponent: ({ item, locked }) => (
+      <span>{`${item.label} locked=${locked}`}</span>
+    ),
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      canvas.getByText(`${TEST_ITEMS[0].label} locked=true`)
+    ).toBeInTheDocument();
+  },
+};
+
+export const TestSearchIgnoresLeadingSpace: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    onSearchChange: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const search = canvas.getByRole('combobox');
+
+    await userEvent.type(search, ' ');
+    await expect(search).toHaveValue('');
+    await expect(args.onSearchChange).not.toHaveBeenCalled();
+
+    await userEvent.type(search, 'a');
+    await expect(args.onSearchChange).toHaveBeenCalledWith('a');
+  },
+};
+
 export const TestDisabledPreventsChipRemoval: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1016,7 +1191,7 @@ const TestCustomValueElement: FC<{
 );
 
 export const TestCustomValueComponentRenders: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1035,7 +1210,7 @@ export const TestCustomValueComponentRenders: Story = {
 };
 
 export const TestCustomValueRemovalByClick: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1055,7 +1230,7 @@ export const TestCustomValueRemovalByClick: Story = {
 };
 
 export const TestShowSelectedAsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1071,7 +1246,7 @@ export const TestShowSelectedAsText: Story = {
 };
 
 export const TestCustomShowSelectedAsText: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[0]],
@@ -1088,7 +1263,7 @@ export const TestCustomShowSelectedAsText: Story = {
 };
 
 export const TestCustomMenuItemComponent: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   render: () => {
     const items = [
       {
@@ -1129,7 +1304,7 @@ export const TestCustomMenuItemComponent: Story = {
 };
 
 export const TestSortsValues: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: TEST_ITEMS,
     values: [TEST_ITEMS[3], TEST_ITEMS[1], TEST_ITEMS[0]],
@@ -1153,7 +1328,7 @@ export const TestSortsValues: Story = {
 };
 
 export const TestKeyboardNavigation: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     values: [],
     items: FAKE_ITEMS_WITH_CHILDREN,
@@ -1190,7 +1365,7 @@ export const TestKeyboardNavigation: Story = {
 };
 
 export const TestSortValuesFalse: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [FAKE_ITEMS[3], FAKE_ITEMS[1], FAKE_ITEMS[0]],
@@ -1211,7 +1386,7 @@ export const TestSortValuesFalse: Story = {
 };
 
 export const TestOnOpenCallback: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [],
@@ -1243,7 +1418,7 @@ export const TestOnOpenCallback: Story = {
 };
 
 export const TestOnClear: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [FAKE_ITEMS[0]],
@@ -1259,7 +1434,7 @@ export const TestOnClear: Story = {
 };
 
 export const TestOpenWithKeyboard: Story = {
-  tags: ['test-only'],
+  tags: ['!dev', '!autodocs'],
   args: {
     items: FAKE_ITEMS,
     values: [],

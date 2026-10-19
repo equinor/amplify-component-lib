@@ -44,14 +44,16 @@ test('renders a duration bar and closes after the configured duration', async ()
     <Toast title="Changes saved" duration={0.01} onClose={onClose} />
   );
 
-  expect(getByRole('progressbar')).toBeInTheDocument();
+  const progressBar = getByRole('progressbar');
+  expect(progressBar).toBeInTheDocument();
+  expect(progressBar).toHaveStyle({ background: 'rgb(255, 255, 255)' });
   await waitFor(() => expect(onClose).toHaveBeenCalledOnce());
 });
 
 test.each(Object.entries(TOAST_COLORS))(
-  'uses %s colors for container, controls, and duration bar',
+  'uses %s colors for container and controls',
   (variant, colors) => {
-    const { container, getByRole, getByText } = render(
+    const { container, getByText } = render(
       <Toast
         title="Changes saved"
         variant={variant as keyof typeof TOAST_COLORS}
@@ -70,9 +72,6 @@ test.each(Object.entries(TOAST_COLORS))(
     });
     expect(container.querySelector('header button')).toHaveStyle({
       color: colors.controlForeground,
-    });
-    expect(getByRole('progressbar')).toHaveStyle({
-      background: 'rgb(255, 255, 255)',
     });
   }
 );

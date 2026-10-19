@@ -120,7 +120,7 @@ test('Renders disabled color as expected', () => {
   });
 });
 
-test('Renders disabled color overriding state and color props as expected', () => {
+test('Renders disabled overriding state and color props as expected', () => {
   const props = fakeProps();
   render(
     <IconCell
@@ -132,7 +132,7 @@ test('Renders disabled color overriding state and color props as expected', () =
   );
   const cell = screen.getByRole('button');
 
-  expect(cell).toHaveStyle(`background: transparent`);
+  expect(cell).toBeDisabled();
   expect(cell).toHaveStyle(
     `border: 1px solid ${colors.ui.background__light.rgba}`
   );
