@@ -17,6 +17,7 @@ import {
   InteractionRequiredAuthError,
   InteractionStatus,
   InteractionType,
+  IPublicClientApplication,
 } from '@azure/msal-browser';
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
@@ -40,6 +41,13 @@ interface ExtendedJwtPayload extends JwtPayload {
 type AuthorizationResult =
   | { account: AccountInfo; roles: string[] }
   | { account: AccountInfo | undefined; error: unknown };
+
+// MSAL keeps pending acquisitions across provider remounts. Track them for the
+// same instance lifetime, retaining each request only until it settles.
+const backendRequestsByInstance = new WeakMap<
+  IPublicClientApplication,
+  Map<string, Promise<AuthenticationResult>>
+>();
 
 const {
   GRAPH_ENDPOINTS,
@@ -100,9 +108,6 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     useState<AuthorizationResult>();
   const [showRecovery, setShowRecovery] = useState(false);
   const selectedAccount = useRef(account);
-  const backendRequests = useRef(
-    new Map<string, Promise<AuthenticationResult>>()
-  );
 
   const selectAccount = useCallback(
     (nextAccount: AccountInfo | null) => {
@@ -234,12 +239,16 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       selectedAccount.current === account &&
       accountKey(instance.getActiveAccount()) === accountKey(account);
     setAuthorizationResult(undefined);
+    const backendRequests =
+      backendRequestsByInstance.get(instance) ??
+      new Map<string, Promise<AuthenticationResult>>();
+    backendRequestsByInstance.set(instance, backendRequests);
     const getRoles = async () => {
       try {
         // Backend scopes are fixed; MSAL deduplicates by homeAccountId, not
         // our account snapshot. Let superseded work settle before retrying.
         const key = account.homeAccountId;
-        const pending = backendRequests.current.get(key);
+        const pending = backendRequests.get(key);
         if (pending) {
           await pending.catch(() => undefined);
           if (!isCurrent()) return;
@@ -250,10 +259,9 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
           ),
           account,
         });
-        backendRequests.current.set(key, request);
+        backendRequests.set(key, request);
         const response = await request.finally(() => {
-          if (backendRequests.current.get(key) === request)
-            backendRequests.current.delete(key);
+          if (backendRequests.get(key) === request) backendRequests.delete(key);
         });
         if (!isCurrent()) return;
         if (!response?.accessToken) throw new Error('No backend access token');

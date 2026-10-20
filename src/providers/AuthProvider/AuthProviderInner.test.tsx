@@ -667,6 +667,8 @@ test('account switch clears previous roles/photo and ignores old backend and pho
   });
   expect(context()).toMatchObject({ authState: 'loading', account: 'second' });
   expect(context().roles).toBeUndefined();
+  // A different account must acquire without waiting for the old request.
+  await waitFor(() => expect(backendRequests()).toHaveLength(2));
   await act(async () => {
     oldBackend.resolve(result(first, jwt({ roles: ['OLD_WRITE'] })));
     oldPhoto.resolve(new Response(new Blob(['old-photo'])));
@@ -716,12 +718,16 @@ test('switching an authorized account clears its roles and photo before the new 
 });
 
 test.each(
-  ['parent', 'popup'].flatMap((source) =>
-    ['success', 'failure'].map((outcome) => ({ source, outcome }))
+  [
+    { source: 'parent', remount: false },
+    { source: 'popup', remount: false },
+    { source: 'parent', remount: true },
+  ].flatMap((scenario) =>
+    ['success', 'failure'].map((outcome) => ({ ...scenario, outcome }))
   )
 )(
-  '$source recovery discards pending backend $outcome before fresh verification with real SDK deduplication',
-  async ({ source, outcome }) => {
+  '$source recovery (remount=$remount) discards pending backend $outcome before fresh verification with real SDK deduplication',
+  async ({ source, remount, outcome }) => {
     iframe();
     cacheAccount();
     const oldBackend = deferred<AuthenticationResult>();
@@ -737,7 +743,7 @@ test.each(
       }
     );
     try {
-      render(<Mount />);
+      const mounted = render(<Mount />);
       await waitFor(() => expect(backendCalls).toBe(1));
       if (source === 'parent') {
         const parent = startSso();
@@ -754,6 +760,13 @@ test.each(
             InteractionType.Popup
           )
         );
+      }
+      if (remount) {
+        mounted.unmount();
+        expect(callbacks.size).toBe(singletonCallbackCount);
+        render(<Mount />);
+        // The new provider has selected its account and run both token effects.
+        await waitFor(() => expect(photoRequests()).toHaveLength(3));
       }
       expect(context().authState).toBe('loading');
       expect(backendCalls).toBe(1);
