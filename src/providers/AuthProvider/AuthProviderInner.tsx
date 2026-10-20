@@ -98,7 +98,11 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
   const [initializationError, setInitializationError] = useState<unknown>();
   const [authorizationResult, setAuthorizationResult] =
     useState<AuthorizationResult>();
+  const [showRecovery, setShowRecovery] = useState(false);
   const selectedAccount = useRef(account);
+  const backendRequests = useRef(
+    new Map<string, Promise<AuthenticationResult>>()
+  );
 
   const selectAccount = useCallback(
     (nextAccount: AccountInfo | null) => {
@@ -232,11 +236,24 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     setAuthorizationResult(undefined);
     const getRoles = async () => {
       try {
-        const response = await instance.acquireTokenSilent({
+        // Backend scopes are fixed; MSAL deduplicates by homeAccountId, not
+        // our account snapshot. Let superseded work settle before retrying.
+        const key = account.homeAccountId;
+        const pending = backendRequests.current.get(key);
+        if (pending) {
+          await pending.catch(() => undefined);
+          if (!isCurrent()) return;
+        }
+        const request = instance.acquireTokenSilent({
           ...GRAPH_REQUESTS_BACKEND(
             getApiScope(import.meta.env.VITE_API_SCOPE)
           ),
           account,
+        });
+        backendRequests.current.set(key, request);
+        const response = await request.finally(() => {
+          if (backendRequests.current.get(key) === request)
+            backendRequests.current.delete(key);
         });
         if (!isCurrent()) return;
         if (!response?.accessToken) throw new Error('No backend access token');
@@ -297,7 +314,13 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     };
   }, [account, instance, setPhoto]);
 
-  if (authState === 'unauthorized')
+  // A recovery hook may start silent auth when mounted. Keep it mounted while
+  // that attempt is loading, rather than restarting it after every failure.
+  useEffect(() => {
+    if (authState !== 'loading') setShowRecovery(authState === 'unauthorized');
+  }, [authState]);
+
+  if (authState === 'unauthorized' || (authState === 'loading' && showRecovery))
     return unauthorizedComponent ?? <MissingAccessToApp />;
 
   if (withoutLoader) return children;

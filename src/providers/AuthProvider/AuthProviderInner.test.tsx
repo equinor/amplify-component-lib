@@ -58,7 +58,12 @@ const second: AccountInfo = {
 const jwt = (payload: object) =>
   `e30.${btoa(JSON.stringify(payload))}.signature`;
 const result = (account = first, token = jwt({ roles: ['READ'] })) =>
-  ({ account, accessToken: token, correlationId: '' }) as AuthenticationResult;
+  ({
+    account,
+    accessToken: token,
+    idToken: '',
+    correlationId: '',
+  }) as AuthenticationResult;
 
 let cached: AccountInfo[];
 let active: AccountInfo | null;
@@ -74,11 +79,21 @@ function emit(
 }
 
 const instance = auth.msalApp;
+const acquireTokenSilent = instance.acquireTokenSilent.bind(instance);
+const controller = (
+  instance as unknown as {
+    controller: {
+      eventHandler: EventHandler;
+      acquireTokenSilentAsync: (
+        request: SilentRequest,
+        account: AccountInfo
+      ) => Promise<AuthenticationResult>;
+    };
+  }
+).controller;
 // Use the SDK emitter so singleton callbacks installed before mounting/spying
 // stay registered and receive exactly the same events as the React listeners.
-const events = (
-  instance as unknown as { controller: { eventHandler: EventHandler } }
-).controller.eventHandler;
+const events = controller.eventHandler;
 const callbacks = (
   events as unknown as { eventCallbacks: Map<string, unknown> }
 ).eventCallbacks;
@@ -102,6 +117,12 @@ function cacheAccount(account = first, accounts = [account]) {
   cached = accounts;
   active = account;
 }
+
+// Initialize the real SDK so deduplication regressions can leave its public
+// acquireTokenSilent wrapper intact and mock only the underlying acquisition.
+beforeAll(async () => {
+  await instance.initialize();
+});
 
 beforeEach(() => {
   // Vitest itself renders tests in an iframe. Default to standalone, then opt
@@ -578,6 +599,26 @@ test('backend rejection is terminal; popup with the same cached account retries 
   expect(instance.loginRedirect).not.toHaveBeenCalled();
 });
 
+test('default loader keeps the recovery hook mounted through its silent retry and popup recovery', async () => {
+  iframe();
+  render(<Mount popup withoutLoader={false} />);
+  await boot();
+  await act(async () => silent[0].reject(fail));
+  await waitFor(() => expect(silent).toHaveLength(2));
+  const button = screen.getByRole('button', { name: 'Sign in' });
+  expect(context().authState).toBe('loading');
+  await act(async () => silent[1].reject(fail));
+  await state('unauthorized');
+  expect(screen.getByRole('button', { name: 'Sign in' })).toBe(button);
+  expect(silent).toHaveLength(2);
+  fireEvent.click(button);
+  await state('authorized');
+  expect(context()).toMatchObject({ account: 'first', roles: ['READ'] });
+  expect(instance.loginPopup).toHaveBeenCalledOnce();
+  expect(instance.loginRedirect).not.toHaveBeenCalled();
+  expect(silent).toHaveLength(2);
+});
+
 test('initialization failure settles rather than leaving loading forever', async () => {
   iframe();
   vi.mocked(instance.initialize).mockRejectedValue(
@@ -674,33 +715,75 @@ test('switching an authorized account clears its roles and photo before the new 
   expect(active).toEqual(second);
 });
 
-test('same-account interactive retry invalidates an earlier pending backend response', async () => {
-  iframe();
-  cacheAccount();
-  const oldBackend = deferred<AuthenticationResult>();
-  let backendCalls = 0;
-  vi.mocked(instance.acquireTokenSilent).mockImplementation(async (request) => {
-    if (isBackendRequest(request) && ++backendCalls === 1)
-      return oldBackend.promise;
-    return result(first, jwt({ roles: ['NEW_READ'] }));
-  });
-  render(<Mount />);
-  await waitFor(() => expect(backendCalls).toBe(1));
-  act(() =>
-    emit(
-      EventType.ACQUIRE_TOKEN_SUCCESS,
-      result(first),
-      null,
-      InteractionType.Popup
-    )
-  );
-  await state('authorized');
-  await act(async () =>
-    oldBackend.resolve(result(first, jwt({ roles: ['OLD_WRITE'] })))
-  );
-  expect(context().roles).toEqual(['NEW_READ']);
-  expect(backendCalls).toBe(2);
-});
+test.each(
+  ['parent', 'popup'].flatMap((source) =>
+    ['success', 'failure'].map((outcome) => ({ source, outcome }))
+  )
+)(
+  '$source recovery discards pending backend $outcome before fresh verification with real SDK deduplication',
+  async ({ source, outcome }) => {
+    iframe();
+    cacheAccount();
+    const oldBackend = deferred<AuthenticationResult>();
+    const freshBackend = deferred<AuthenticationResult>();
+    let backendCalls = 0;
+    vi.mocked(instance.acquireTokenSilent).mockImplementation(
+      acquireTokenSilent
+    );
+    vi.spyOn(controller, 'acquireTokenSilentAsync').mockImplementation(
+      async (request) => {
+        if (!isBackendRequest(request)) return result(first, 'photo');
+        return ++backendCalls === 1 ? oldBackend.promise : freshBackend.promise;
+      }
+    );
+    try {
+      render(<Mount />);
+      await waitFor(() => expect(backendCalls).toBe(1));
+      if (source === 'parent') {
+        const parent = startSso();
+        await act(async () => {
+          silent[0].resolve(result(first));
+          await parent;
+        });
+      } else {
+        act(() =>
+          emit(
+            EventType.ACQUIRE_TOKEN_SUCCESS,
+            result(first),
+            null,
+            InteractionType.Popup
+          )
+        );
+      }
+      expect(context().authState).toBe('loading');
+      expect(backendCalls).toBe(1);
+      await act(async () => {
+        if (outcome === 'success')
+          oldBackend.resolve(result(first, jwt({ roles: ['OLD_WRITE'] })));
+        else oldBackend.reject(timeout);
+      });
+      expect(context().authState).toBe('loading');
+      expect(context().roles).toBeUndefined();
+      await waitFor(() => expect(backendCalls).toBe(2));
+      expect(backendRequests()).toHaveLength(2);
+      await act(async () =>
+        freshBackend.resolve(result(first, jwt({ roles: ['NEW_READ'] })))
+      );
+      await state('authorized');
+      expect(context()).toMatchObject({
+        account: 'first',
+        roles: ['NEW_READ'],
+      });
+      expect(instance.loginRedirect).not.toHaveBeenCalled();
+    } finally {
+      // A failing assertion must not leave an acquisition in MSAL's real map.
+      await act(async () => {
+        oldBackend.resolve(result());
+        freshBackend.resolve(result());
+      });
+    }
+  }
+);
 
 test('parent silent retry after complete failure can recover without remount', async () => {
   iframe();
