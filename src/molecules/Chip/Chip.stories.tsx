@@ -430,7 +430,7 @@ export const TestClickAndDelete: Story = {
   play: async ({ canvas, args, userEvent }) => {
     await userEvent.click(canvas.getByText('Chip Text'));
     await expect(args.onClick).toHaveBeenCalledTimes(1);
-    vi.mocked(args.onClick!).mockClear();
+    (args.onClick as ReturnType<typeof fn>).mockClear();
     canvas.getByRole('button').focus();
     await userEvent.keyboard('[Enter]');
     await expect(args.onClick).toHaveBeenCalled();
@@ -443,7 +443,7 @@ export const TestDeleteHandler: Story = {
   play: async ({ canvas, args, userEvent }) => {
     await userEvent.click(canvas.getByText('Chip Text'));
     await expect(args.onDelete).toHaveBeenCalledTimes(1);
-    vi.mocked(args.onDelete!).mockClear();
+    (args.onDelete as ReturnType<typeof fn>).mockClear();
     canvas.getByRole('button').focus();
     await userEvent.keyboard('[Enter]');
     await expect(args.onDelete).toHaveBeenCalled();
