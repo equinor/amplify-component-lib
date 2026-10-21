@@ -377,7 +377,7 @@ export const InteractiveChipStyle = styled.button<
       background-color: ${colorScheme.background};
       outline: 1px solid ${colorScheme.borderColor};
 
-      &:hover:not([aria-disabled='true']) {
+      &:hover:not(:disabled):not([aria-disabled='true']) {
         background-color: ${colorScheme.hover.background};
         color: ${colorScheme.hover.color};
         outline: 1px solid ${colorScheme.hover.borderColor};
