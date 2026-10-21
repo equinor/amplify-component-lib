@@ -11,8 +11,13 @@ import { calendar_date_range, lock } from '@equinor/eds-icons';
 import { colors } from 'src/atoms/style';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
-import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
+import {
+  DatePickerWrapper,
+  LabelWrapper,
+} from 'src/molecules/DatePicker/DatePicker.styles';
+import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
+import { TooltipProps } from 'src/molecules/Tooltip/Tooltip';
 
 export type DateRangePickerProps = Omit<BaseProps, 'variant'> & {
   variant?: Variants;
@@ -20,6 +25,8 @@ export type DateRangePickerProps = Omit<BaseProps, 'variant'> & {
   loading?: boolean;
   locked?: boolean;
   autofilled?: boolean;
+  explanation?: string;
+  explanationPosition?: TooltipProps['placement'];
 };
 
 /**
@@ -28,7 +35,13 @@ export type DateRangePickerProps = Omit<BaseProps, 'variant'> & {
  * @param autofilled - Value was filled in automatically. Consumer is responsible for resetting this when the user changes the value.
  */
 export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
-  ({ locked, autofilled, ...props }, ref) => {
+  ({ locked, autofilled, explanation, explanationPosition, ...props }, ref) => {
+    if (!!explanation && !props.label) {
+      throw new Error(
+        '`explanation` prop requires a `label` to be set on the DateRangePicker.'
+      );
+    }
+
     const locale: DateRangePickerProps['locale'] = props.locale ?? 'en-GB';
     const formatOptions: DateRangePickerProps['formatOptions'] =
       props.formatOptions !== undefined
@@ -46,6 +59,19 @@ export const DateRangePicker = forwardRef<HTMLDivElement, DateRangePickerProps>(
       ...props,
       variant: usingVariant !== 'dirty' ? usingVariant : undefined,
       loading: undefined,
+      // EDS renders labelProps.label instead of label, while label stays a string for aria
+      ...(explanation && {
+        labelProps: {
+          label: (
+            <LabelWrapper>
+              {props.label}
+              <InputExplanation position={explanationPosition}>
+                {explanation}
+              </InputExplanation>
+            </LabelWrapper>
+          ),
+        },
+      }),
       readOnly: usingLocked || props.readOnly,
     };
 

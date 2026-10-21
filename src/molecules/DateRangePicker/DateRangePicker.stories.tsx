@@ -148,6 +148,24 @@ const getField = (canvasElement: HTMLElement) => {
   };
 };
 
+export const Explanation: Story = {
+  args: {
+    label: 'Label',
+    explanation: 'This is an explanation tooltip',
+  },
+  play: async ({ canvas, args }) => {
+    // The explanation must not leak into the accessible name of the inputs
+    await expect(canvas.getAllByRole('spinbutton')[0]).not.toHaveAccessibleName(
+      /explanation/i
+    );
+    const icon = within(canvas.getByText('Label')).getByTestId('eds-icon-path');
+    await userEvent.hover(icon);
+    const tooltip = await screen.findByRole('tooltip');
+    await expect(tooltip).toHaveTextContent(`${args.explanation}`);
+    await userEvent.unhover(icon);
+  },
+};
+
 export const TestLockedIsReadOnly: Story = {
   tags: ['!dev', '!autodocs'],
   args: {
