@@ -41,6 +41,7 @@ export const InteractiveChip = forwardRef<
       {...otherProps}
       ref={ref}
       disabled={disabled}
+      type="button"
       aria-disabled={locked || undefined}
       variant={variant}
       onClick={relevantOnAction}
