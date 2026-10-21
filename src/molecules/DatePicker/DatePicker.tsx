@@ -11,8 +11,13 @@ import { calendar, lock } from '@equinor/eds-icons';
 import { colors } from 'src/atoms/style';
 import { Variants } from 'src/atoms/types/variants';
 import { getSkeletonHeight, getSkeletonTop } from 'src/atoms/utils/skeleton';
-import { DatePickerWrapper } from 'src/molecules/DatePicker/DatePicker.styles';
+import {
+  DatePickerWrapper,
+  LabelWrapper,
+} from 'src/molecules/DatePicker/DatePicker.styles';
+import { InputExplanation } from 'src/molecules/InputExplanation/InputExplanation';
 import { SkeletonField } from 'src/molecules/Skeleton/SkeletonField';
+import { TooltipProps } from 'src/molecules/Tooltip/Tooltip';
 
 export type DatePickerProps = Omit<
   EDSDatePickerProps,
@@ -24,6 +29,8 @@ export type DatePickerProps = Omit<
   loading?: boolean;
   locked?: boolean;
   autofilled?: boolean;
+  explanation?: string;
+  explanationPosition?: TooltipProps['placement'];
 };
 
 /**
@@ -32,7 +39,13 @@ export type DatePickerProps = Omit<
  * @param autofilled - Value was filled in automatically. Consumer is responsible for resetting this when the user changes the value.
  */
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
-  ({ locked, autofilled, ...props }, ref) => {
+  ({ locked, autofilled, explanation, explanationPosition, ...props }, ref) => {
+    if (!!explanation && !props.label) {
+      throw new Error(
+        '`explanation` prop requires a `label` to be set on the DatePicker.'
+      );
+    }
+
     const locale: DatePickerProps['locale'] = props.locale ?? 'en-GB';
     const formatOptions: DatePickerProps['formatOptions'] =
       props.formatOptions !== undefined
@@ -53,6 +66,19 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         | undefined,
       variant: usingVariant !== 'dirty' ? usingVariant : undefined,
       loading: undefined,
+      // EDS renders labelProps.label instead of label, while label stays a string for aria
+      ...(explanation && {
+        labelProps: {
+          label: (
+            <LabelWrapper>
+              {props.label}
+              <InputExplanation position={explanationPosition}>
+                {explanation}
+              </InputExplanation>
+            </LabelWrapper>
+          ),
+        },
+      }),
       readOnly: usingLocked || props.readOnly,
     };
 

@@ -168,3 +168,9 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
     color: ${colors.text.static_icons__tertiary.rgba};
   }
 `;
+
+export const LabelWrapper = styled.span`
+  display: flex;
+  gap: ${spacings.x_small};
+  align-items: center;
+`;
