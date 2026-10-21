@@ -4,31 +4,73 @@ on:
   workflow_call:
 jobs:
   tests:
+    name: Vitest (Shard ${{ matrix.shard }}/${{ strategy.job-total }})
     runs-on: ubuntu-latest
-    outputs:
-      tests_failed: ${{ steps.set_failed.outputs.tests_failed }}
-      coverage_failed: ${{ steps.set_coverage.outputs.coverage_failed }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
 
       - name: Use bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
       - name: Install playwright with dependencies
-        run: bunx playwright install --with-deps chromium
+        run: bunx playwright install --with-deps --only-shell chromium
 
       - name: Tests
         timeout-minutes: 15
-        run: bun run test:ci -- --coverage --coverage.report=json --coverage.reporter=json-summary --no-file-parallelism --silent --watch false --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
+        run: bun run test:ci -- --coverage --coverage.thresholds.100=false --no-file-parallelism --silent --watch false --reporter=default --reporter=blob --outputFile.blob=tests-results/reports/blob-${{ matrix.shard }}.json --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+
+      - name: Upload vitest shard report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: vitest-blob-${{ matrix.shard }}
+          path: tests-results/reports/
+          if-no-files-found: error
+          retention-days: 1
+
+  merge-reports:
+    name: Merge Vitest Shard Reports
+    runs-on: ubuntu-latest
+    needs: [tests]
+    if: always() && needs.tests.result != 'skipped' && needs.tests.result != 'cancelled'
+    outputs:
+      coverage_failed: ${{ steps.set_coverage.outputs.coverage_failed }}
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Use bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Download vitest shard reports
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          pattern: vitest-blob-*
+          path: tests-results/reports/
+          merge-multiple: true
+
+      - name: Merge shard reports
+        run: bun run test:ci -- --merge-reports=tests-results/reports --coverage --coverage.reporter=json-summary --coverage.reporter=json --reporter=json --reporter=default --outputFile.json=./testrun.json 2> stderr.txt || grep -q 'numFailedTests\":0' ./testrun.json
 
       - name: Upload Coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: coverage-${{ matrix.artifact }}
+          name: coverage
           path: coverage
 
       - name: Set coverage_failed
@@ -44,11 +86,11 @@ jobs:
   check-coverage:
     runs-on: ubuntu-latest
     if: ${{ success() || failure() }}
-    needs: [tests]
+    needs: [merge-reports]
 
     steps:
       - name: Check if coverage failed
-        if: ${{ contains(needs.tests.outputs.coverage_failed, 'true')}}
+        if: ${{ contains(needs.merge-reports.outputs.coverage_failed, 'true')}}
         uses: actions/github-script@v3
         with:
           script: |
