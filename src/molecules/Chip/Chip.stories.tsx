@@ -388,21 +388,30 @@ export const TestLeadingIcon: Story = {
 
 export const TestChildren: Story = {
   tags: ['!dev', '!autodocs'],
-  args: {
-    onClick: fn(),
-    children: (
+  render: (args) => (
+    <Chip {...args}>
+      <div>first</div>
+      second
+      <p>third</p>
       <>
-        <div>first</div>
-        second
-        <p>third</p>
+        <p>fifth</p>
+        fourth
         <div>
-          <p>fourth</p>
+          <p>sixth</p>
         </div>
       </>
-    ),
-  },
+    </Chip>
+  ),
+  args: { onClick: fn() },
   play: async ({ canvas }) => {
-    for (const child of ['first', 'second', 'third', 'fourth']) {
+    for (const child of [
+      'first',
+      'second',
+      'third',
+      'fourth',
+      'fifth',
+      'sixth',
+    ]) {
       await expect(canvas.getByText(child)).toBeVisible();
     }
   },
@@ -447,6 +456,16 @@ export const TestDeleteHandler: Story = {
     canvas.getByRole('button').focus();
     await userEvent.keyboard('[Enter]');
     await expect(args.onDelete).toHaveBeenCalled();
+  },
+};
+
+export const TestOtherKeyDoesNothing: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onClick: fn() },
+  play: async ({ canvas, args, userEvent }) => {
+    canvas.getByRole('button').focus();
+    await userEvent.keyboard('a');
+    await expect(args.onClick).not.toHaveBeenCalled();
   },
 };
 
