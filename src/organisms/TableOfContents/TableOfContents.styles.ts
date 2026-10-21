@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components';
 
 interface ButtonProps {
   $active: boolean;
+  $maxLines?: number;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -38,6 +39,21 @@ export const Button = styled.button<ButtonProps>`
     font-weight: 700;
     font-size: 14px;
   }
+  ${({ $maxLines }) =>
+    $maxLines !== undefined &&
+    $maxLines > 0 &&
+    css`
+      > span {
+        min-width: 0;
+        > .label {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: ${$maxLines};
+          overflow: hidden;
+          overflow-wrap: anywhere;
+        }
+      }
+    `}
   ${({ $active }) => {
     return css`
       > span {

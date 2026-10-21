@@ -13,6 +13,8 @@ import { getValues } from 'src/providers/TableOfContentsProvider.utils';
 
 interface TableOfContentsBaseProps {
   onlyShowSelectedChildren?: boolean;
+  /** Truncate labels with an ellipsis after this many lines. Labels wrap fully when omitted. */
+  maxLines?: number;
 }
 
 interface TableOfContentsVerticalProps extends TableOfContentsBaseProps {
@@ -30,6 +32,7 @@ export type TableOfContentsProps =
 
 export const TableOfContents: FC<TableOfContentsProps> = ({
   onlyShowSelectedChildren = true,
+  maxLines,
   ...props
 }) => {
   const { items, selected, setSelected } = useTableOfContents();
@@ -83,6 +86,7 @@ export const TableOfContents: FC<TableOfContentsProps> = ({
         >
           <TableOfContentsItem
             onlyShowSelectedChildren={onlyShowSelectedChildren}
+            maxLines={maxLines}
             {...item}
           />
         </VerticalItemsContainer>

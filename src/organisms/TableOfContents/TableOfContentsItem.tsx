@@ -15,6 +15,7 @@ import { AnimatePresence } from 'motion/react';
 
 interface TableOfContentsItemProps extends TableOfContentsItemType {
   onlyShowSelectedChildren: boolean;
+  maxLines?: number;
   activeParent?: boolean;
 }
 
@@ -25,6 +26,7 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
   disabled = false,
   children,
   onlyShowSelectedChildren,
+  maxLines,
 }) => {
   const { isActive, selected, setSelected } = useTableOfContents();
 
@@ -46,8 +48,11 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
         $active={selected === value}
         onClick={handleOnClick}
         disabled={disabled}
+        $maxLines={maxLines}
       >
-        <span title={label}>{label}</span>
+        <span title={label}>
+          <span className="label">{label}</span>
+        </span>
         {count !== undefined && (
           <Badge variant={disabled ? 'empty' : 'light'} value={count} />
         )}
@@ -66,6 +71,7 @@ export const TableOfContentsItem: FC<TableOfContentsItemProps> = ({
               <TableOfContentsItem
                 key={child.value}
                 onlyShowSelectedChildren={onlyShowSelectedChildren}
+                maxLines={maxLines}
                 {...child}
               />
             ))}
