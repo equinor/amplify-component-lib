@@ -13,8 +13,8 @@ import { ImpersonateUserDto } from '@equinor/subsurface-app-management';
 import { useMappedRoles } from './hooks/useMappedRoles';
 import {
   Container,
-  RoleChip,
-  RoleChipContainer,
+  RoleTag,
+  RoleTagContainer,
 } from './UserImpersonation.styles';
 import { colors } from 'src/atoms/style/colors';
 import { ListItem } from 'src/molecules/ListItem/ListItem';
@@ -96,9 +96,11 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
         <Tooltip title={fullName} placement="top">
           <Typography data-testid="name">{fullName}</Typography>
         </Tooltip>
-        <RoleChipContainer $selected={selected}>
+        <RoleTagContainer>
           <Tooltip title={activeRoles.at(0)?.label} placement="top">
-            <RoleChip data-testid="role">{activeRoles[0].label}</RoleChip>
+            <RoleTag color="grey" data-testid="role">
+              {activeRoles[0].label}
+            </RoleTag>
           </Tooltip>
           {activeRoles.length > 1 && (
             <Tooltip
@@ -107,12 +109,12 @@ export const UserImpersonation: FC<UserImpersonationProps> = ({
                 .map((role) => role.label)
                 .join(', ')}
             >
-              <RoleChip data-testid="additional-roles">
+              <RoleTag color="grey" data-testid="additional-roles">
                 {`+${activeRoles.length - 1}`}
-              </RoleChip>
+              </RoleTag>
             </Tooltip>
           )}
-        </RoleChipContainer>
+        </RoleTagContainer>
         {selected && (
           <Icon data={check} color={colors.interactive.primary__resting.rgba} />
         )}

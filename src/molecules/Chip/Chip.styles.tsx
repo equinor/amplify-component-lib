@@ -1,9 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 
 import { colors, spacings } from 'src/atoms/style';
-import { BaseChipProps } from 'src/molecules/Chip/Chip';
-import { InteractiveChipProps } from 'src/molecules/Chip/InteractiveChip';
-import { ReadOnlyChipProps } from 'src/molecules/Chip/ReadOnlyChip';
+import { BaseChipProps, InteractiveChipBase } from 'src/molecules/Chip/Chip';
 
 import styled, { css } from 'styled-components';
 
@@ -366,7 +364,9 @@ const commonChipStyle = css`
   }
 `;
 
-export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
+export const InteractiveChipStyle = styled.button<
+  Pick<BaseChipProps, 'variant'> & Pick<InteractiveChipBase, 'selected'>
+>`
   cursor: pointer;
   ${commonChipStyle}
   ${({ variant, selected }) => {
@@ -377,10 +377,14 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
       background-color: ${colorScheme.background};
       outline: 1px solid ${colorScheme.borderColor};
 
-      &:hover {
+      &:hover:not([aria-disabled='true']) {
         background-color: ${colorScheme.hover.background};
         color: ${colorScheme.hover.color};
         outline: 1px solid ${colorScheme.hover.borderColor};
+      }
+
+      &[aria-disabled='true'] {
+        cursor: default;
       }
 
       &:disabled {
@@ -395,20 +399,4 @@ export const InteractiveChipStyle = styled.button<InteractiveChipProps>`
       }
     `;
   }};
-`;
-
-export const ReadOnlyChipStyle = styled.div<ReadOnlyChipProps>`
-  ${commonChipStyle}
-  ${(props) => {
-    const colorScheme = getColorSchemeBy(props.variant, true);
-
-    return css`
-      color: ${colors.text.static_icons__default.rgba};
-      background-color: ${props.variant === 'white' ||
-      props.variant === 'highContrast'
-        ? colorSchemes.white.background
-        : colors.ui.background__light.rgba};
-      outline: 1px solid ${colorScheme.color};
-    `;
-  }}
 `;

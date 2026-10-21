@@ -1,5 +1,4 @@
 import { animation, colors, shape, spacings } from 'src/atoms/style';
-import { Chip } from 'src/molecules/Chip/Chip';
 
 import styled from 'styled-components';
 
@@ -74,10 +73,4 @@ export const RolesContainer = styled.section`
   overflow-x: hidden;
   gap: ${spacings.small};
   margin-top: ${spacings.small};
-`;
-
-export const RoleChip = styled(Chip)`
-  background: ${colors.ui.background__light.rgba};
-  border: 1px solid ${colors.ui.background__medium.rgba};
-  color: ${colors.text.static_icons__default.rgba};
 `;

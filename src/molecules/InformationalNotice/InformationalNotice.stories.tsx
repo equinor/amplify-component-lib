@@ -4,7 +4,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { InformationalNotice } from './InformationalNotice';
 import { spacings } from 'src/atoms/style';
-import { Chip } from 'src/molecules/Chip/Chip';
+import { Tag } from 'src/molecules/Tag/Tag';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
 import { expect } from 'storybook/test';
@@ -73,8 +73,8 @@ export const ElementsAsChildren: Story = {
           <Typography variant="body_long">
             <b>Sections missing:</b>
           </Typography>
-          <Chip>18&#34;</Chip>
-          <Chip>8&#34;</Chip>
+          <Tag>18&#34;</Tag>
+          <Tag>8&#34;</Tag>
         </div>
       </>
     ),

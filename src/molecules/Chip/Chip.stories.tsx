@@ -5,10 +5,11 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { BaseChipProps, Chip } from './Chip';
 import { InteractiveChipProps } from './InteractiveChip';
 import { colors } from 'src/atoms/style/colors';
-import page from 'src/molecules/Chip/Chips.docs.mdx';
+import { colorSchemes } from 'src/molecules/Chip/Chip.styles';
 import { Stack } from 'src/storybook';
 
 import { action } from 'storybook/actions';
+import { expect, fn } from 'storybook/test';
 import styled from 'styled-components';
 
 const handleDelete = action('onDelete');
@@ -23,7 +24,6 @@ const meta: Meta<typeof Chip> = {
       url: 'https://www.figma.com/design/fk8AI59x5HqPCBg4Nemlkl/%F0%9F%92%A0-Component-Library---Amplify?node-id=25212-3947&m=dev',
     },
     docs: {
-      page,
       source: {
         excludeDecorators: true,
       },
@@ -48,6 +48,13 @@ const meta: Meta<typeof Chip> = {
     disabled: {
       control: 'boolean',
       name: 'Disabled',
+      defaultValue: false,
+    },
+    locked: {
+      control: 'boolean',
+      name: 'Locked',
+      description:
+        'Temporarily makes the chip non-interactive and shows a lock icon. For edge cases only',
       defaultValue: false,
     },
     variant: {
@@ -80,7 +87,6 @@ const meta: Meta<typeof Chip> = {
     },
     onClick: {
       control: 'radio',
-
       options: ['none', 'Can be clicked'],
       defaultValue: 'none',
       mapping: {
@@ -124,7 +130,8 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 1fr repeat(4, auto);
-  gap: 16px;
+  gap: 8px;
+  column-gap: 0;
   align-items: center;
   justify-items: center;
 
@@ -194,10 +201,22 @@ export const DefaultChip: Story = {
   },
 };
 
-export const ReadOnlyChip: Story = {
+export const LockedChip: Story = {
   args: {
     children: 'Chip Text',
+    onClick: handleClick,
+    locked: true,
   },
+};
+
+// Resolves a color token (css var with fallback) to the computed rgb value
+const resolveColor = (property: 'color' | 'backgroundColor', token: string) => {
+  const probe = document.createElement('span');
+  probe.style[property] = token;
+  document.body.appendChild(probe);
+  const resolved = getComputedStyle(probe)[property];
+  probe.remove();
+  return resolved;
 };
 
 const CHIP_VARIANTS: BaseChipProps['variant'][] = [
@@ -216,11 +235,11 @@ const CHIP_VARIANTS: BaseChipProps['variant'][] = [
 const Template: StoryFn<InteractiveChipProps> = (args) => (
   <Grid>
     <section className="header">
-      <Typography variant="ingress">Read only</Typography>
+      <Typography variant="ingress">Default</Typography>
       <ColumnHeader />
     </section>
     <section className="header">
-      <Typography variant="ingress">Clickable</Typography>
+      <Typography variant="ingress">Locked</Typography>
       <ColumnHeader />
     </section>
     <section className="header">
@@ -241,19 +260,20 @@ const Template: StoryFn<InteractiveChipProps> = (args) => (
         <RowHeader />
       </section>,
       <Chip
-        key={`${variant}-readonly`}
-        {...args}
-        leadingIconData={undefined}
-        onClick={undefined}
-        onDelete={undefined}
-        variant={variant}
-      />,
-      <Chip
-        key={`${variant}-clickable`}
+        key={`${variant}-default`}
         {...args}
         leadingIconData={undefined}
         onClick={handleClick}
         onDelete={undefined}
+        variant={variant}
+      />,
+      <Chip
+        key={`${variant}-locked`}
+        {...args}
+        leadingIconData={undefined}
+        onClick={handleClick}
+        onDelete={undefined}
+        locked
         variant={variant}
       />,
       <Chip
@@ -287,4 +307,177 @@ ChipVariantsWithStates.args = {
   children: 'Chip Text',
   leadingIconData: save,
   onClick: handleClick,
+};
+
+export const TestWhiteChipBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', variant: 'white' },
+  play: async ({ canvas }) => {
+    await expect(
+      getComputedStyle(canvas.getByRole('button')).backgroundColor
+    ).toBe(resolveColor('backgroundColor', colorSchemes.white.background));
+  },
+};
+
+export const TestWhiteSelectedUsesDefaultSelected: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    children: 'Chip Text',
+    variant: 'white',
+    selected: true,
+    onClick: handleClick,
+  },
+  play: async ({ canvas }) => {
+    const style = getComputedStyle(canvas.getByRole('button'));
+    const selected = colorSchemes.default.selected!;
+    await expect(style.backgroundColor).toBe(
+      resolveColor('backgroundColor', selected.background)
+    );
+    await expect(style.color).toBe(
+      resolveColor('color', colorSchemes.default.color)
+    );
+    await expect(style.outlineColor).toBe(
+      resolveColor('color', selected.borderColor)
+    );
+  },
+};
+
+export const TestGreenRestingColors: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', variant: 'green', onClick: handleClick },
+  play: async ({ canvas }) => {
+    const style = getComputedStyle(canvas.getByRole('button'));
+    await expect(style.color).toBe(
+      resolveColor('color', colorSchemes.green.color)
+    );
+    await expect(style.backgroundColor).toBe(
+      resolveColor('backgroundColor', colorSchemes.green.background)
+    );
+  },
+};
+
+export const TestErrorSelectedBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    children: 'Chip Text',
+    variant: 'error',
+    selected: true,
+    onClick: handleClick,
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      getComputedStyle(canvas.getByRole('button')).backgroundColor
+    ).toBe(
+      resolveColor('backgroundColor', colorSchemes.error.selected!.background)
+    );
+  },
+};
+
+export const TestLeadingIcon: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', leadingIconData: save, onClick: fn() },
+  play: async ({ canvas }) => {
+    const text = canvas.getByText('Chip Text');
+    await expect(text.parentElement?.firstElementChild).toHaveClass('leading');
+    await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
+      'd',
+      save.svgPathData
+    );
+  },
+};
+
+export const TestChildren: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    onClick: fn(),
+    children: (
+      <>
+        <div>first</div>
+        second
+        <p>third</p>
+        <div>
+          <p>fourth</p>
+        </div>
+      </>
+    ),
+  },
+  play: async ({ canvas }) => {
+    for (const child of ['first', 'second', 'third', 'fourth']) {
+      await expect(canvas.getByText(child)).toBeVisible();
+    }
+  },
+};
+
+export const TestNumberChild: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 42, onClick: fn() },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByText('42')).toBeVisible();
+  },
+};
+
+export const TestDeleteIcon: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onDelete: fn() },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('img')).toBeInTheDocument();
+  },
+};
+
+export const TestClickAndDelete: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onClick: fn() },
+  play: async ({ canvas, args, userEvent }) => {
+    await userEvent.click(canvas.getByText('Chip Text'));
+    await expect(args.onClick).toHaveBeenCalledTimes(1);
+    vi.mocked(args.onClick!).mockClear();
+    canvas.getByRole('button').focus();
+    await userEvent.keyboard('[Enter]');
+    await expect(args.onClick).toHaveBeenCalled();
+  },
+};
+
+export const TestDeleteHandler: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onDelete: fn() },
+  play: async ({ canvas, args, userEvent }) => {
+    await userEvent.click(canvas.getByText('Chip Text'));
+    await expect(args.onDelete).toHaveBeenCalledTimes(1);
+    vi.mocked(args.onDelete!).mockClear();
+    canvas.getByRole('button').focus();
+    await userEvent.keyboard('[Enter]');
+    await expect(args.onDelete).toHaveBeenCalled();
+  },
+};
+
+export const TestDisabledDoesNotClick: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onClick: fn(), disabled: true },
+  play: async ({ canvas, args, userEvent }) => {
+    await userEvent.click(canvas.getByText('Chip Text'));
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
+export const TestLockedDoesNothing: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onClick: fn(), locked: true },
+  play: async ({ canvas, args, userEvent }) => {
+    const chip = canvas.getByRole('button');
+    await expect(chip.querySelector('.leading svg')).toBeInTheDocument();
+    await expect(chip).toHaveAttribute('aria-disabled', 'true');
+    await userEvent.click(chip);
+    chip.focus();
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
+export const TestLockedDeleteDoesNothing: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { children: 'Chip Text', onDelete: fn(), locked: true },
+  play: async ({ canvas, args, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button'));
+    await expect(args.onDelete).not.toHaveBeenCalled();
+  },
 };

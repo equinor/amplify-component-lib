@@ -51,6 +51,7 @@ export interface TagProps {
   textColor?: string;
   children: ReactNode;
   className?: string;
+  'data-testid'?: string;
   style?: React.CSSProperties | undefined;
 }
 
@@ -63,6 +64,7 @@ export const Tag: FC<TagProps> = ({
   iconColor,
   className,
   style,
+  'data-testid': dataTestId,
 }) => {
   return (
     <Container
@@ -71,6 +73,7 @@ export const Tag: FC<TagProps> = ({
       $textColor={textColor}
       className={className}
       style={style}
+      data-testid={dataTestId}
     >
       {leadingIcon && <Icon data={leadingIcon} size={16} />}
       <Typography variant="cell_text" group="table" as="span">
