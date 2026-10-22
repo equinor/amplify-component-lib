@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ReleaseNote } from './ReleaseNote';
 
+import { expect } from 'storybook/test';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -52,5 +53,20 @@ export const WithVersion: Story = {
     releaseDate: new Date('03/09/2024, 10:21').toISOString(),
     createdDate: new Date('03/09/2024, 10:21').toISOString(),
     tags: ['Bug fix', 'Improvement', 'Feature'],
+  },
+};
+
+export const TestUnknownTagFallsBackToGrey: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    ...Default.args,
+    tags: ['Something else'],
+  },
+  play: async ({ canvas }) => {
+    const tag = canvas.getByText('Something else');
+    const releaseNoteTag = canvas.getByText('Release Note');
+    await expect(getComputedStyle(tag).backgroundColor).toBe(
+      getComputedStyle(releaseNoteTag).backgroundColor
+    );
   },
 };

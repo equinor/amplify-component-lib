@@ -5,7 +5,7 @@ import { checkbox, checkbox_outline, search } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import { ComboBoxChip } from '../Select.styles';
+import { ComboBoxChip, LockedComboBoxChip } from '../Select.styles';
 import { ComboBox, ComboBoxProps } from './ComboBox';
 import { spacings } from 'src/atoms/style';
 import {
@@ -254,10 +254,12 @@ const CustomValueElement: FC<{
   locked?: boolean;
 }> = ({ item, onDelete, tryingToRemove, locked }) =>
   locked ? (
-    <ComboBoxChip className="amplify-combo-box-chip" $tryingToRemove={false}>
-      <Dot />
-      {item.label}
-    </ComboBoxChip>
+    <LockedComboBoxChip className="amplify-combo-box-chip">
+      <span className="content">
+        <Dot />
+        {item.label}
+      </span>
+    </LockedComboBoxChip>
   ) : (
     <ComboBoxChip
       className="amplify-combo-box-chip"

@@ -370,6 +370,30 @@ const ComboBoxChip = styled(Chip)<ComboBoxChipProps>`
     return colors.ui.background__default.rgba;
   }} !important;
 `;
+
+// Static look of the old read only chip, used for locked values
+const LockedComboBoxChip = styled.span`
+  display: flex;
+  width: fit-content;
+  box-sizing: content-box;
+  padding: ${spacings.x_small};
+  border-radius: ${shape.rounded.borderRadius};
+  outline: 1px solid ${colors.interactive.primary__resting.rgba};
+  background: ${colors.ui.background__default.rgba};
+  color: ${colors.text.static_icons__default.rgba};
+  font-family: 'Equinor', sans-serif;
+  font-weight: 500;
+  font-size: ${tokens.typography.ui.chip__badge.fontSize};
+  line-height: 16px;
+  text-align: center;
+
+  .content {
+    display: flex;
+    align-items: center;
+    gap: ${spacings.x_small};
+    padding: 0 ${spacings.small};
+  }
+`;
 /* v8 ignore end */
 
 const PersistentGroupsWrapper = styled.div`
@@ -621,6 +645,7 @@ export {
   PersistentListItem,
   PersistentComboBoxWrapper,
   ComboBoxChip,
+  LockedComboBoxChip,
   LeadingContentWrapper,
   Section,
   SearchArea,

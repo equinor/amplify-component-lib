@@ -5,14 +5,10 @@ import { EnvironmentToggleFeatures } from '@equinor/subsurface-app-management';
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { ProfileButton } from './Account.styles';
 import { spacings } from 'src/atoms/style';
-import {
-  formatFeatureName,
-  getVariantColors,
-} from 'src/atoms/utils/environmentToggle';
+import { formatFeatureName } from 'src/atoms/utils/environmentToggle';
 import { SelectOptionRequired } from 'src/molecules';
-import { Chip } from 'src/molecules/Chip/Chip';
 import { ProfileAvatar } from 'src/molecules/ProfileAvatar/ProfileAvatar';
-import { StatusVariantProps } from 'src/organisms/TopBar/Account/Account.types';
+import { Tag } from 'src/molecules/Tag/Tag';
 import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
 
@@ -22,12 +18,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: ${spacings.xx_small};
-`;
-
-export const StatusChip = styled(Chip)<StatusVariantProps>`
-  background: ${({ $variant }) => getVariantColors($variant).chipBackground};
-  outline: none;
-  padding: 0;
 `;
 
 interface AccountButtonProps {
@@ -70,23 +60,17 @@ export const AccountButton = forwardRef<HTMLButtonElement, AccountButtonProps>(
     return (
       <Wrapper>
         {impersonationRoles.at(0) && (
-          <StatusChip $variant={'impersonate'}>
-            {impersonationRoles[0]}
-          </StatusChip>
+          <Tag color="grey">{impersonationRoles[0]}</Tag>
         )}
         {impersonationRoles.length > 1 && (
-          <StatusChip
-            $variant={'impersonate'}
-          >{`+${impersonationRoles.length - 1}`}</StatusChip>
+          <Tag color="grey">{`+${impersonationRoles.length - 1}`}</Tag>
         )}
 
         {isActiveFeatureOnCurrentEnvironment && activeFeatures.at(0) && (
-          <StatusChip $variant={'environment'}>{activeFeatures[0]}</StatusChip>
+          <Tag color="grey">{activeFeatures[0]}</Tag>
         )}
         {activeFeatures.length > 1 && (
-          <StatusChip
-            $variant={'environment'}
-          >{`+${activeFeatures.length - 1}`}</StatusChip>
+          <Tag color="grey">{`+${activeFeatures.length - 1}`}</Tag>
         )}
         <ProfileButton ref={ref} onClick={onClick}>
           {getAvatar()}
