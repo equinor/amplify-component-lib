@@ -1,4 +1,4 @@
-export * from './auth_environment';
+export { auth, environment } from './auth_environment';
 export * from './coordinate';
 export * from './date';
 export * from './export';

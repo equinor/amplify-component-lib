@@ -12,6 +12,9 @@ vi.mock('@azure/msal-browser', () => {
       constructor() {
         return;
       }
+      addEventCallback() {
+        return null;
+      }
     },
     AccountInfo: { username: 'mock' } as AccountInfo,
   };
