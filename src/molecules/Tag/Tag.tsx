@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
@@ -91,7 +91,7 @@ export interface IconTagProps extends BaseTagProps {
 
 export type TagProps = DefaultTagProps | IconTagProps;
 
-export const Tag: FC<TagProps> = (props) => {
+export function Tag(props: TagProps) {
   const {
     color = 'blue',
     variant = 'pastel',
@@ -135,4 +135,4 @@ export const Tag: FC<TagProps> = (props) => {
       {trailingIcon && <Icon data={trailingIcon} size={16} />}
     </Container>
   );
-};
+}
