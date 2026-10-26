@@ -62,10 +62,6 @@ const meta: Meta<typeof Tag> = {
         edit,
       },
     },
-    iconOnly: {
-      control: 'boolean',
-      description: 'Use the icon tag variant, which takes icon and label props',
-    },
     variant: {
       control: 'select',
       options: ['pastel', 'vibrant', 'outlined'],
