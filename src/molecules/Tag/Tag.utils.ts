@@ -12,7 +12,7 @@ type TagColors = Record<NonNullable<BaseTagProps['color']>, TagColorTokens>;
 const PASTEL_COLORS: TagColors = {
   blue: {
     text: colors.dataviz.darkblue.darker,
-    background: colors.dataviz.darkblue.lighter,
+    background: colors.dataviz.lightblue.lighter,
   },
   green: {
     text: colors.dataviz.darkgreen.darker,
