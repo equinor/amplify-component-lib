@@ -9,7 +9,8 @@ import { TAG_COLORS } from 'src/molecules/Tag/Tag.utils';
 import styled, { css } from 'styled-components';
 
 interface ContainerProps {
-  $color: NonNullable<TagProps['color']>;
+  $color: NonNullable<BaseTagProps['color']>;
+  $variant: NonNullable<BaseTagProps['variant']>;
   $iconColor?: string;
   $textColor?: string;
   $iconOnly?: boolean;
@@ -21,7 +22,13 @@ const Container = styled.div<ContainerProps>`
   border-radius: ${shape.corners.borderRadius};
   padding: ${spacings.xx_small} ${spacings.x_small};
   gap: ${spacings.x_small};
-  background: ${({ $color }) => TAG_COLORS[$color].background};
+  background: ${({ $color, $variant }) =>
+    TAG_COLORS[$variant][$color].background};
+  ${({ $color, $variant }) => {
+    const { border } = TAG_COLORS[$variant][$color];
+    // Outline does not take up space, so the tag size is the same for all variants
+    return border && `outline: 1px solid ${border};`;
+  }}
   min-height: 24px;
   min-width: fit-content;
   width: fit-content;
@@ -35,12 +42,14 @@ const Container = styled.div<ContainerProps>`
     `}
 
   > span {
-    color: ${({ $color, $textColor }) => $textColor ?? TAG_COLORS[$color].text};
+    color: ${({ $color, $variant, $textColor }) =>
+      $textColor ?? TAG_COLORS[$variant][$color].text};
     line-height: normal;
   }
   > svg {
     flex-shrink: 0;
-    fill: ${({ $color, $iconColor }) => $iconColor ?? TAG_COLORS[$color].text};
+    fill: ${({ $color, $variant, $iconColor }) =>
+      $iconColor ?? TAG_COLORS[$variant][$color].text};
   }
 `;
 
@@ -53,7 +62,13 @@ export interface BaseTagProps {
     | 'yellow'
     | 'dark pink'
     | 'pink'
-    | 'grey';
+    | 'grey'
+    | 'white'
+    | 'success'
+    | 'warning'
+    | 'danger';
+  /** @default 'pastel' */
+  variant?: 'pastel' | 'vibrant' | 'outlined';
   iconColor?: string;
   className?: string;
   style?: React.CSSProperties | undefined;
@@ -77,12 +92,19 @@ export interface IconTagProps extends BaseTagProps {
 export type TagProps = DefaultTagProps | IconTagProps;
 
 export const Tag: FC<TagProps> = (props) => {
-  const { color = 'blue', iconColor, className, style } = props;
+  const {
+    color = 'blue',
+    variant = 'pastel',
+    iconColor,
+    className,
+    style,
+  } = props;
 
   if (props.iconOnly) {
     return (
       <Container
         $color={color}
+        $variant={variant}
         $iconColor={iconColor}
         $iconOnly
         role="img"
@@ -100,6 +122,7 @@ export const Tag: FC<TagProps> = (props) => {
   return (
     <Container
       $color={color}
+      $variant={variant}
       $iconColor={iconColor}
       $textColor={textColor}
       className={className}

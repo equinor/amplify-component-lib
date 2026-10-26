@@ -2,6 +2,7 @@ import {
   check,
   code,
   color_palette,
+  computer,
   edit,
   users_circle,
   visibility,
@@ -36,6 +37,10 @@ const meta: Meta<typeof Tag> = {
         'orange',
         'yellow',
         'grey',
+        'white',
+        'success',
+        'warning',
+        'danger',
       ],
       description: 'Default is blue',
     },
@@ -60,6 +65,11 @@ const meta: Meta<typeof Tag> = {
     iconOnly: {
       control: 'boolean',
       description: 'Use the icon tag variant, which takes icon and label props',
+    },
+    variant: {
+      control: 'select',
+      options: ['pastel', 'vibrant', 'outlined'],
+      description: 'Default is pastel',
     },
     iconColor: {
       control: 'color',
@@ -97,6 +107,10 @@ const AVAILABLE_COLORS: NonNullable<TagProps['color']>[] = [
   'orange',
   'yellow',
   'grey',
+  'white',
+  'success',
+  'warning',
+  'danger',
 ];
 
 export const Colors: Story = {
@@ -115,6 +129,73 @@ export const Colors: Story = {
       }))}
     />
   ),
+};
+
+const AVAILABLE_VARIANTS: NonNullable<TagProps['variant']>[] = [
+  'pastel',
+  'vibrant',
+  'outlined',
+];
+
+export const Variants: Story = {
+  args: {
+    leadingIcon: computer,
+    trailingIcon: undefined,
+    children: 'Developer',
+  },
+  render: (args) => (
+    <div style={{ display: 'flex', gap: 48 }}>
+      <VariantShowcase
+        GenericComponent={Tag}
+        otherProps={{ ...args }}
+        columns={[
+          {
+            label: 'Pastel',
+            value: { variant: 'pastel' },
+          },
+          {
+            label: 'Vibrant',
+            value: { variant: 'vibrant' },
+          },
+          {
+            label: 'Outlined',
+            value: { variant: 'outlined' },
+          },
+        ]}
+        rows={AVAILABLE_COLORS.map((color) => ({
+          label: color,
+          value: { color },
+        }))}
+      />
+    </div>
+  ),
+};
+
+export const VariantStyles: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    leadingIcon: undefined,
+  },
+  render: (args) => (
+    <>
+      {AVAILABLE_VARIANTS.map((variant) => (
+        <Tag key={variant} {...args} variant={variant}>
+          {variant}
+        </Tag>
+      ))}
+    </>
+  ),
+  play: async ({ canvas }) => {
+    const getTag = (name: string) =>
+      getComputedStyle(canvas.getByText(name).parentElement!);
+
+    await expect(getTag('pastel').outlineStyle).toBe('none');
+    await expect(getTag('outlined').outlineStyle).toBe('solid');
+    await expect(getTag('vibrant').outlineStyle).toBe('none');
+    await expect(getTag('vibrant').backgroundColor).not.toBe(
+      getTag('pastel').backgroundColor
+    );
+  },
 };
 
 export const CustomTextAndIconColors: Story = {
