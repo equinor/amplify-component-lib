@@ -7,7 +7,7 @@ export const TAG_COLORS: Record<
 > = {
   blue: {
     text: colors.dataviz.darkblue.darker,
-    background: colors.dataviz.darkblue.lighter,
+    background: colors.dataviz.lightblue.lighter,
   },
   green: {
     text: colors.dataviz.darkgreen.darker,
