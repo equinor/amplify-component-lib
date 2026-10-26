@@ -8,7 +8,7 @@ import {
 } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Tag, TagProps } from './Tag';
+import { DefaultTagProps, IconTagProps, Tag, TagProps } from './Tag';
 import { capitalize } from 'src/atoms/utils';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
@@ -57,6 +57,10 @@ const meta: Meta<typeof Tag> = {
         edit,
       },
     },
+    iconOnly: {
+      control: 'boolean',
+      description: 'Use the icon tag variant, which takes icon and label props',
+    },
     iconColor: {
       control: 'color',
       type: 'string',
@@ -74,7 +78,8 @@ const meta: Meta<typeof Tag> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Tag>;
+type Story = StoryObj<DefaultTagProps>;
+type IconStory = StoryObj<IconTagProps>;
 
 export const Default: Story = {
   args: {},
@@ -145,6 +150,41 @@ export const TrailingIcon: Story = {
   },
   play: async ({ canvas, args }) => {
     await expect(canvas.getByText(args.children as string)).toBeInTheDocument();
+    await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
+      'd',
+      code.svgPathData
+    );
+  },
+};
+
+export const IconOnly: IconStory = {
+  args: {
+    iconOnly: true,
+    icon: check,
+    label: 'Approved',
+  },
+  render: (args) => (
+    <VariantShowcase
+      GenericComponent={Tag}
+      otherProps={args}
+      rows={AVAILABLE_COLORS.map((color) => ({
+        label: capitalize(color),
+        value: { color },
+      }))}
+    />
+  ),
+};
+
+export const IconOnlyAccessibleLabel: IconStory = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    iconOnly: true,
+    icon: code,
+    label: 'Developer',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('img', { name: 'Developer' })).toBeVisible();
+    await expect(canvas.queryByText('Developer')).not.toBeInTheDocument();
     await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
       'd',
       code.svgPathData
