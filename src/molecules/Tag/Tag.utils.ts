@@ -35,11 +35,11 @@ const PASTEL_COLORS: TagColors = {
     background: colors.dataviz.orange.lighter,
   },
   yellow: {
-    text: colors.dataviz.darkyellow.deep,
+    text: colors.dataviz.darkyellow.darker,
     background: colors.dataviz.lightyellow.lighter,
   },
   grey: {
-    text: colors.dataviz.lightgray.darker,
+    text: colors.text.static_icons__default.rgba,
     background: colors.dataviz.lightgray.pale,
   },
   success: {
