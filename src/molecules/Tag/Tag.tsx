@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { IconData } from '@equinor/eds-icons';
@@ -6,12 +6,14 @@ import { IconData } from '@equinor/eds-icons';
 import { shape, spacings } from 'src/atoms/style';
 import { TAG_COLORS } from 'src/molecules/Tag/Tag.utils';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface ContainerProps {
-  $color: NonNullable<TagProps['color']>;
+  $color: NonNullable<BaseTagProps['color']>;
+  $variant: NonNullable<BaseTagProps['variant']>;
   $iconColor?: string;
   $textColor?: string;
+  $iconOnly?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -20,22 +22,38 @@ const Container = styled.div<ContainerProps>`
   border-radius: ${shape.corners.borderRadius};
   padding: ${spacings.xx_small} ${spacings.x_small};
   gap: ${spacings.x_small};
-  background: ${({ $color }) => TAG_COLORS[$color].background};
+  background: ${({ $color, $variant }) =>
+    TAG_COLORS[$variant][$color].background};
+  ${({ $color, $variant }) => {
+    const { border } = TAG_COLORS[$variant][$color];
+    // Outline does not take up space, so the tag size is the same for all variants
+    return border && `outline: 1px solid ${border};`;
+  }}
   min-height: 24px;
   min-width: fit-content;
   width: fit-content;
 
+  ${({ $iconOnly }) =>
+    $iconOnly &&
+    css`
+      justify-content: center;
+      padding: 4px;
+      min-width: 24px;
+    `}
+
   > span {
-    color: ${({ $color, $textColor }) => $textColor ?? TAG_COLORS[$color].text};
+    color: ${({ $color, $variant, $textColor }) =>
+      $textColor ?? TAG_COLORS[$variant][$color].text};
     line-height: normal;
   }
   > svg {
     flex-shrink: 0;
-    fill: ${({ $color, $iconColor }) => $iconColor ?? TAG_COLORS[$color].text};
+    fill: ${({ $color, $variant, $iconColor }) =>
+      $iconColor ?? TAG_COLORS[$variant][$color].text};
   }
 `;
 
-export interface TagProps {
+export interface BaseTagProps {
   color?:
     | 'blue'
     | 'green'
@@ -44,31 +62,70 @@ export interface TagProps {
     | 'yellow'
     | 'dark pink'
     | 'pink'
-    | 'grey';
-  leadingIcon?: IconData;
-  trailingIcon?: IconData;
+    | 'grey'
+    | 'white'
+    | 'success'
+    | 'warning'
+    | 'danger';
+  /** @default 'pastel' */
+  variant?: 'pastel' | 'vibrant' | 'outlined';
   iconColor?: string;
-  textColor?: string;
-  children: ReactNode;
   className?: string;
-  'data-testid'?: string;
   style?: React.CSSProperties | undefined;
+  'data-testid'?: string;
 }
 
-export const Tag: FC<TagProps> = ({
-  children,
-  color = 'blue',
-  leadingIcon,
-  trailingIcon,
-  textColor,
-  iconColor,
-  className,
-  style,
-  'data-testid': dataTestId,
-}) => {
+export interface DefaultTagProps extends BaseTagProps {
+  iconOnly?: false;
+  leadingIcon?: IconData;
+  trailingIcon?: IconData;
+  textColor?: string;
+  children: ReactNode;
+}
+
+export interface IconTagProps extends BaseTagProps {
+  iconOnly: true;
+  icon: IconData;
+  /** Accessible label, since the tag has no visible text */
+  label: string;
+}
+
+export type TagProps = DefaultTagProps | IconTagProps;
+
+export function Tag(props: TagProps) {
+  const {
+    color = 'blue',
+    variant = 'pastel',
+    iconColor,
+    className,
+    style,
+    'data-testid': dataTestId
+  } = props;
+
+  if (props.iconOnly) {
+    return (
+      <Container
+        $color={color}
+        $variant={variant}
+        $iconColor={iconColor}
+        $iconOnly
+        role="img"
+        aria-label={props.label}
+        className={className}
+        style={style}
+        data-testid={dataTestId}
+      >
+        <Icon data={props.icon} size={16} />
+      </Container>
+    );
+  }
+
+  const { children, leadingIcon, trailingIcon, textColor } = props;
+
   return (
     <Container
       $color={color}
+      $variant={variant}
       $iconColor={iconColor}
       $textColor={textColor}
       className={className}
@@ -82,4 +139,4 @@ export const Tag: FC<TagProps> = ({
       {trailingIcon && <Icon data={trailingIcon} size={16} />}
     </Container>
   );
-};
+}

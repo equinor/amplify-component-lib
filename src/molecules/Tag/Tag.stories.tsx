@@ -2,13 +2,14 @@ import {
   check,
   code,
   color_palette,
+  computer,
   edit,
   users_circle,
   visibility,
 } from '@equinor/eds-icons';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Tag, TagProps } from './Tag';
+import { DefaultTagProps, IconTagProps, Tag, TagProps } from './Tag';
 import { capitalize } from 'src/atoms/utils';
 import { VariantShowcase } from 'src/storybook/VariantShowcase';
 
@@ -36,6 +37,10 @@ const meta: Meta<typeof Tag> = {
         'orange',
         'yellow',
         'grey',
+        'white',
+        'success',
+        'warning',
+        'danger',
       ],
       description: 'Default is blue',
     },
@@ -57,6 +62,11 @@ const meta: Meta<typeof Tag> = {
         edit,
       },
     },
+    variant: {
+      control: 'select',
+      options: ['pastel', 'vibrant', 'outlined'],
+      description: 'Default is pastel',
+    },
     iconColor: {
       control: 'color',
       type: 'string',
@@ -74,7 +84,8 @@ const meta: Meta<typeof Tag> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Tag>;
+type Story = StoryObj<DefaultTagProps>;
+type IconStory = StoryObj<IconTagProps>;
 
 export const Default: Story = {
   args: {},
@@ -92,6 +103,10 @@ const AVAILABLE_COLORS: NonNullable<TagProps['color']>[] = [
   'orange',
   'yellow',
   'grey',
+  'white',
+  'success',
+  'warning',
+  'danger',
 ];
 
 export const Colors: Story = {
@@ -110,6 +125,73 @@ export const Colors: Story = {
       }))}
     />
   ),
+};
+
+const AVAILABLE_VARIANTS: NonNullable<TagProps['variant']>[] = [
+  'pastel',
+  'vibrant',
+  'outlined',
+];
+
+export const Variants: Story = {
+  args: {
+    leadingIcon: computer,
+    trailingIcon: undefined,
+    children: 'Developer',
+  },
+  render: (args) => (
+    <div style={{ display: 'flex', gap: 48 }}>
+      <VariantShowcase
+        GenericComponent={Tag}
+        otherProps={{ ...args }}
+        columns={[
+          {
+            label: 'Pastel',
+            value: { variant: 'pastel' },
+          },
+          {
+            label: 'Vibrant',
+            value: { variant: 'vibrant' },
+          },
+          {
+            label: 'Outlined',
+            value: { variant: 'outlined' },
+          },
+        ]}
+        rows={AVAILABLE_COLORS.map((color) => ({
+          label: color,
+          value: { color },
+        }))}
+      />
+    </div>
+  ),
+};
+
+export const VariantStyles: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    leadingIcon: undefined,
+  },
+  render: (args) => (
+    <>
+      {AVAILABLE_VARIANTS.map((variant) => (
+        <Tag key={variant} {...args} variant={variant}>
+          {variant}
+        </Tag>
+      ))}
+    </>
+  ),
+  play: async ({ canvas }) => {
+    const getTag = (name: string) =>
+      getComputedStyle(canvas.getByText(name).parentElement!);
+
+    await expect(getTag('pastel').outlineStyle).toBe('none');
+    await expect(getTag('outlined').outlineStyle).toBe('solid');
+    await expect(getTag('vibrant').outlineStyle).toBe('none');
+    await expect(getTag('vibrant').backgroundColor).not.toBe(
+      getTag('pastel').backgroundColor
+    );
+  },
 };
 
 export const CustomTextAndIconColors: Story = {
@@ -145,6 +227,41 @@ export const TrailingIcon: Story = {
   },
   play: async ({ canvas, args }) => {
     await expect(canvas.getByText(args.children as string)).toBeInTheDocument();
+    await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
+      'd',
+      code.svgPathData
+    );
+  },
+};
+
+export const IconOnly: IconStory = {
+  args: {
+    iconOnly: true,
+    icon: check,
+    label: 'Approved',
+  },
+  render: (args) => (
+    <VariantShowcase
+      GenericComponent={Tag}
+      otherProps={args}
+      rows={AVAILABLE_COLORS.map((color) => ({
+        label: capitalize(color),
+        value: { color },
+      }))}
+    />
+  ),
+};
+
+export const IconOnlyAccessibleLabel: IconStory = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    iconOnly: true,
+    icon: code,
+    label: 'Developer',
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('img', { name: 'Developer' })).toBeVisible();
+    await expect(canvas.queryByText('Developer')).not.toBeInTheDocument();
     await expect(canvas.getByTestId('eds-icon-path')).toHaveAttribute(
       'd',
       code.svgPathData

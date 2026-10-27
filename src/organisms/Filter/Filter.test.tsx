@@ -309,12 +309,14 @@ test('Auto complete with click', async () => {
   const user = userEvent.setup();
 
   const key = Object.keys(props.values)[0];
+  const selectedValue = props.values[key][0];
+  const search = selectedValue.label.slice(0, 4);
 
   render(
     <Filter
       {...props}
       values={{}}
-      search={'a'}
+      search={search}
       autoCompleteOptions={{
         [key]: props.values[key],
       }}
@@ -327,14 +329,12 @@ test('Auto complete with click', async () => {
   await user.click(searchBox);
 
   for (const value of Object.values(props.values[key]).flat()) {
-    if (value.label.includes('a')) {
+    if (value.label.includes(search)) {
       expect(
         await screen.findByRole('menuitem', { name: value.label })
       ).toBeInTheDocument();
     }
   }
-
-  const selectedValue = props.values[key][0];
 
   await user.click(screen.getByRole('menuitem', { name: selectedValue.label }));
 

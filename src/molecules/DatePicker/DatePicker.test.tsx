@@ -115,3 +115,10 @@ test('Locked ignores Enter so the calendar does not open', async () => {
 
   expect(screen.queryByText('July 2021')).not.toBeInTheDocument();
 });
+
+test('Throws error when providing explanation but not label', () => {
+  vi.spyOn(console, 'error').mockImplementation(() => null);
+  expect(() => render(<DatePicker explanation="Explanation" />)).toThrow(
+    '`explanation` prop requires a `label`'
+  );
+});

@@ -20,6 +20,7 @@ const { colors } = tokens;
 type StoryProps = TableOfContentsProviderProps & {
   mode?: 'vertical' | 'horizontal';
   onlyShowSelectedChildren?: boolean;
+  maxLines?: number;
 };
 
 const meta: Meta<StoryProps> = {
@@ -34,6 +35,7 @@ const meta: Meta<StoryProps> = {
   argTypes: {
     items: { control: 'object' },
     onlyShowSelectedChildren: { control: 'boolean' },
+    maxLines: { control: 'number' },
   },
   args: {
     items: [
@@ -182,6 +184,37 @@ export const Default: Story = {
     for (const item of args.items) {
       expect(canvas.getByRole('button', { name: item.label }));
     }
+  },
+};
+
+const LONG_LABEL =
+  'This is a very long question that would normally make the table of contents squished and crowded';
+
+export const TruncatedLabels: Story = {
+  args: {
+    maxLines: 2,
+    items: [
+      { label: LONG_LABEL, value: 'long-1' },
+      { label: 'Short', value: 'long-2' },
+    ],
+  },
+  render: (args) => {
+    return (
+      <TableOfContentsProvider items={args.items}>
+        <Container>
+          <TableOfContents maxLines={args.maxLines} />
+        </Container>
+      </TableOfContentsProvider>
+    );
+  },
+  play: async ({ canvas, args }) => {
+    const label = canvas.getByText(args.items[0].label);
+    await expect(label).toHaveStyle({ overflow: 'hidden' });
+    await expect(label.parentElement).toHaveAttribute(
+      'title',
+      args.items[0].label
+    );
+    await expect(label.scrollHeight).toBeGreaterThan(label.clientHeight);
   },
 };
 

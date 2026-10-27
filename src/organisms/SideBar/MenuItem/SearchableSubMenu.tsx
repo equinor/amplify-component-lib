@@ -16,13 +16,14 @@ import { Search } from 'src/molecules/Search/Search';
 
 import styled from 'styled-components';
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.div<{ $isOpen: boolean }>`
   align-self: stretch;
+  width: ${({ $isOpen }) => ($isOpen ? '100%' : '256px')};
   min-width: 0;
 `;
 
 const PopupChild = styled(Child)`
-  width: 256px;
+  width: 100%;
   min-width: 0;
   display: block;
   border-bottom: 0;
@@ -45,6 +46,8 @@ const PopupChild = styled(Child)`
 const SearchField = styled(Search)`
   width: 100%;
   min-width: 0;
+  /* Keep the clear button's oversized hit area from overflowing the menu. */
+  overflow: clip;
 `;
 
 const EmptyResults = styled(Typography)`
@@ -115,7 +118,11 @@ export const SearchableSubMenu = ({
   };
 
   return (
-    <SearchContainer ref={contentRef} onKeyDown={handleKeyDown}>
+    <SearchContainer
+      $isOpen={isOpen}
+      ref={contentRef}
+      onKeyDown={handleKeyDown}
+    >
       <SearchField
         id={id}
         type="search"

@@ -4,6 +4,7 @@ on:
   workflow_call:
 jobs:
   tests:
+    # Playwright does not support chromium on ubuntu-latest (26.04) yet
     runs-on: ubuntu-24.04
     outputs:
       tests_failed: ${{ steps.set_failed.outputs.tests_failed }}
