@@ -117,11 +117,11 @@ export type { RadioProps } from './SelectionControls/Radio/Radio';
 export { Switch } from './SelectionControls/Switch/Switch';
 export type { SwitchProps } from './SelectionControls/Switch/Switch';
 export { Waves } from './Waves/Waves';
+export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 
 // EDS Re-export
 export {
   Accordion,
-  Breadcrumbs,
   Divider,
   Dialog as EDSDialog,
   Menu,

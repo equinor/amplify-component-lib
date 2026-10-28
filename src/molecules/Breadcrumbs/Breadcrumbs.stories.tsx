@@ -6,19 +6,16 @@ import {
   useState,
 } from 'react';
 
-import {
-  Breadcrumbs,
-  BreadcrumbsProps,
-  Checkbox,
-  Icon,
-} from '@equinor/eds-core-react';
+import { BreadcrumbsProps, Checkbox, Icon } from '@equinor/eds-core-react';
 import { chevron_right } from '@equinor/eds-icons';
-import { Meta, StoryFn } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
+import { Breadcrumbs } from 'src/molecules/Breadcrumbs/Breadcrumbs';
 import page from 'src/molecules/Breadcrumbs/Breadcrumbs.docs.mdx';
 import { Stack } from 'src/storybook';
 
 import { action } from 'storybook/actions';
+import { expect, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof Breadcrumbs> = {
@@ -209,4 +206,23 @@ export const CustomSeparator: StoryFn<BreadcrumbsProps> = () => {
       </Breadcrumbs>
     </div>
   );
+};
+
+export const DescendersNotClipped: StoryObj<BreadcrumbsProps> = {
+  tags: ['!dev', '!autodocs'],
+  render: () => (
+    <Breadcrumbs>
+      <Breadcrumbs.Breadcrumb href="#" onClick={handleClick}>
+        Typography
+      </Breadcrumbs.Breadcrumb>
+    </Breadcrumbs>
+  ),
+  play: async ({ canvasElement }) => {
+    const link = within(canvasElement).getByRole('link', {
+      name: 'Typography',
+    });
+    // Descenders are clipped when the line box is shorter than the font size
+    const { lineHeight, fontSize } = getComputedStyle(link);
+    await expect(parseFloat(lineHeight)).toBeGreaterThan(parseFloat(fontSize));
+  },
 };
