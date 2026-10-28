@@ -2,8 +2,6 @@ import { Avatar, Card } from '@equinor/eds-core-react';
 import { Divider, DividerProps, Typography } from '@equinor/eds-core-react';
 import { Meta, StoryFn } from '@storybook/react-vite';
 
-import { Button } from 'src/molecules/Button/Button';
-import { Chip } from 'src/molecules/Chip/Chip';
 import page from 'src/molecules/Divider/Divider.docs.mdx';
 import { Stack } from 'src/storybook';
 
@@ -124,50 +122,6 @@ export const Inset: StoryFn<DividerProps> = () => (
   </>
 );
 Inset.decorators = [
-  (Story) => {
-    return (
-      <Stack style={{ padding: '32px', background: '#ebebeb' }}>
-        <Story />
-      </Stack>
-    );
-  },
-];
-
-export const Middle: StoryFn<DividerProps> = () => (
-  <>
-    <Card style={{ width: '50%' }}>
-      <Card.Header>
-        <Card.HeaderTitle>
-          <Typography variant="h4">TICKET</Typography>
-        </Card.HeaderTitle>
-        <Typography variant="h6">20.02.2020</Typography>
-      </Card.Header>
-      <Card.Content>
-        <Typography variant="h5">Description</Typography>
-        <Typography variant="body_short">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore.
-        </Typography>
-        <Divider style={{ width: '100%' }} />
-      </Card.Content>
-      <Card.Content>
-        <Typography variant="caption">Choose option</Typography>
-      </Card.Content>
-      <Card.Actions>
-        <Chip>active</Chip>
-        <Chip variant="white">pause</Chip>
-        <Chip>disable</Chip>
-        <Chip variant="error">stop</Chip>
-      </Card.Actions>
-      <Card.Actions>
-        <Button style={{ marginTop: '16px' }} variant="outlined">
-          SUBMIT TICKET
-        </Button>
-      </Card.Actions>
-    </Card>
-  </>
-);
-Middle.decorators = [
   (Story) => {
     return (
       <Stack style={{ padding: '32px', background: '#ebebeb' }}>

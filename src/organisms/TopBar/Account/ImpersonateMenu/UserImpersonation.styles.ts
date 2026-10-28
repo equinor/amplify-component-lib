@@ -1,7 +1,7 @@
 import { animation, colors, spacings } from 'src/atoms/style';
-import { Chip } from 'src/molecules/Chip/Chip';
+import { Tag } from 'src/molecules/Tag/Tag';
 
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface ContainerProps {
   $selected: boolean;
@@ -44,33 +44,20 @@ export const Container = styled.div<ContainerProps>`
     grid-column: 5;
   }
 `;
-export const RoleChip = styled(Chip)`
-  &,
-  div,
-  span {
+export const RoleTag = styled(Tag)`
+  height: fit-content;
+  min-width: 0;
+
+  > span {
     white-space: nowrap;
     overflow: hidden;
     max-width: 10ch;
     text-overflow: ellipsis;
   }
-  height: fit-content;
-  padding: 0;
-  color: ${colors.text.static_icons__primary_white.rgba};
-  background: ${colors.text.static_icons__tertiary.rgba};
 `;
 
-export const RoleChipContainer = styled.div<ContainerProps>`
+export const RoleTagContainer = styled.div`
   display: flex;
   align-items: center;
   gap: ${spacings.small};
-  ${({ $selected }) => {
-    if (!$selected) return '';
-    return css`
-      > ${RoleChip}, > span > ${RoleChip} {
-        background: ${colors.interactive.primary__resting.rgba};
-        color: ${colors.text.static_icons__primary_white.rgba};
-        outline-color: ${colors.interactive.primary__resting.rgba};
-      }
-    `;
-  }}
 `;

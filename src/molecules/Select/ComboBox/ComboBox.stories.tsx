@@ -5,7 +5,7 @@ import { checkbox, checkbox_outline, search } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
-import { ComboBoxChip } from '../Select.styles';
+import { ComboBoxChip, LockedComboBoxChip } from '../Select.styles';
 import { ComboBox, ComboBoxProps } from './ComboBox';
 import { spacings } from 'src/atoms/style';
 import {
@@ -16,7 +16,7 @@ import {
 } from 'src/molecules/Select/Select.types';
 
 import { actions } from 'storybook/actions';
-import { expect, fn, screen, userEvent, within } from 'storybook/test';
+import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test';
 import styled from 'styled-components';
 
 const meta: Meta<typeof ComboBox> = {
@@ -254,10 +254,12 @@ const CustomValueElement: FC<{
   locked?: boolean;
 }> = ({ item, onDelete, tryingToRemove, locked }) =>
   locked ? (
-    <ComboBoxChip className="amplify-combo-box-chip" $tryingToRemove={false}>
-      <Dot />
-      {item.label}
-    </ComboBoxChip>
+    <LockedComboBoxChip className="amplify-combo-box-chip">
+      <span className="content">
+        <Dot />
+        {item.label}
+      </span>
+    </LockedComboBoxChip>
   ) : (
     <ComboBoxChip
       className="amplify-combo-box-chip"
@@ -1451,22 +1453,28 @@ export const TestOpenWithKeyboard: Story = {
     await step('Open and close the combobox using keyboard', async () => {
       await userEvent.keyboard('{Space}');
 
-      await expect(canvas.getAllByText(items[0].label).length).not.toBe(0);
+      await expect(
+        await canvas.findByRole('menuitem', { name: items[0].label })
+      ).toBeInTheDocument();
     });
 
     await step('Moves focus between search field and options', async () => {
       combobox.focus();
       await userEvent.keyboard('{ArrowDown}');
-      await expect(
-        canvas.getByRole('menuitem', { name: items[0].label })
-      ).toHaveFocus();
+      await waitFor(() =>
+        expect(
+          canvas.getByRole('menuitem', { name: items[0].label })
+        ).toHaveFocus()
+      );
       await userEvent.keyboard('{ArrowUp}');
-      await expect(canvas.getByRole('combobox')).toHaveFocus();
+      await waitFor(() => expect(canvas.getByRole('combobox')).toHaveFocus());
     });
 
     await step('Close the combobox using keyboard', async () => {
       await userEvent.keyboard('{Escape}');
-      await expect(canvas.queryByText(items[0].label)).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(canvas.queryByText(items[0].label)).not.toBeInTheDocument()
+      );
     });
   },
 };

@@ -2,10 +2,8 @@ import { FC } from 'react';
 
 import { useActiveImpersonationUser } from './ImpersonateMenu/hooks/useActiveImpersonationUser';
 import { spacings } from 'src/atoms/style';
-import { getVariantColors } from 'src/atoms/utils/environmentToggle';
 import { ProfileAvatar, SelectOptionRequired } from 'src/molecules';
-import { Chip } from 'src/molecules/Chip/Chip';
-import { StatusVariantProps } from 'src/organisms/TopBar/Account/Account.types';
+import { Tag } from 'src/molecules/Tag/Tag';
 import { impersonateUserDtoToFullName } from 'src/organisms/TopBar/Account/ImpersonateMenu/Impersonate.utils';
 import { StatusAvatar } from 'src/organisms/TopBar/Account/StatusAvatar';
 import { useAuth } from 'src/providers/AuthProvider/AuthProvider';
@@ -17,14 +15,12 @@ const Wrapper = styled.div`
   margin-bottom: ${spacings.small};
 `;
 
-const StatusChip = styled(Chip)<StatusVariantProps>`
+const StatusTag = styled(Tag)`
   position: absolute;
   bottom: calc(${spacings.x_small} * -1);
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  background: ${({ $variant }) => getVariantColors($variant).chipBackground};
-  outline-color: ${({ $variant }) => getVariantColors($variant).outline};
 `;
 
 interface AccountAvatarProps {
@@ -52,7 +48,7 @@ export const AccountAvatar: FC<AccountAvatarProps> = ({
             variant="combined"
             name="Impersonate & Environment"
           />
-          <StatusChip $variant="combined">Impersonate & Environment</StatusChip>
+          <StatusTag color="grey">Impersonate & Environment</StatusTag>
         </>
       );
     }
@@ -64,7 +60,7 @@ export const AccountAvatar: FC<AccountAvatarProps> = ({
             variant="environment"
             name={activeFeatureNames}
           />
-          <StatusChip $variant="environment">Environment</StatusChip>
+          <StatusTag color="grey">Environment</StatusTag>
         </>
       );
     }
@@ -73,7 +69,7 @@ export const AccountAvatar: FC<AccountAvatarProps> = ({
       return (
         <>
           <StatusAvatar size={64} variant="impersonate" name={fullName} />
-          <StatusChip $variant="impersonate">Impersonating</StatusChip>
+          <StatusTag color="grey">Impersonating</StatusTag>
         </>
       );
     }

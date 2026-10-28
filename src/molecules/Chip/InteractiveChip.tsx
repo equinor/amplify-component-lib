@@ -1,7 +1,7 @@
 import { forwardRef, HTMLAttributes, KeyboardEvent } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { close } from '@equinor/eds-icons';
+import { close, lock } from '@equinor/eds-icons';
 
 import {
   ClickableChipProps,
@@ -19,18 +19,20 @@ export const InteractiveChip = forwardRef<
   const {
     children,
     disabled = false,
+    locked = false,
     variant,
     leadingIconData,
     onClick,
     onDelete,
     ...otherProps
   } = props;
-  const relevantOnAction = onDelete ? onDelete : onClick;
+  const usingLeadingIconData = locked ? lock : leadingIconData;
+  const relevantOnAction = locked ? undefined : (onDelete ?? onClick);
 
   const handleKeyPress = (event: KeyboardEvent<HTMLButtonElement>) => {
     const { key } = event;
     if (key === 'Enter') {
-      relevantOnAction(event);
+      relevantOnAction?.(event);
     }
   };
 
@@ -39,14 +41,16 @@ export const InteractiveChip = forwardRef<
       {...otherProps}
       ref={ref}
       disabled={disabled}
+      type="button"
+      aria-disabled={locked || undefined}
       variant={variant}
       onClick={relevantOnAction}
       onKeyDown={handleKeyPress}
     >
       <div className="content">
-        {leadingIconData && (
+        {usingLeadingIconData && (
           <div className="leading">
-            <Icon role={'img'} data={leadingIconData} size={16} />
+            <Icon role={'img'} data={usingLeadingIconData} size={16} />
           </div>
         )}
         {children}

@@ -72,6 +72,7 @@ export interface BaseTagProps {
   iconColor?: string;
   className?: string;
   style?: React.CSSProperties | undefined;
+  'data-testid'?: string;
 }
 
 export interface DefaultTagProps extends BaseTagProps {
@@ -98,6 +99,7 @@ export function Tag(props: TagProps) {
     iconColor,
     className,
     style,
+    'data-testid': dataTestId
   } = props;
 
   if (props.iconOnly) {
@@ -111,6 +113,7 @@ export function Tag(props: TagProps) {
         aria-label={props.label}
         className={className}
         style={style}
+        data-testid={dataTestId}
       >
         <Icon data={props.icon} size={16} />
       </Container>
@@ -127,6 +130,7 @@ export function Tag(props: TagProps) {
       $textColor={textColor}
       className={className}
       style={style}
+      data-testid={dataTestId}
     >
       {leadingIcon && <Icon data={leadingIcon} size={16} />}
       <Typography variant="cell_text" group="table" as="span">

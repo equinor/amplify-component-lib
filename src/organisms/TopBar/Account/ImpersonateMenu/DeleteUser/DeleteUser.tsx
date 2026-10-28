@@ -10,8 +10,8 @@ import { Container } from './DeleteUser.styles';
 import { colors } from 'src/atoms/style';
 import { IconButton } from 'src/molecules';
 import { Button } from 'src/molecules/Button/Button';
+import { Tag } from 'src/molecules/Tag/Tag';
 import {
-  RoleChip,
   RolesContainer,
   TextContent,
 } from 'src/organisms/TopBar/Account/Account.styles';
@@ -56,7 +56,9 @@ export const DeleteUser: FC<DeleteUserProps> = ({ user, onBack }) => {
       </TextContent>
       <RolesContainer>
         {user.roles.map((role) => (
-          <RoleChip key={role}>{role}</RoleChip>
+          <Tag key={role} color="grey">
+            {role}
+          </Tag>
         ))}
       </RolesContainer>
       <div>

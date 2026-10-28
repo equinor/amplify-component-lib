@@ -21,6 +21,7 @@ import {
   Container,
   HelperWrapper,
   LeadingContentWrapper,
+  LockedComboBoxChip,
   PlaceholderText,
   SearchArea,
   Section,
@@ -135,14 +136,13 @@ export const SearchBar = <T extends SelectOptionRequired>({
         }
         if (usingLocked) {
           return (
-            <ComboBoxChip
+            <LockedComboBoxChip
               key={value.value}
               data-testid="amplify-combobox-chip"
               className="amplify-combo-box-chip"
-              $tryingToRemove={false}
             >
-              {value.label}
-            </ComboBoxChip>
+              <span className="content">{value.label}</span>
+            </LockedComboBoxChip>
           );
         }
         return (
