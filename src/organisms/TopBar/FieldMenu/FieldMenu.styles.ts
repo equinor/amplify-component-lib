@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 
 import { colors, spacings } from 'src/atoms/style';
+import { SkeletonBase } from 'src/molecules/Skeleton/SkeletonBase/SkeletonBase';
 
 import styled, { css } from 'styled-components';
 
@@ -113,4 +114,13 @@ export const TextContainer = styled.div`
   > h6 {
     text-transform: capitalize;
   }
+`;
+export const ListItemSkeleton = styled(SkeletonBase)`
+  width: 100%;
+  height: 24px;
+`;
+export const MenuItemSkeletonWrapper = styled.div`
+  border-top: 1px solid ${colors.ui.background__light.rgba};
+  outline: none !important;
+  padding: ${spacings.medium} ${spacings.large};
 `;

@@ -13,8 +13,10 @@ import { tokens } from '@equinor/eds-tokens';
 
 import {
   ListContainer,
+  ListItemSkeleton,
   MenuFixedItem,
   MenuItem,
+  MenuItemSkeletonWrapper,
   MenuSection,
   NoFieldsText,
   NoSearchResultsContainer,
@@ -34,6 +36,8 @@ export interface FieldMenuProps {
   onClear?: () => void;
   itemNameSingular?: string; // Defaults to 'field'
   showAccessITLink?: boolean;
+  onSearchChange?: (searchValue: string) => void;
+  isSearching?: boolean;
 }
 
 export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
@@ -44,6 +48,8 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
       itemNameSingular = 'field',
       showAccessITLink = true,
       onClear,
+      onSearchChange,
+      isSearching = false,
     },
     ref
   ) => {
@@ -80,9 +86,14 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
     /* v8 ignore next */
     const handleSearchOnChange = (event: ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value);
+      onSearchChange?.(event.target.value);
     };
 
-    const showSearchInput = availableFields.length >= 4;
+    const showSearchInput =
+      availableFields.length >= 4 ||
+      onSearchChange !== undefined ||
+      isSearching;
+
     const noSearchResult = filteredFields.length === 0 && showSearchInput;
 
     if (!selectedField && !onClear) return null;
@@ -155,7 +166,7 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                     </div>
                   </MenuFixedItem>
                 )}
-                {noSearchResult ? (
+                {noSearchResult && !isSearching ? (
                   <NoSearchResultsContainer>
                     <NoFieldsText
                       variant="body_short"
@@ -180,6 +191,11 @@ export const FieldMenu = forwardRef<HTMLDivElement, FieldMenuProps>(
                       </TextContainer>
                     </MenuItem>
                   ))
+                )}
+                {isSearching && (
+                  <MenuItemSkeletonWrapper>
+                    <ListItemSkeleton data-testid="field-menu-search-skeleton" />
+                  </MenuItemSkeletonWrapper>
                 )}
               </ListContainer>
             </MenuSection>

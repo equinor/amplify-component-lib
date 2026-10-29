@@ -31,6 +31,8 @@ export type TopBarBaseProps = {
   currentField?: Field;
   showAccessITLink?: boolean;
   itemNameSingular?: string; // Defaults to 'field'
+  onSearchChange?: (searchValue: string) => void;
+  isSearching?: boolean;
 } & React.HTMLAttributes<HTMLElement>;
 
 export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
@@ -50,6 +52,8 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
       onClearField,
       showAccessITLink,
       itemNameSingular,
+      onSearchChange,
+      isSearching,
     },
     ref
   ) => (
@@ -73,6 +77,8 @@ export const TopBar = forwardRef<HTMLDivElement, TopBarBaseProps>(
               showAccessITLink={showAccessITLink}
               itemNameSingular={itemNameSingular}
               onClear={onClearField}
+              onSearchChange={onSearchChange}
+              isSearching={isSearching}
             />
           )}
           {isFetching && <CircularProgress size={16} />}
