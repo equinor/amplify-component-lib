@@ -37,6 +37,8 @@ function Wrapper(args: FieldMenuProps & { withField?: boolean }) {
       onClearField={args.onClear ? handleOnClear : undefined}
       showAccessITLink={args.showAccessITLink}
       onSelectField={handleOnSelectField}
+      onSearchChange={args.onSearchChange}
+      isSearching={args.isSearching}
       applicationIcon="acquire"
       applicationName="Acquire"
     >
@@ -205,5 +207,29 @@ export const OnlyOneField: Story = {
     await expect(
       canvas.getByText(args.availableFields[0].name ?? '')
     ).toBeInTheDocument();
+  },
+};
+
+export const IsSearching: Story = {
+  args: {
+    availableFields: [fields[0]],
+    isSearching: true,
+    onSearchChange: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const searchValue = 'missing-field';
+    const button = canvas.getByTestId('field-selector-top-bar-button');
+    await userEvent.click(button);
+
+    const searchInput = canvas.getByPlaceholderText(/search fields/i);
+    await userEvent.type(searchInput, searchValue);
+
+    await expect(args.onSearchChange).toHaveBeenCalledWith(searchValue);
+    await expect(
+      canvas.getByTestId('field-menu-search-skeleton')
+    ).toBeInTheDocument();
+    await expect(
+      canvas.queryByText(/no fields matching your search/i)
+    ).not.toBeInTheDocument();
   },
 };
