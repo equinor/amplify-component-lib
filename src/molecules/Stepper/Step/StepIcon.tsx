@@ -8,6 +8,11 @@ import { useStepper } from 'src/providers/StepperProvider';
 
 import styled from 'styled-components';
 
+const LockIcon = styled(Icon)`
+  width: 22px;
+  height: 22px;
+`;
+
 interface IconWrapperProps {
   $filled?: boolean;
   $outlined?: boolean;
@@ -56,7 +61,9 @@ export const StepIcon: FC<StepIconProps> = ({
   const { currentStep } = useStepper();
 
   if (disabled) {
-    return <Icon data={lock} color={colors.interactive.disabled__text.rgba} />;
+    return (
+      <LockIcon data={lock} color={colors.interactive.disabled__text.rgba} />
+    );
   }
 
   if (index > currentStep && allowJumpingAhead) {
