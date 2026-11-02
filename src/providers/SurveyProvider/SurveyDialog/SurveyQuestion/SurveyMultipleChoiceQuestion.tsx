@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 import { spacings } from 'src/atoms/style';
 import { Checkbox } from 'src/molecules/SelectionControls/Checkbox/Checkbox';
+import { Radio } from 'src/molecules/SelectionControls/Radio/Radio';
 import { useSurvey } from 'src/providers/SurveyProvider/hooks/useSurvey';
 import { ChoiceQuestion } from 'src/providers/SurveyProvider/SurveyProvider.types';
 
@@ -18,6 +19,7 @@ export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
   multipleChoiceVm,
 }) => {
   const { currentAnswer, setCurrentAnswer } = useSurvey();
+  const isSingleSelect = multipleChoiceVm.maxSelectableOptions === 1;
 
   return (
     <Container>
@@ -25,6 +27,25 @@ export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
         const checked = currentAnswer?.selectedOptionIds?.some(
           (item) => item.value === option.id.value
         );
+
+        if (isSingleSelect) {
+          return (
+            <Radio
+              key={option.id.value}
+              name={`survey-multiple-choice-${questionId.value}`}
+              label={option.optionText}
+              checked={checked}
+              onChange={() => {
+                setCurrentAnswer((prevAnswer) => ({
+                  ...prevAnswer,
+                  id: questionId,
+                  selectedOptionIds: [option.id],
+                }));
+              }}
+            />
+          );
+        }
+
         return (
           <Checkbox
             key={option.id.value}
@@ -37,8 +58,9 @@ export const SurveyMultipleChoiceQuestion: FC<ChoiceQuestion> = ({
             }
             onChange={(event) => {
               setCurrentAnswer((prevAnswer) => {
-                const newSelectedOptionIds =
-                  (prevAnswer && prevAnswer.selectedOptionIds) ?? [];
+                const newSelectedOptionIds = [
+                  ...((prevAnswer && prevAnswer.selectedOptionIds) ?? []),
+                ];
                 if (event.target.checked) {
                   newSelectedOptionIds.push(option.id);
                 } else {
