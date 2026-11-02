@@ -19,6 +19,9 @@
     "dist/*"
   ],
   "sideEffects": false,
+  "publishConfig": {
+    "tag": "alpha"
+  },
   "scripts": {
     "clean": "rm -rf node_modules/.cache/storybook node_modules/.vite",
     "start": "storybook dev -p 6006",
