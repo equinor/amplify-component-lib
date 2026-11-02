@@ -228,7 +228,7 @@ export const TestStandard: Story = {
       }
     );
 
-    await step('Checkbox question and click next', async () => {
+    await step('Radio question and click next', async () => {
       await expect(
         await canvas.findByText(
           standardSurvey.questions[1].questionText,
@@ -242,31 +242,45 @@ export const TestStandard: Story = {
       for (const option of standardSurvey.questions[1].multipleChoiceVm
         ?.options ?? []) {
         await expect(
-          canvas.getByRole('checkbox', { name: option.optionText })
+          canvas.getByRole('radio', { name: option.optionText })
         ).toBeInTheDocument();
       }
+
+      await expect(canvas.queryByRole('checkbox')).not.toBeInTheDocument();
 
       const nextButton = canvas.getByRole('button', { name: /next/i });
 
       await expect(nextButton).toBeDisabled();
 
-      // Check
+      // Select
       await userEvent.click(
-        canvas.getByRole('checkbox', {
+        canvas.getByRole('radio', {
           name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
             .optionText,
         })
       );
-      // Uncheck
+      // Selecting another option replaces the first
       await userEvent.click(
-        canvas.getByRole('checkbox', {
-          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
+        canvas.getByRole('radio', {
+          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(1)!
             .optionText,
         })
       );
-      // Check again
+      await expect(
+        canvas.getByRole('radio', {
+          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
+            .optionText,
+        })
+      ).not.toBeChecked();
+      await expect(
+        canvas.getByRole('radio', {
+          name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(1)!
+            .optionText,
+        })
+      ).toBeChecked();
+      // Select first again
       await userEvent.click(
-        canvas.getByRole('checkbox', {
+        canvas.getByRole('radio', {
           name: standardSurvey.questions[1].multipleChoiceVm?.options?.at(0)!
             .optionText,
         })
@@ -299,6 +313,79 @@ export const TestStandard: Story = {
     await waitFor(() =>
       expect(canvas.queryByText(standardSurvey.title)).not.toBeInTheDocument()
     );
+  },
+};
+
+const checkboxSurvey: UserSurveyVm = {
+  ...standardSurvey,
+  questions: [
+    {
+      questionId: { value: 'multiChoiceQuestion' },
+      type: QuestionType.CHOICE,
+      questionText: 'Choose up to two please',
+      order: 1,
+      multipleChoiceVm: {
+        maxSelectableOptions: 2,
+        options: [
+          { id: { value: 'optionOne' }, optionText: 'First option', order: 1 },
+          {
+            id: { value: 'optionTwo' },
+            optionText: 'Second option',
+            order: 2,
+          },
+          {
+            id: { value: 'optionThree' },
+            optionText: 'Third option',
+            order: 3,
+          },
+        ],
+      },
+    },
+  ],
+};
+
+export const TestCheckboxQuestion: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...surveyHandlers,
+        http.get(
+          '*/api/v1/surveys/applications/:applicationName/me',
+          async () => HttpResponse.json(checkboxSurvey)
+        ),
+      ],
+    },
+  },
+  play: async ({ canvas }) => {
+    await expect(
+      await canvas.findByText(checkboxSurvey.questions[0].questionText)
+    ).toBeInTheDocument();
+
+    await expect(canvas.queryByRole('radio')).not.toBeInTheDocument();
+    await expect(canvas.getAllByRole('checkbox')).toHaveLength(3);
+
+    const first = canvas.getByRole('checkbox', { name: 'First option' });
+    const second = canvas.getByRole('checkbox', { name: 'Second option' });
+    const third = canvas.getByRole('checkbox', { name: 'Third option' });
+    const startButton = canvas.getByRole('button', {
+      name: /complete|get started/i,
+    });
+
+    await expect(startButton).toBeDisabled();
+
+    await userEvent.click(first);
+    await userEvent.click(second);
+    await expect(first).toBeChecked();
+    await expect(second).toBeChecked();
+    // Max selectable options reached
+    await expect(third).toBeDisabled();
+    await expect(startButton).toBeEnabled();
+
+    await userEvent.click(first);
+    await expect(first).not.toBeChecked();
+    await expect(third).toBeEnabled();
   },
 };
 
