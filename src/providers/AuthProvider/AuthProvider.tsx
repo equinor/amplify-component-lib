@@ -10,6 +10,7 @@ import {
 
 import { AccountInfo } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
+import { samClearAuthenticatedUser } from '@equinor/subsurface-app-management';
 
 import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
@@ -114,7 +115,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         roles,
         account,
         photo,
-        logout: () => msalApp.logoutRedirect(),
+        logout: () => {
+          samClearAuthenticatedUser();
+          return msalApp.logoutRedirect();
+        },
         authState,
       }}
     >

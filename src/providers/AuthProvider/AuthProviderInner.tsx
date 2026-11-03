@@ -21,6 +21,10 @@ import {
 } from '@azure/msal-browser';
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
+import {
+  samClearAuthenticatedUser,
+  samSetAuthenticatedUser,
+} from '@equinor/subsurface-app-management';
 
 import {
   auth,
@@ -114,6 +118,8 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       const snapshot = nextAccount ? { ...nextAccount } : undefined;
       selectedAccount.current = snapshot;
       instance.setActiveAccount(snapshot ?? null);
+      if (snapshot) samSetAuthenticatedUser(snapshot.username);
+      else samClearAuthenticatedUser();
       setAccount(snapshot);
       setRoles(undefined);
       setPhoto(undefined);
