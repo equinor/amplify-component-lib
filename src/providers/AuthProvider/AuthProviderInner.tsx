@@ -31,6 +31,7 @@ import {
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { MissingAccessToApp } from 'src/organisms/Status/collections/MissingAccessToApp';
 import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
+import { setTelemetryUser } from 'src/providers/AuthProvider/AuthProvider.utils';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
@@ -114,6 +115,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       const snapshot = nextAccount ? { ...nextAccount } : undefined;
       selectedAccount.current = snapshot;
       instance.setActiveAccount(snapshot ?? null);
+      setTelemetryUser(snapshot?.username);
       setAccount(snapshot);
       setRoles(undefined);
       setPhoto(undefined);
@@ -321,6 +323,11 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       if (photoUrl) URL.revokeObjectURL(photoUrl);
     };
   }, [account, instance, setPhoto]);
+
+  // A previous user's ID can outlive their account in the telemetry cookie, so drop it once sign-in settles without one.
+  useEffect(() => {
+    if (authState === 'unauthorized' && !account) setTelemetryUser(undefined);
+  }, [account, authState]);
 
   // A recovery hook may start silent auth when mounted. Keep it mounted while
   // that attempt is loading, rather than restarting it after every failure.

@@ -25,7 +25,13 @@ import {
 
 import { auth, getPendingSso } from 'src/atoms/utils/auth_environment';
 import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
+import { setTelemetryUser } from 'src/providers/AuthProvider/AuthProvider.utils';
 import { AuthProviderInner } from 'src/providers/AuthProvider/AuthProviderInner';
+
+// The browser test setup loads @equinor/subsurface-app-management before this file, so it can't be mocked here.
+vi.mock('src/providers/AuthProvider/AuthProvider.utils', () => ({
+  setTelemetryUser: vi.fn(),
+}));
 
 // Exercise the real MsalProvider/useMsal/event reducer (and consumer login hook)
 // in the existing Vitest browser project. Overlapping SSO reports 'none' too
@@ -134,6 +140,7 @@ beforeEach(() => {
   cached = [];
   active = null;
   silent = [];
+  vi.mocked(setTelemetryUser).mockClear();
   vi.spyOn(console, 'error').mockImplementation(() => undefined);
   vi.spyOn(console, 'log').mockImplementation(() => undefined);
   vi.spyOn(instance, 'initialize').mockResolvedValue();
@@ -681,6 +688,56 @@ test('account switch clears previous roles/photo and ignores old backend and pho
   expect(context()).toMatchObject({ account: 'second', roles: ['NEW_READ'] });
   // Both fetches share the deferred response; only the current account may store a photo.
   expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
+});
+
+test('attributes browser telemetry to the selected user and then the switched-to user, without clearing at startup', async () => {
+  const other = { ...second, username: 'second@example.com' };
+  cacheAccount(first, [first, other]);
+  render(<Mount />);
+  await state('authorized');
+  expect(setTelemetryUser).toHaveBeenLastCalledWith('first@example.com');
+  act(() => {
+    instance.setActiveAccount(other);
+    emit(EventType.ACTIVE_ACCOUNT_CHANGED);
+  });
+  expect(setTelemetryUser).toHaveBeenLastCalledWith('second@example.com');
+  expect(setTelemetryUser).not.toHaveBeenCalledWith(undefined);
+});
+
+test('stops attributing browser telemetry when the active account becomes null', async () => {
+  cacheAccount();
+  render(<Mount />);
+  await state('authorized');
+  act(() => {
+    cached = [];
+    instance.setActiveAccount(null);
+    emit(EventType.ACTIVE_ACCOUNT_CHANGED);
+  });
+  expect(setTelemetryUser).toHaveBeenLastCalledWith(undefined);
+});
+
+test('stops attributing browser telemetry to a remembered user once sign-in settles without an account', async () => {
+  iframe();
+  render(<Mount />);
+  await boot();
+  expect(context().authState).toBe('loading');
+  expect(setTelemetryUser).not.toHaveBeenCalled();
+  await act(async () => silent[0].reject(fail));
+  await state('unauthorized');
+  expect(setTelemetryUser).toHaveBeenLastCalledWith(undefined);
+});
+
+test('keeps attributing browser telemetry to a signed-in user without access to the app', async () => {
+  iframe();
+  cacheAccount();
+  vi.mocked(instance.acquireTokenSilent).mockResolvedValue(
+    result(first, jwt({}))
+  );
+  render(<Mount />);
+  await state('unauthorized');
+  await act(async () => undefined);
+  expect(setTelemetryUser).toHaveBeenLastCalledWith('first@example.com');
+  expect(setTelemetryUser).not.toHaveBeenCalledWith(undefined);
 });
 
 test('switching an authorized account clears its roles and photo before the new token is verified', async () => {
