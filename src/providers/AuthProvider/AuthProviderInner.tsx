@@ -324,6 +324,11 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
     };
   }, [account, instance, setPhoto]);
 
+  // A previous user's ID can outlive their account in the telemetry cookie, so drop it once sign-in settles without one.
+  useEffect(() => {
+    if (authState === 'unauthorized' && !account) setTelemetryUser(undefined);
+  }, [account, authState]);
+
   // A recovery hook may start silent auth when mounted. Keep it mounted while
   // that attempt is loading, rather than restarting it after every failure.
   useEffect(() => {

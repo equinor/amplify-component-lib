@@ -716,6 +716,30 @@ test('stops attributing browser telemetry when the active account becomes null',
   expect(setTelemetryUser).toHaveBeenLastCalledWith(undefined);
 });
 
+test('stops attributing browser telemetry to a remembered user once sign-in settles without an account', async () => {
+  iframe();
+  render(<Mount />);
+  await boot();
+  expect(context().authState).toBe('loading');
+  expect(setTelemetryUser).not.toHaveBeenCalled();
+  await act(async () => silent[0].reject(fail));
+  await state('unauthorized');
+  expect(setTelemetryUser).toHaveBeenLastCalledWith(undefined);
+});
+
+test('keeps attributing browser telemetry to a signed-in user without access to the app', async () => {
+  iframe();
+  cacheAccount();
+  vi.mocked(instance.acquireTokenSilent).mockResolvedValue(
+    result(first, jwt({}))
+  );
+  render(<Mount />);
+  await state('unauthorized');
+  await act(async () => undefined);
+  expect(setTelemetryUser).toHaveBeenLastCalledWith('first@example.com');
+  expect(setTelemetryUser).not.toHaveBeenCalledWith(undefined);
+});
+
 test('switching an authorized account clears its roles and photo before the new token is verified', async () => {
   iframe();
   cacheAccount(first, [first, second]);
