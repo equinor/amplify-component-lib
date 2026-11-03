@@ -21,10 +21,6 @@ import {
 } from '@azure/msal-browser';
 import { AccountInfo } from '@azure/msal-common';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import {
-  samClearAuthenticatedUser,
-  samSetAuthenticatedUser,
-} from '@equinor/subsurface-app-management';
 
 import {
   auth,
@@ -35,6 +31,7 @@ import {
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
 import { MissingAccessToApp } from 'src/organisms/Status/collections/MissingAccessToApp';
 import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
+import { setTelemetryUser } from 'src/providers/AuthProvider/AuthProvider.utils';
 
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
@@ -118,8 +115,7 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
       const snapshot = nextAccount ? { ...nextAccount } : undefined;
       selectedAccount.current = snapshot;
       instance.setActiveAccount(snapshot ?? null);
-      if (snapshot) samSetAuthenticatedUser(snapshot.username);
-      else samClearAuthenticatedUser();
+      setTelemetryUser(snapshot?.username);
       setAccount(snapshot);
       setRoles(undefined);
       setPhoto(undefined);
