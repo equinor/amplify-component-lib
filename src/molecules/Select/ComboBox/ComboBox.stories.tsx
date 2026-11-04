@@ -27,6 +27,7 @@ const meta: Meta<typeof ComboBox> = {
     helperText: { control: 'text' },
     showHelperIcon: { control: 'boolean' },
     syncParentChildSelection: { control: 'boolean' },
+    clearSearchOnSelect: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
     variant: {
@@ -1476,5 +1477,48 @@ export const TestOpenWithKeyboard: Story = {
         expect(canvas.queryByText(items[0].label)).not.toBeInTheDocument()
       );
     });
+  },
+};
+
+export const TestClearsSearchOnSelectByDefault: Story = {
+  tags: ['!dev', '!autodocs'],
+  render: ComboBoxStateful,
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.type(search, 'an');
+    await userEvent.click(canvas.getByRole('menuitem', { name: 'Banana' }));
+
+    await expect(search).toHaveValue('');
+  },
+};
+
+export const TestKeepsSearchOnSelect: Story = {
+  tags: ['!dev', '!autodocs'],
+  render: ComboBoxStateful,
+  args: {
+    items: TEST_ITEMS,
+    values: [],
+    onSelect: fn(),
+    clearSearchOnSelect: false,
+  },
+  play: async ({ canvas, args }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.type(search, 'e');
+    await userEvent.click(canvas.getByRole('menuitem', { name: 'Apple' }));
+
+    await expect(search).toHaveValue('e');
+
+    await userEvent.click(canvas.getByRole('menuitem', { name: 'Cherry' }));
+
+    await expect(search).toHaveValue('e');
+    await expect(args.onSelect).toHaveBeenLastCalledWith(
+      [TEST_ITEMS[0], TEST_ITEMS[2]],
+      TEST_ITEMS[2]
+    );
   },
 };

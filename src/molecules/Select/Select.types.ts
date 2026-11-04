@@ -30,6 +30,8 @@ interface MultiSelectBase<T extends SelectOptionRequired> {
     selectedValue?: SelectOption<T>
   ) => void;
   syncParentChildSelection?: boolean;
+  /** If the search should be cleared when selecting an item, defaults to true */
+  clearSearchOnSelect?: boolean;
 }
 
 type MultiSelectWithSelectedAsText<T extends SelectOptionRequired> = {

@@ -179,7 +179,9 @@ const useSelect = <T extends SelectOptionRequired>(
       props.onSelect(getNewValues(props.values, item), item);
     }
 
-    if (search !== '') {
+    const clearSearchOnSelect =
+      !('values' in props) || props.clearSearchOnSelect !== false;
+    if (search !== '' && clearSearchOnSelect) {
       setSearch('');
     }
     internalUpdateOfValues.current = true;

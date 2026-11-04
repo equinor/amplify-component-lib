@@ -36,6 +36,7 @@ const meta: Meta<typeof PersistentComboBox> = {
     maxHeight: { control: 'text' },
     showHelperIcon: { control: 'boolean' },
     syncParentChildSelection: { control: 'boolean' },
+    clearSearchOnSelect: { control: 'boolean' },
     sortValues: { control: 'boolean' },
     clearable: { control: 'boolean' },
     variant: {
@@ -986,5 +987,52 @@ export const AddItemWithCustomSingularWord: Story = {
   },
   args: {
     itemSingularWord: 'species',
+  },
+};
+
+const CLEAR_SEARCH_TEST_ITEMS = [
+  { label: 'Apple', value: 'apple' },
+  { label: 'Banana', value: 'banana' },
+  { label: 'Cherry', value: 'cherry' },
+];
+
+export const TestClearsSearchOnSelectByDefault: Story = {
+  tags: ['!dev', '!autodocs'],
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  args: {
+    items: CLEAR_SEARCH_TEST_ITEMS,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.type(search, 'an');
+    await userEvent.click(canvas.getByRole('button', { name: 'Banana' }));
+
+    await expect(search).toHaveValue('');
+  },
+};
+
+export const TestKeepsSearchOnSelect: Story = {
+  tags: ['!dev', '!autodocs'],
+  render: (args) => <PersistentComboBoxWithState {...args} />,
+  args: {
+    items: CLEAR_SEARCH_TEST_ITEMS,
+    onSelect: fn(),
+    clearSearchOnSelect: false,
+  },
+  play: async ({ canvas, args }) => {
+    const search = canvas.getByRole('combobox');
+    await userEvent.type(search, 'e');
+    await userEvent.click(canvas.getByRole('button', { name: 'Apple' }));
+
+    await expect(search).toHaveValue('e');
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Cherry' }));
+
+    await expect(search).toHaveValue('e');
+    await expect(args.onSelect).toHaveBeenLastCalledWith(
+      [CLEAR_SEARCH_TEST_ITEMS[0], CLEAR_SEARCH_TEST_ITEMS[2]],
+      CLEAR_SEARCH_TEST_ITEMS[2]
+    );
   },
 };
