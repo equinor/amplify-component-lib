@@ -57,8 +57,8 @@ interface Item {
   value: string;
 }
 
-const FAKE_ITEMS = new Array(5).fill(0).map(() => ({
-  label: faker.animal.fish(),
+const FAKE_ITEMS = new Array(5).fill(0).map((_, index) => ({
+  label: `${faker.animal.fish()} ${index + 1}`,
   value: faker.string.uuid(),
 }));
 
