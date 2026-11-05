@@ -16,6 +16,43 @@ This package is first and foremost for our own Amplify applications. You can use
 
 Build and publish is done automatically when code is merged into `main` branch, if the package.json version number is higher.
 
+# Tailwind CSS v4
+
+Import ACL's generated CSS in your application's main stylesheet:
+
+```css
+@import 'tailwindcss';
+@import '@equinor/amplify-component-lib/tailwind.css';
+```
+
+Provides utilities such as `bg-ui-background__default` and `p-medium`, with no
+app-side generation script or plugin.
+
+- Already using `Template.GlobalStyles`? Import `@equinor/amplify-component-lib/tailwind/theme.css` instead to avoid duplicate token values.
+- Not using Tailwind? Import `@equinor/amplify-component-lib/tokens.css` for plain CSS variables.
+
+Defaults to light and comfortable. Set `data-theme` (`light` or `dark`) and
+`data-spacings-mode` (`comfortable`, `compact` or `extra-compact`) on the root or a
+scoped element. The `dark:` variant follows `data-theme`.
+
+Tailwind defaults are preserved. Fonts, resets and app-specific overrides remain
+local; use `@import 'tailwindcss' important;` if utilities must override
+styled-components.
+
+## Migrating copied configurations
+
+Replace copied token mappings and their checkers with the imports above. Compare
+copied values before removing them, keeping intentional overrides after ACL.
+If clearing Tailwind namespaces, import those resets **after Tailwind and before
+ACL**. Legacy `dataviz-primary-g10` through `g90` utilities remain supported.
+
+## Maintaining the CSS
+
+`bun run build-components` generates the CSS from ACL's token sources.
+Register new mappings or internal exclusions in `src/atoms/style/tailwind/registry.ts`;
+the build rejects token drift and invalid references.
+Run `bun run test:tailwind` to check the packed CSS with Tailwind and Chromium.
+
 # Using config files from amplify-component-lib
 
 1. Navigate to your projects root folder, `~/Projects/recap` for instance
