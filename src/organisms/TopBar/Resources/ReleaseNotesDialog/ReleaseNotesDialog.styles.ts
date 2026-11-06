@@ -6,8 +6,11 @@ import styled from 'styled-components';
 
 export const StyledDialog = styled(Dialog)`
   background-color: ${colors.ui.background__light.rgba};
+  box-sizing: border-box;
   width: 1280px;
+  max-width: calc(100vw - ${spacings.xx_large} * 2);
   height: 85vh;
+  max-height: calc(100vh - ${spacings.xx_large} * 2);
   display: flex;
   flex-direction: column;
   padding: ${spacings.xxx_large};

@@ -25,7 +25,6 @@ const Container = styled.div`
   background: ${colors.ui.background__default.rgba};
   border: 1px solid ${colors.ui.background__heavy.rgba};
   border-radius: ${shape.corners.borderRadius};
-  min-width: 800px;
   width: 100%;
   overflow: hidden;
   > h4 {

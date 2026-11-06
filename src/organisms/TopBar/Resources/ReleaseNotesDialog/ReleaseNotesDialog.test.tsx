@@ -154,3 +154,32 @@ test('No release notes', async ({ worker }) => {
     { timeout: 5000 }
   );
 });
+
+test('dialog never exceeds the viewport width so close button stays visible', async () => {
+  await renderWithRouter(
+    <Resources />,
+    {
+      initialEntries: ['/'],
+      routes: ['/'],
+    },
+    { wrapper: Wrappers }
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByRole('button'));
+  await user.click(
+    screen.getByRole('menuitem', { name: 'Open release notes' })
+  );
+
+  const closeButton = await screen.findByRole('button', {
+    hidden: true,
+    name: 'close modal',
+  });
+  const dialog = closeButton.closest('dialog') as HTMLElement;
+  expect(dialog.getBoundingClientRect().right).toBeLessThanOrEqual(
+    window.innerWidth
+  );
+  expect(closeButton.getBoundingClientRect().right).toBeLessThanOrEqual(
+    window.innerWidth
+  );
+});
