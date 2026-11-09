@@ -12,6 +12,8 @@ import { useLocation, useNavigate, useParams } from '@tanstack/react-router';
 interface SubStep {
   title: string;
   description?: string;
+  /** Amount of missing required inputs, shown as a warning chip in the SideStepper. */
+  missingInputs?: number;
 }
 
 interface CommonStep {
@@ -20,6 +22,8 @@ interface CommonStep {
   description?: string;
   /** Optional content shown when hovering the step item. */
   tooltip?: ReactNode;
+  /** Amount of missing required inputs, shown as a warning chip in the SideStepper. */
+  missingInputs?: number;
 }
 
 interface StepWithSubSteps extends CommonStep {
@@ -36,6 +40,7 @@ interface StepperContextType {
   steps: Step[];
   currentStep: number;
   currentSubStep: number;
+  setCurrentSubStep: (value: number) => void;
   setCurrentStep: (value: number) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
@@ -230,6 +235,7 @@ export const StepperProvider: FC<
         steps,
         currentStep: usingStep,
         currentSubStep,
+        setCurrentSubStep,
         setCurrentStep: handleOnSetStep,
         goToNextStep,
         goToPreviousStep,

@@ -87,6 +87,7 @@ export { SkeletonGradient } from './Skeleton/SkeletonGradient/SkeletonGradient';
 export type { SkeletonGradientProps } from './Skeleton/SkeletonGradient/SkeletonGradient';
 export { Stepper } from './Stepper/Stepper';
 export type { StepperProps } from './Stepper/Stepper';
+export { SideStepper } from './Stepper/SideStepper/SideStepper';
 export { OptionDrawer } from './OptionDrawer/OptionDrawer';
 export type { OptionDrawerProps } from './OptionDrawer/OptionDrawer';
 export type { OptionDrawerSelectItem } from './OptionDrawer/OptionDrawer.types';

@@ -1,0 +1,123 @@
+import { Meta, StoryObj } from '@storybook/react-vite';
+
+import { SideStepper } from 'src/molecules/Stepper/SideStepper/SideStepper';
+import { StepperProvider, useStepper } from 'src/providers/StepperProvider';
+
+import { expect, userEvent, waitFor } from 'storybook/test';
+
+const meta: Meta<typeof SideStepper> = {
+  title: 'Molecules/Stepper/SideStepper',
+  component: SideStepper,
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/LyYEDy2pbCsuEjzY7ylnR9/%F0%9F%92%8C-Design---Recap?node-id=6234-325237',
+    },
+    router: {
+      initial: '/create',
+      routes: ['/create'],
+    },
+  },
+  decorators: (Story) => (
+    <StepperProvider
+      steps={[
+        {
+          label: 'Data Delivery',
+          description: 'Plan dataset you wish to report',
+          subSteps: [
+            {
+              title: 'Apply Template',
+              description: 'Auto-fill out plan based off a chosen template.',
+            },
+            { title: 'Plan Datasets', missingInputs: 2 },
+          ],
+        },
+        {
+          label: 'Well Header',
+          description: 'Look through well header and confirm information.',
+          missingInputs: 3,
+        },
+        { label: 'Review', description: 'Look through plan before you lock.' },
+      ]}
+    >
+      <div style={{ width: 280 }}>
+        <Story />
+      </div>
+    </StepperProvider>
+  ),
+};
+
+export default meta;
+
+type Story = StoryObj<typeof SideStepper>;
+
+export const Default: Story = {};
+
+const CurrentStepInfo = () => {
+  const { currentStep, currentSubStep } = useStepper();
+  return (
+    <output data-testid="current">{`${currentStep}-${currentSubStep}`}</output>
+  );
+};
+
+export const TestNavigation: Story = {
+  tags: ['!dev', '!autodocs'],
+  decorators: (Story) => (
+    <>
+      <Story />
+      <CurrentStepInfo />
+    </>
+  ),
+  play: async ({ canvas, step }) => {
+    await step('Starts at first step and first sub step', async () => {
+      await expect(canvas.getByTestId('current')).toHaveTextContent('0-0');
+    });
+
+    await step('Shows warning chips', async () => {
+      await expect(canvas.getAllByTestId('missing-inputs')).toHaveLength(2);
+    });
+
+    await step('Clicking a sub step selects it', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: /Plan Datasets/ })
+      );
+      await expect(canvas.getByTestId('current')).toHaveTextContent('0-1');
+    });
+
+    await step('Clicking a step selects it', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: /Well Header/ })
+      );
+      await expect(canvas.getByTestId('current')).toHaveTextContent('1-0');
+    });
+
+    await step(
+      'Clicking a step with sub steps goes to first sub step',
+      async () => {
+        await userEvent.click(
+          canvas.getByRole('button', { name: /Data Delivery/ })
+        );
+        await expect(canvas.getByTestId('current')).toHaveTextContent('0-0');
+      }
+    );
+
+    await step('Hovering a step reveals its description', async () => {
+      const description = canvas.getByText(
+        'Look through well header and confirm information.'
+      );
+      await expect(description.parentElement).toHaveAttribute(
+        'aria-hidden',
+        'true'
+      );
+      await userEvent.hover(
+        canvas.getByRole('button', { name: /Well Header/ })
+      );
+      await waitFor(() =>
+        expect(description.parentElement).toHaveAttribute(
+          'aria-hidden',
+          'false'
+        )
+      );
+    });
+  },
+};
