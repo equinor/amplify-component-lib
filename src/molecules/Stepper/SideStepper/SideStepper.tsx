@@ -84,7 +84,11 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
           <Item
             key={`${step.label}-${index}`}
             $hovered={isStepHovered && !hasSubSteps}
-            onMouseOver={() => hoverStep(index)}
+            onMouseOver={() => {
+              // Don't reset a hovered sub step when moving over the item's padding
+              if (hasSubSteps && hover?.step === index) return;
+              hoverStep(index);
+            }}
             onClick={hasSubSteps ? undefined : () => handleSelect(index)}
           >
             <NumberAndLine>
@@ -110,6 +114,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                   aria-current={isCurrent ? 'step' : undefined}
                   aria-disabled={isDisabled}
                   onClick={hasSubSteps ? () => handleSelect(index) : undefined}
+                  onMouseOver={() => hoverStep(index)}
                   onFocus={() => hoverStep(index)}
                   onBlur={() => setHover(undefined)}
                 >

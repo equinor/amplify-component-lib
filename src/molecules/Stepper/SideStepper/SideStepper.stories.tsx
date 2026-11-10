@@ -222,5 +222,16 @@ export const TestNavigation: Story = {
         )
       );
     });
+
+    await step('Hovering item padding keeps the hovered sub step', async () => {
+      const subStep = canvas.getByRole('button', { name: /Plan Datasets/ });
+      await userEvent.click(subStep);
+      await userEvent.hover(subStep);
+      await userEvent.hover(subStep.closest('ol')!.parentElement!);
+      await expect(
+        canvas.getByText('Auto-fill out plan based off a chosen template.')
+          .parentElement
+      ).toHaveAttribute('aria-hidden', 'true');
+    });
   },
 };
