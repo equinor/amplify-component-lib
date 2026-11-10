@@ -65,3 +65,29 @@ export function findStartAndEndIndexOfSearch({
   const startIndex = label.toLowerCase().indexOf(searchValue.toLowerCase());
   return [startIndex, startIndex + searchValue.length - 1];
 }
+
+export function getAutoCompleteSuggestion<T extends string>({
+  searchValue,
+  autoCompleteOptions,
+}: {
+  searchValue: string;
+  autoCompleteOptions: Record<T, SelectOptionRequired[]>;
+}) {
+  const item = getFilteredAutoCompleteOptions({
+    searchValue,
+    autoCompleteOptions,
+  })[0];
+  if (!item) return undefined;
+
+  const [startIndex, endIndex] = findStartAndEndIndexOfSearch({
+    searchValue,
+    label: item.label,
+  });
+  if (startIndex !== 0) return undefined;
+
+  const rest = item.label.slice(endIndex + 1);
+  // Nothing left to complete
+  if (rest === '') return undefined;
+
+  return { item, rest };
+}

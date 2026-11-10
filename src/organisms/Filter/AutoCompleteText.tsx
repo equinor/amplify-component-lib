@@ -1,17 +1,23 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { keyboard_tab } from '@equinor/eds-icons';
 
-import { colors } from 'src/atoms/style';
+import { colors, spacings } from 'src/atoms/style';
 import { FilterWithAutoCompleteOptions } from 'src/organisms/Filter/Filter.types';
-import {
-  findStartAndEndIndexOfSearch,
-  getFilteredAutoCompleteOptions,
-} from 'src/organisms/Filter/Filter.utils';
+import { getAutoCompleteSuggestion } from 'src/organisms/Filter/Filter.utils';
 
 import { styled } from 'styled-components';
 
-export const StyledTypography = styled(Typography)`
+const Wrapper = styled.span`
   position: absolute;
   left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: ${spacings.xx_small};
+`;
+
+const StyledTypography = styled(Typography)`
   color: ${colors.text.static_icons__tertiary.rgba};
   height: fit-content;
   text-wrap: nowrap;
@@ -30,25 +36,25 @@ export function AutoCompleteText<T extends string>({
   search,
   autoCompleteOptions,
 }: AutoCompleteTextProps<T>) {
-  const filteredOptions = getFilteredAutoCompleteOptions({
+  const suggestion = getAutoCompleteSuggestion({
+    searchValue: search,
     autoCompleteOptions,
-    searchValue: search,
   });
 
-  if (filteredOptions.length === 0) return null;
-
-  const item = filteredOptions[0];
-  const [startIndex, endIndex] = findStartAndEndIndexOfSearch({
-    searchValue: search,
-    label: item.label,
-  });
-
-  if (startIndex !== 0) return null;
+  if (!suggestion) return null;
 
   return (
-    <StyledTypography>
-      <span>{search.slice(0, search.length)}</span>
-      {item.label.slice(endIndex + 1)}
-    </StyledTypography>
+    <Wrapper>
+      <StyledTypography>
+        <span>{search}</span>
+        {suggestion.rest}
+      </StyledTypography>
+      <Icon
+        data={keyboard_tab}
+        color={colors.text.static_icons__tertiary.rgba}
+        size={16}
+        data-testid="autocomplete-tab-icon"
+      />
+    </Wrapper>
   );
 }

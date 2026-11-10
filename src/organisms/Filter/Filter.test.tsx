@@ -299,8 +299,79 @@ test('Auto complete options work as expected', async () => {
   await user.click(searchBox);
   await user.keyboard('{Enter}');
 
-  expect(onAutoComplete).toHaveBeenCalledTimes(1);
-  expect(onAutoComplete).toHaveBeenCalledWith(key, { key, ...randomValue });
+  expect(onAutoComplete).not.toHaveBeenCalled();
+  expect(props.onSearchEnter).toHaveBeenCalledWith(randomValue.label);
+});
+
+test('Auto complete menu shows while the filter is closed', async () => {
+  const props = fakeProps();
+  const user = userEvent.setup();
+
+  const key = Object.keys(props.values)[0];
+  const option = props.values[key][0];
+
+  render(
+    <Filter
+      {...props}
+      values={{}}
+      openOnFocus={false}
+      search={option.label.slice(0, 2)}
+      autoCompleteOptions={{ [key]: [option] }}
+      onAutoComplete={vi.fn()}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  await user.click(screen.getByRole('searchbox'));
+
+  expect(screen.queryByText('child')).not.toBeInTheDocument();
+  expect(
+    await screen.findByRole('menuitem', { name: option.label })
+  ).toBeInTheDocument();
+});
+
+test('Shows tab icon and completes with Tab when a suggestion exists', async () => {
+  const props = fakeProps();
+  const onAutoComplete = vi.fn();
+  const user = userEvent.setup();
+
+  const key = Object.keys(props.values)[0];
+  const selectedValue = props.values[key][0];
+  const autoCompleteOptions = { [key]: [selectedValue] };
+
+  const { rerender } = render(
+    <Filter
+      {...props}
+      values={{}}
+      search="zzzzzzzz"
+      autoCompleteOptions={autoCompleteOptions}
+      onAutoComplete={onAutoComplete}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  expect(screen.queryByTestId('autocomplete-tab-icon')).not.toBeInTheDocument();
+
+  rerender(
+    <Filter
+      {...props}
+      values={{}}
+      search={selectedValue.label.slice(0, 1)}
+      autoCompleteOptions={autoCompleteOptions}
+      onAutoComplete={onAutoComplete}
+    >
+      <p>child</p>
+    </Filter>
+  );
+  expect(screen.getByTestId('autocomplete-tab-icon')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('searchbox'));
+  await user.tab();
+
+  expect(onAutoComplete).toHaveBeenCalledWith(key, {
+    key,
+    ...selectedValue,
+  });
 });
 
 test('Auto complete with click', async () => {

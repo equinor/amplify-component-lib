@@ -28,7 +28,6 @@ interface AutoCompleteMenuProps<T extends string> {
   anchorElement: HTMLElement | null;
   searchElement: HTMLElement | null;
   search: string;
-  isFilterOpen: boolean;
   autoCompleteOptions: FilterWithAutoCompleteOptions<T>['autoCompleteOptions'];
   onAutoComplete: FilterWithAutoCompleteOptions<T>['onAutoComplete'];
 }
@@ -37,7 +36,6 @@ export function AutoCompleteMenu<T extends string>({
   anchorElement,
   searchElement,
   search,
-  isFilterOpen,
   autoCompleteOptions,
   onAutoComplete,
 }: AutoCompleteMenuProps<T>) {
@@ -75,8 +73,7 @@ export function AutoCompleteMenu<T extends string>({
     }
   };
 
-  if (!isFilterOpen || !open || !search || filteredItems.length === 0)
-    return null;
+  if (!open || !search || filteredItems.length === 0) return null;
 
   return (
     <StyledMenu
