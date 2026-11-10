@@ -132,6 +132,22 @@ export const DisabledSteps: Story = {
   ),
 };
 
+export const TestDisabledSteps: Story = {
+  tags: ['!dev', '!autodocs'],
+  decorators: DisabledSteps.decorators,
+  play: async ({ canvas }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: /Data Delivery/ })
+    );
+    await expect(
+      canvas.getByRole('button', { name: /Well Header/ })
+    ).toHaveAttribute('aria-current', 'step');
+    await expect(
+      canvas.getByRole('button', { name: /Data Delivery/ })
+    ).not.toHaveAttribute('aria-current');
+  },
+};
+
 export const TestCompletedAndPlain: Story = {
   tags: ['!dev', '!autodocs'],
   args: { plainCircles: true },
@@ -227,6 +243,7 @@ export const TestNavigation: Story = {
       const subStep = canvas.getByRole('button', { name: /Plan Datasets/ });
       await userEvent.click(subStep);
       await userEvent.hover(subStep);
+      await userEvent.unhover(subStep);
       await userEvent.hover(subStep.closest('ol')!.parentElement!);
       await expect(
         canvas.getByText('Auto-fill out plan based off a chosen template.')
@@ -240,5 +257,28 @@ export const TestNavigation: Story = {
         await expect(canvas.queryByText(text)).not.toBeInTheDocument();
       }
     });
+  },
+};
+
+export const TestKeyboardFocus: Story = {
+  tags: ['!dev', '!autodocs'],
+  play: async ({ canvas }) => {
+    await userEvent.tab();
+    await expect(
+      canvas.getByRole('button', { name: /Data Delivery/ })
+    ).toHaveFocus();
+    await userEvent.tab();
+    await expect(
+      canvas.getByRole('button', { name: /Apply Template/ })
+    ).toHaveFocus();
+    await userEvent.tab();
+    await userEvent.tab();
+    await expect(
+      canvas.getByRole('button', { name: /Well Header/ })
+    ).toHaveFocus();
+    await expect(
+      canvas.getByText('Look through well header and confirm information.')
+        .parentElement
+    ).toHaveAttribute('aria-hidden', 'false');
   },
 };
