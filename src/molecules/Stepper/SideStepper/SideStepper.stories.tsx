@@ -1,7 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SideStepper } from 'src/molecules/Stepper/SideStepper/SideStepper';
-import { StepperProvider, useStepper } from 'src/providers/StepperProvider';
+import {
+  StepperProvider,
+  StepperProviderProps,
+  useStepper,
+} from 'src/providers/StepperProvider';
 
 import { expect, userEvent, waitFor } from 'storybook/test';
 
@@ -55,6 +59,77 @@ export const Default: Story = {};
 
 export const PlainCircles: Story = {
   args: { plainCircles: true },
+};
+
+const completedSteps: StepperProviderProps['steps'] = [
+  {
+    label: 'Data Delivery',
+    description: 'Plan dataset you wish to report',
+    completed: true,
+    subSteps: [
+      {
+        title: 'Apply Template',
+        description: 'Auto-fill out plan based off a chosen template.',
+        completed: true,
+      },
+      { title: 'Plan Datasets', completed: true },
+    ],
+  },
+  {
+    label: 'Well Header',
+    description: 'Look through well header and confirm information.',
+    completed: true,
+  },
+  { label: 'Review', description: 'Look through plan before you lock.' },
+];
+
+export const Completed: Story = {
+  decorators: (Story) => (
+    <StepperProvider steps={completedSteps} initialStep={2}>
+      <Story />
+    </StepperProvider>
+  ),
+};
+
+export const CompletedPlainCircles: Story = {
+  args: { plainCircles: true },
+  decorators: Completed.decorators,
+};
+
+export const MissingRequiredInputs: Story = {
+  decorators: (Story) => (
+    <StepperProvider
+      steps={[
+        {
+          label: 'Data Delivery',
+          missingInputs: 4,
+          subSteps: [
+            { title: 'Apply Template' },
+            { title: 'Plan Datasets', missingInputs: 4 },
+          ],
+        },
+        { label: 'Well Header', missingInputs: 3 },
+        { label: 'Review' },
+      ]}
+    >
+      <Story />
+    </StepperProvider>
+  ),
+};
+
+export const DisabledSteps: Story = {
+  decorators: (Story) => (
+    <StepperProvider
+      steps={[
+        { label: 'Well Header', description: 'Confirm information.' },
+        { label: 'Data Delivery', description: 'Plan datasets.' },
+        { label: 'Review', description: 'Look through plan.' },
+      ]}
+      isStepDisabled={({ stepIndex }) => stepIndex > 0}
+    >
+      <Story />
+    </StepperProvider>
+  ),
 };
 
 export const TestCompletedAndPlain: Story = {
