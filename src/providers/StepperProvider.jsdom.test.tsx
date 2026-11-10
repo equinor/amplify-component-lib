@@ -445,3 +445,67 @@ test('isStepAtIndexDisabled returns callback result', async () => {
   expect(screen.getByText('Step 0 disabled: true')).toBeInTheDocument();
   expect(screen.getByText('Step 1 disabled: false')).toBeInTheDocument();
 });
+
+function SubStepHarness() {
+  const { currentStep, currentSubStep, setCurrentStep } = useStepper();
+
+  return (
+    <div>
+      <p>{`Current: ${currentStep}-${currentSubStep}`}</p>
+      <button onClick={() => setCurrentStep(1, 1)}>Go to 1-1</button>
+      <button onClick={() => setCurrentStep(0, 0)}>Go to 0-0</button>
+    </div>
+  );
+}
+
+const subStepSteps = [
+  { label: 'step 1', subSteps: [{ title: 'a' }] },
+  { label: 'step 2', subSteps: [{ title: 'a' }, { title: 'b' }] },
+];
+
+test('setCurrentStep with sub step applies it directly without URL sync', async () => {
+  await renderWithRouter(
+    <StepperProvider steps={subStepSteps}>
+      <SubStepHarness />
+    </StepperProvider>
+  );
+
+  await userEvent.setup().click(screen.getByText('Go to 1-1'));
+
+  expect(screen.getByText('Current: 1-1')).toBeInTheDocument();
+});
+
+test('setCurrentStep with sub step applies it once the URL step changes', async () => {
+  await renderWithRouter(
+    <StepperProvider syncToURLParam steps={subStepSteps}>
+      <SubStepHarness />
+    </StepperProvider>,
+    {
+      routes: ['/create/$step'],
+      initialEntries: ['/create/0'],
+    }
+  );
+  const user = userEvent.setup();
+
+  await user.click(screen.getByText('Go to 1-1'));
+  expect(await screen.findByText('Current: 1-1')).toBeInTheDocument();
+
+  await user.click(screen.getByText('Go to 0-0'));
+  expect(await screen.findByText('Current: 0-0')).toBeInTheDocument();
+});
+
+test('setCurrentStep with sub step on current step with URL sync applies it', async () => {
+  await renderWithRouter(
+    <StepperProvider syncToURLParam steps={subStepSteps}>
+      <SubStepHarness />
+    </StepperProvider>,
+    {
+      routes: ['/create/$step'],
+      initialEntries: ['/create/1'],
+    }
+  );
+
+  await userEvent.setup().click(screen.getByText('Go to 1-1'));
+
+  expect(await screen.findByText('Current: 1-1')).toBeInTheDocument();
+});
