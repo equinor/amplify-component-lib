@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Providers/AuthProvider/MSAL v5 redirect bridge" />
+
+# MSAL v5 redirect bridge
+
+`@azure/msal-browser` v5 requires a dedicated **redirect bridge page**. Popup and silent
+(iframe) login flows are completed on this page, which hands the response back to the main
+window through a `BroadcastChannel`. This keeps login working when
+`Cross-Origin-Opener-Policy` headers are set.
+
+By default the library uses `window.location.origin` as `redirectUri`. **Apps upgrading to this
+version must add a bridge page and point `redirectUri` to it**, otherwise login fails.
+
+## 1. Create the bridge page
+
+Add `redirect.html` next to your `index.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirect</title>
+  </head>
+  <body>
+    <p>Processing authentication...</p>
+    <script type="module">
+      import { broadcastResponseToMainFrame } from '@azure/msal-browser/redirect-bridge';
+
+      broadcastResponseToMainFrame().catch((error) => {
+        console.error('Error broadcasting response:', error);
+      });
+    </script>
+  </body>
+</html>
+```
+
+Add it as a second entry in `vite.config.ts`:
+
+```ts
+import { resolve } from 'path';
+
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        redirect: resolve(__dirname, 'redirect.html'),
+      },
+    },
+  },
+});
+```
+
+The page must:
+
+- Not run inside `MsalProvider` or call any MSAL API (it is a standalone HTML page).
+- Be served **without** `Cross-Origin-Opener-Policy` headers (check your `nginx.conf`).
+
+## 2. Set the redirect URI
+
+Set `REDIRECT_URI` in `window._env_` (runtime) or `VITE_REDIRECT_URI` (build time), for example
+`https://my-app.equinor.com/redirect.html`. Precedence is `VITE_REDIRECT_URI`, then
+`window._env_.REDIRECT_URI`, then `window.location.origin`.
+
+## 3. Register it in Entra ID
+
+Add the exact same URL (path, protocol and port) as a **Single-page application** redirect URI in
+the Entra ID app registration. A mismatch results in `redirect_uri_mismatch` errors.
+
+## Other requirements
+
+- React `19.2.1` or newer (required by `@azure/msal-react` v5).
+- `InteractionStatus.Login` and `InteractionStatus.SsoSilent` are merged into
+  `InteractionStatus.AcquireToken`.
+
+See the Microsoft docs for other frameworks:
+[redirect bridge setup](https://learn.microsoft.com/en-us/entra/msal/javascript/browser/redirect-bridge) and
+[MSAL React v5 migration guide](https://learn.microsoft.com/en-us/entra/msal/javascript/react/migration-guide-v4-v5).

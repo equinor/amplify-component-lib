@@ -50,6 +50,10 @@ export const MOCK_USER: Required<AccountInfo> = {
   nativeAccountId: 'accountid',
   authorityType: 'authority',
   tenantProfiles: new Map(),
+  loginHint: 'MOCK@equinor.com',
+  dataBoundary: 'None',
+  upn: 'MOCK@equinor.com',
+  kmsi: false,
 } as const;
 
 interface AuthProviderProps {

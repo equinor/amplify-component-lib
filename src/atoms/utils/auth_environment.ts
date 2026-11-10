@@ -1,4 +1,7 @@
-import { EventType, PublicClientApplication } from '@azure/msal-browser';
+import {
+  AuthenticationResult,
+  PublicClientApplication,
+} from '@azure/msal-browser';
 
 import { EnvironmentType } from 'src/atoms/enums/Environment';
 
@@ -7,6 +10,7 @@ const OPTIONAL_ENV_VARIABLES = [
   'ALLOWED_PARENT_DOMAINS',
   'SERVICE_NOW_CONFIGURATION_ITEM',
   'API_CLIENT_ID',
+  'REDIRECT_URI',
 ];
 
 interface EnvVariables {
@@ -18,6 +22,7 @@ interface EnvVariables {
   ENVIRONMENT_NAME: string;
   SERVICE_NOW_CONFIGURATION_ITEM: string;
   ALLOWED_PARENT_DOMAINS: string;
+  REDIRECT_URI: string;
 }
 
 declare const window: { _env_: EnvVariables | undefined } & Window;
@@ -92,6 +97,12 @@ const getIsMock = (isMock: string | undefined): boolean => {
     return false;
   }
   return isMock === 'true';
+};
+
+// MSAL v5 requires redirectUri to point at a redirect bridge page registered in Entra
+const getRedirectUri = (redirectUri: string | undefined): string => {
+  if (redirectUri) return redirectUri;
+  return getConfig('REDIRECT_URI') || window.location.origin;
 };
 
 const getMockRoles = (mockedRoles: string | undefined): string[] => {
@@ -178,17 +189,19 @@ const msalApp = new PublicClientApplication({
   auth: {
     clientId: getClientId(import.meta.env.VITE_CLIENT_ID),
     authority: 'https://login.microsoftonline.com/StatoilSRM.onmicrosoft.com/',
-    redirectUri: window.location.origin,
+    redirectUri: getRedirectUri(import.meta.env.VITE_REDIRECT_URI),
   },
   cache: {
     cacheLocation: 'localStorage',
   },
 });
 
-// Observe SSO for the singleton's lifetime, before parent messages can start it.
-// MSAL failures have null payloads and inProgress clears on the first completion.
+// MSAL v5 no longer emits SSO-specific events (ssoSilent shares ACQUIRE_TOKEN events
+// with regular silent token calls), so observe SSO on the singleton itself. This also
+// covers SSO started by the msal-react authentication hook.
 let pendingSso = 0;
 const ssoListeners = new Set<() => void>();
+const ssoCorrelationIds = new Set<string>();
 export const getPendingSso = () => pendingSso;
 export const subscribePendingSso = (listener: () => void) => {
   ssoListeners.add(listener);
@@ -196,16 +209,24 @@ export const subscribePendingSso = (listener: () => void) => {
     ssoListeners.delete(listener);
   };
 };
-msalApp.addEventCallback(({ eventType }) => {
-  if (eventType === EventType.SSO_SILENT_START) pendingSso += 1;
-  else if (
-    eventType === EventType.SSO_SILENT_SUCCESS ||
-    eventType === EventType.SSO_SILENT_FAILURE
-  )
+// Lets event callbacks tell an SSO result apart from a regular silent token result
+export const isSsoResult = (result: AuthenticationResult) =>
+  ssoCorrelationIds.has(result.correlationId);
+const notifySsoListeners = () => ssoListeners.forEach((listener) => listener());
+const ssoSilent = msalApp.ssoSilent.bind(msalApp);
+msalApp.ssoSilent = async (request) => {
+  const correlationId = request.correlationId ?? crypto.randomUUID();
+  ssoCorrelationIds.add(correlationId);
+  pendingSso += 1;
+  notifySsoListeners();
+  try {
+    return await ssoSilent({ ...request, correlationId });
+  } finally {
+    ssoCorrelationIds.delete(correlationId);
     pendingSso = Math.max(0, pendingSso - 1);
-  else return;
-  ssoListeners.forEach((listener) => listener());
-});
+    notifySsoListeners();
+  }
+};
 
 const allowedParentDomains = getAllowedParentDomains(
   import.meta.env.ALLOWED_PARENT_DOMAINS

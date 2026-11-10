@@ -26,6 +26,7 @@ import {
   auth,
   environment,
   getPendingSso,
+  isSsoResult,
   subscribePendingSso,
 } from 'src/atoms/utils/auth_environment';
 import { FullPageSpinner } from 'src/molecules/FullPageSpinner/FullPageSpinner';
@@ -69,7 +70,7 @@ const accountKey = (account: AccountInfo | null | undefined) =>
 const requiresInteraction = (error: unknown) =>
   error instanceof InteractionRequiredAuthError ||
   (error instanceof BrowserAuthError &&
-    error.errorCode === BrowserAuthErrorCodes.monitorWindowTimeout);
+    error.errorCode === BrowserAuthErrorCodes.timedOut);
 
 export interface AuthProviderInnerProps {
   children: ReactNode;
@@ -134,28 +135,21 @@ export const AuthProviderInner: FC<AuthProviderInnerProps> = ({
         return;
       }
 
+      // A cached-account popup emits ACQUIRE_TOKEN_SUCCESS, which the
+      // authentication hook does not observe. Other silent token events are not login.
+      if (message.eventType !== EventType.ACQUIRE_TOKEN_SUCCESS) return;
+      const response = message.payload as AuthenticationResult | null;
+      if (!response?.account) return;
       const interactive =
         message.interactionType === InteractionType.Popup ||
         message.interactionType === InteractionType.Redirect;
-      // A cached-account popup emits ACQUIRE_TOKEN_SUCCESS, which the
-      // authentication hook does not observe. Silent token events are not login.
-      if (
-        message.eventType !== EventType.SSO_SILENT_SUCCESS &&
-        !(
-          interactive &&
-          (message.eventType === EventType.LOGIN_SUCCESS ||
-            message.eventType === EventType.ACQUIRE_TOKEN_SUCCESS)
-        )
-      )
+      if (interactive) {
+        selectAccount(response.account);
         return;
-      const response = message.payload as AuthenticationResult | null;
-      if (!response?.account) return;
+      }
+      if (!isSsoResult(response)) return;
       const current = selectedAccount.current ?? instance.getActiveAccount();
-      if (
-        message.eventType === EventType.SSO_SILENT_SUCCESS &&
-        current &&
-        accountKey(current) !== accountKey(response.account)
-      )
+      if (current && accountKey(current) !== accountKey(response.account))
         return;
       selectAccount(response.account);
     });
