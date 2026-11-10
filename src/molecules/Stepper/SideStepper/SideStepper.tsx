@@ -95,7 +95,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
           >
             <NumberAndLine>
               <NumberContainer
-                $filled={isCurrent}
+                $filled={isCurrent || isStepCompleted}
                 $size={24}
                 $disabled={isDisabled}
               >
@@ -168,7 +168,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                         onMouseLeave={clearHover}
                       >
                         <NumberContainer
-                          $filled={isCurrentSubStep}
+                          $filled={isCurrentSubStep || isSubStepCompleted}
                           $size={20}
                           $offset={2}
                           $disabled={isDisabled}
