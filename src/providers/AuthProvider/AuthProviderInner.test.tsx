@@ -81,7 +81,13 @@ function emit(
   error: Error | null = null,
   interactionType = InteractionType.Silent
 ) {
-  events.emitEvent(eventType, interactionType, payload, error);
+  events.emitEvent(
+    eventType,
+    'correlation-id',
+    interactionType,
+    payload,
+    error
+  );
 }
 
 const instance = auth.msalApp;
@@ -90,6 +96,7 @@ const controller = (
   instance as unknown as {
     controller: {
       eventHandler: EventHandler;
+      ssoSilent: (request: SsoSilentRequest) => Promise<AuthenticationResult>;
       acquireTokenSilentAsync: (
         request: SilentRequest,
         account: AccountInfo
@@ -148,7 +155,7 @@ beforeEach(() => {
   vi.spyOn(instance, 'getAllAccounts').mockImplementation(() => cached);
   vi.spyOn(instance, 'getActiveAccount').mockImplementation(() => active);
   vi.spyOn(instance, 'setActiveAccount').mockImplementation((account) => {
-    // MSAL 3.28 emits ACTIVE_ACCOUNT_CHANGED only for storage events from
+    // MSAL emits ACTIVE_ACCOUNT_CHANGED only for storage events from
     // another window, not this setter. Popup success itself selects the account.
     active = account;
   });
@@ -157,43 +164,67 @@ beforeEach(() => {
   );
   vi.spyOn(instance, 'loginPopup').mockImplementation(async () => {
     const existing = cached.length > 0;
-    emit(
-      existing ? EventType.ACQUIRE_TOKEN_START : EventType.LOGIN_START,
-      null,
-      null,
-      InteractionType.Popup
-    );
+    emit(EventType.ACQUIRE_TOKEN_START, null, null, InteractionType.Popup);
     const response = result(active ?? first);
     if (!existing) cached = [response.account];
+    // MSAL v5 emits ACQUIRE_TOKEN_SUCCESS for every login and, for a new
+    // account, a LOGIN_SUCCESS carrying an AccountInfo.
     emit(
-      existing ? EventType.ACQUIRE_TOKEN_SUCCESS : EventType.LOGIN_SUCCESS,
+      EventType.ACQUIRE_TOKEN_SUCCESS,
       response,
       null,
       InteractionType.Popup
     );
+    if (!existing)
+      emit(
+        EventType.LOGIN_SUCCESS,
+        response.account,
+        null,
+        InteractionType.Popup
+      );
     return response;
   });
-  vi.spyOn(instance, 'ssoSilent').mockImplementation(
+  // Mock below the public wrapper so the singleton's pending SSO tracking stays real.
+  vi.spyOn(instance, 'ssoSilent');
+  vi.spyOn(controller, 'ssoSilent').mockImplementation(
     (request: SsoSilentRequest) => {
-      emit(EventType.SSO_SILENT_START, request);
+      emit(
+        EventType.ACQUIRE_TOKEN_START,
+        request as unknown as EventMessage['payload'],
+        null,
+        InteractionType.Silent
+      );
       const attempt = deferred<AuthenticationResult>();
       silent.push(attempt);
       return attempt.promise
         .then((response) => {
-          if (
-            !cached.some(
-              (account) =>
-                account.homeAccountId === response.account.homeAccountId
-            )
-          ) {
-            cached = [...cached, response.account];
-          }
-          emit(EventType.SSO_SILENT_SUCCESS, response);
+          const isLoggingIn = !cached.some(
+            (account) =>
+              account.homeAccountId === response.account.homeAccountId
+          );
+          if (isLoggingIn) cached = [...cached, response.account];
+          emit(
+            EventType.ACQUIRE_TOKEN_SUCCESS,
+            { ...response, correlationId: request.correlationId ?? '' },
+            null,
+            InteractionType.Silent
+          );
+          if (isLoggingIn)
+            emit(
+              EventType.LOGIN_SUCCESS,
+              response.account,
+              null,
+              InteractionType.Silent
+            );
           return response;
         })
         .catch((error: Error) => {
-          // Exact MSAL 3.28 contract: failure has NO correlationId/payload.
-          emit(EventType.SSO_SILENT_FAILURE, null, error);
+          emit(
+            EventType.ACQUIRE_TOKEN_FAILURE,
+            null,
+            error,
+            InteractionType.Silent
+          );
           throw error;
         });
     }
@@ -301,17 +332,16 @@ const context = () =>
 const state = async (authState: AuthState) =>
   waitFor(() => expect(context().authState).toBe(authState));
 const boot = async () => waitFor(() => expect(silent.length).toBe(1));
-const fail = new InteractionRequiredAuthError('interaction_required');
+const fail = new InteractionRequiredAuthError(
+  'interaction_required',
+  'correlation-id'
+);
 const timeout = new BrowserAuthError(
-  BrowserAuthErrorCodes.monitorWindowTimeout
+  BrowserAuthErrorCodes.timedOut,
+  'correlation-id'
 );
 const interactionErrors = [fail, timeout];
 const popupEvents = [
-  {
-    start: EventType.LOGIN_START,
-    failure: EventType.LOGIN_FAILURE,
-    success: EventType.LOGIN_SUCCESS,
-  },
   {
     start: EventType.ACQUIRE_TOKEN_START,
     failure: EventType.ACQUIRE_TOKEN_FAILURE,
@@ -498,7 +528,7 @@ test.each(['success', 'failure'] as const)(
     const parent = startSso();
     await act(async () =>
       backend.reject(
-        new BrowserAuthError(BrowserAuthErrorCodes.monitorWindowTimeout)
+        new BrowserAuthError(BrowserAuthErrorCodes.timedOut, 'correlation-id')
       )
     );
     expect(context()).toMatchObject({ account: 'first', authState: 'loading' });
@@ -550,12 +580,12 @@ test('standalone cached backend timeout redirects only after pending parent SSO 
   const backend = deferred<AuthenticationResult>();
   const redirect = deferred<void>();
   vi.mocked(instance.loginRedirect).mockImplementation(async () => {
-    emit(EventType.LOGIN_START, null, null, InteractionType.Redirect);
+    emit(EventType.ACQUIRE_TOKEN_START, null, null, InteractionType.Redirect);
     try {
       await redirect.promise;
     } catch (redirectError) {
       emit(
-        EventType.LOGIN_FAILURE,
+        EventType.ACQUIRE_TOKEN_FAILURE,
         null,
         redirectError as Error,
         InteractionType.Redirect
@@ -887,7 +917,10 @@ test.each(
       emit(
         failure,
         null,
-        new BrowserAuthError(BrowserAuthErrorCodes.userCancelled),
+        new BrowserAuthError(
+          BrowserAuthErrorCodes.userCancelled,
+          'correlation-id'
+        ),
         InteractionType.Popup
       )
     );

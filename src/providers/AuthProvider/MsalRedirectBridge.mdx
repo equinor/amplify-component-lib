@@ -1,0 +1,119 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Providers/AuthProvider/MSAL v5 redirect bridge" />
+
+# MSAL v5 redirect bridge
+
+`@azure/msal-browser` v5 requires a dedicated **redirect bridge page**. Popup and silent
+(iframe) login flows are completed on this page, which hands the response back to the main
+window through a `BroadcastChannel`. This keeps login working when
+`Cross-Origin-Opener-Policy` headers are set.
+
+By default the library uses `${window.location.origin}/auth.html` as `redirectUri`. **Apps upgrading to this
+version must add a bridge page served at `/auth.html`** (or set `REDIRECT_URI` to another page),
+otherwise login fails.
+
+## Migration steps (Vite apps)
+
+MSAL v5 comes in through `@equinor/amplify-component-lib`, so there is nothing to pin in your app.
+React must be `19.2.1` or newer.
+
+### 1. Create the bridge page
+
+Add `auth.html` in the **project root**, next to `index.html`. If you have an empty `public/auth.html`
+from MSAL v3, delete it: files in `public/` are copied as-is and not bundled, so the bare
+`@azure/msal-browser/redirect-bridge` import would not resolve there.
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Auth</title>
+  </head>
+  <body>
+    <p>Processing authentication...</p>
+    <script type="module">
+      import { broadcastResponseToMainFrame } from '@azure/msal-browser/redirect-bridge';
+
+      broadcastResponseToMainFrame().catch((error) => {
+        console.error('Error broadcasting response:', error);
+      });
+    </script>
+  </body>
+</html>
+```
+
+The page must:
+
+- Not run inside `MsalProvider` or call any MSAL API (it is a standalone HTML page).
+- Be served **without** `Cross-Origin-Opener-Policy` headers (see step 4).
+
+### 2. Add it as a build entry in `vite.config.ts`
+
+Without this, `vite build` only emits `index.html` and `/auth.html` returns the SPA fallback in
+production. Apps using the usual function-style config only need the `input` block and the `resolve`
+import. Use `process.cwd()` rather than `__dirname`, which does not exist in ESM apps
+(`"type": "module"`).
+
+```ts
+import { resolve } from 'path';
+import react from '@vitejs/plugin-react';
+
+import { defineConfig, loadEnv } from 'vite';
+
+export default ({ mode }: { mode: string }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+
+  return defineConfig({
+    plugins: [react()],
+    build: {
+      rollupOptions: {
+        input: {
+          main: resolve(process.cwd(), 'index.html'),
+          auth: resolve(process.cwd(), 'auth.html'),
+        },
+        // keep your existing output / manualChunks / onwarn here
+      },
+    },
+  });
+};
+```
+
+If your config already has `build.rollupOptions`, just add the `input` block next to
+`output`/`onwarn`. `vite dev` serves `/auth.html` automatically, and `vite build` emits
+`dist/auth.html` plus a tiny `assets/auth-*.js`.
+
+### 3. Redirect URI
+
+The default `https://my-app.equinor.com/auth.html` needs no configuration. Register that exact URL
+(path, protocol and port) as a **Single-page application** redirect URI in the Entra ID app
+registration, for every environment and for `http://localhost:<port>/auth.html`. A mismatch gives
+`redirect_uri_mismatch` errors.
+
+To use another page, set `REDIRECT_URI` in `window._env_` (runtime, add it to `env.sh`) or
+`VITE_REDIRECT_URI` (build time). Precedence is `VITE_REDIRECT_URI`, then
+`window._env_.REDIRECT_URI`, then `${window.location.origin}/auth.html`.
+
+### 4. Serve it without COOP headers
+
+If your nginx config or `securityheaders.conf` sets `Cross-Origin-Opener-Policy`, exclude
+`/auth.html` from it.
+
+### 5. Verify
+
+1. `bun run build` and check that `dist/auth.html` exists.
+2. Start the app and log in. Popup and silent SSO should complete, and requests to
+   `login.microsoftonline.com` should carry `redirect_uri=<origin>/auth.html`.
+3. A `block_iframe_reload` error means the silent iframe loaded your app instead of the bridge, so
+   `redirectUri` does not point at the bridge page. Clear site data to drop any stale pending MSAL
+   interaction.
+
+## Other changes
+
+- `InteractionStatus.Login` and `InteractionStatus.SsoSilent` are merged into
+  `InteractionStatus.AcquireToken`.
+
+See the Microsoft docs for other frameworks:
+[redirect bridge setup](https://learn.microsoft.com/en-us/entra/msal/javascript/browser/redirect-bridge) and
+[MSAL React v5 migration guide](https://learn.microsoft.com/en-us/entra/msal/javascript/react/migration-guide-v4-v5).
