@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
 import { check, warning_outlined } from '@equinor/eds-icons';
@@ -13,6 +13,7 @@ import {
   NumberAndLine,
   NumberContainer,
   StepButton,
+  StepHeader,
   SubStepItem,
   SubSteps,
   TitleRow,
@@ -61,6 +62,8 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
       prev?.step === step && prev.subStep === subStep ? prev : { step, subStep }
     );
 
+  const clearHover = () => setHover(undefined);
+
   const handleSelect = (stepIndex: number, subStepIndex?: number) => {
     if (isStepAtIndexDisabled(stepIndex)) return;
     setCurrentStep(stepIndex);
@@ -69,7 +72,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
   };
 
   return (
-    <Container onMouseLeave={() => setHover(undefined)}>
+    <Container>
       {steps.map((step, index) => {
         const subSteps = step.subSteps ?? [];
         const hasSubSteps = subSteps.length > 0;
@@ -84,11 +87,8 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
           <Item
             key={`${step.label}-${index}`}
             $hovered={isStepHovered && !hasSubSteps}
-            onMouseOver={() => {
-              // Don't reset a hovered sub step when moving over the item's padding
-              if (hasSubSteps && hover?.step === index) return;
-              hoverStep(index);
-            }}
+            onMouseEnter={hasSubSteps ? undefined : () => hoverStep(index)}
+            onMouseLeave={hasSubSteps ? undefined : clearHover}
             onClick={hasSubSteps ? undefined : () => handleSelect(index)}
           >
             <NumberAndLine>
@@ -108,35 +108,41 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
               )}
             </NumberAndLine>
             <Content>
-              <Tooltip title={step.tooltip}>
-                <StepButton
-                  type="button"
-                  aria-current={isCurrent ? 'step' : undefined}
-                  aria-disabled={isDisabled}
-                  onClick={hasSubSteps ? () => handleSelect(index) : undefined}
-                  onMouseOver={() => hoverStep(index)}
-                  onFocus={() => hoverStep(index)}
-                  onBlur={() => setHover(undefined)}
-                >
-                  <TitleRow $size="step" $disabled={isDisabled}>
-                    {step.label}
-                    {!!step.missingInputs && (
-                      <MissingInputs data-testid="missing-inputs">
-                        <Icon data={warning_outlined} size={16} />
-                        {step.missingInputs}
-                      </MissingInputs>
+              <StepHeader
+                onMouseEnter={() => hoverStep(index)}
+                onMouseLeave={clearHover}
+              >
+                <Tooltip title={step.tooltip}>
+                  <StepButton
+                    type="button"
+                    aria-current={isCurrent ? 'step' : undefined}
+                    aria-disabled={isDisabled}
+                    onClick={
+                      hasSubSteps ? () => handleSelect(index) : undefined
+                    }
+                    onFocus={() => hoverStep(index)}
+                    onBlur={() => setHover(undefined)}
+                  >
+                    <TitleRow $size="step" $disabled={isDisabled}>
+                      {step.label}
+                      {!!step.missingInputs && (
+                        <MissingInputs data-testid="missing-inputs">
+                          <Icon data={warning_outlined} size={16} />
+                          {step.missingInputs}
+                        </MissingInputs>
+                      )}
+                    </TitleRow>
+                    {step.description && (
+                      <Description
+                        $expanded={isCurrent || isStepHovered}
+                        aria-hidden={!(isCurrent || isStepHovered)}
+                      >
+                        <span>{step.description}</span>
+                      </Description>
                     )}
-                  </TitleRow>
-                  {step.description && (
-                    <Description
-                      $expanded={isCurrent || isStepHovered}
-                      aria-hidden={!(isCurrent || isStepHovered)}
-                    >
-                      <span>{step.description}</span>
-                    </Description>
-                  )}
-                </StepButton>
-              </Tooltip>
+                  </StepButton>
+                </Tooltip>
+              </StepHeader>
               {hasSubSteps && (
                 <SubSteps>
                   {subSteps.map((subStep, subIndex) => {
@@ -152,10 +158,8 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                       <SubStepItem
                         key={`${subStep.title}-${subIndex}`}
                         $hovered={hoveredSubStep === subIndex}
-                        onMouseOver={(event: MouseEvent) => {
-                          event.stopPropagation();
-                          hoverStep(index, subIndex);
-                        }}
+                        onMouseEnter={() => hoverStep(index, subIndex)}
+                        onMouseLeave={clearHover}
                       >
                         <NumberContainer
                           $filled={isCurrentSubStep}

@@ -185,3 +185,8 @@ export const MissingInputs = styled.span`
   font-size: 12px;
   line-height: 16px;
 `;
+
+export const StepHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
