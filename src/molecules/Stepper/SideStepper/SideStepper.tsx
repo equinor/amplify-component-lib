@@ -39,7 +39,8 @@ interface HoverState {
  * and `description` is revealed for the current step and on hover.
  * Hovering a step with sub steps highlights its first sub step, and clicking it navigates there.
  * Steps and sub steps with `missingInputs` show a warning chip with the amount.
- * Steps and sub steps with `completed` show a check icon in their circle.
+ * Steps and sub steps show a check icon in their circle when completed, which defaults to
+ * steps before the current one, and can be overridden with `completed`.
  *
  * @example
  * <StepperProvider steps={steps}>
@@ -77,6 +78,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
         const subSteps = step.subSteps ?? [];
         const hasSubSteps = subSteps.length > 0;
         const isCurrent = index === currentStep;
+        const isStepCompleted = step.completed ?? index < currentStep;
         const isDisabled = isStepAtIndexDisabled(index);
         const isStepHovered = !isDisabled && hover?.step === index;
         const hoveredSubStep = isStepHovered
@@ -97,7 +99,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                 $size={24}
                 $disabled={isDisabled}
               >
-                {step.completed ? (
+                {isStepCompleted ? (
                   <Icon data={check} size={16} />
                 ) : (
                   !plainCircles && index + 1
@@ -148,6 +150,10 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                   {subSteps.map((subStep, subIndex) => {
                     const isCurrentSubStep =
                       isCurrent && subIndex === currentSubStep;
+                    const isSubStepCompleted =
+                      subStep.completed ??
+                      (index < currentStep ||
+                        (isCurrent && subIndex < currentSubStep));
                     const expanded =
                       isCurrentSubStep ||
                       (isStepHovered &&
@@ -167,7 +173,7 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                           $offset={2}
                           $disabled={isDisabled}
                         >
-                          {subStep.completed ? (
+                          {isSubStepCompleted ? (
                             <Icon data={check} size={16} />
                           ) : (
                             !plainCircles && String.fromCharCode(65 + subIndex)

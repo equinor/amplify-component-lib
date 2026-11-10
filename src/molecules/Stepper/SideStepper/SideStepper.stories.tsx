@@ -233,5 +233,12 @@ export const TestNavigation: Story = {
           .parentElement
       ).toHaveAttribute('aria-hidden', 'true');
     });
+
+    await step('Passed steps and sub steps show check icons', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /Review/ }));
+      for (const text of ['1', 'A', 'B']) {
+        await expect(canvas.queryByText(text)).not.toBeInTheDocument();
+      }
+    });
   },
 };

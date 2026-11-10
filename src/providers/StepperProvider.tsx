@@ -14,7 +14,7 @@ interface SubStep {
   description?: string;
   /** Amount of missing required inputs, shown as a warning chip in the SideStepper. */
   missingInputs?: number;
-  /** Shows a check icon in the SideStepper circle. */
+  /** Shows a check icon in the SideStepper circle. Defaults to true for steps before the current one. */
   completed?: boolean;
 }
 
@@ -26,7 +26,7 @@ interface CommonStep {
   tooltip?: ReactNode;
   /** Amount of missing required inputs, shown as a warning chip in the SideStepper. */
   missingInputs?: number;
-  /** Shows a check icon in the SideStepper circle. */
+  /** Shows a check icon in the SideStepper circle. Defaults to true for steps before the current one. */
   completed?: boolean;
 }
 
