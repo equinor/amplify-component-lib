@@ -102,7 +102,7 @@ const getIsMock = (isMock: string | undefined): boolean => {
 // MSAL v5 requires redirectUri to point at a redirect bridge page registered in Entra
 const getRedirectUri = (redirectUri: string | undefined): string => {
   if (redirectUri) return redirectUri;
-  return getConfig('REDIRECT_URI') || window.location.origin;
+  return getConfig('REDIRECT_URI') || `${window.location.origin}/auth.html`;
 };
 
 const getMockRoles = (mockedRoles: string | undefined): string[] => {
