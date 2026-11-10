@@ -1,7 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, MouseEvent, useState } from 'react';
 
 import { Icon } from '@equinor/eds-core-react';
-import { warning_outlined } from '@equinor/eds-icons';
+import { check, warning_outlined } from '@equinor/eds-icons';
 
 import {
   Container,
@@ -20,6 +20,11 @@ import {
 import { Tooltip } from 'src/molecules/Tooltip/Tooltip';
 import { useStepper } from 'src/providers/StepperProvider';
 
+export interface SideStepperProps {
+  /** Show plain circles without numbers and letters */
+  plainCircles?: boolean;
+}
+
 interface HoverState {
   step: number;
   /** Undefined means the step itself is hovered, not one of its sub steps */
@@ -33,13 +38,14 @@ interface HoverState {
  * and `description` is revealed for the current step and on hover.
  * Hovering a step with sub steps highlights its first sub step, and clicking it navigates there.
  * Steps and sub steps with `missingInputs` show a warning chip with the amount.
+ * Steps and sub steps with `completed` show a check icon in their circle.
  *
  * @example
  * <StepperProvider steps={steps}>
  *   <SideStepper />
  * </StepperProvider>
  */
-export const SideStepper: FC = () => {
+export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
   const {
     steps,
     currentStep,
@@ -49,6 +55,11 @@ export const SideStepper: FC = () => {
     isStepAtIndexDisabled,
   } = useStepper();
   const [hover, setHover] = useState<HoverState | undefined>(undefined);
+
+  const hoverStep = (step: number, subStep?: number) =>
+    setHover((prev) =>
+      prev?.step === step && prev.subStep === subStep ? prev : { step, subStep }
+    );
 
   const handleSelect = (stepIndex: number, subStepIndex?: number) => {
     if (isStepAtIndexDisabled(stepIndex)) return;
@@ -73,7 +84,7 @@ export const SideStepper: FC = () => {
           <Item
             key={`${step.label}-${index}`}
             $hovered={isStepHovered && !hasSubSteps}
-            onMouseEnter={() => setHover({ step: index })}
+            onMouseOver={() => hoverStep(index)}
             onClick={hasSubSteps ? undefined : () => handleSelect(index)}
           >
             <NumberAndLine>
@@ -82,10 +93,14 @@ export const SideStepper: FC = () => {
                 $size={24}
                 $disabled={isDisabled}
               >
-                {index + 1}
+                {step.completed ? (
+                  <Icon data={check} size={16} />
+                ) : (
+                  !plainCircles && index + 1
+                )}
               </NumberContainer>
               {(hasSubSteps || index < steps.length - 1) && (
-                <Line $active={index <= currentStep} />
+                <Line $active={isCurrent || isStepHovered} />
               )}
             </NumberAndLine>
             <Content>
@@ -95,8 +110,7 @@ export const SideStepper: FC = () => {
                   aria-current={isCurrent ? 'step' : undefined}
                   aria-disabled={isDisabled}
                   onClick={hasSubSteps ? () => handleSelect(index) : undefined}
-                  onMouseEnter={() => setHover({ step: index })}
-                  onFocus={() => setHover({ step: index })}
+                  onFocus={() => hoverStep(index)}
                   onBlur={() => setHover(undefined)}
                 >
                   <TitleRow $size="step" $disabled={isDisabled}>
@@ -133,25 +147,29 @@ export const SideStepper: FC = () => {
                       <SubStepItem
                         key={`${subStep.title}-${subIndex}`}
                         $hovered={hoveredSubStep === subIndex}
-                        onMouseEnter={() =>
-                          setHover({ step: index, subStep: subIndex })
-                        }
+                        onMouseOver={(event: MouseEvent) => {
+                          event.stopPropagation();
+                          hoverStep(index, subIndex);
+                        }}
                       >
                         <NumberContainer
                           $filled={isCurrentSubStep}
                           $size={20}
+                          $offset={2}
                           $disabled={isDisabled}
                         >
-                          {String.fromCharCode(65 + subIndex)}
+                          {subStep.completed ? (
+                            <Icon data={check} size={16} />
+                          ) : (
+                            !plainCircles && String.fromCharCode(65 + subIndex)
+                          )}
                         </NumberContainer>
                         <StepButton
                           type="button"
                           aria-current={isCurrentSubStep ? 'step' : undefined}
                           aria-disabled={isDisabled}
                           onClick={() => handleSelect(index, subIndex)}
-                          onFocus={() =>
-                            setHover({ step: index, subStep: subIndex })
-                          }
+                          onFocus={() => hoverStep(index, subIndex)}
                           onBlur={() => setHover(undefined)}
                         >
                           <TitleRow $size="substep" $disabled={isDisabled}>

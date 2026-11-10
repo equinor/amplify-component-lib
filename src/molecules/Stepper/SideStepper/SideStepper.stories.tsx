@@ -53,6 +53,34 @@ type Story = StoryObj<typeof SideStepper>;
 
 export const Default: Story = {};
 
+export const PlainCircles: Story = {
+  args: { plainCircles: true },
+};
+
+export const TestCompletedAndPlain: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { plainCircles: true },
+  decorators: (Story) => (
+    <StepperProvider
+      steps={[
+        {
+          label: 'First',
+          completed: true,
+          subSteps: [{ title: 'Sub A', completed: true }, { title: 'Sub B' }],
+        },
+        { label: 'Second' },
+      ]}
+    >
+      <Story />
+    </StepperProvider>
+  ),
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.queryByText('1')).not.toBeInTheDocument();
+    await expect(canvas.queryByText('B')).not.toBeInTheDocument();
+    await expect(canvasElement.querySelectorAll('svg')).toHaveLength(2);
+  },
+};
+
 const CurrentStepInfo = () => {
   const { currentStep, currentSubStep } = useStepper();
   return (

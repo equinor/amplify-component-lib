@@ -34,6 +34,7 @@ interface NumberProps {
   $filled: boolean;
   $size: number;
   $disabled?: boolean;
+  $offset?: number;
 }
 
 export const NumberContainer = styled.span<NumberProps>`
@@ -42,6 +43,7 @@ export const NumberContainer = styled.span<NumberProps>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: ${({ $offset = 0 }) => $offset}px;
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
   border-radius: ${shape.circle.borderRadius};
@@ -72,7 +74,7 @@ export const Line = styled.span<LineProps>`
   background: ${({ $active }) =>
     $active
       ? colors.interactive.primary__resting.rgba
-      : colors.interactive.disabled__text.rgba};
+      : colors.ui.background__heavy.rgba};
 `;
 
 export const NumberAndLine = styled.div`
