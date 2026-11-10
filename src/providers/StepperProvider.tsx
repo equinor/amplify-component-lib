@@ -4,6 +4,8 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -44,8 +46,8 @@ interface StepperContextType {
   steps: Step[];
   currentStep: number;
   currentSubStep: number;
-  setCurrentSubStep: (value: number) => void;
-  setCurrentStep: (value: number) => void;
+  /** Optionally also selects a sub step, applied once the destination step is current */
+  setCurrentStep: (value: number, subStep?: number) => void;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
   isStepAtIndexDisabled: (stepIndex: number) => boolean;
@@ -147,8 +149,28 @@ export const StepperProvider: FC<
     if (currentSubStep !== 0) setCurrentSubStep(0);
   };
 
-  const handleOnSetStep = (value: number) => {
-    setSubStepForDirection(value);
+  const pendingSubStep = useRef<{ step: number; subStep: number }>(undefined);
+
+  useEffect(() => {
+    const pending = pendingSubStep.current;
+    if (!pending) return;
+    pendingSubStep.current = undefined;
+    if (pending.step === usingStep) setCurrentSubStep(pending.subStep);
+  }, [usingStep]);
+
+  const handleOnSetStep = (value: number, subStep?: number) => {
+    pendingSubStep.current = undefined;
+
+    if (subStep !== undefined) {
+      if (value === usingStep || !rest.syncToURLParam) {
+        setCurrentSubStep(subStep);
+      } else {
+        // Wait for the URL navigation so sub step is never out of range for the current step
+        pendingSubStep.current = { step: value, subStep };
+      }
+    } else {
+      setSubStepForDirection(value);
+    }
 
     if (rest.syncToURLParam) {
       navigate({ to: `${pathWithoutStep}/${value}` });
@@ -239,7 +261,6 @@ export const StepperProvider: FC<
         steps,
         currentStep: usingStep,
         currentSubStep,
-        setCurrentSubStep,
         setCurrentStep: handleOnSetStep,
         goToNextStep,
         goToPreviousStep,

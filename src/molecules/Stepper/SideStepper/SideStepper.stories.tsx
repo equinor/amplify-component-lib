@@ -194,6 +194,9 @@ export const TestNavigation: Story = {
 
     await step('Shows warning chips', async () => {
       await expect(canvas.getAllByTestId('missing-inputs')).toHaveLength(2);
+      await expect(
+        canvas.getByRole('img', { name: '3 missing required inputs' })
+      ).toBeInTheDocument();
     });
 
     await step('Clicking a sub step selects it', async () => {

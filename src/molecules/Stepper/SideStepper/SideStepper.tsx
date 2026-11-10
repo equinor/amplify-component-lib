@@ -53,7 +53,6 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
     currentStep,
     currentSubStep,
     setCurrentStep,
-    setCurrentSubStep,
     isStepAtIndexDisabled,
   } = useStepper();
   const [hover, setHover] = useState<HoverState | undefined>(undefined);
@@ -67,9 +66,8 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
 
   const handleSelect = (stepIndex: number, subStepIndex?: number) => {
     if (isStepAtIndexDisabled(stepIndex)) return;
-    setCurrentStep(stepIndex);
     const hasSubSteps = (steps[stepIndex].subSteps?.length ?? 0) > 0;
-    if (hasSubSteps) setCurrentSubStep(subStepIndex ?? 0);
+    setCurrentStep(stepIndex, hasSubSteps ? (subStepIndex ?? 0) : undefined);
   };
 
   return (
@@ -128,8 +126,12 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                     <TitleRow $size="step" $disabled={isDisabled}>
                       {step.label}
                       {!!step.missingInputs && (
-                        <MissingInputs data-testid="missing-inputs">
-                          <Icon data={warning_outlined} size={16} />
+                        <MissingInputs
+                          data-testid="missing-inputs"
+                          aria-label={`${step.missingInputs} missing required inputs`}
+                          role="img"
+                        >
+                          <Icon data={warning_outlined} size={16} aria-hidden />
                           {step.missingInputs}
                         </MissingInputs>
                       )}
@@ -190,8 +192,16 @@ export const SideStepper: FC<SideStepperProps> = ({ plainCircles = false }) => {
                           <TitleRow $size="substep" $disabled={isDisabled}>
                             {subStep.title}
                             {!!subStep.missingInputs && (
-                              <MissingInputs data-testid="missing-inputs">
-                                <Icon data={warning_outlined} size={16} />
+                              <MissingInputs
+                                data-testid="missing-inputs"
+                                aria-label={`${subStep.missingInputs} missing required inputs`}
+                                role="img"
+                              >
+                                <Icon
+                                  data={warning_outlined}
+                                  size={16}
+                                  aria-hidden
+                                />
                                 {subStep.missingInputs}
                               </MissingInputs>
                             )}
