@@ -24,7 +24,7 @@ import { SelectOptionRequired } from 'src/molecules/Select/Select.types';
 import { AutoCompleteMenu } from 'src/organisms/Filter/AutoCompleteMenu';
 import { AutoCompleteText } from 'src/organisms/Filter/AutoCompleteText';
 import { FilterProps } from 'src/organisms/Filter/Filter.types';
-import { getFilteredAutoCompleteOptions } from 'src/organisms/Filter/Filter.utils';
+import { getAutoCompleteSuggestion } from 'src/organisms/Filter/Filter.utils';
 
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -59,7 +59,10 @@ export function Filter<T extends string>({
   ...rest
 }: FilterProps<T>) {
   const searchRef = useRef<HTMLInputElement | null>(null);
-  const sectionRef = useRef<HTMLDivElement | null>(null);
+  // State so the autocomplete menu gets the anchor even when it opens on first render
+  const [sectionElement, setSectionElement] = useState<HTMLElement | null>(
+    null
+  );
   const [open, setOpen] = useState(initialOpen);
   const [attemptingToRemove, setAttemptingToRemove] = useState<T | undefined>(
     undefined
@@ -81,31 +84,23 @@ export function Filter<T extends string>({
     searchRef.current?.focus();
   };
 
-  const handleOnSearchEnter = (searchValue: string) => {
-    if (!('autoCompleteOptions' in rest)) {
-      onSearchEnter(searchValue);
-      return;
-    }
-
-    const filteredAutoCompleteOptions = getFilteredAutoCompleteOptions({
-      searchValue,
-      autoCompleteOptions: rest.autoCompleteOptions,
-    });
-
-    if (filteredAutoCompleteOptions.length === 1) {
-      rest.onAutoComplete(
-        filteredAutoCompleteOptions[0].key,
-        filteredAutoCompleteOptions[0]
-      );
-      return;
-    }
-
-    onSearchEnter(searchValue);
-  };
-
   const handleOnKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && search !== '') {
-      handleOnSearchEnter(search);
+    if (
+      event.key === 'Tab' &&
+      !event.shiftKey &&
+      'autoCompleteOptions' in rest &&
+      rest.autoCompleteOptions
+    ) {
+      const suggestion = getAutoCompleteSuggestion({
+        searchValue: search,
+        autoCompleteOptions: rest.autoCompleteOptions,
+      });
+      if (suggestion) {
+        event.preventDefault();
+        rest.onAutoComplete(suggestion.item.key, suggestion.item);
+      }
+    } else if (event.key === 'Enter' && search !== '') {
+      onSearchEnter(search);
     } else if (event.key === 'Backspace' && search === '') {
       if (attemptingToRemove === undefined) {
         for (const key of Object.keys(values).toReversed() as T[]) {
@@ -129,7 +124,7 @@ export function Filter<T extends string>({
     <Wrapper id={id}>
       {topContent}
       <Container>
-        <Section ref={sectionRef} onClick={handleOnSectionClick}>
+        <Section ref={setSectionElement} onClick={handleOnSectionClick}>
           <Icon
             data={search_icon}
             color={colors.text.static_icons__tertiary.rgba}
@@ -225,9 +220,8 @@ export function Filter<T extends string>({
       </AnimatePresence>
       {'autoCompleteOptions' in rest && rest.autoCompleteOptions && (
         <AutoCompleteMenu
-          isFilterOpen={open}
           search={search}
-          anchorElement={sectionRef.current}
+          anchorElement={sectionElement}
           autoCompleteOptions={rest.autoCompleteOptions}
           onAutoComplete={rest.onAutoComplete}
           searchElement={searchRef.current}
