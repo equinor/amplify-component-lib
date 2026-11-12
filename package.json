@@ -4,6 +4,17 @@
   "description": "Frontend Typescript components for the Amplify team",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tailwind.css": "./dist/tailwind.css",
+    "./tailwind/theme.css": "./dist/tailwind/theme.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "type": "module",
   "author": "Amplify Team",
   "license": "ISC",
@@ -18,7 +29,9 @@
   "files": [
     "dist/*"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "clean": "rm -rf node_modules/.cache/storybook node_modules/.vite",
     "start": "storybook dev -p 6006",
@@ -26,13 +39,15 @@
     "build-storybook": "storybook build",
     "pretty": "prettier --check ./config ./src ./.storybook",
     "pretty:fix": "prettier --write ./config ./src ./.storybook",
-    "lint": "tsc --noEmit && eslint ./src ./.storybook",
-    "lint:fix": "eslint ./src ./.storybook --fix",
+    "lint": "tsc --noEmit && eslint ./src ./.storybook ./tooling/*.ts",
+    "lint:fix": "eslint ./src ./.storybook ./tooling/*.ts --fix",
     "test": "vitest watch",
     "test:ci": "CI=true vitest run",
     "test:coverage": "vitest run --coverage",
     "build": "npm run build-components",
-    "build-components": "tsdown && resolve-tspaths --project tsconfig.build.json",
+    "build-components": "tsdown && resolve-tspaths --project tsconfig.build.json && bun run build:css",
+    "build:css": "bun tooling/build-css.ts",
+    "test:tailwind": "bun run build-components && bun tooling/test-tailwind.ts",
     "build-and-use": "node tooling/build-and-use.mjs",
     "brute-coverage": "node tooling/brute-coverage.mjs"
   },
@@ -64,6 +79,7 @@
     "@storybook/addon-vitest": "^10.4.6",
     "@storybook/react-vite": "^10.4.6",
     "@tanstack/react-query": "^5.67.2",
+    "@tailwindcss/node": "^4.2.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -93,12 +109,14 @@
     "msw-storybook-addon": "^2.0.7",
     "ora": "^8.2.0",
     "playwright": "^1.51.0",
+    "postcss": "^8.5.6",
     "prettier": "^3.5.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "resize-observer-polyfill": "^1.5.1",
     "resolve-tspaths": "^0.8.23",
     "storybook": "^10.4.6",
+    "tailwindcss": "^4.2.2",
     "tsdown": "^0.14.2",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.2",
