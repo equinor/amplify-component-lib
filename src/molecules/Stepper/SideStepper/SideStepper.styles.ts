@@ -40,6 +40,7 @@ interface NumberProps {
 }
 
 export const NumberContainer = styled.span<NumberProps>`
+  position: relative;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -69,9 +70,13 @@ export const NumberContainer = styled.span<NumberProps>`
     $dot &&
     css`
       &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         content: '';
+        aspect-ratio: 1;
         width: ${Math.round($size / 3)}px;
-        height: ${Math.round($size / 3)}px;
         border-radius: ${shape.circle.borderRadius};
         background: ${colors.text.static_icons__primary_white.rgba};
       }
