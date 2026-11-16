@@ -33,7 +33,11 @@ const meta: Meta<typeof SideStepper> = {
               title: 'Apply Template',
               description: 'Auto-fill out plan based off a chosen template.',
             },
-            { title: 'Plan Datasets', missingInputs: 2 },
+            {
+              title: 'Plan Datasets',
+              description: 'Plan datasets you wish to report',
+              missingInputs: 2,
+            },
           ],
         },
         {

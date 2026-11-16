@@ -35,6 +35,8 @@ interface NumberProps {
   $size: number;
   $disabled?: boolean;
   $offset?: number;
+  /** Draws an inner dot, used for the current item when circles are plain */
+  $dot?: boolean;
 }
 
 export const NumberContainer = styled.span<NumberProps>`
@@ -62,6 +64,18 @@ export const NumberContainer = styled.span<NumberProps>`
   font-size: ${({ $size }) => ($size > 20 ? 16 : 12)}px;
   font-weight: 500;
   line-height: 1;
+
+  ${({ $dot, $size }) =>
+    $dot &&
+    css`
+      &::after {
+        content: '';
+        width: ${Math.round($size / 3)}px;
+        height: ${Math.round($size / 3)}px;
+        border-radius: ${shape.circle.borderRadius};
+        background: ${colors.text.static_icons__primary_white.rgba};
+      }
+    `}
 `;
 
 interface LineProps {
