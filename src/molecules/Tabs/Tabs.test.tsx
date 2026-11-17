@@ -2,7 +2,13 @@ import { car } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Tabs, TabsProps } from './Tabs';
-import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from 'src/tests/browsertest-utils';
 
 function fakeProps(): Omit<TabsProps<number>, 'selected'> {
   return {
@@ -129,6 +135,42 @@ test('Scrolling works as expected', async () => {
   }
   expect(scrollLeftButton).toBeDisabled();
   expect(scrollRightButton).not.toBeDisabled();
+});
+
+test('Horizontal wheel scrolls to next and previous page', async () => {
+  const props = fakeProps();
+  render(
+    <div style={{ width: '20rem', maxWidth: '20rem', overflow: 'hidden' }}>
+      <Tabs {...props} selected={0} />
+    </div>
+  );
+
+  const [scrollLeftButton, scrollRightButton] =
+    await screen.findAllByRole('button');
+  const parent = screen.getByRole('tab', {
+    name: props.options[0].label,
+  }).parentElement!;
+  expect(scrollLeftButton).toBeDisabled();
+  // Allow effects attaching the wheel listener to flush
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  // Vertical wheel is ignored
+  parent.dispatchEvent(
+    new WheelEvent('wheel', { deltaY: 100, bubbles: true, cancelable: true })
+  );
+  expect(scrollLeftButton).toBeDisabled();
+
+  parent.dispatchEvent(
+    new WheelEvent('wheel', { deltaX: 100, bubbles: true, cancelable: true })
+  );
+  await waitFor(() => expect(scrollLeftButton).not.toBeDisabled());
+  expect(scrollRightButton).toBeInTheDocument();
+
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  parent.dispatchEvent(
+    new WheelEvent('wheel', { deltaX: -100, bubbles: true, cancelable: true })
+  );
+  await waitFor(() => expect(scrollLeftButton).toBeDisabled());
 });
 
 test('Toggling scrollable hides the scroll buttons', async () => {
