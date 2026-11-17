@@ -139,6 +139,7 @@ export function Tabs<T>({
   const lastWheelEvent = useRef(0);
   const lastWheelPage = useRef(0);
   const lastWheelDelta = useRef(0);
+  const lastWheelDirection = useRef<'left' | 'right'>('right');
 
   useEffect(() => {
     const element = tabContainer.current;
@@ -146,21 +147,29 @@ export function Tabs<T>({
 
     // Native listener since React's onWheel is passive and can't prevent browser back/forward swipes
     const handleWheel = (event: WheelEvent) => {
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      // Some browsers report shift+scroll as a vertical delta
+      const shiftScroll = event.shiftKey && event.deltaX === 0;
+      const deltaX = shiftScroll ? event.deltaY : event.deltaX;
+      const deltaY = shiftScroll ? 0 : event.deltaY;
+      if (Math.abs(deltaX) <= Math.abs(deltaY)) return;
       event.preventDefault();
       // A swipe (including trackpad momentum) is a continuous stream of events, only page once per gesture.
       // Momentum decays, so a growing delta after the minimum interval means the user started a new swipe
       const now = Date.now();
-      const delta = Math.abs(event.deltaX);
+      const delta = Math.abs(deltaX);
+      const direction = deltaX < 0 ? 'left' : 'right';
       const idle = now - lastWheelEvent.current > WHEEL_GESTURE_GAP_MS;
       const reaccelerated =
         delta > lastWheelDelta.current &&
         now - lastWheelPage.current > WHEEL_MIN_PAGE_INTERVAL_MS;
       lastWheelEvent.current = now;
       lastWheelDelta.current = delta;
-      if (!idle && !reaccelerated) return;
+      // Momentum never reverses, so a new direction is always a new swipe
+      const reversed = direction !== lastWheelDirection.current;
+      lastWheelDirection.current = direction;
+      if (!idle && !reaccelerated && !reversed) return;
       lastWheelPage.current = now;
-      scrollPage(event.deltaX < 0 ? 'left' : 'right');
+      scrollPage(direction);
     };
 
     element.addEventListener('wheel', handleWheel, { passive: false });

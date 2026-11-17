@@ -160,17 +160,28 @@ test('Horizontal wheel scrolls to next and previous page', async () => {
   );
   expect(scrollLeftButton).toBeDisabled();
 
-  parent.dispatchEvent(
-    new WheelEvent('wheel', { deltaX: 100, bubbles: true, cancelable: true })
-  );
-  await waitFor(() => expect(scrollLeftButton).not.toBeDisabled());
+  const wheel = (init: WheelEventInit) =>
+    parent.dispatchEvent(
+      new WheelEvent('wheel', { bubbles: true, cancelable: true, ...init })
+    );
+
+  wheel({ deltaX: 100 });
+  // Momentum from the same swipe is ignored
+  wheel({ deltaX: 50 });
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  expect(parent.scrollLeft).toBe(parent.clientWidth);
+  expect(scrollLeftButton).not.toBeDisabled();
   expect(scrollRightButton).toBeInTheDocument();
 
-  await new Promise((resolve) => setTimeout(resolve, 600));
-  parent.dispatchEvent(
-    new WheelEvent('wheel', { deltaX: -100, bubbles: true, cancelable: true })
-  );
-  await waitFor(() => expect(scrollLeftButton).toBeDisabled());
+  // Reversing direction pages immediately, even in the middle of a swipe
+  wheel({ deltaX: -100 });
+  await waitFor(() => expect(parent.scrollLeft).toBe(0));
+  expect(scrollLeftButton).toBeDisabled();
+
+  // Shift+scroll reported as a vertical delta
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  wheel({ deltaY: 100, shiftKey: true });
+  await waitFor(() => expect(parent.scrollLeft).toBeGreaterThan(0));
 });
 
 test('Toggling scrollable hides the scroll buttons', async () => {
