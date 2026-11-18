@@ -1,7 +1,11 @@
 import { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: ['../src/intro.mdx', '../src/**/*.stories.@(ts|tsx)'],
+  stories: [
+    '../src/intro.mdx',
+    '../src/providers/AuthProvider/MsalRedirectBridge.mdx',
+    '../src/**/*.stories.@(ts|tsx)',
+  ],
 
   addons: [
     '@storybook/addon-coverage',

@@ -211,6 +211,7 @@ export const TestCopyResetAfterUnmount: Story = {
     );
   },
   play: async ({ canvas }) => {
+    spyOn(navigator.clipboard, 'writeText').mockResolvedValue();
     await userEvent.click(canvas.getByText(TEST_CONTENT));
     await userEvent.click(canvas.getByText('unmount'));
     await expect(canvas.queryByText(TEST_CONTENT)).not.toBeInTheDocument();

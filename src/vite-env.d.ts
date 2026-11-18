@@ -19,6 +19,7 @@ interface ImportMetaEnv {
   VITE_ENVIRONMENT_NAME: string;
   VITE_SERVICE_NOW_CONFIGURATION_ITEM: string;
   VITE_ALLOWED_PARENT_DOMAINS: string;
+  VITE_REDIRECT_URI?: string;
   ALLOWED_PARENT_DOMAINS: string;
   VITE_IS_MOCK?: string;
   VITE_MOCK_USER_PHOTO?: string;

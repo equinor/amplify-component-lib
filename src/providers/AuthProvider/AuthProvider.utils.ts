@@ -8,7 +8,9 @@ import {
  * @param userId - The signed-in account's username, the same ID the backends record for the user, or `undefined`
  * when no one is signed in.
  */
-export function setTelemetryUser(userId: string | undefined) {
-  if (userId) samSetAuthenticatedUser(userId);
-  else samClearAuthenticatedUser();
-}
+export const telemetry = {
+  setUser(userId: string | undefined) {
+    if (userId) samSetAuthenticatedUser(userId);
+    else samClearAuthenticatedUser();
+  },
+};
