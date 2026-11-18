@@ -11,7 +11,7 @@ import {
 import { AccountInfo } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
 
-import { setTelemetryUser } from './AuthProvider.utils';
+import { telemetry } from './AuthProvider.utils';
 import { AuthProviderInner } from './AuthProviderInner';
 import { auth, environment } from 'src/atoms/utils/auth_environment';
 
@@ -120,7 +120,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         account,
         photo,
         logout: () => {
-          setTelemetryUser(undefined);
+          telemetry.setUser(undefined);
           return msalApp.logoutRedirect();
         },
         authState,

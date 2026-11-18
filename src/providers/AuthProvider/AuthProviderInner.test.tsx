@@ -25,13 +25,10 @@ import {
 
 import { auth, getPendingSso } from 'src/atoms/utils/auth_environment';
 import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
-import { setTelemetryUser } from 'src/providers/AuthProvider/AuthProvider.utils';
+import { telemetry } from 'src/providers/AuthProvider/AuthProvider.utils';
 import { AuthProviderInner } from 'src/providers/AuthProvider/AuthProviderInner';
 
-// The browser test setup loads @equinor/subsurface-app-management before this file, so it can't be mocked here.
-vi.mock('src/providers/AuthProvider/AuthProvider.utils', () => ({
-  setTelemetryUser: vi.fn(),
-}));
+import type { MockInstance } from 'vitest';
 
 // Exercise the real MsalProvider/useMsal/event reducer (and consumer login hook)
 // in the existing Vitest browser project. Overlapping SSO reports 'none' too
@@ -71,6 +68,7 @@ const result = (account = first, token = jwt({ roles: ['READ'] })) =>
     correlationId: '',
   }) as AuthenticationResult;
 
+let setTelemetryUser: MockInstance<typeof telemetry.setUser>;
 let cached: AccountInfo[];
 let active: AccountInfo | null;
 let silent: ReturnType<typeof deferred<AuthenticationResult>>[];
@@ -147,7 +145,9 @@ beforeEach(() => {
   cached = [];
   active = null;
   silent = [];
-  vi.mocked(setTelemetryUser).mockClear();
+  setTelemetryUser = vi
+    .spyOn(telemetry, 'setUser')
+    .mockImplementation(() => undefined);
   vi.spyOn(console, 'error').mockImplementation(() => undefined);
   vi.spyOn(console, 'log').mockImplementation(() => undefined);
   vi.spyOn(instance, 'initialize').mockResolvedValue();
