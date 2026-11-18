@@ -2,7 +2,13 @@ import { car } from '@equinor/eds-icons';
 import { faker } from '@faker-js/faker';
 
 import { Tabs, TabsProps } from './Tabs';
-import { render, screen, userEvent, within } from 'src/tests/browsertest-utils';
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  within,
+} from 'src/tests/browsertest-utils';
 
 function fakeProps(): Omit<TabsProps<number>, 'selected'> {
   return {
@@ -129,6 +135,33 @@ test('Scrolling works as expected', async () => {
   }
   expect(scrollLeftButton).toBeDisabled();
   expect(scrollRightButton).not.toBeDisabled();
+});
+
+test('Scrolling snaps to pages and updates the scroll buttons', async () => {
+  const props = fakeProps();
+  render(
+    <div style={{ width: '20rem', maxWidth: '20rem', overflow: 'hidden' }}>
+      <Tabs {...props} selected={0} />
+    </div>
+  );
+
+  const [scrollLeftButton] = await screen.findAllByRole('button');
+  const parent = screen.getByRole('tab', {
+    name: props.options[0].label,
+  }).parentElement!;
+  expect(scrollLeftButton).toBeDisabled();
+
+  // Allow the resize observer to settle before scrolling
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  // Scrolling most of the way to the next page snaps to it
+  parent.scrollTo({ left: parent.clientWidth * 0.7 });
+  await waitFor(() => expect(parent.scrollLeft).toBe(parent.clientWidth));
+  await waitFor(() => expect(scrollLeftButton).not.toBeDisabled());
+
+  // Scrolling a little snaps back to the first page
+  parent.scrollTo({ left: parent.clientWidth * 0.2 });
+  await waitFor(() => expect(parent.scrollLeft).toBe(0));
+  await waitFor(() => expect(scrollLeftButton).toBeDisabled());
 });
 
 test('Toggling scrollable hides the scroll buttons', async () => {

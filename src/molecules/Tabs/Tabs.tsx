@@ -1,4 +1,11 @@
-import { HTMLAttributes, Ref, useEffect, useRef, useState } from 'react';
+import {
+  HTMLAttributes,
+  Ref,
+  UIEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Button, Icon } from '@equinor/eds-core-react';
 import { chevron_left, chevron_right } from '@equinor/eds-icons';
@@ -26,8 +33,27 @@ const Content = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  overflow: hidden;
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
   order: 1;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Horizontal swipes page through the tabs, without triggering browser back/forward */
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+`;
+
+const SnapPoint = styled.span`
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 100%;
+  pointer-events: none;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 `;
 
 export type TabsProps<T> = TabsType<T> & {
@@ -39,7 +65,7 @@ export type TabsProps<T> = TabsType<T> & {
  * @param options - Array of available options, must be 2 or more
  * @param centered - If text in each tab is centered, defaults to true
  * @param animated - If switching tab is animated, defaults to true
- * @param scrollable - If tab should be scrollable, defaults to true. Only shows scroll buttons if the tabs don't fit
+ * @param scrollable - If tab should be scrollable, defaults to true. Only shows scroll buttons if the tabs don't fit. Horizontal wheel/trackpad scrolling also changes page
  * @param amountPerScrollPage - How many tabs should be on each scroll page. When undefined the component fits tabs by tab content
  * @param onChange - Callback when tab is selected
  * @param ref - Container ref
@@ -61,6 +87,7 @@ export function Tabs<T>({
   const [containerWidth, setContainerWidth] = useState(0);
   const [scrollLeftDisabled, setScrollLeftDisabled] = useState(true);
   const [scrollRightDisabled, setScrollRightDisabled] = useState(true);
+  const [pageCount, setPageCount] = useState(1);
 
   if (amountPerScrollPage !== undefined && amountPerScrollPage <= 0) {
     throw new Error(
@@ -87,6 +114,7 @@ export function Tabs<T>({
       const element = entry.target;
       setContainerWidth(Math.round(entry.borderBoxSize[0].inlineSize));
       setShowScrollButtons(element.scrollWidth > element.clientWidth);
+      setPageCount(Math.ceil(element.scrollWidth / element.clientWidth));
       element.scrollTo(0, 0);
     });
     observer.observe(tabContainer.current, { box: 'border-box' });
@@ -100,29 +128,26 @@ export function Tabs<T>({
   const handleScroll = (direction: 'left' | 'right') => () => {
     /* v8 ignore next */
     if (!tabContainer.current || !containerWidth) return;
-    let scrollLeft = tabContainer.current.scrollLeft;
-    if (direction === 'left') {
-      scrollLeft -= containerWidth;
-      scrollLeft = Math.max(0, scrollLeft);
-    } else {
-      scrollLeft += containerWidth;
-      scrollLeft = Math.min(scrollLeft, tabContainer.current.scrollWidth);
-    }
+    const { scrollLeft } = tabContainer.current;
     tabContainer.current.scrollTo({
       top: 0,
-      left: scrollLeft,
+      left:
+        scrollLeft + (direction === 'left' ? -containerWidth : containerWidth),
       behavior: 'smooth',
     });
+  };
+
+  const handleOnScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollLeft, clientWidth, scrollWidth } = event.currentTarget;
     setScrollLeftDisabled(scrollLeft <= 0);
-    setScrollRightDisabled(
-      scrollLeft + containerWidth >= tabContainer.current.scrollWidth
-    );
+    setScrollRightDisabled(scrollLeft + clientWidth >= scrollWidth - 1);
   };
 
   return (
     <Container {...rest} ref={ref}>
       <Content
         ref={tabContainer}
+        onScroll={handleOnScroll}
         style={
           amountPerScrollPage && showScrollButtons
             ? {
@@ -144,6 +169,11 @@ export function Tabs<T>({
             {...option}
           />
         ))}
+        {showScrollButtons
+          ? Array.from({ length: pageCount }, (_, index) => (
+              <SnapPoint key={index} style={{ left: index * containerWidth }} />
+            ))
+          : null}
       </Content>
       {showScrollButtons ? (
         <>
