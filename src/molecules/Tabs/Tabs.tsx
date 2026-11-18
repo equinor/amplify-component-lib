@@ -1,7 +1,7 @@
 import {
   HTMLAttributes,
   Ref,
-  useCallback,
+  UIEvent,
   useEffect,
   useRef,
   useState,
@@ -15,9 +15,6 @@ import { spacings } from 'src/atoms/style';
 import { Tabs as TabsType } from 'src/molecules/Tabs/Tabs.types';
 
 import styled from 'styled-components';
-
-const WHEEL_GESTURE_GAP_MS = 80;
-const WHEEL_MIN_PAGE_INTERVAL_MS = 300;
 
 const Container = styled.div`
   display: flex;
@@ -36,8 +33,27 @@ const Content = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  overflow: hidden;
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
   order: 1;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* Horizontal swipes page through the tabs, without triggering browser back/forward */
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+`;
+
+const SnapPoint = styled.span`
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 100%;
+  pointer-events: none;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 `;
 
 export type TabsProps<T> = TabsType<T> & {
@@ -71,6 +87,7 @@ export function Tabs<T>({
   const [containerWidth, setContainerWidth] = useState(0);
   const [scrollLeftDisabled, setScrollLeftDisabled] = useState(true);
   const [scrollRightDisabled, setScrollRightDisabled] = useState(true);
+  const [pageCount, setPageCount] = useState(1);
 
   if (amountPerScrollPage !== undefined && amountPerScrollPage <= 0) {
     throw new Error(
@@ -97,6 +114,7 @@ export function Tabs<T>({
       const element = entry.target;
       setContainerWidth(Math.round(entry.borderBoxSize[0].inlineSize));
       setShowScrollButtons(element.scrollWidth > element.clientWidth);
+      setPageCount(Math.ceil(element.scrollWidth / element.clientWidth));
       element.scrollTo(0, 0);
     });
     observer.observe(tabContainer.current, { box: 'border-box' });
@@ -107,81 +125,29 @@ export function Tabs<T>({
     };
   }, [scrollable, showScrollButtons]);
 
-  const scrollPage = useCallback(
-    (direction: 'left' | 'right') => {
-      /* v8 ignore next */
-      if (!tabContainer.current || !containerWidth) return;
-      let scrollLeft = tabContainer.current.scrollLeft;
-      if (direction === 'left') {
-        scrollLeft -= containerWidth;
-        scrollLeft = Math.max(0, scrollLeft);
-      } else {
-        scrollLeft += containerWidth;
-        scrollLeft = Math.min(scrollLeft, tabContainer.current.scrollWidth);
-      }
-      tabContainer.current.scrollTo({
-        top: 0,
-        left: scrollLeft,
-        behavior: 'smooth',
-      });
-      setScrollLeftDisabled(scrollLeft <= 0);
-      setScrollRightDisabled(
-        scrollLeft + containerWidth >= tabContainer.current.scrollWidth
-      );
-    },
-    [containerWidth]
-  );
-
   const handleScroll = (direction: 'left' | 'right') => () => {
-    scrollPage(direction);
+    /* v8 ignore next */
+    if (!tabContainer.current || !containerWidth) return;
+    const { scrollLeft } = tabContainer.current;
+    tabContainer.current.scrollTo({
+      top: 0,
+      left:
+        scrollLeft + (direction === 'left' ? -containerWidth : containerWidth),
+      behavior: 'smooth',
+    });
   };
 
-  const lastWheelEvent = useRef(0);
-  const lastWheelPage = useRef(0);
-  const lastWheelDelta = useRef(0);
-  const lastWheelDirection = useRef<'left' | 'right'>('right');
-
-  useEffect(() => {
-    const element = tabContainer.current;
-    if (!scrollable || !showScrollButtons || !element) return;
-
-    // Native listener since React's onWheel is passive and can't prevent browser back/forward swipes
-    const handleWheel = (event: WheelEvent) => {
-      // Some browsers report shift+scroll as a vertical delta
-      const shiftScroll = event.shiftKey && event.deltaX === 0;
-      const deltaX = shiftScroll ? event.deltaY : event.deltaX;
-      const deltaY = shiftScroll ? 0 : event.deltaY;
-      if (Math.abs(deltaX) <= Math.abs(deltaY)) return;
-      event.preventDefault();
-      // A swipe (including trackpad momentum) is a continuous stream of events, only page once per gesture.
-      // Momentum decays, so a growing delta after the minimum interval means the user started a new swipe
-      const now = Date.now();
-      const delta = Math.abs(deltaX);
-      const direction = deltaX < 0 ? 'left' : 'right';
-      const idle = now - lastWheelEvent.current > WHEEL_GESTURE_GAP_MS;
-      const reaccelerated =
-        delta > lastWheelDelta.current &&
-        now - lastWheelPage.current > WHEEL_MIN_PAGE_INTERVAL_MS;
-      lastWheelEvent.current = now;
-      lastWheelDelta.current = delta;
-      // Momentum never reverses, so a new direction is always a new swipe
-      const reversed = direction !== lastWheelDirection.current;
-      lastWheelDirection.current = direction;
-      if (!idle && !reaccelerated && !reversed) return;
-      lastWheelPage.current = now;
-      scrollPage(direction);
-    };
-
-    element.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      element.removeEventListener('wheel', handleWheel);
-    };
-  }, [scrollable, showScrollButtons, scrollPage]);
+  const handleOnScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollLeft, clientWidth, scrollWidth } = event.currentTarget;
+    setScrollLeftDisabled(scrollLeft <= 0);
+    setScrollRightDisabled(scrollLeft + clientWidth >= scrollWidth - 1);
+  };
 
   return (
     <Container {...rest} ref={ref}>
       <Content
         ref={tabContainer}
+        onScroll={handleOnScroll}
         style={
           amountPerScrollPage && showScrollButtons
             ? {
@@ -203,6 +169,11 @@ export function Tabs<T>({
             {...option}
           />
         ))}
+        {showScrollButtons
+          ? Array.from({ length: pageCount }, (_, index) => (
+              <SnapPoint key={index} style={{ left: index * containerWidth }} />
+            ))
+          : null}
       </Content>
       {showScrollButtons ? (
         <>

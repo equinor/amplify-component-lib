@@ -137,7 +137,7 @@ test('Scrolling works as expected', async () => {
   expect(scrollRightButton).not.toBeDisabled();
 });
 
-test('Horizontal wheel scrolls to next and previous page', async () => {
+test('Scrolling snaps to pages and updates the scroll buttons', async () => {
   const props = fakeProps();
   render(
     <div style={{ width: '20rem', maxWidth: '20rem', overflow: 'hidden' }}>
@@ -145,43 +145,23 @@ test('Horizontal wheel scrolls to next and previous page', async () => {
     </div>
   );
 
-  const [scrollLeftButton, scrollRightButton] =
-    await screen.findAllByRole('button');
+  const [scrollLeftButton] = await screen.findAllByRole('button');
   const parent = screen.getByRole('tab', {
     name: props.options[0].label,
   }).parentElement!;
   expect(scrollLeftButton).toBeDisabled();
-  // Allow effects attaching the wheel listener to flush
-  await new Promise((resolve) => setTimeout(resolve, 100));
 
-  // Vertical wheel is ignored
-  parent.dispatchEvent(
-    new WheelEvent('wheel', { deltaY: 100, bubbles: true, cancelable: true })
-  );
-  expect(scrollLeftButton).toBeDisabled();
+  // Allow the resize observer to settle before scrolling
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  // Scrolling most of the way to the next page snaps to it
+  parent.scrollTo({ left: parent.clientWidth * 0.7 });
+  await waitFor(() => expect(parent.scrollLeft).toBe(parent.clientWidth));
+  await waitFor(() => expect(scrollLeftButton).not.toBeDisabled());
 
-  const wheel = (init: WheelEventInit) =>
-    parent.dispatchEvent(
-      new WheelEvent('wheel', { bubbles: true, cancelable: true, ...init })
-    );
-
-  wheel({ deltaX: 100 });
-  // Momentum from the same swipe is ignored
-  wheel({ deltaX: 50 });
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  expect(parent.scrollLeft).toBe(parent.clientWidth);
-  expect(scrollLeftButton).not.toBeDisabled();
-  expect(scrollRightButton).toBeInTheDocument();
-
-  // Reversing direction pages immediately, even in the middle of a swipe
-  wheel({ deltaX: -100 });
+  // Scrolling a little snaps back to the first page
+  parent.scrollTo({ left: parent.clientWidth * 0.2 });
   await waitFor(() => expect(parent.scrollLeft).toBe(0));
-  expect(scrollLeftButton).toBeDisabled();
-
-  // Shift+scroll reported as a vertical delta
-  await new Promise((resolve) => setTimeout(resolve, 400));
-  wheel({ deltaY: 100, shiftKey: true });
-  await waitFor(() => expect(parent.scrollLeft).toBeGreaterThan(0));
+  await waitFor(() => expect(scrollLeftButton).toBeDisabled());
 });
 
 test('Toggling scrollable hides the scroll buttons', async () => {
