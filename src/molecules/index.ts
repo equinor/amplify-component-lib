@@ -55,6 +55,8 @@ export { InformationalNotice } from './InformationalNotice/InformationalNotice';
 export type { InformationalNoticeProps } from './InformationalNotice/InformationalNotice';
 export { Tooltip } from './Tooltip/Tooltip';
 export type { TooltipProps } from './Tooltip/Tooltip';
+export { SvgTooltip } from './SvgTooltip/SvgTooltip';
+export type { SvgTooltipProps } from './SvgTooltip/SvgTooltip';
 export { ProfileAvatar } from './ProfileAvatar/ProfileAvatar';
 export type { ProfileAvatarProps } from './ProfileAvatar/ProfileAvatar';
 export { RichTextDisplay } from './RichTextDisplay/RichTextDisplay';
