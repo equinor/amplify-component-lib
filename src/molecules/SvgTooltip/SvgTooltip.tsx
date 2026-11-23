@@ -24,11 +24,7 @@ export const SvgTooltip: FC<SvgTooltipProps> = ({ x, y, title }) => {
   useLayoutEffect(() => {
     const box = textRef.current?.getBBox();
     if (!box) return;
-    setTextSize((prev) =>
-      prev.width === box.width && prev.height === box.height
-        ? prev
-        : { width: box.width, height: box.height }
-    );
+    setTextSize({ width: box.width, height: box.height });
   }, [title]);
 
   if (!title) return null;
