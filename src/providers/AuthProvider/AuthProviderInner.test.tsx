@@ -23,7 +23,11 @@ import {
   waitFor,
 } from '@testing-library/react';
 
-import { auth, getPendingSso } from 'src/atoms/utils/auth_environment';
+import {
+  auth,
+  getPendingSso,
+  isSsoResult,
+} from 'src/atoms/utils/auth_environment';
 import { AuthState } from 'src/providers/AuthProvider/AuthProvider';
 import { telemetry } from 'src/providers/AuthProvider/AuthProvider.utils';
 import { AuthProviderInner } from 'src/providers/AuthProvider/AuthProviderInner';
@@ -357,6 +361,30 @@ function startSso(sid = 'parent-sid') {
   });
   return promise;
 }
+
+test('overlapping SSO calls sharing a correlationId stay tracked until the last settles', async () => {
+  const correlationId = 'shared-correlation-id';
+  const sharedResult = { ...result(), correlationId };
+  let firstCall!: Promise<AuthenticationResult | undefined>;
+  let secondCall!: Promise<AuthenticationResult | undefined>;
+  act(() => {
+    firstCall = instance
+      .ssoSilent({ sid: 'one', correlationId })
+      .catch(() => undefined);
+    secondCall = instance
+      .ssoSilent({ sid: 'two', correlationId })
+      .catch(() => undefined);
+  });
+  await waitFor(() => expect(silent.length).toBe(2));
+
+  await act(async () => silent[0].reject(new Error('first fails')));
+  await firstCall;
+  expect(isSsoResult(sharedResult)).toBe(true);
+
+  await act(async () => silent[1].resolve(sharedResult));
+  await secondCall;
+  expect(isSsoResult(sharedResult)).toBe(false);
+});
 
 async function parentAttempt() {
   startSso();

@@ -201,7 +201,8 @@ const msalApp = new PublicClientApplication({
 // covers SSO started by the msal-react authentication hook.
 let pendingSso = 0;
 const ssoListeners = new Set<() => void>();
-const ssoCorrelationIds = new Set<string>();
+// Reference-counted so overlapping calls reusing a caller-supplied correlationId stay tracked
+const ssoCorrelationIds = new Map<string, number>();
 export const getPendingSso = () => pendingSso;
 export const subscribePendingSso = (listener: () => void) => {
   ssoListeners.add(listener);
@@ -216,13 +217,18 @@ const notifySsoListeners = () => ssoListeners.forEach((listener) => listener());
 const ssoSilent = msalApp.ssoSilent.bind(msalApp);
 msalApp.ssoSilent = async (request) => {
   const correlationId = request.correlationId ?? crypto.randomUUID();
-  ssoCorrelationIds.add(correlationId);
+  ssoCorrelationIds.set(
+    correlationId,
+    (ssoCorrelationIds.get(correlationId) ?? 0) + 1
+  );
   pendingSso += 1;
   notifySsoListeners();
   try {
     return await ssoSilent({ ...request, correlationId });
   } finally {
-    ssoCorrelationIds.delete(correlationId);
+    const remaining = (ssoCorrelationIds.get(correlationId) ?? 1) - 1;
+    if (remaining > 0) ssoCorrelationIds.set(correlationId, remaining);
+    else ssoCorrelationIds.delete(correlationId);
     pendingSso = Math.max(0, pendingSso - 1);
     notifySsoListeners();
   }
