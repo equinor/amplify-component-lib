@@ -1178,6 +1178,33 @@ export const TestDisabledPreventsChipRemoval: Story = {
   },
 };
 
+export const TestDisabledSelectedItemShowsDisabledChip: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: [{ ...TEST_ITEMS[0], disabled: true }, ...TEST_ITEMS.slice(1)],
+    values: [{ ...TEST_ITEMS[0], disabled: true }, TEST_ITEMS[1]],
+    label: 'Disabled item Test',
+    onSelect: fn(),
+  },
+  play: async ({ canvas, args }) => {
+    const disabledChip = canvas.getByRole('button', {
+      name: `${TEST_ITEMS[0].label} close`,
+    });
+    await expect(disabledChip).toBeDisabled();
+    await userEvent.click(disabledChip, { pointerEventsCheck: 0 });
+    await expect(args.onSelect).not.toHaveBeenCalled();
+
+    await expect(
+      canvas.getByRole('button', { name: `${TEST_ITEMS[1].label} close` })
+    ).toBeEnabled();
+
+    await userEvent.click(canvas.getByRole('combobox'));
+    await expect(
+      canvas.getByRole('menuitem', { name: TEST_ITEMS[0].label })
+    ).toBeDisabled();
+  },
+};
+
 const TestCustomValueElement: FC<{
   item: SelectOptionRequired;
   onDelete: () => void;

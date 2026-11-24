@@ -117,7 +117,9 @@ export const DynamicMenuItem = <T extends SelectOptionRequired>({
   return (
     <StyledMenuItem
       $depth={depth}
-      $selected={'value' in menuItemProps ? isSelected : undefined}
+      $selected={
+        'value' in menuItemProps ? isSelected && !isDisabled : undefined
+      }
       $paddedLeft={
         menuItemProps.parentHasNestedItems && 'values' in menuItemProps
           ? menuItemProps.parentHasNestedItems
