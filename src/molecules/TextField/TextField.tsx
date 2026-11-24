@@ -42,6 +42,7 @@ export type TextFieldProps = Omit<BaseProps, 'variant'> & {
   explanationPosition?: TooltipProps['placement'];
   locked?: boolean;
   autofilled?: boolean;
+  lightBackground?: boolean;
 } & (
     | TextareaHTMLAttributes<HTMLTextAreaElement>
     | InputHTMLAttributes<HTMLInputElement>
@@ -53,6 +54,7 @@ interface WrapperProps {
   $disabled?: boolean;
   $locked?: boolean;
   $autofilled?: boolean;
+  $lightBackground?: boolean;
 }
 
 const Wrapper = styled.div<WrapperProps>`
@@ -105,7 +107,17 @@ const Wrapper = styled.div<WrapperProps>`
       }
     `}
 
-  ${({ $variant, $disabled, $locked, $autofilled }) => {
+  ${({ $lightBackground, $autofilled, $disabled }) =>
+    $lightBackground &&
+    !$autofilled &&
+    !$disabled &&
+    css`
+      div[class*='Input__Container'] {
+        background: ${colors.ui.background__default.rgba};
+      }
+    `}
+
+  ${({ $variant, $disabled, $locked, $autofilled, $lightBackground }) => {
     if ($locked) {
       return css`
         div[class*='Input__Container'],
@@ -113,7 +125,9 @@ const Wrapper = styled.div<WrapperProps>`
         textarea:hover:not(:disabled) {
           background: ${$autofilled
             ? colors.dataviz.primary.primary20
-            : colors.ui.background__light.rgba};
+            : $lightBackground
+              ? colors.ui.background__default.rgba
+              : colors.ui.background__light.rgba};
           box-shadow: none;
         }
         /* Locked fields are non-interactive, so beat the global Template focus underline */
@@ -234,6 +248,7 @@ const LabelWrapper = styled.div`
 
 /**
  * @param loading - Show loading skeleton on top of the text field.
+ * @param lightBackground - If the input should have white background, also when locked. Defaults to false
  * @param maxCharacters - Maximum number of characters allowed in the text field. Does not enforce the limit, only for display purposes.
  */
 export const TextField: FC<TextFieldProps> = (props) => {
@@ -245,6 +260,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
     explanationPosition,
     locked,
     autofilled,
+    lightBackground,
     ...propsWithoutCustomProps
   } = props;
 
@@ -336,6 +352,7 @@ export const TextField: FC<TextFieldProps> = (props) => {
       $disabled={loading ? false : props.disabled}
       $locked={usingLocked}
       $autofilled={usingAutofilled}
+      $lightBackground={lightBackground}
       $helperRightWidth={helperRightWidth}
       style={{
         marginBottom:
