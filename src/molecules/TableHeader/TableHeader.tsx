@@ -108,6 +108,17 @@ export const TableHeader: FC<TableHeaderProps> = ({
                 variant="ghost"
               />
             )}
+            {sorting && !sorting.isSorting && (
+              // Reserves the sort button's space so the header width doesn't change when sorting toggles
+              <IconButton
+                icon={getSortingIcon('asc')}
+                aria-hidden
+                tabIndex={-1}
+                style={{ visibility: 'hidden' }}
+                data-spacings-mode={SpacingsMode.COMPACT}
+                variant="ghost"
+              />
+            )}
           </ActionsWrapper>
         )}
       </Container>

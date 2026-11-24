@@ -174,3 +174,36 @@ export const WithTrailingAction: Story = {
     await expect(args.trailingAction?.onClick).toHaveBeenCalled();
   },
 };
+
+export const SortingKeepsSameWidth: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    children: 'スバル',
+  },
+  render: (args) => (
+    <table>
+      <thead>
+        <tr>
+          <TableHeader {...args} sorting={{ onSortClick: fn() }}>
+            {args.children}
+          </TableHeader>
+          <TableHeader
+            {...args}
+            sorting={{ onSortClick: fn(), isSorting: 'asc' }}
+          >
+            {args.children}
+          </TableHeader>
+        </tr>
+      </thead>
+    </table>
+  ),
+  play: async ({ canvasElement }) => {
+    const [notSorting, sorting] = Array.from(
+      canvasElement.querySelectorAll('th')
+    );
+
+    await expect(notSorting.getBoundingClientRect().width).toBe(
+      sorting.getBoundingClientRect().width
+    );
+  },
+};
