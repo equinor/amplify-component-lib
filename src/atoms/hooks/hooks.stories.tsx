@@ -16,7 +16,7 @@ const hookList = [
      steps: [Step, Step, ...Step[]];
      currentStep: number;
      currentSubStep: number;
-     setCurrentStep: (value: number) => void;
+     setCurrentStep: (value: number, subStep?: number) => void;
      goToNextStep: () => void;
      goToPreviousStep: () => void; } = useStepper()`,
   },
