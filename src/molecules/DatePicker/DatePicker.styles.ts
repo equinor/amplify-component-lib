@@ -20,6 +20,7 @@ interface DatePickerWrapperProps {
   $loading?: boolean;
   $locked?: boolean;
   $autofilled?: boolean;
+  $lightBackground?: boolean;
 }
 
 export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
@@ -96,6 +97,15 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
       `;
   }}
 
+  ${({ $lightBackground, $autofilled }) =>
+    $lightBackground &&
+    !$autofilled &&
+    css`
+      > div > div[id*='react-aria'] {
+        background-color: ${colors.ui.background__default.rgba};
+      }
+    `}
+
   ${({ $autofilled }) =>
     $autofilled &&
     css`
@@ -104,7 +114,7 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
       }
     `}
 
-  ${({ $locked, $autofilled }) =>
+  ${({ $locked, $autofilled, $lightBackground }) =>
     $locked &&
     css`
       /* Icons are absolutely positioned, so don't let the wrapper shrink below the field content */
@@ -113,7 +123,9 @@ export const DatePickerWrapper = styled.div<DatePickerWrapperProps>`
       > div > div[id*='react-aria'] {
         background-color: ${$autofilled
           ? colors.dataviz.primary.primary20
-          : colors.ui.background__light.rgba};
+          : $lightBackground
+            ? colors.ui.background__default.rgba
+            : colors.ui.background__light.rgba};
         box-shadow: none;
         outline: none;
         /* Make room for the absolutely positioned lock (left) and calendar (right) icons,

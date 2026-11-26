@@ -340,6 +340,7 @@ export const Autofilled: Story = {
 };
 
 const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
+const WHITE_BACKGROUND = 'rgb(255, 255, 255)';
 
 export const TestLockedShowsLockIcon: Story = {
   tags: ['!dev', '!autodocs'],
@@ -380,6 +381,37 @@ export const TestLockedAndAutofilled: Story = {
     ).toBeInTheDocument();
     await expect(canvas.getByTestId('combobox-container')).toHaveStyle({
       backgroundColor: AUTOFILLED_BACKGROUND,
+    });
+  },
+};
+
+export const TestLightBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    lightBackground: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('combobox-container')).toHaveStyle({
+      backgroundColor: WHITE_BACKGROUND,
+    });
+  },
+};
+
+export const TestLockedLightBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: {
+    items: FAKE_ITEMS,
+    value: FAKE_ITEMS[0],
+    locked: true,
+    lightBackground: true,
+    onSelect: fn(),
+  },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByTestId('combobox-container')).toHaveStyle({
+      backgroundColor: WHITE_BACKGROUND,
     });
   },
 };

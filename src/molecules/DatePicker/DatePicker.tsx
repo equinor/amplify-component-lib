@@ -29,6 +29,7 @@ export type DatePickerProps = Omit<
   loading?: boolean;
   locked?: boolean;
   autofilled?: boolean;
+  lightBackground?: boolean;
   explanation?: string;
   explanationPosition?: TooltipProps['placement'];
 };
@@ -36,10 +37,21 @@ export type DatePickerProps = Omit<
 /**
  * @param loading - Show loading skeleton on top of the date picker.
  * @param locked - Value is validated/accepted and can't be changed. Shows a lock icon.
+ * @param lightBackground - If the input should have white background, also when locked. Defaults to false
  * @param autofilled - Value was filled in automatically. Consumer is responsible for resetting this when the user changes the value.
  */
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
-  ({ locked, autofilled, explanation, explanationPosition, ...props }, ref) => {
+  (
+    {
+      locked,
+      autofilled,
+      lightBackground,
+      explanation,
+      explanationPosition,
+      ...props
+    },
+    ref
+  ) => {
     if (!!explanation && !props.label) {
       throw new Error(
         '`explanation` prop requires a `label` to be set on the DatePicker.'
@@ -102,6 +114,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
         $loading={props.loading}
         $locked={usingLocked}
         $autofilled={usingAutofilled}
+        $lightBackground={lightBackground}
         data-input-cell-variant={!props.loading ? usingVariant : undefined}
         data-input-cell-locked={usingLocked || undefined}
         data-input-cell-autofilled={usingAutofilled || undefined}

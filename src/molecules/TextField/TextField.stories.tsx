@@ -665,6 +665,45 @@ export const Locked: Story = () => (
 );
 Locked.decorators = Disabled.decorators;
 
+export const LightBackground: Story = () => (
+  <>
+    <TextField id="light-default" label="Default" defaultValue="Value" />
+    <TextField
+      id="light-unlocked"
+      label="Light background"
+      defaultValue="Value"
+      lightBackground
+    />
+    <TextField
+      id="light-locked-default"
+      label="Locked"
+      defaultValue="Value"
+      locked
+    />
+    <TextField
+      id="light-locked"
+      label="Locked light background"
+      defaultValue="Value"
+      locked
+      lightBackground
+    />
+  </>
+);
+LightBackground.decorators = Disabled.decorators;
+LightBackground.play = async ({ canvas }) => {
+  const containerBackground = (id: string) =>
+    getComputedStyle(
+      canvas.getByRole('textbox', { name: id }).parentElement as HTMLElement
+    ).backgroundColor;
+
+  expect(containerBackground('Light background')).not.toBe(
+    containerBackground('Default')
+  );
+  expect(containerBackground('Locked light background')).not.toBe(
+    containerBackground('Locked')
+  );
+};
+
 function AutofilledComponent(args: TextFieldProps) {
   const [value, setValue] = useState('Autofilled value');
   const [autofilled, setAutofilled] = useState(true);

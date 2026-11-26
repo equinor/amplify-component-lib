@@ -142,7 +142,7 @@ const Container = styled.div<ContainerProps>`
       }
     `}
 
-  ${({ $locked, $autofilled }) =>
+  ${({ $locked, $autofilled, $lightBackground }) =>
     $locked &&
     css`
       &,
@@ -150,7 +150,9 @@ const Container = styled.div<ContainerProps>`
         cursor: default;
         background-color: ${$autofilled
           ? colors.dataviz.primary.primary20
-          : colors.ui.background__light.rgba};
+          : $lightBackground
+            ? colors.ui.background__default.rgba
+            : colors.ui.background__light.rgba};
         box-shadow: none;
         outline: none;
       }

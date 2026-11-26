@@ -127,6 +127,7 @@ export const Autofilled: StoryFn = (props: DatePickerProps) => {
 
 const LOCKED_BACKGROUND = 'rgb(247, 247, 247)';
 const AUTOFILLED_BACKGROUND = 'rgb(211, 231, 253)';
+const WHITE_BACKGROUND = 'rgb(255, 255, 255)';
 const TEST_DATE = new Date('25. july 2021');
 
 const getField = (canvasElement: HTMLElement) => {
@@ -211,6 +212,29 @@ export const TestLockedAndAutofilled: Story = {
     ).toBeInTheDocument();
     await expect(field).toHaveStyle({
       backgroundColor: AUTOFILLED_BACKGROUND,
+      boxShadow: 'none',
+    });
+  },
+};
+
+export const TestLightBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { value: TEST_DATE, lightBackground: true },
+  play: async ({ canvasElement }) => {
+    const { field } = getField(canvasElement);
+
+    await expect(field).toHaveStyle({ backgroundColor: WHITE_BACKGROUND });
+  },
+};
+
+export const TestLockedLightBackground: Story = {
+  tags: ['!dev', '!autodocs'],
+  args: { value: TEST_DATE, locked: true, lightBackground: true },
+  play: async ({ canvasElement }) => {
+    const { field } = getField(canvasElement);
+
+    await expect(field).toHaveStyle({
+      backgroundColor: WHITE_BACKGROUND,
       boxShadow: 'none',
     });
   },
