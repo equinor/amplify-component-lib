@@ -2,7 +2,8 @@ import { css } from 'styled-components';
 
 export const spacingTokens = css`
   /*Comfortable, by default*/
-  html {
+  html,
+  [data-spacings-mode='comfortable'] {
     --eds_spacing_xxx_large: 48px;
     --eds_spacing_xx_large: 40px;
     --eds_spacing_x_large: 32px;
