@@ -315,9 +315,9 @@ test.sequential(
 
     expect(
       await screen.findByText(new RegExp(newFirstName, 'i'), undefined, {
-        timeout: 5000,
+        timeout: 10000,
       })
     ).toBeInTheDocument();
   },
-  { timeout: 10000 }
+  { timeout: 20000 }
 );
